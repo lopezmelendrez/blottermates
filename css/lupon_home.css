@@ -1,0 +1,645 @@
+/* Google Font Import - Poppins */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+:root{
+    /* ===== Colors ===== */
+    --body-color: #E4E9F7;
+    --sidebar-color: #FFF;
+    --primary-color: #F9C918;
+    --primary-color-light: #F6F5FF;
+    --toggle-color: #DDD;
+    --text-color: #707070;
+
+    /* ====== Transition ====== */
+    --tran-03: all 0.2s ease;
+    --tran-03: all 0.3s ease;
+    --tran-04: all 0.3s ease;
+    --tran-05: all 0.3s ease;
+}
+
+body{
+    min-height: 100vh;
+    background-color: var(--body-color);
+    transition: var(--tran-05);
+}
+
+::selection{
+    background-color: var(--primary-color);
+    color: #fff;
+}
+
+body.dark{
+    --body-color: #18191a;
+    --sidebar-color: #242526;
+    --primary-color: #3a3b3c;
+    --primary-color-light: #3a3b3c;
+    --toggle-color: #fff;
+    --text-color: #ccc;
+}
+
+/* ===== Sidebar ===== */
+ .sidebar{
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 250px;
+    padding: 10px 14px;
+    background: var(--sidebar-color);
+    transition: var(--tran-05);
+    z-index: 100;  
+}
+.sidebar.close{
+    width: 88px;
+}
+
+/* ===== Reusable code - Here ===== */
+.sidebar li{
+    height: 50px;
+    list-style: none;
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+}
+
+.sidebar header .image,
+.sidebar .icon{
+    min-width: 60px;
+    border-radius: 6px;
+}
+
+.sidebar .icon{
+    min-width: 60px;
+    border-radius: 6px;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+}
+
+.sidebar .text,
+.sidebar .icon{
+    color: var(--text-color);
+    transition: var(--tran-03);
+}
+
+.sidebar .text{
+    font-size: 17px;
+    font-weight: 500;
+    white-space: nowrap;
+    opacity: 1;
+}
+.sidebar.close .text{
+    opacity: 0;
+}
+/* =========================== */
+
+.sidebar header{
+    position: relative;
+}
+
+.sidebar header .image-text{
+    display: flex;
+    align-items: center;
+}
+.sidebar header .logo-text{
+    display: flex;
+    flex-direction: column;
+}
+header .image-text .name {
+    margin-top: 2px;
+    font-size: 18px;
+    font-weight: 600;
+}
+
+header .image-text .profession{
+    font-size: 16px;
+    margin-top: -2px;
+    display: block;
+}
+
+.sidebar header .image{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.sidebar header .image img{
+    width: 40px;
+    border-radius: 6px;
+}
+
+.sidebar header .toggle{
+    position: absolute;
+    top: 50%;
+    right: -25px;
+    transform: translateY(-50%) rotate(180deg);
+    height: 25px;
+    width: 25px;
+    background-color: var(--primary-color);
+    color: var(--sidebar-color);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    cursor: pointer;
+    transition: var(--tran-05);
+}
+
+body.dark .sidebar header .toggle{
+    color: var(--text-color);
+}
+
+.sidebar.close .toggle{
+    transform: translateY(-50%) rotate(0deg);
+}
+
+.sidebar .menu{
+    margin-top: 40px;
+}
+
+.sidebar li.search-box{
+    border-radius: 6px;
+    background-color: var(--primary-color-light);
+    cursor: pointer;
+    transition: var(--tran-05);
+}
+
+.sidebar li.search-box input{
+    height: 100%;
+    width: 100%;
+    outline: none;
+    border: none;
+    background-color: var(--primary-color-light);
+    color: var(--text-color);
+    border-radius: 6px;
+    font-size: 17px;
+    font-weight: 500;
+    transition: var(--tran-05);
+}
+.sidebar li a{
+    list-style: none;
+    height: 100%;
+    background-color: transparent;
+    display: flex;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+    border-radius: 6px;
+    text-decoration: none;
+    transition: var(--tran-03);
+}
+
+.sidebar li a:hover{
+    background-color: var(--primary-color);
+}
+.sidebar li a:hover .icon,
+.sidebar li a:hover .text{
+    color: var(--sidebar-color);
+}
+body.dark .sidebar li a:hover .icon,
+body.dark .sidebar li a:hover .text{
+    color: var(--text-color);
+}
+
+.sidebar .menu-bar{
+    height: calc(100% - 55px);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    overflow-y: scroll;
+}
+.menu-bar::-webkit-scrollbar{
+    display: none;
+}
+.sidebar .menu-bar .mode{
+    border-radius: 6px;
+    background-color: var(--primary-color-light);
+    position: relative;
+    transition: var(--tran-05);
+}
+
+.menu-bar .mode .sun-moon{
+    height: 50px;
+    width: 60px;
+}
+
+.mode .sun-moon i{
+    position: absolute;
+}
+.mode .sun-moon i.sun{
+    opacity: 0;
+}
+body.dark .mode .sun-moon i.sun{
+    opacity: 1;
+}
+body.dark .mode .sun-moon i.moon{
+    opacity: 0;
+}
+
+.menu-bar .bottom-content .toggle-switch{
+    position: absolute;
+    right: 0;
+    height: 100%;
+    min-width: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 6px;
+    cursor: pointer;
+}
+.toggle-switch .switch{
+    position: relative;
+    height: 22px;
+    width: 40px;
+    border-radius: 25px;
+    background-color: var(--toggle-color);
+    transition: var(--tran-05);
+}
+
+.switch::before{
+    content: '';
+    position: absolute;
+    height: 15px;
+    width: 15px;
+    border-radius: 50%;
+    top: 50%;
+    left: 5px;
+    transform: translateY(-50%);
+    background-color: var(--sidebar-color);
+    transition: var(--tran-04);
+}
+
+body.dark .switch::before{
+    left: 20px;
+}
+
+.home{
+    position: absolute;
+    top: 0;
+    top: 0;
+    left: 250px;
+    height: 100vh;
+    width: calc(100% - 250px);
+    background-color: var(--body-color);
+    transition: var(--tran-05);
+}
+.home .text{
+    font-size: 30px;
+    font-weight: 500;
+    color: var(--text-color);
+    padding: 12px 60px;
+}
+
+.sidebar.close ~ .home{
+    left: 78px;
+    height: 100vh;
+    width: calc(100% - 78px);
+}
+body.dark .home .text{
+    color: var(--text-color);
+}
+
+.home .datetime{
+    font-size: 16px;
+    width: 20rem;
+    padding: 10px;
+    padding-left: 2%;
+    margin-left: 3%;
+    margin-top: 3%;
+    background: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.25);
+    border-radius: 4px;
+    font-weight: 500;
+    border-right: 10px #FADA5F solid;
+    font-family: 'Oswald', sans-serif;
+}
+
+
+.home .datetime .time{
+    font-size: 40px;
+    width: 20rem;
+    color: #F5BE1D;
+}
+
+.home .datetime .date{
+    margin-top: 3px;
+    font-size: 28px;
+    width: 20rem;
+    color: var(--text-color);
+}
+
+.add-account{
+    display: flex;
+    align-items: left;
+    justify-content: left;
+    width: 285px;
+    height: 50px; 
+    padding: 13px 15px;
+    margin-top: 60px;
+    margin-left: 1%;
+    background-color: #dc3545; 
+    border-radius: 5px; 
+    cursor: pointer; 
+}
+
+.add-account:hover{
+    background-color: #c82333;
+    transition: 0.5s;
+}
+
+.add-account i{
+    font-size: 24px; 
+    color: white; 
+}
+
+.add-account p{
+    font-size: 16px;
+    color: white;
+    margin-left: 5%;
+    width: 17rem;
+}
+
+.add-account-container{
+    position: relative;
+    margin-top: 5%;
+    max-width: 1030px;
+    width: 100%;
+    border-radius: 6px;
+    padding: 30px;
+    background-color: #fff;
+    box-shadow: 0 5px 10px rgba(0,0,0,0.1);
+}
+
+.incident-case-table{
+    background: white;
+    width: 45%;
+    height: 400px;
+    margin-left: 3%;
+    margin-top: 2%;
+    border-radius: 8px;
+    padding: 16px 24px;
+}
+
+.head-text .incident-case{
+    font-size: 25px;
+    font-weight: 500;
+    display: flex;
+}
+
+.head-text .notice-records{
+    margin-top: -3%;
+    font-style: italic;
+    font-weight: 400;
+    font-size: 16px;
+    color: #c82333;
+
+}
+
+.box{
+    height: 30px;
+    display: flex;
+    cursor: pointer;
+    padding: 10px 20px;
+    border-radius: 30px;
+    align-items: center;
+    width: 30%;
+    margin-top: -10%;
+    margin-left: 50%;
+    box-shadow: 0 5px 5px rgba(0, 0, 0, 0.3);
+}
+
+.box:hover input{
+    width: 150px;
+}
+
+.box input{
+    width: 0;
+    outline: none;
+    border: none;
+    font-weight: 500;
+    transition: 0.8s;
+    background: transparent;
+}
+
+thead th{
+    padding-right: 40px;
+    font-size: 18px;
+    font-weight: 600;
+    color: #5d5957;
+}
+
+tbody td{
+    font-size: 15px;
+    font-weight: 500;
+}
+
+tbody tr{
+    padding-top: 30%;
+}
+
+.calendar-container {
+    background-color: #fff; /* Background color */
+    border-radius: 5px; /* Rounded corners */
+    margin-top: -3%;
+    padding: 20px; /* Add some padding inside the container */ /* Add margin to separate it from the incident container */
+    height: 400px;
+    margin-left: -15%;
+}
+
+#calendar {
+    text-decoration: none !important; /* Use !important to ensure it takes precedence */
+}
+
+#calendar .fc-day, #calendar .fc-day-top, #calendar .fc-day-header {
+    color: black !important;
+}
+
+h1{
+    color: var(--text-color);
+    font-weight: 600;
+}
+
+/* Style the container */
+.cases-container {
+    display: flex;
+    justify-content: space-around; /* Align the child elements evenly */
+    padding: 30px 20px;
+    width: 90%;
+    margin-left: 5%;
+  }
+  
+  /* Style the individual case divs */
+  .ongoing-cases{
+    flex: 1; /* Distribute available space evenly among child elements */
+    text-align: center; /* Center align the text */
+    padding: 5px 5px;
+    width: 10px; /* Add padding for better spacing */
+    border: 1px solid #2E5895; /* Add a border for separation */
+    border-radius: 5px; /* Add rounded corners to the divs */
+    background-color: #F2F3F5; /* Background color for the divs */
+    color: #2E5895;
+    font-size: 18px;
+    font-weight: 600;
+    margin-left: 3%;
+    cursor: pointer;
+}
+
+.ongoing-cases:hover{
+    background: #2E5895;
+    color: #F2F3F5;
+}
+
+.settled-cases{
+    flex: 1; /* Distribute available space evenly among child elements */
+    text-align: center; /* Center align the text */
+    padding: 5px 5px;
+    width: 10px; /* Add padding for better spacing */
+    border: 1px solid #F5BE1D; /* Add a border for separation */
+    border-radius: 5px; /* Add rounded corners to the divs */
+    background-color: #F2F3F5; /* Background color for the divs */
+    color: #F5BE1D;
+    font-size: 18px;
+    font-weight: 600;
+    margin-left: 3%;
+    cursor: pointer;
+}
+
+.settled-cases:hover{
+    background: #F5BE1D;
+    color: #F2F3F5;
+}
+
+.incomplete-cases{
+    flex: 1; /* Distribute available space evenly among child elements */
+    text-align: center; /* Center align the text */
+    padding: 5px 5px;
+    width: 10px; /* Add padding for better spacing */
+    border: 1px solid #C23B21; /* Add a border for separation */
+    border-radius: 5px; /* Add rounded corners to the divs */
+    background-color: #F2F3F5; /* Background color for the divs */
+    color: #C23B21;
+    font-size: 18px;
+    font-weight: 600;
+    margin-left: 3%;
+    cursor: pointer;
+}
+
+.incomplete-cases:hover{
+    background: #C23B21;
+    color: #F2F3F5;
+}
+  
+  /* Style the paragraph inside each case div */
+  .ongoing-cases p,
+  .settled-cases p,
+  .incomplete-cases p {
+    margin: 0; /* Remove default margin to align text properly */
+}
+
+.container form{
+    position: relative;
+    margin-top: 16px;
+    min-height: 600px;
+    background-color: #fff;
+    overflow: hidden;
+}
+
+form .fields .input-field{
+    display: flex;
+    width: calc(100% / 3 - 15px);
+    flex-direction: column;
+    margin: 4px 0;
+}
+
+form .fields .input-field-1{
+    display: flex;
+    width: calc(100% / 2 - 15px);
+    flex-direction: column;
+    margin: 4px 0;
+}
+
+.input-field label, .input-field-1 label{
+    font-size: 12px;
+    font-weight: 500;
+    color: #2e2e2e;
+    text-align: left;
+}
+
+.input-field input, select, .input-field-1 input, select{
+    outline: none;
+    font-size: 14px;
+    font-weight: 400;
+    color: var(--text-color);
+    border-radius: 5px;
+    border: 1px solid #aaa;
+    padding: 0 15px;
+    height: 42px;
+    margin: 8px 0;
+}
+
+.input-field input :focus,
+.input-field select:focus,
+.input-field-1 input :focus,
+.input-field-1 select:focus{
+    box-shadow: 0 3px 6px rgba(0,0,0,0.13);
+}
+
+
+    .shownotices{
+        background: #fff;
+        padding: 4px 4px;
+        color: #2962ff;
+        border: 1px solid #2962ff;
+        text-transform: uppercase;
+        border-radius: 0.2rem;
+        cursor: pointer;
+        display: block;
+        margin-bottom: 5px;
+        width: 10rem;
+        margin-left: 0;
+        text-decoration: none;
+    }
+
+    .shownotices:hover{
+        background: #2962ff;
+        color: #fff;
+        border: 1px solid #fff;
+        transition: .5s;
+    }
+
+    .schedule{
+        background: #fff;
+        padding: 4px 4px;
+        color: #363636;
+        border: 1px solid #363636;
+        text-transform: uppercase;
+        border-radius: 0.2rem;
+        cursor: pointer;
+        display: block;
+        margin-bottom: 5px;
+        width: 10rem;
+        text-decoration: none;
+    }
+
+    .schedule:hover{
+        background: #363636;
+        padding: 4px 4px;
+        color: #fff;
+        border: 1px solid #fff;
+        text-transform: uppercase;
+        border-radius: 0.2rem;
+        cursor: pointer;
+        display: block;
+        margin-bottom: 5px;
+        width: 10rem;
+        transition: .5s;
+    }
