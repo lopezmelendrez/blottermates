@@ -46,14 +46,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit'])) {
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css"/>
     <link rel="stylesheet" href="bootstrap/bootstrap-5.0.2-dist/css/bootstrap.min.css">
     <link rel="icon" type="image/x-icon" href="../../images/favicon.ico">
-    <title>Create Incident Report Record</title>
+    <title>Create Hearing Schedule</title>
 </head>
 <body>
     
 <?php include 'navbar.php'; ?>
 
     <section class="home">
-        <div class="container" style="margin-left: 15%; margin-top: 110px; width: 890px; height: 470px;">
+        <div class="container" style="margin-left: 15%; margin-top: 80px; width: 950px; height: 475px;">
         <?php
         // Assuming you have already established the database connection
         $incident_case_number = $_GET['incident_case_number'];
@@ -82,17 +82,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit'])) {
                 <div class="details ID">
                     <span class="title"></span>
                     <div class="fields">
-                        <div class="input-field-1" style="width: 43rem;">
+                        <div class="input-field-1" style="width: 46rem;">
                             <label class="required-label">Select Hearing Schedule</label>
                             <input type="date" name="date_of_hearing" placeholder="" required>
                         </div>
-                        <div class="input-field-1" style="width: 43rem;">
+                        <div class="input-field-1" style="width: 46rem;">
                             <label class="required-label">Hearing Time</label>
                             <input type="time" name="time_of_hearing" id="time_of_hearing" placeholder="" required>
                         </div>
                     </div>
                     <button class="submit">
-                        <input type="submit" name="submit" value="Submit Schedule" class="btnText" style="font-size: 14px; background: transparent; border: none; font-weight: 600; color: #fff; cursor: pointer;">
+                        <input type="submit" name="submit" value="Appoint Hearing" class="btnText" style="font-size: 14px; background: transparent; border: none; font-weight: 600; color: #fff; cursor: pointer;">
                         <!--<span class="btnText" style="font-size: 12px;">Create Incident Report Record</span>-->
                     </button>
                 </div>
@@ -163,6 +163,7 @@ function handleTimeInput() {
 
 // Attach an event listener to the time input
 timeInput.addEventListener('input', handleTimeInput);
+
 
     </script>
     <script src="../script.js"></script>

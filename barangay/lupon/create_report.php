@@ -246,7 +246,7 @@ if (isset($_POST['submit'])) {
                         <div class="fields">
                             <div class="input-field-1" style="width: 28rem;">
                                 <label class="required-label">Incident Case Type</label>
-                                <select name="incident_case_type" required>
+                                <select name="incident_case_type" id="incident_case_type" required>
                                     <option disabled selected>Select...</option>
                                     <option value="Article No. 154">Unlawful use of means of Publication and Unlawful Utterances</option>
                                     <option value="Article No. 155">Alarms and Scandals</option>
@@ -292,8 +292,10 @@ if (isset($_POST['submit'])) {
                                     <option value="Article No. 364">Intriguing against honor.</option>
                                     <option value="BP 22">Issuing checks without sufficient funds.</option>
                                     <option value="PD 1612">Fencing of stolen properties if the property involved is not more than P50.00.</option>
+                                    <option value="Other">Others...</option>
                                 </select>
                             </div>
+                            
                             <div class="input-field">
                                 <label class="required-label">Incident Date</label>
                                 <input type="date" name="incident_date" placeholder="" required>
@@ -417,6 +419,8 @@ if (isset($_POST['submit'])) {
                             </div>
                         </p>
                         </div>
+        
+                        <div id="popup" class="popup">
             
         <div class="modal-buttons" style="display: flex; align-items: center; margin-top: -15px; margin-right: 22px;">
                     <div class="backBtn" id="modalCancelBtn">

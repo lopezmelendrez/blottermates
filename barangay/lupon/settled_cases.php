@@ -40,7 +40,11 @@ header('location: ../../index.php');
         </div></a>
 
         <div class="cases-container" style="display: flex;">
-            <div class="settled-cases" style="width: 100%;">
+            <a href="incident_reports.php" style="text-decoration: none;">
+            <div class="back" style="width: 150%;">
+                <p>Back</p>
+            </div></a>
+            <div class="settled-cases" style="width: 80%; margin-left: 90px; height: 40px;">
                 <p>Settled Cases</p>
             </div>
         </div>
@@ -283,6 +287,19 @@ if (mysqli_num_rows($select_hearing) > 0) {
     left: 78px;
     height: 100vh;
     width: calc(100% - 78px);
+}
+
+.back{
+    background-color: white;
+    margin-left: 35px;
+    height: 40px;
+    background: #F5BE1D;
+    color: #F2F3F5;
+    font-weight: 600;
+    cursor: pointer;
+    border-radius: 5px;
+    text-align: center;
+    padding: 3px 3px;
 }
 
 

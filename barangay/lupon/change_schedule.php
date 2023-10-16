@@ -4,7 +4,7 @@ include '../../config.php';
 
 session_start();
 
-$email = $_SESSION['email'];
+$email = $_SESSION['email_address'];
 
 if(!isset($email)){
 header('location: ../../index.php');
@@ -64,7 +64,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit'])) {
                     $select = mysqli_query($conn, "SELECT l.*, pb.barangay 
                                                 FROM `lupon_accounts` l
                                                 LEFT JOIN `pb_accounts` pb ON l.pb_id = pb.pb_id
-                                                WHERE l.email = '$email'") or die('query failed');
+                                                WHERE l.email_address = '$email'") or die('query failed');
                     if(mysqli_num_rows($select) > 0){
                         $fetch = mysqli_fetch_assoc($select);
                     }

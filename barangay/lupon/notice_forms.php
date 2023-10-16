@@ -1,40 +1,122 @@
-<!--<?php
-
+<?php
 include '../../config.php';
 
 session_start();
 
 $email = $_SESSION['email_address'];
 
-if(!isset($email)){
-header('location: ../../index.php');
+if (!isset($email)) {
+    header('location: ../../index.php');
 }
 
-if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['incident_case_number'])) {
-    $incident_case_number = $_GET['incident_case_number'];
-} else {
-    header("Location: ../lupon/home.php");
-    exit;
+$generate_hearing_value = '';
+$generate_summon_value = '';
+$notify_complainant_value = '';
+$notify_summon_value = '';
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit'])) {
+    $incident_case_number = $_POST['incident_case_number'];
+    $generate_summon = 'form generated';
+
+    $check_query = "SELECT * FROM `notify_residents` WHERE incident_case_number = '$incident_case_number'";
+    $check_result = mysqli_query($conn, $check_query);
+
+    if ($check_result && mysqli_num_rows($check_result) > 0) {
+        $update_query = "UPDATE `notify_residents` SET `generate_summon` = '$generate_summon' WHERE incident_case_number = '$incident_case_number'";
+        $result = mysqli_query($conn, $update_query);
+    } else {
+        $insert_query = "INSERT INTO `notify_residents` (`incident_case_number`, `generate_summon`)
+                         VALUES ('$incident_case_number', '$generate_summon')";
+        $result = mysqli_query($conn, $insert_query);
+    }
+
+    if ($result) {
+        header("Location: http://localhost/barangay%20justice%20management%20system%2001/tcpdf/generate_summonRecord.php?incident_case_number=" . $incident_case_number);
+        exit;
+    } else {
+        echo "Error: " . mysqli_error($conn);
+        exit;
+    }
 }
 
-$select = mysqli_query($conn, "SELECT * FROM `incident_report` WHERE `incident_case_number` = '$incident_case_number'") or die('query failed');
-$row_data = mysqli_fetch_assoc($select);
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['hearing_submit'])) {
+    $incident_case_number = $_POST['incident_case_number'];
+    $generate_hearing = 'form generated';
 
-if (!$row_data) {
-    // If the incident_case_number is not found, handle the error accordingly, e.g., redirect back to the dashboard.
-    header("Location: ../lupon/incompletenotices.php");
-    exit;
+    $check_query = "SELECT * FROM `notify_residents` WHERE incident_case_number = '$incident_case_number'";
+    $check_result = mysqli_query($conn, $check_query);
+
+    if ($check_result && mysqli_num_rows($check_result) > 0) {
+        $update_query = "UPDATE `notify_residents` SET `generate_hearing` = '$generate_hearing' WHERE incident_case_number = '$incident_case_number'";
+        $result = mysqli_query($conn, $update_query);
+    } else {
+        $insert_query = "INSERT INTO `notify_residents` (`incident_case_number`, `generate_hearing`)
+                         VALUES ('$incident_case_number', '$generate_hearing')";
+        $result = mysqli_query($conn, $insert_query);
+    }
+
+    if ($result) {
+        header("Location: incident_reports.php");
+        exit;
+    } else {
+        echo "Error: " . mysqli_error($conn);
+        exit;
+    }
 }
 
-$complainant_last_name = $row_data['complainant_last_name'];
-$complainant_first_name = $row_data['complainant_first_name'];
-$complainant_middle_name = $row_data['complainant_middle_name'];
-$complainant_cellphone_number = $row_data['complainant_cellphone_number'];
-$respondent_last_name = $row_data['respondent_last_name'];
-$respondent_first_name = $row_data['respondent_first_name'];
-$respondent_middle_name = $row_data['respondent_middle_name'];
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['notify_complainant_submit'])) {
+    $incident_case_number = $_POST['incident_case_number'];
+    $notify_hearing = 'notified';
 
-?>-->
+    $check_query = "SELECT * FROM `notify_residents` WHERE incident_case_number = '$incident_case_number'";
+    $check_result = mysqli_query($conn, $check_query);
+
+    if ($check_result && mysqli_num_rows($check_result) > 0) {
+        $update_query = "UPDATE `notify_residents` SET `notify_hearing` = '$notify_hearing' WHERE incident_case_number = '$incident_case_number'";
+        $result = mysqli_query($conn, $update_query);
+    } else {
+        $insert_query = "INSERT INTO `notify_residents` (`incident_case_number`, `notify_hearing`)
+                         VALUES ('$incident_case_number', '$notify_hearing')";
+        $result = mysqli_query($conn, $insert_query);
+    }
+
+    if ($result) {
+        header("Location: incident_reports.php");
+        exit;
+    } else {
+        echo "Error: " . mysqli_error($conn);
+        exit;
+    }
+}
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['notify_respondent_submit'])) {
+    $incident_case_number = $_POST['incident_case_number'];
+    $notify_summon = 'notified';
+
+    $check_query = "SELECT * FROM `notify_residents` WHERE incident_case_number = '$incident_case_number'";
+    $check_result = mysqli_query($conn, $check_query);
+
+    if ($check_result && mysqli_num_rows($check_result) > 0) {
+        $update_query = "UPDATE `notify_residents` SET `notify_summon` = '$notify_summon' WHERE incident_case_number = '$incident_case_number'";
+        $result = mysqli_query($conn, $update_query);
+    } else {
+        $insert_query = "INSERT INTO `notify_residents` (`incident_case_number`, `notify_summon`)
+                         VALUES ('$incident_case_number', '$notify_summon')";
+        $result = mysqli_query($conn, $insert_query);
+    }
+
+    if ($result) {
+        header("Location: incident_reports.php");
+        exit;
+    } else {
+        echo "Error: " . mysqli_error($conn);
+        exit;
+    }
+}
+
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -76,7 +158,7 @@ $respondent_middle_name = $row_data['respondent_middle_name'];
     if ($fetch['barangay']) {
         echo '<span class="profession">Barangay ' . $fetch['barangay'] . '</span>';
     } else {
-        echo '<span class="profession">Not specified</span>'; // Or handle this case as needed
+        echo '<span class="profession">Not specified</span>';
     }
     ?>
                 </div>
@@ -151,11 +233,18 @@ $respondent_middle_name = $row_data['respondent_middle_name'];
     
     <section class="home">
         <div class="container" style="margin-left: 15%; margin-top: 45px;">
-            <header>NOTICE OF CASE - <?php echo $incident_case_number; ?></header>
+        <?php
+        $incident_case_number = $_GET['incident_case_number'];
+        $select = mysqli_query($conn, "SELECT * FROM `incident_report` WHERE incident_case_number = '$incident_case_number'") or die('query failed');
+        $fetch_cases = mysqli_fetch_assoc($select);
+        ?>
+            <header>NOTICE OF CASE #<?php echo $incident_case_number; ?></header>
             <form action="#">
                 <div class="form first">
                     <div class="details personal">
-                        <span class="title" style="font-style: italic;"><?php echo $complainant_last_name; ?> vs. <?php echo $respondent_last_name; ?> </span>
+                        <span class="title" style="font-style: italic; margin-top: -5px; text-align: center; font-size: 22px;"><?php echo $fetch_cases['complainant_last_name'] ?> vs. <?php echo $fetch_cases['respondent_last_name'] ?> </span>
+                        <hr style="border: 1px solid #ccc; margin: 20px 0;">
+                    </div>
                         <div class="fields">
                             <div class="input-field-1" style="width: 43rem;">
                             <?php
@@ -172,15 +261,17 @@ $respondent_middle_name = $row_data['respondent_middle_name'];
                             <div class="change-schedule" style="margin-left: 86%; font-size: 12px; text-decoration: none;">
                                 <a href="change_schedule.php?incident_case_number=<?php echo $incident_case_number; ?>" style="text-decoration: none; color: inherit;">Change Schedule?</a>
                             </div>
+                            
                         </div>
                     </div>
 
-                    <hr style="border: 1px solid #ccc; margin: 20px 0;">
+                    
 
                     <div class="details ID">
                         <span class="title"></span>
                         <div class="fields">
-                            <table class="notice-table" style="width: 100%; margin-left: 1%;">
+                            <table class="notice-table" style="width: 100%; margin-left: 1%; margin-top: 20%;">
+                                
                                 <thead>
                                     <tr style="text-align: center;">
                                         <th>Type of Notice</th>
@@ -192,26 +283,92 @@ $respondent_middle_name = $row_data['respondent_middle_name'];
                                 <tbody>
                                     <tr>
                                         <td>Hearing Notice</td>
-                                        <td><?php echo $complainant_last_name; ?>, <?php echo $complainant_first_name; ?> <?php echo $complainant_middle_name; ?></td>
-                                        <td><span class="to-notify">To Notify</span></td>
-                                        <td>
-                                        <span class="notify" onclick="showPopup()">Set to Notified</span>
+                                        <td><?php echo $fetch_cases['complainant_last_name'] ?>, <?php echo $fetch_cases['complainant_first_name'] ?> <?php echo $fetch_cases['complainant_middle_name'] ?></td>
+                                        <td><?php
+                                        $check_query = "SELECT generate_hearing, notify_hearing FROM notify_residents WHERE incident_case_number = '$incident_case_number'";
+                                        $check_result = mysqli_query($conn, $check_query);
+
+                                        if ($check_result && mysqli_num_rows($check_result) > 0) {
+                                            $row = mysqli_fetch_assoc($check_result);
+                                            $generate_hearing_value = $row['generate_hearing'];
+                                            $notify_complainant_value = $row['notify_hearing'];
+
+                                            if (empty($generate_hearing_value) || $generate_hearing_value === 'not generated') { // Check for the specific value
+                                                echo '-';
+                                            } elseif ($notify_complainant_value === 'notified') {
+                                                echo '<span class="notified">NOTIFIED</span>';
+                                            } else {
+                                                echo '<span class="to-notify">TO NOTIFY</span>';
+                                            }
+                                            
+                                        } 
+                                        ?>
                                         </td>
-                                    </tr>
-                                    <tr>
-                                        <td>Summon Notice</td>
-                                        <td><?php echo $respondent_last_name; ?>, <?php echo $respondent_first_name; ?> <?php echo $respondent_middle_name; ?>.</td>
-                                        <td>-</td>
                                         <td>
-                                        <a href="http://localhost/barangay%20justice%20management%20system%2001/tcpdf/generate_summonRecord.php?incident_case_number=<?php echo $incident_case_number; ?>" id="summonButton" class="summon-record" style="text-decoration:none;">Generate Summon Record</a>
+                                        <?php
+                                        if (empty($generate_hearing_value) || $generate_hearing_value === 'not generated') {
+                                            echo '<span class="summon-record" onclick="showSummonPopup()">Generate KP Form #9</span>';
+                                        } elseif ($notify_complainant_value === 'notified') {
+                                            echo '-';
+                                        }
+                                        else {
+                                            echo '<span class="notify" onclick="showNotifyRespondentPopup()">Set To Notified</span>';
+                                        }
+                                        ?>
+                                                                                </td>
+                                                                            </tr>
+                                                                            <tr>
+                                            <td>Summon Notice</td>
+                                            <td><?php echo $fetch_cases['respondent_last_name'] ?>, <?php echo $fetch_cases['respondent_first_name'] ?> <?php echo $fetch_cases['respondent_middle_name'] ?>.</td>
+                                            <td>
+                                            <?php
+                                        $check_query = "SELECT generate_summon, notify_summon FROM notify_residents WHERE incident_case_number = '$incident_case_number'";
+                                        $check_result = mysqli_query($conn, $check_query);
+
+                                        if ($check_result && mysqli_num_rows($check_result) > 0) {
+                                            $row = mysqli_fetch_assoc($check_result);
+                                            $generate_summon_value = $row['generate_summon'];
+                                            $notify_summon_value = $row['notify_summon'];
+
+                                            if (empty($generate_summon_value) || $generate_summon_value === 'not generated') { // Check for the specific value
+                                                echo '-';
+                                            } elseif ($notify_summon_value === 'notified') {
+                                                echo '<span class="notified">NOTIFIED</span>';
+                                            } else {
+                                                echo '<span class="to-notify">TO NOTIFY</span>';
+                                            }
+                                            
+                                        } 
+                                        ?>
                                         </td>
-                                    </tr>
+<td>
+<?php
+if (empty($generate_summon_value) || $generate_summon_value === 'not generated') {
+    echo '<span class="summon-record" onclick="showSummonPopup()">Generate KP Form #9</span>';
+} elseif ($notify_summon_value === 'notified') {
+    echo '-';
+}
+else {
+    echo '<span class="notify" onclick="showNotifyRespondentPopup()">Set To Notified</span>';
+}
+?>
+
+    </td>
+</tr>
                                     <tr>
                                         <td>Pangkat Notice</td>
                                         <td>-</td>
                                         <td>-</td>
                                         <td>
                                         <a href="http://localhost/barangay%20justice%20management%20system%2001/tcpdf/generate_kp10.php?incident_case_number=<?php echo $incident_case_number; ?>" class="summon-record" style="text-decoration:none;">Generate Pangkat Constituition Record</a>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Subpoena Notice</td>
+                                        <td>-</td>
+                                        <td>-</td>
+                                        <td>
+                                        <div class="summon-record" onclick="showWitnessPopup()" style="text-decoration:none;">Add Witness</div>
                                         </td>
                                     </tr>
                                 </tbody>
@@ -225,10 +382,10 @@ $respondent_middle_name = $row_data['respondent_middle_name'];
             </form>
         </div>
 
-        <div id="popup" class="popup">
+        <div id="witness-popup" class="popup">
             <center>
             <div class="modal">
-            <h3 class="modal-title" style="font-size: 18px; text-align:center;">NOTIFY COMPLAINANT</h3>
+            <h3 class="modal-title" style="font-size: 18px; text-align:center;">Add Witness</h3>
             <hr style="border: 1px solid #ccc; margin: 10px 0;">
             <p style="font-size: 14px; text-align: justify;">The complainant's contact number will promptly receive their hearing notice details via message.</p>
             <p style="font-size: 12px; margin-left: -28%; margin-top: 5%; font-weight: 600;">Complainant's Contact Number: </p>
@@ -241,7 +398,98 @@ $respondent_middle_name = $row_data['respondent_middle_name'];
             </div>
             </div>
             </center>
-</div>
+        </div>
+
+        <div id="summon_popup" class="popup">
+            <center>
+            <div class="modal">
+            <h3 class="modal-title" style="font-size: 18px; text-align:center;">GENERATE SUMMON RECORD CONFIRMATION</h3>
+            <hr style="border: 1px solid #ccc; margin: 10px 0;">
+            <p style="font-size: 14px; text-align: justify;">Are you sure you want to generate the form?</p>
+            
+            <div class="button-container" style="display: flex;">
+                <button class="backBtn" onclick="closeSummonPopup()" style="width: 150px; padding: 12px 12px; font-weight: 600; background: #fff; border: 1px solid #bc1823; color: #bc1823; margin-left: 180px;">NO</button>
+                <form action="" method="post">
+                <input type="hidden" name="incident_case_number" value="<?php echo $incident_case_number; ?>">
+                <input type="submit" name="submit" value="YES" class="backBtn" style="width: 310px; padding: 12px 12px; font-weight: 600; margin-left: -5px;"></button>
+                </form>
+            </div>
+            </div>
+            </center>
+        </div>
+
+        <div id="hearing_popup" class="popup">
+            <center>
+            <div class="modal">
+            <h3 class="modal-title" style="font-size: 18px; text-align:center;">GENERATE HEARING NOTICE CONFIRMATION</h3>
+            <hr style="border: 1px solid #ccc; margin: 10px 0;">
+            <p style="font-size: 14px; text-align: justify;">Are you sure you want to generate the form?</p>
+            
+            <div class="button-container" style="display: flex;">
+                <button class="backBtn" onclick="closeHearingPopup()" style="width: 150px; padding: 12px 12px; font-weight: 600; background: #fff; border: 1px solid #bc1823; color: #bc1823; margin-left: 180px;">NO</button>
+                <form action="" method="post">
+                <input type="hidden" name="incident_case_number" value="<?php echo $incident_case_number; ?>">
+                <input type="submit" name="hearing_submit" value="YES" class="backBtn" style="width: 310px; padding: 12px 12px; font-weight: 600; margin-left: -5px;"></button>
+                </form>
+            </div>
+            </div>
+            </center>
+        </div>
+
+        <div id="notify_complainant" class="popup">
+            <center>
+            <div class="modal">
+            <h3 class="modal-title" style="font-size: 18px; text-align:center;">NOTIFY COMPLAINANT</h3>
+            <hr style="border: 1px solid #ccc; margin: 10px 0;">
+            <p style="font-size: 14px; text-align: justify;">The complainant's contact number will promptly receive their hearing notice details via message.</p>
+            
+            <div class="button-container" style="display: flex;">
+                <button class="backBtn" onclick="closeNotifyComplainantPopup()" style="width: 150px; padding: 12px 12px; font-weight: 600; background: #fff; border: 1px solid #bc1823; color: #bc1823; margin-left: 180px;">NO</button>
+                <form action="" method="post">
+                <input type="hidden" name="incident_case_number" value="<?php echo $incident_case_number; ?>">
+                <input type="submit" name="notify_complainant_submit" value="YES" class="backBtn" style="width: 310px; padding: 12px 12px; font-weight: 600; margin-left: -5px;"></button>
+                </form>
+            </div>
+            </div>
+            </center>
+        </div>
+
+        <div id="notify_respondent" class="popup">
+            <center>
+            <div class="modal">
+            <h3 class="modal-title" style="font-size: 18px; text-align:center;">NOTIFY RESPONDENT</h3>
+            <hr style="border: 1px solid #ccc; margin: 10px 0;">
+            <p style="font-size: 14px; text-align: justify;">The respondent's contact number will promptly receive their hearing notice details via message.</p>
+            
+            <div class="button-container" style="display: flex;">
+                <button class="backBtn" onclick="closeNotifyRespondentPopup()" style="width: 150px; padding: 12px 12px; font-weight: 600; background: #fff; border: 1px solid #bc1823; color: #bc1823; margin-left: 180px;">NO</button>
+                <form action="" method="post">
+                <input type="hidden" name="incident_case_number" value="<?php echo $incident_case_number; ?>">
+                <input type="submit" name="notify_respondent_submit" value="YES" class="backBtn" style="width: 310px; padding: 12px 12px; font-weight: 600; margin-left: -5px;"></button>
+                </form>
+            </div>
+            </div>
+            </center>
+        </div>
+
+
+        <!--<div id="popup" class="popup">
+            <center>
+            <div class="modal">
+            <h3 class="modal-title" style="font-size: 18px; text-align:center;">NOTIFY COMPLAINANT</h3>
+            <hr style="border: 1px solid #ccc; margin: 10px 0;">
+            <p style="font-size: 14px; text-align: justify;">The complainant's contact number will promptly receive their hearing notice details via message.</p>
+            <p style="font-size: 12px; margin-left: -28%; margin-top: 5%; font-weight: 600;">Complainant's Contact Number: </p>
+            <div class="box" id="phoneNumberBox">
+                <span id="phoneNumberText"></span>
+            </div>
+            <div class="button-container" style="display: flex;">
+                <button class="backBtn" onclick="closeNotifyPopup()" style="width: 300px; padding: 12px 12px; font-weight: 600;">BACK</button>
+                <button class="backBtn" onclick="submitForm()" style="width: 300px; margin-left: 290px; padding: 12px 12px; font-weight: 600;"">NOTIFY</button>
+            </div>
+            </div>
+            </center>
+        </div>-->
 
 
     </section>
@@ -277,32 +525,76 @@ function showPopup() {
 
     }
 
-    function closePopup() {
+    function closeNotifyPopup() {
         var popup = document.getElementById("popup");
         popup.style.display = "none";
     }
 
-// Add a variable to track whether the button has been clicked
-let isSummonNotified = false;
+    function showWitnessPopup() {
+        // Get the popup element
+        var popup = document.getElementById("witness-popup");
 
-// Function to handle the button click
-function handleSummonButtonClick() {
-    // Check if the button has not been clicked
-    if (!isSummonNotified) {
-        // Update the button text to "Set to Notified"
-        const summonButton = document.getElementById('summonButton');
-        summonButton.textContent = 'Set to Notified';
+        // Display the popup
+        popup.style.display = "block";
 
-        // Disable the link to prevent further clicks
-        summonButton.removeAttribute('href');
 
-        // Set the button as notified
-        isSummonNotified = true;
     }
-}
 
-// Add a click event listener to the button
-document.getElementById('summonButton').addEventListener('click', handleSummonButtonClick);
+    function closePopup() {
+        var popup = document.getElementById("witness-popup");
+        popup.style.display = "none";
+    }
+
+    
+    function showSummonPopup() {
+        var popup = document.getElementById("summon_popup");
+        popup.style.display = "block";
+
+
+    }
+
+    function closeSummonPopup() {
+        var popup = document.getElementById("summon_popup");
+        popup.style.display = "none";
+    }
+
+    function showHearingPopup() {
+        var popup = document.getElementById("hearing_popup");
+        popup.style.display = "block";
+
+
+    }
+
+    function closeHearingPopup() {
+        var popup = document.getElementById("hearing_popup");
+        popup.style.display = "none";
+    }
+
+    function showNotifyComplainantPopup() {
+        var popup = document.getElementById("notify_complainant");
+        popup.style.display = "block";
+
+
+    }
+
+    function closeNotifyComplainantPopup() {
+        var popup = document.getElementById("notify_complainant");
+        popup.style.display = "none";
+    }
+
+    function showNotifyRespondentPopup() {
+        var popup = document.getElementById("notify_respondent");
+        popup.style.display = "block";
+
+
+    }
+
+    function closeNotifyRespondentPopup() {
+        var popup = document.getElementById("notify_respondent");
+        popup.style.display = "none";
+    }
+
+
 
 
 
@@ -373,6 +665,11 @@ document.getElementById('summonButton').addEventListener('click', handleSummonBu
         color: #bc1823;
     }
 
+    .notified{
+        font-weight: 900;
+        color: #0b6623;
+    }
+
 
     .backBtn:hover{
     background-color: #bc1823;
@@ -420,6 +717,26 @@ document.getElementById('summonButton').addEventListener('click', handleSummonBu
     margin: 5px 0;
     background-color: #f2f2f2;
 }
+
+.generate{
+        background: #2962ff;
+        padding: 4px 4px;
+        color: #fff;
+        font-size: 13px;
+        border: 1px solid #2962ff;
+        text-transform: uppercase;
+        border-radius: 0.2rem;
+        cursor: pointer;
+        width: 198px;
+        height: 30px;
+        margin-left: 2%;
+    }
+
+    .generate:hover{
+        background: #0d52bd;
+        color: #fff;     
+    }
+
 
 </style>
 

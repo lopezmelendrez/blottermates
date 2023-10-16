@@ -13,26 +13,24 @@ header('location: ../../index.php');
 
 $selectHearing = mysqli_query($conn, "SELECT * FROM `hearing`") or die('query failed');
 
-// Initialize an empty array to store the events
 $events = [];
 
 while ($fetchHearing = mysqli_fetch_assoc($selectHearing)) {
     $dateOfHearing = $fetchHearing['date_of_hearing'];
-    $timeOfHearing = $fetchHearing['time_of_hearing']; // Get the time of hearing
-
-    // Concatenate date and time to form the start datetime
+    $timeOfHearing = $fetchHearing['time_of_hearing']; 
     $startDatetime = $dateOfHearing . ' ' . $timeOfHearing;
 
-    // Format the hearing data as an event object
+    
     $event = [
         'title' => 'CASE NO. #' . $fetchHearing['incident_case_number'],
-        'start' => $startDatetime, // Use the concatenated datetime
+        'start' => $startDatetime, 
     ];
 
-    // Push the event to the events array
+
     array_push($events, $event);
 }
 
+$hasEvents = !empty($events);
 
 ?>
 
@@ -48,7 +46,7 @@ while ($fetchHearing = mysqli_fetch_assoc($selectHearing)) {
     <link href="https://cdn.jsdelivr.net/npm/fullcalendar@5.9.0/main.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.9.0/main.js"></script>
     <link rel="icon" type="image/x-icon" href="../../images/favicon.ico">
-    <title>Lupon Dashboard</title>
+    <title>Home</title>
 
 </head>
 <body>
@@ -95,17 +93,32 @@ while ($fetchHearing = mysqli_fetch_assoc($selectHearing)) {
             <?php
 $currentPage = isset($_GET['page']) ? $_GET['page'] : 1;
 
-$select = mysqli_query($conn, "SELECT * FROM `incident_report` AS ir
+$select = mysqli_query($conn, "SELECT ir.*, nr.generate_summon, nr.generate_hearing
+    FROM `incident_report` AS ir
+    LEFT JOIN `notify_residents` AS nr ON ir.incident_case_number = nr.incident_case_number
     WHERE NOT EXISTS (
         SELECT 1 FROM `hearing` AS h
         INNER JOIN `amicable_settlement` AS amicable_settlement ON h.hearing_id = amicable_settlement.hearing_id
         WHERE ir.incident_case_number = h.incident_case_number
     )") or die('query failed');
 
-if (mysqli_num_rows($select) === 0) {
-    echo '<tr><td colspan="3" style="font-size: 25px; font-weight: 600; text-transform: uppercase;">no ongoing incident cases yet</td></tr>';
+$allCases = array();
+while ($fetchCases = mysqli_fetch_assoc($select)) {
+    $allCases[] = $fetchCases;
+}
+
+$allFormGenerated = true;
+foreach ($allCases as $case) {
+    if ($case['generate_summon'] !== 'form generated' || $case['generate_hearing'] !== 'form generated') {
+        $allFormGenerated = false;
+        break;
+    }
+}
+
+if (empty($allCases) || !$allFormGenerated) {
+    echo '<tr><td colspan="3" style="font-size: 24px; font-weight: 500; text-transform: capitalize">No Cases With Incomplete Notice</td></tr>';
 } else {
-    while ($fetchCases = mysqli_fetch_assoc($select)) {
+    foreach ($allCases as $fetchCases) {
         echo '<tr>';
         echo '<td>' . $fetchCases['incident_case_number'] . '</td>';
         echo '<td>' . $fetchCases['complainant_last_name'] . ' vs. ' . $fetchCases['respondent_last_name'] . '</td>';
@@ -113,6 +126,7 @@ if (mysqli_num_rows($select) === 0) {
         echo '</tr>';
     }
 }
+
 ?>
 <tbody id="noResults" style="display: none;">
     <tr>
@@ -216,12 +230,16 @@ document.addEventListener('DOMContentLoaded', function() {
             listMonth: {
                 buttonText: 'HEARINGS',
             }
+        },
+        // Use the 'noEventsContent' callback to customize the "No events to display" text
+        noEventsContent: function() {
+            return "No Scheduled Hearings Yet";
         }
     });
 
-    
     calendar.render();
 });
+
 
 
 const searchInput = document.getElementById("searchInput");

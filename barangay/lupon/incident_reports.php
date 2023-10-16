@@ -1,4 +1,4 @@
-<!--<?php
+<?php
 
 include '../../config.php';
 
@@ -16,13 +16,11 @@ $query = "SELECT i.*, h.incident_case_number AS hearing_incident_case_number,
           LEFT JOIN hearing h ON i.incident_case_number = h.incident_case_number";
 $result = mysqli_query($conn, $query);
 
-
-// Check if the query was successful
 if (!$result) {
     die('Query failed: ' . mysqli_error($conn));
 }
 
-?>-->
+?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -33,25 +31,11 @@ if (!$result) {
     <link href='https://unpkg.com/boxicons@2.1.1/css/boxicons.min.css' rel='stylesheet'>
     <link rel="stylesheet" href="../../node_modules/bootstrap/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="../../css/lupon.css">
-    <link href="https://cdn.jsdelivr.net/npm/fullcalendar@5.9.0/main.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.9.0/main.js"></script>
-    <link rel="icon" type="image/x-icon" href="../../images/favicon.ico">
-</head>
-<body>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../../css/incidentform.css">
-    <link href='https://unpkg.com/boxicons@2.1.1/css/boxicons.min.css' rel='stylesheet'>
-    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css"/>
-    <link rel="stylesheet" href="bootstrap/bootstrap-5.0.2-dist/css/bootstrap.min.css">
-    <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+    <link rel="icon" type="image/x-icon" href="../../images/favicon.ico">
     <title>Incident Reports</title>
 </head>
+<body>
 <body>
     
 <?php include 'navbar.php';?>
@@ -84,16 +68,17 @@ if (!$result) {
         <button class="search-button" style="padding: 0px 12px;">Search</button>
     </div>
 
+    <?php
+// ... (your existing code)
 
-        <?php
-        // Loop through the results and display each row in a container
-        while ($row = mysqli_fetch_assoc($result)) {
-            echo '<div class="container">';
-            echo '<div class="top-text" style="display: flex;">';
-            echo '<h3 class="case-no-text" style="font-size: 20px;">Case No. #' . $row['incident_case_number'] . '</h3>';
-            echo '</div>';
-            echo '<div class="top-text" style="display: flex;">';
-            $date_of_hearing = $row['date_of_hearing'];
+// Loop through the results and display each row in a container
+while ($row = mysqli_fetch_assoc($result)) {
+    echo '<div class="container">';
+    echo '<div class="top-text" style="display: flex;">';
+    echo '<h3 class="case-no-text" style="font-size: 20px;">Case No. #' . $row['incident_case_number'] . '</h3>';
+    echo '</div>';
+    echo '<div class="top-text" style="display: flex;">';
+    $date_of_hearing = $row['date_of_hearing'];
     $formatted_date = date('l, F j, Y', strtotime($date_of_hearing));
     $time_of_hearing = $row['time_of_hearing'];
     $formatted_time = date('h:i A', strtotime($time_of_hearing));
@@ -102,45 +87,111 @@ if (!$result) {
         "NO SCHEDULE YET";
 
     echo '<h3 class="case-no-text" style="font-size: 15px; font-weight: 500; font-style: italic; width: 20%;">' . $row['complainant_last_name'] . ' vs. ' . $row['respondent_last_name'] . '</h3>';
+
+    if ($schedule_status === "NO SCHEDULE YET") {
+        echo '';
+    } else {
+        echo '<h3 class="hearing-text" style="font-size: 15px; font-weight: 500; margin-left: 38%;"><b>Hearing Schedule: </b>' . $schedule_status . '</h3>';
+    }
+    echo '</div>';
+
+    // Display the table for incident details even when there is no schedule
+    echo '<table>';
+    echo '<thead>';
+    echo '<tr>';
+    echo '<th>Type of Notice</th>';
+    echo '<th>Resident Name</th>';
+    echo '<th>Status</th>';
+    echo '<th>Date Notified</th>';
+    echo '<th>Action</th>';
+    echo '</tr>';
+    echo '</thead>';
+    echo '<tbody>';
     
     if ($schedule_status === "NO SCHEDULE YET") {
-        echo '<h3 class="hearing-text" style="font-size: 15px; font-weight: 500; margin-left: 45%;"><b>Hearing Schedule: </b>NO HEARING SCHEDULE YET</h3>';
+        // Display "NO HEARING SCHEDULE" inside the table when there is no schedule
+        echo '<tr>';
+        echo '<td colspan="5" style="text-align: center; font-size: 24px;">NO HEARING SCHEDULE YET</td>';
+        echo '</tr>';
     } else {
-        echo '<h3 class="hearing-text" style="font-size: 15px; font-weight: 500; margin-left: 30%;"><b>Hearing Schedule: </b>' . $schedule_status . '</h3>';
-    }
-            echo '</div>';
-            echo '<table>';
-            echo '<thead>';
-            echo '<tr>';
-            echo '<th>Type of Notice</th>';
-            echo '<th>Resident Name</th>';
-            echo '<th>Status</th>';
-            echo '<th>Date Notified</th>';
-            echo '<th>Action</th>';
-            echo '</tr>';
-            echo '</thead>';
-            echo '<tbody>';
-            echo '<tr>';
-            echo '<td>Hearing Notice</td>';
-            echo '<td>' . $row['complainant_last_name'] . ' ' . $row['complainant_first_name'] . ' ' . $row['complainant_middle_name'] . '</td>';
-            echo '<td></td>';
-            echo '<td></td>';
-            echo '<td><button class="schedule" style="width: 90%; margin-left: 5%;"">Set To Notified</button></td>';
-            echo '</tr>';
-            echo '<tr>';
-            echo '<td>Summon Notice</td>';
-            echo '<td>' . $row['respondent_last_name'] . ' ' . $row['respondent_first_name'] . ' ' . $row['respondent_middle_name'] . '</td>';
-            echo '<td></td>';
-            echo '<td></td>';
-            echo '<td><button class="schedule" style="width: 90%; margin-left: 5%;"">Set To Notified</button></td>';
-            echo '</tr>';
-            echo '</tbody>';
-            echo '</table>';
-            //echo '<td><button class="schedule" style="width: 15%; font-size: 14px; margin-left: 86.5%; top: 20px;"">Manage Notices</button></td>';
-            echo '</div>';
+        // Display the table rows for incident details when there is a schedule
+        echo '<tr>';
+        echo '<td>Hearing Notice</td>';
+        echo '<td>' . $row['complainant_last_name'] . ' ' . $row['complainant_first_name'] . ' ' . $row['complainant_middle_name'] . '</td>';
+        echo '<td>';
+        $check_query = "SELECT generate_hearing, notify_hearing FROM notify_residents WHERE incident_case_number = '" . $row['incident_case_number'] . "'";
+        $check_result = mysqli_query($conn, $check_query);
+
+        if ($check_result && mysqli_num_rows($check_result) > 0) {
+            $row_notify = mysqli_fetch_assoc($check_result);
+            $generate_hearing_value = $row_notify['generate_hearing'];
+            $notify_complainant_value = $row_notify['notify_hearing'];
+
+            if (empty($generate_hearing_value) || $generate_hearing_value === 'not generated') {
+                echo '-';
+            } elseif ($notify_complainant_value === 'notified') {
+                echo '<span class="notified">NOTIFIED</span>';
+            } else {
+                echo '<span class="to-notify">TO NOTIFY</span>';
+            }
         }
-        ?>
-   
+        echo '</td>';
+        echo '<td></td>';
+        echo '<td>';
+        if (empty($generate_hearing_value) || $generate_hearing_value === 'not generated') {
+            echo '<span class="generate" onclick="showSummonPopup()">Generate KP Form #8</span>';
+        } elseif ($notify_complainant_value === 'notified') {
+            echo '-';
+        }
+        else {
+            echo '<button class="notify" style="cursor: default;">Set To Notified</button>';
+        }
+        echo '</td>';
+        echo '</tr>';
+        echo '<tr>';
+        echo '<td>Summon Notice</td>';
+        echo '<td>' . $row['respondent_last_name'] . ' ' . $row['respondent_first_name'] . ' ' . $row['respondent_middle_name'] . '</td>';
+        echo '<td>';
+        $check_query = "SELECT generate_summon, notify_summon FROM notify_residents WHERE incident_case_number = '" . $row['incident_case_number'] . "'";
+        $check_result = mysqli_query($conn, $check_query);
+
+                                        if ($check_result && mysqli_num_rows($check_result) > 0) {
+                                            $row = mysqli_fetch_assoc($check_result);
+                                            $generate_summon_value = $row['generate_summon'];
+                                            $notify_summon_value = $row['notify_summon'];
+
+                                            if (empty($generate_summon_value) || $generate_summon_value === 'not generated') { // Check for the specific value
+                                                echo '-';
+                                            } elseif ($notify_summon_value === 'notified') {
+                                                echo '<span class="notified">NOTIFIED</span>';
+                                            } else {
+                                                echo '<span class="to-notify">TO NOTIFY</span>';
+                                            }
+                                            
+                                        } 
+        echo '</td>';
+        echo '<td></td>';
+        echo '<td>';
+        // Check if the generate_summon_value is empty
+        if (empty($generate_summon_value)) {
+            echo '<span class="summon-record" onclick="showSummonPopup()">Generate KP Form #9</span>';
+        }  elseif ($notify_summon_value === 'notified') {
+            echo '-';
+        }
+        else {
+            echo '<button class="notify" style="cursor: default;">Set To Notified</button>';
+        }
+        echo '</td>';
+        echo '</tr>';
+    }
+    
+    echo '</tbody>';
+    echo '</table>';
+    //echo '<td><button class="schedule" style="width: 15%; font-size: 14px; margin-left: 86.5%; top: 20px;"">Manage Notices</button></td>';
+    echo '</div>';
+}
+?>
+
         
     </section>
 
@@ -229,27 +280,71 @@ if (!$result) {
         }
 
         .home{
-    position: absolute;
-    top: 0;
-    top: 0;
-    left: 250px;
-    height: 200vh;
-    width: calc(100% - 78px);
-    background-color: var(--body-color);
-    transition: var(--tran-05);
-}
+            position: absolute;
+            top: 0;
+            top: 0;
+            left: 250px;
+            height: 200vh;
+            width: calc(100% - 78px);
+            background-color: var(--body-color);
+            transition: var(--tran-05);
+        }
 
-.sidebar.close ~ .home{
-    left: 78px;
-    height: 100vh;
-    width: calc(100% - 78px);
-}
+        .sidebar.close ~ .home{
+            left: 78px;
+            height: 100vh;
+            width: calc(100% - 78px);
+        }
 
-.container table thead tr th{
-    font-size: 17px;
-    text-align: center;
-}
+        .container table thead tr th{
+            font-size: 17px;
+            text-align: center;
+        }
 
+        .to-notify{
+                font-weight: 900;
+                color: #bc1823;
+        }
+
+        table tbody tr:nth-child(even) {
+        background-color: white;
+        }
+
+        .generate{
+        background: #fff;
+        padding: 4px 4px;
+        color: #2962ff;
+        border: 1px solid #2962ff;
+        text-transform: uppercase;
+        border-radius: 0.2rem;
+        cursor: pointer;
+        display: block;
+        margin-bottom: 5px;
+        width: 10rem;
+        margin-left: 0;
+        text-decoration: none;
+        cursor: default;
+    }
+
+    .notified{
+        font-weight: 900;
+        color: #0b6623;
+    }
+
+    .notify{
+        background: #fff;
+        padding: 4px 4px;
+        color: #363636;
+        border: 1px solid #363636;
+        text-transform: uppercase;
+        border-radius: 0.2rem;
+        cursor: pointer;
+        display: block;
+        margin-bottom: 5px;
+        width: 10rem;
+        text-decoration: none;
+        cursor: default;
+    }
 
     </style>
 

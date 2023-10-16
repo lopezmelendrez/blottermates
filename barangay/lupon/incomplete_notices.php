@@ -39,7 +39,11 @@ header('location: ../../index.php');
         </div></a>
 
         <div class="cases-container" style="display: flex;">
-            <div class="incomplete-cases" style="width: 100%;">
+            <a href="incident_reports.php" style="text-decoration: none;">
+            <div class="back" style="width: 150%;">
+                <p>Back</p>
+            </div></a>
+            <div class="incomplete-cases" style="width: 80%; margin-left: 90px; height: 40px;">
                 <p>Cases with Incomplete Notices</p>
             </div>
         </div>
@@ -116,6 +120,7 @@ header('location: ../../index.php');
                 } else {
                     // No hearing date, display "NO HEARING SCHEDULE YET"
                     echo '<a href="../../barangay/lupon/hearing_schedule.php?incident_case_number=' . $incident_case_number . '" class="schedule">Set Hearing Schedule</a>';
+                    echo '<a href="../../tcpdf/generate_kp7.php?incident_case_number=' . $incident_case_number . '" class="generate"><i class="bx bx-printer" style="margin-right: 5px;"></i>Generate KPL Form 7</a>';
                 }   
                 ?>    
                 </td>
@@ -251,6 +256,19 @@ header('location: ../../index.php');
     left: 78px;
     height: 100vh;
     width: calc(100% - 78px);
+}
+
+.back{
+    background-color: white;
+    margin-left: 35px;
+    height: 40px;
+    background-color: #C23B21;
+    color: #F2F3F5;
+    font-weight: 600;
+    cursor: pointer;
+    border-radius: 5px;
+    text-align: center;
+    padding: 3px 3px;
 }
 
 
