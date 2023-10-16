@@ -27,7 +27,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit'])) {
 
         if ($result) {
             // Data updated successfully, redirect to a success page or perform other actions
-            header("Location: noticeforms.php?incident_case_number=" . $incident_case_number);
+            header("Location: notice_forms.php?incident_case_number=" . $incident_case_number);
             exit;
         } else {
             // Error occurred while updating data, handle the error or redirect to an error page
@@ -169,7 +169,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit'])) {
         ?>
 
         <header style="font-size: 22px;">SCHEDULE FOR <?php echo $fetch_cases['incident_case_number']; ?></header>
-        <form action="../pages/changeschedule.php" method="post">
+        <form action="" method="post">
             <div class="form first">
                 <div class="details personal">
                     <span class="title" style="font-style: italic;"><?php echo $fetch_cases['complainant_last_name']; ?> vs. <?php echo $fetch_cases['respondent_last_name']; ?></span>

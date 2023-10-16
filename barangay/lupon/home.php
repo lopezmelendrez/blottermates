@@ -93,32 +93,21 @@ $hasEvents = !empty($events);
             <?php
 $currentPage = isset($_GET['page']) ? $_GET['page'] : 1;
 
-$select = mysqli_query($conn, "SELECT ir.*, nr.generate_summon, nr.generate_hearing
-    FROM `incident_report` AS ir
-    LEFT JOIN `notify_residents` AS nr ON ir.incident_case_number = nr.incident_case_number
-    WHERE NOT EXISTS (
-        SELECT 1 FROM `hearing` AS h
-        INNER JOIN `amicable_settlement` AS amicable_settlement ON h.hearing_id = amicable_settlement.hearing_id
-        WHERE ir.incident_case_number = h.incident_case_number
-    )") or die('query failed');
+$select = mysqli_query($conn, "
+    SELECT incident_report.incident_case_number AS incident_case_number,
+           incident_report.complainant_last_name AS complainant_last_name,
+           incident_report.respondent_last_name AS respondent_last_name,
+           incident_report.created_at AS created_at
+    FROM `incident_report`
+    LEFT JOIN `notify_residents` ON incident_report.incident_case_number = notify_residents.incident_case_number
+    WHERE generate_summon = 'not generated' OR generate_hearing = 'not generated' OR generate_summon IS NULL OR generate_hearing IS NULL
+") or die('query failed');
 
-$allCases = array();
-while ($fetchCases = mysqli_fetch_assoc($select)) {
-    $allCases[] = $fetchCases;
-}
 
-$allFormGenerated = true;
-foreach ($allCases as $case) {
-    if ($case['generate_summon'] !== 'form generated' || $case['generate_hearing'] !== 'form generated') {
-        $allFormGenerated = false;
-        break;
-    }
-}
-
-if (empty($allCases) || !$allFormGenerated) {
-    echo '<tr><td colspan="3" style="font-size: 24px; font-weight: 500; text-transform: capitalize">No Cases With Incomplete Notice</td></tr>';
+if (mysqli_num_rows($select) === 0) {
+    echo '<tr><td colspan="3" style="font-size: 25px; font-weight: 600; text-transform: capitalize;">no ongoing incident cases yet</td></tr>';
 } else {
-    foreach ($allCases as $fetchCases) {
+    while ($fetchCases = mysqli_fetch_assoc($select)) {
         echo '<tr>';
         echo '<td>' . $fetchCases['incident_case_number'] . '</td>';
         echo '<td>' . $fetchCases['complainant_last_name'] . ' vs. ' . $fetchCases['respondent_last_name'] . '</td>';
@@ -126,8 +115,8 @@ if (empty($allCases) || !$allFormGenerated) {
         echo '</tr>';
     }
 }
-
 ?>
+
 <tbody id="noResults" style="display: none;">
     <tr>
         <td colspan="3" style="padding-top: 13%; font-size: 23px; font-weight: 400; text-transform: uppercase; padding-left: 18%;">No Incident Cases Found</td>
@@ -147,7 +136,6 @@ if (empty($allCases) || !$allFormGenerated) {
     </section>
 
   
-
     <script>
 
 

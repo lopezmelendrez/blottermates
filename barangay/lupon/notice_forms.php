@@ -72,11 +72,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['notify_complainant_su
     $check_result = mysqli_query($conn, $check_query);
 
     if ($check_result && mysqli_num_rows($check_result) > 0) {
-        $update_query = "UPDATE `notify_residents` SET `notify_hearing` = '$notify_hearing' WHERE incident_case_number = '$incident_case_number'";
+        $update_query =  "UPDATE `notify_residents` 
+        SET `notify_hearing` = '$notify_hearing', `hearing_notified` = NOW() 
+        WHERE incident_case_number = '$incident_case_number'";
         $result = mysqli_query($conn, $update_query);
     } else {
-        $insert_query = "INSERT INTO `notify_residents` (`incident_case_number`, `notify_hearing`)
-                         VALUES ('$incident_case_number', '$notify_hearing')";
+        $insert_query = "INSERT INTO `notify_residents` (`incident_case_number`, `notify_hearing`, `hearing_notified`)
+        VALUES ('$incident_case_number', '$notify_hearing', NOW())";
         $result = mysqli_query($conn, $insert_query);
     }
 
@@ -97,11 +99,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['notify_respondent_sub
     $check_result = mysqli_query($conn, $check_query);
 
     if ($check_result && mysqli_num_rows($check_result) > 0) {
-        $update_query = "UPDATE `notify_residents` SET `notify_summon` = '$notify_summon' WHERE incident_case_number = '$incident_case_number'";
+        $update_query = "UPDATE `notify_residents` 
+        SET `notify_summon` = '$notify_summon', `summon_notified` = NOW() 
+        WHERE incident_case_number = '$incident_case_number'";
         $result = mysqli_query($conn, $update_query);
     } else {
-        $insert_query = "INSERT INTO `notify_residents` (`incident_case_number`, `notify_summon`)
-                         VALUES ('$incident_case_number', '$notify_summon')";
+        $insert_query = "INSERT INTO `notify_residents` (`incident_case_number`, `notify_summon`, `summon_notified`)
+        VALUES ('$incident_case_number', '$notify_summon', NOW())";
         $result = mysqli_query($conn, $insert_query);
     }
 
@@ -265,7 +269,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['notify_respondent_sub
                         </div>
                     </div>
 
-                    
+                    <hr style="border: 1px solid #ccc; margin: 20px 0;">
 
                     <div class="details ID">
                         <span class="title"></span>
@@ -307,12 +311,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['notify_respondent_sub
                                         <td>
                                         <?php
                                         if (empty($generate_hearing_value) || $generate_hearing_value === 'not generated') {
-                                            echo '<span class="summon-record" onclick="showSummonPopup()">Generate KP Form #9</span>';
+                                            echo '<span class="summon-record" onclick="showHearingPopup()">Generate KP Form #8</span>';
                                         } elseif ($notify_complainant_value === 'notified') {
                                             echo '-';
                                         }
                                         else {
-                                            echo '<span class="notify" onclick="showNotifyRespondentPopup()">Set To Notified</span>';
+                                            echo '<span class="notify" onclick="showNotifyComplainantPopup()">Set To Notified</span>';
                                         }
                                         ?>
                                                                                 </td>
@@ -363,14 +367,14 @@ else {
                                         <a href="http://localhost/barangay%20justice%20management%20system%2001/tcpdf/generate_kp10.php?incident_case_number=<?php echo $incident_case_number; ?>" class="summon-record" style="text-decoration:none;">Generate Pangkat Constituition Record</a>
                                         </td>
                                     </tr>
-                                    <tr>
+                                    <!--<tr>
                                         <td>Subpoena Notice</td>
                                         <td>-</td>
                                         <td>-</td>
                                         <td>
                                         <div class="summon-record" onclick="showWitnessPopup()" style="text-decoration:none;">Add Witness</div>
                                         </td>
-                                    </tr>
+                                    </tr>-->
                                 </tbody>
                             </table>
                         </div>
