@@ -11,12 +11,11 @@ if(!isset($email)){
 header('location: ../../index.php');
 }
 
-// Fetch the hearing_id based on incident_case_number
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $agreement_description = $_POST['agreement_description'];
     
 
-    // Assuming incident_case_number is the unique identifier for the hearing record
     $incident_case_number = $_POST['incident_case_number'];
 
     $select_hearing_id_query = "SELECT hearing_id FROM hearing WHERE incident_case_number = '$incident_case_number'";
@@ -91,7 +90,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($fetch['barangay']) {
         echo '<span class="profession">Barangay ' . $fetch['barangay'] . '</span>';
     } else {
-        echo '<span class="profession">Not specified</span>'; // Or handle this case as needed
+        echo '<span class="profession">Not specified</span>'; 
     }
     ?>
                 </div>
@@ -195,9 +194,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             </div>
                         </div>
                         <div class="proceed-spans">
-                            <span class="conciliation" onclick="showPopup()">Proceed to Conciliation</span>
-                            <span class="arbitration">Proceed to Arbitration</span>
-                            <span class="filecourt-action">File Court Action</span>
+                            <span class="conciliation" onclick="showPopup()" style="cursor: pointer;">Proceed to Conciliation</span>
+                            <span class="arbitration" onclick="showArbitrationPopup()" style="cursor:pointer;">Proceed to Arbitration</span>
+                            <span class="filecourt-action" onclick="showCourtActionPopup()" style="cursor: pointer;">File Court Action</span>
                         </div>
                         <button class="submit">
                                 <input type="submit" name="submit" value="Create Settlement Agreement" class="btnText" style="font-size: 12px; background: transparent; border: none; font-weight: 600; color: #fff; cursor: pointer;">
@@ -214,12 +213,49 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <hr style="border: 1px solid #ccc; margin: 10px 0;">
             <p style="font-size: 18px; text-align: center; margin-top: 10%;">By clicking the "Confirm" button, you will initiate the progression of the mediation record into the conciliation process.</p>
             <div class="button-container" style="display: flex;">
-                <button class="backBtn" onclick="closePopup()" style="width: 300px; padding: 12px 12px; font-weight: 600;">BACK</button>
-                <button class="backBtn" onclick="submitForm()" style="width: 300px; margin-left: 270px; padding: 12px 12px; font-weight: 600;"">CONFIRM</button>
+            <button class="backBtn" onclick="closePopup()" style="width: 150px; padding: 12px 12px; font-weight: 600; background: #fff; border: 1px solid #bc1823; color: #bc1823; margin-left: 180px;">NO</button>
+                <form action="" method="post">
+                <input type="hidden" name="incident_case_number" value="<?php echo $incident_case_number; ?>">
+                <input type="submit" name="notify_respondent_submit" value="CONFIRM" class="backBtn" style="width: 310px; padding: 12px 12px; font-weight: 600; margin-left: -5px;"></button>
+                </form>
             </div>
             </div>
             </center>
-</div>
+    </div>
+
+    <div id="arbitration_popup" class="popup">
+            <center>
+            <div class="modal">
+            <h3 class="modal-title" style="font-size: 18px; text-align:center;">ARE YOU SURE?</h3>
+            <hr style="border: 1px solid #ccc; margin: 10px 0;">
+            <p style="font-size: 18px; text-align: center; margin-top: 10%;">By clicking the "Confirm" button, you will initiate the progression of the mediation record into the arbitration process.</p>
+            <div class="button-container" style="display: flex;">
+            <button class="backBtn" onclick="closeArbitrationPopup()" style="width: 150px; padding: 12px 12px; font-weight: 600; background: #fff; border: 1px solid #bc1823; color: #bc1823; margin-left: 180px;">NO</button>
+                <form action="" method="post">
+                <input type="hidden" name="incident_case_number" value="<?php echo $incident_case_number; ?>">
+                <input type="submit" name="notify_respondent_submit" value="CONFIRM" class="backBtn" style="width: 310px; padding: 12px 12px; font-weight: 600; margin-left: -5px;"></button>
+                </form>
+            </div>
+            </div>
+            </center>
+    </div>
+
+    <div id="courtaction_popup" class="popup">
+            <center>
+            <div class="modal">
+            <h3 class="modal-title" style="font-size: 18px; text-align:center;">ARE YOU SURE?</h3>
+            <hr style="border: 1px solid #ccc; margin: 10px 0;">
+            <p style="font-size: 18px; text-align: center; margin-top: 10%;">By clicking the "Confirm" button, you will initiate the progression of the mediation record to "File Court Action".</p>
+            <div class="button-container" style="display: flex;">
+            <button class="backBtn" onclick="closeCourtActionPopup()" style="width: 150px; padding: 12px 12px; font-weight: 600; background: #fff; border: 1px solid #bc1823; color: #bc1823; margin-left: 180px;">NO</button>
+                <form action="" method="post">
+                <input type="hidden" name="incident_case_number" value="<?php echo $incident_case_number; ?>">
+                <input type="submit" name="notify_respondent_submit" value="CONFIRM" class="backBtn" style="width: 310px; padding: 12px 12px; font-weight: 600; margin-left: -5px;"></button>
+                </form>
+            </div>
+            </div>
+            </center>
+    </div>
 
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
@@ -303,6 +339,38 @@ function validateName(event) {
         var popup = document.getElementById("popup");
         popup.style.display = "none";
     }
+
+    function showArbitrationPopup() {
+        // Get the popup element
+        var popup = document.getElementById("arbitration_popup");
+
+        // Display the popup
+        popup.style.display = "block";
+
+
+    }
+
+    function closeArbitrationPopup() {
+        var popup = document.getElementById("arbitration_popup");
+        popup.style.display = "none";
+    }
+
+    function showCourtActionPopup() {
+        // Get the popup element
+        var popup = document.getElementById("courtaction_popup");
+
+        // Display the popup
+        popup.style.display = "block";
+
+
+    }
+
+    function closeCourtActionPopup() {
+        var popup = document.getElementById("courtaction_popup");
+        popup.style.display = "none";
+    }
+
+
     
     </script>
     <script src="../script.js"></script>

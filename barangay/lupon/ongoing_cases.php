@@ -101,8 +101,6 @@ if (mysqli_num_rows($select_hearing) > 0) {
     } elseif ($hearing_type_status === 'arbitration') {
         echo '<p class="arbitration">Arbitration</p>';
     } else {
-        // Handle the case when hearing_type_status is not one of the specified values
-        // You may choose to display a default message or handle the error accordingly.
         echo '<p class="unknown">Unknown</p>';
     }
 }
@@ -207,9 +205,8 @@ if (mysqli_num_rows($select_hearing) > 0) {
     }
 
     .hearing:hover{
-        color:#2962ff;
-        background: #fff;
-        border: 1px solid #2962ff;
+        background: #0956BF;
+        color: #fff;
         transition: .5s
     }
 
