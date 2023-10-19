@@ -1,4 +1,4 @@
-<!--<?php
+<?php
 
 include '../../config.php';
 
@@ -17,12 +17,11 @@ $query = "SELECT i.*, h.incident_case_number AS hearing_incident_case_number,
 $result = mysqli_query($conn, $query);
 
 
-// Check if the query was successful
 if (!$result) {
     die('Query failed: ' . mysqli_error($conn));
 }
 
-?>-->
+?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -33,24 +32,9 @@ if (!$result) {
     <link href='https://unpkg.com/boxicons@2.1.1/css/boxicons.min.css' rel='stylesheet'>
     <link rel="stylesheet" href="../../node_modules/bootstrap/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="../../css/lupon.css">
-    <link href="https://cdn.jsdelivr.net/npm/fullcalendar@5.9.0/main.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.9.0/main.js"></script>
-    <link rel="icon" type="image/x-icon" href="../../images/favicon.ico">
-</head>
-<body>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../../css/incidentform.css">
-    <link href='https://unpkg.com/boxicons@2.1.1/css/boxicons.min.css' rel='stylesheet'>
-    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css"/>
-    <link rel="stylesheet" href="bootstrap/bootstrap-5.0.2-dist/css/bootstrap.min.css">
-    <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
-    <title>Incident Reports</title>
+    <link rel="icon" type="image/x-icon" href="../../images/favicon.ico">
+    <title>Hearings</title>
 </head>
 <body>
     
@@ -67,14 +51,14 @@ if (!$result) {
 
         <div class="cases-container" style="display: flex; margin-left: 5%; width: 80%;">
             <a href="ongoing_cases.php" class="ongoing-cases" style="height: 40px; text-decoration: none;">
-                <p>Ongoing Cases</p>
+                <p>Mediation Hearings</p>
             </a>
-            <a href="settled_cases.php" class="settled-cases" style="height: 40px; margin-left: 1%; text-decoration: none;">
-                <p>Settled Cases</p>
+            <a href="settled_cases.php" class="settled-cases" style="height: 40px; margin-left: 5px; text-decoration: none;">
+                <p>Conciliation Hearings</p>
             </a>
             <a href="incomplete_notices.php" style="text-decoration: none;">
-            <div class="incomplete-cases" style="height:40px; width: 120%;" >
-                <p>Cases with Incomplete Notices</p>
+            <div class="incomplete-cases" style="height:40px; width: 135%;" >
+                <p>Arbitration Hearings</p>
             </div></a>
         </div>
 
@@ -112,25 +96,16 @@ if (!$result) {
             echo '<table>';
             echo '<thead>';
             echo '<tr>';
-            echo '<th>Type of Notice</th>';
-            echo '<th>Resident Name</th>';
+            echo '<th>Complainant</th>';
+            echo '<th>Respondent</th>';
             echo '<th>Status</th>';
-            echo '<th>Date Notified</th>';
             echo '<th>Action</th>';
             echo '</tr>';
             echo '</thead>';
             echo '<tbody>';
             echo '<tr>';
-            echo '<td>Hearing Notice</td>';
             echo '<td>' . $row['complainant_last_name'] . ' ' . $row['complainant_first_name'] . ' ' . $row['complainant_middle_name'] . '</td>';
-            echo '<td></td>';
-            echo '<td></td>';
-            echo '<td><button class="schedule" style="width: 90%; margin-left: 5%;"">Set To Notified</button></td>';
-            echo '</tr>';
-            echo '<tr>';
-            echo '<td>Summon Notice</td>';
             echo '<td>' . $row['respondent_last_name'] . ' ' . $row['respondent_first_name'] . ' ' . $row['respondent_middle_name'] . '</td>';
-            echo '<td></td>';
             echo '<td></td>';
             echo '<td><button class="schedule" style="width: 90%; margin-left: 5%;"">Set To Notified</button></td>';
             echo '</tr>';

@@ -11,6 +11,72 @@ if(!isset($email)){
 header('location: ../../index.php');
 }
 
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['conciliation_submit'])) {
+    $incident_case_number = $_POST['incident_case_number'];
+    $hearing_type_status = 'conciliation';
+
+    $update_query = "UPDATE `hearing` SET `hearing_type_status` = '$hearing_type_status' WHERE incident_case_number = '$incident_case_number'";
+    $result = mysqli_query($conn, $update_query);
+
+    if ($result) {
+        if (mysqli_affected_rows($conn) > 0) {
+            header("Location: incident_reports.php");
+            exit;
+        } else {
+            // The row did not exist, you might want to handle this case or ignore it
+            echo "Row not found.";
+            exit;
+        }
+    } else {
+        echo "Error: " . mysqli_error($conn);
+        exit;
+    }
+}
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['arbitration_submit'])) {
+    $incident_case_number = $_POST['incident_case_number'];
+    $hearing_type_status = 'arbitration';
+
+    $update_query = "UPDATE `hearing` SET `hearing_type_status` = '$hearing_type_status' WHERE incident_case_number = '$incident_case_number'";
+    $result = mysqli_query($conn, $update_query);
+
+    if ($result) {
+        if (mysqli_affected_rows($conn) > 0) {
+            header("Location: incident_reports.php");
+            exit;
+        } else {
+            // The row did not exist, you might want to handle this case or ignore it
+            echo "Row not found.";
+            exit;
+        }
+    } else {
+        echo "Error: " . mysqli_error($conn);
+        exit;
+    }
+}
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['court_action_submit'])) {
+    $incident_case_number = $_POST['incident_case_number'];
+    $hearing_type_status = 'filed to court action';
+
+    $update_query = "UPDATE `hearing` SET `hearing_type_status` = '$hearing_type_status' WHERE incident_case_number = '$incident_case_number'";
+    $result = mysqli_query($conn, $update_query);
+
+    if ($result) {
+        if (mysqli_affected_rows($conn) > 0) {
+            header("Location: incident_reports.php");
+            exit;
+        } else {
+            // The row did not exist, you might want to handle this case or ignore it
+            echo "Row not found.";
+            exit;
+        }
+    } else {
+        echo "Error: " . mysqli_error($conn);
+        exit;
+    }
+}
+
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $agreement_description = $_POST['agreement_description'];
@@ -25,7 +91,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $fetch_hearing = mysqli_fetch_assoc($select_hearing_id_result);
         $hearing_id = $fetch_hearing['hearing_id'];
 
-        // Insert the agreement_description and hearing_id into the amicable_settlement table
+        
         $insert_query = "INSERT INTO `amicable_settlement` (`agreement_description`, `hearing_id`, `incident_case_number`)
         VALUES ('$agreement_description', '$hearing_id', '$incident_case_number')";
 
@@ -33,7 +99,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $insert_result = mysqli_query($conn, $insert_query);
 
         if ($insert_result) {
-            // Insertion successful, redirect back to the dashboard or any other desired page
             header("Location: settled_cases.php");
             exit;
         } else {
@@ -46,6 +111,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit;
     }
 }
+
+
+
 ?>
 
 
@@ -216,7 +284,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <button class="backBtn" onclick="closePopup()" style="width: 150px; padding: 12px 12px; font-weight: 600; background: #fff; border: 1px solid #bc1823; color: #bc1823; margin-left: 180px;">NO</button>
                 <form action="" method="post">
                 <input type="hidden" name="incident_case_number" value="<?php echo $incident_case_number; ?>">
-                <input type="submit" name="notify_respondent_submit" value="CONFIRM" class="backBtn" style="width: 310px; padding: 12px 12px; font-weight: 600; margin-left: -5px;"></button>
+                <input type="submit" name="conciliation_submit" value="CONFIRM" class="backBtn" style="width: 310px; padding: 12px 12px; font-weight: 600; margin-left: -5px;"></button>
                 </form>
             </div>
             </div>
@@ -233,7 +301,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <button class="backBtn" onclick="closeArbitrationPopup()" style="width: 150px; padding: 12px 12px; font-weight: 600; background: #fff; border: 1px solid #bc1823; color: #bc1823; margin-left: 180px;">NO</button>
                 <form action="" method="post">
                 <input type="hidden" name="incident_case_number" value="<?php echo $incident_case_number; ?>">
-                <input type="submit" name="notify_respondent_submit" value="CONFIRM" class="backBtn" style="width: 310px; padding: 12px 12px; font-weight: 600; margin-left: -5px;"></button>
+                <input type="submit" name="arbitration_submit" value="CONFIRM" class="backBtn" style="width: 310px; padding: 12px 12px; font-weight: 600; margin-left: -5px;"></button>
                 </form>
             </div>
             </div>
@@ -250,7 +318,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <button class="backBtn" onclick="closeCourtActionPopup()" style="width: 150px; padding: 12px 12px; font-weight: 600; background: #fff; border: 1px solid #bc1823; color: #bc1823; margin-left: 180px;">NO</button>
                 <form action="" method="post">
                 <input type="hidden" name="incident_case_number" value="<?php echo $incident_case_number; ?>">
-                <input type="submit" name="notify_respondent_submit" value="CONFIRM" class="backBtn" style="width: 310px; padding: 12px 12px; font-weight: 600; margin-left: -5px;"></button>
+                <input type="submit" name="court_action_submit" value="CONFIRM" class="backBtn" style="width: 310px; padding: 12px 12px; font-weight: 600; margin-left: -5px;"></button>
                 </form>
             </div>
             </div>
@@ -438,6 +506,10 @@ function validateName(event) {
     border-radius: 8px;
     background-color: #F5BE1D;
 }
+
+.backBtn:hover{
+    background-color: #bc1823;
+    }
 
     </style>
 

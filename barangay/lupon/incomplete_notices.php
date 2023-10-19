@@ -24,6 +24,7 @@ header('location: ../../index.php');
     <link href="https://cdn.jsdelivr.net/npm/fullcalendar@5.9.0/main.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.9.0/main.js"></script>
     <link rel="icon" type="image/x-icon" href="../../images/favicon.ico">
+    <title>Incident Cases with Incomplete Notices</title>
 </head>
 <body>
 

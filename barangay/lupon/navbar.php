@@ -71,7 +71,7 @@
                     </li>
 
                     <li class="nav-link">
-                        <a href="#">
+                        <a href="hearings.php">
                             <i class='bx bx-calendar-event icon' ></i>
                             <span class="text nav-text">Hearings</span>
                         </a>
