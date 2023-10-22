@@ -209,9 +209,15 @@ while ($row = mysqli_fetch_assoc($result)) {
     
     echo '</tbody>';
     echo '</table>';
-    echo '<a href="notice_forms.php?incident_case_number=' . $row['incident_case_number'] . '" style="text-decoration: none;">';
-    echo '<button class="schedule" style="width: 15%; font-size: 14px; margin-left: 85%; margin-top: 10px;">Manage Notices</button>';
-    echo '</a>';
+    if ($schedule_status === "NO SCHEDULE YET") {
+        echo '<a href="conciliation_schedule.php?incident_case_number=' . $row['incident_case_number'] . '" style="text-decoration: none;">';
+        echo '<button class="schedule" style="width: 18%; font-size: 14px; margin-left: 82%; margin-top: 10px;">SET HEARING SCHEDULE</button>';
+        echo '</a>';
+    } else {
+        echo '<a href="notice_forms.php?incident_case_number=' . $row['incident_case_number'] . '" style="text-decoration: none;">';
+        echo '<button class="schedule" style="width: 15%; font-size: 14px; margin-left: 85%; margin-top: 10px;">Manage Notices</button>';
+        echo '</a>';
+    }    
     echo '</div>';
 }
 ?>

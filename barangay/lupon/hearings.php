@@ -50,13 +50,13 @@ if (!$result) {
         </div></a>
 
         <div class="cases-container" style="display: flex; margin-left: 5%; width: 80%;">
-            <a href="ongoing_cases.php" class="ongoing-cases" style="height: 40px; text-decoration: none;">
+            <a href="mediation_hearings.php" class="ongoing-cases" style="height: 40px; text-decoration: none;">
                 <p>Mediation Hearings</p>
             </a>
-            <a href="settled_cases.php" class="settled-cases" style="height: 40px; margin-left: 5px; text-decoration: none;">
+            <a href="conciliation_hearings.php" class="settled-cases" style="height: 40px; margin-left: 5px; text-decoration: none;">
                 <p>Conciliation Hearings</p>
             </a>
-            <a href="incomplete_notices.php" style="text-decoration: none;">
+            <a href="arbitration_hearings.php" style="text-decoration: none;">
             <div class="incomplete-cases" style="height:40px; width: 135%;" >
                 <p>Arbitration Hearings</p>
             </div></a>
@@ -204,26 +204,59 @@ if (!$result) {
         }
 
         .home{
-    position: absolute;
-    top: 0;
-    top: 0;
-    left: 250px;
-    height: 200vh;
-    width: calc(100% - 78px);
-    background-color: var(--body-color);
-    transition: var(--tran-05);
-}
+            position: absolute;
+            top: 0;
+            top: 0;
+            left: 250px;
+            height: 200vh;
+            width: calc(100% - 78px);
+            background-color: var(--body-color);
+            transition: var(--tran-05);
+        }
 
-.sidebar.close ~ .home{
-    left: 78px;
-    height: 100vh;
-    width: calc(100% - 78px);
-}
+        .sidebar.close ~ .home{
+            left: 78px;
+            height: 100vh;
+            width: calc(100% - 78px);
+        }
 
-.container table thead tr th{
-    font-size: 17px;
-    text-align: center;
-}
+        .container table thead tr th{
+            font-size: 17px;
+            text-align: center;
+        }
+
+        .ongoing-cases{
+        border: 1px solid #0956bf; 
+        background-color: #F2F3F5; 
+        color: #0956bf;
+        }
+
+        .ongoing-cases:hover{
+            background: #0956bf;
+            color: #F2F3F5;
+        }
+
+        .settled-cases{
+        border: 1px solid #ecd407; 
+        background-color: #F2F3F5; 
+        color: #ecd407;
+        }
+
+        .settled-cases:hover{
+            background: #ecd407;
+            color: #F2F3F5;
+        }
+
+        .incomplete-cases{
+        border: 1px solid #379711; 
+        background-color: #F2F3F5; 
+        color: #379711;
+        }
+
+        .incomplete-cases:hover{
+            background: #379711;
+            color: #F2F3F5;
+        }
 
 
     </style>

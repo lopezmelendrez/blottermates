@@ -15,7 +15,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['conciliation_submit']
     $incident_case_number = $_POST['incident_case_number'];
     $hearing_type_status = 'conciliation';
 
-    $update_query = "UPDATE `hearing` SET `hearing_type_status` = '$hearing_type_status' WHERE incident_case_number = '$incident_case_number'";
+    // Set date_of_hearing and time_of_hearing to NULL
+    $update_query = "UPDATE `hearing` SET `hearing_type_status` = '$hearing_type_status', `date_of_hearing` = NULL, `time_of_hearing` = NULL WHERE incident_case_number = '$incident_case_number'";
     $result = mysqli_query($conn, $update_query);
 
     if ($result) {
@@ -32,6 +33,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['conciliation_submit']
         exit;
     }
 }
+
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['arbitration_submit'])) {
     $incident_case_number = $_POST['incident_case_number'];
