@@ -58,6 +58,7 @@ header('location: ../../index.php');
                     <th>Complainant</th>
                     <th>Respondent</th>
                     <th>Hearing Date</th>
+                    <th>Arbitration Requirement</th>
                     <th>Action</th>
                 </tr>
             </thead>
@@ -100,6 +101,7 @@ header('location: ../../index.php');
     }
     ?>
 </td>
+<td>-</td>
             <td>
                 <a href="settlement_page.php?incident_case_number=<?php echo $incident_case_number ?>" class="hearing-1" style="text-decoration: none;">Go to Hearing</a>
                 <a href="../pages/filecourt_action.html" class="filecourt-action" style="text-decoration: none;">File Court Action</a>

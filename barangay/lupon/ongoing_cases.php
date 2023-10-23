@@ -34,7 +34,7 @@ header('location: ../../index.php');
     <section class="home">
 
     <h1 style="margin-left: 4%; margin-top: 1%; display: flex; font-size: 48px;">INCIDENT REPORTS</h1>
-        <a href="create_incident_report.php" style="text-decoration: none;">
+        <a href="create_report.php" style="text-decoration: none;">
         <div class="add-account" style="margin-top: -5%; margin-left: 518px; width: 250px;">
         <i class='bx bx-book-add'></i>
         <p style="margin-left: 10px;">Create Incident Report</p>
@@ -114,19 +114,27 @@ if (mysqli_num_rows($select_hearing) > 0) {
             <td>
             <?php
     $incident_case_number = $fetch_cases['incident_case_number'];
-    $select_hearing = mysqli_query($conn, "SELECT date_of_hearing FROM hearing WHERE incident_case_number = '$incident_case_number'") or die('hearing query failed');
-
+    $select_hearing = mysqli_query($conn, "SELECT hearing_type_status FROM hearing WHERE incident_case_number = '$incident_case_number'") or die('hearing query failed');
+    
     if (mysqli_num_rows($select_hearing) > 0) {
         $hearing_data = mysqli_fetch_assoc($select_hearing);
-        $hearing_date = date("F j, Y", strtotime($hearing_data['date_of_hearing']));
-        echo '<a href="settlement_page.php?incident_case_number=' . $incident_case_number . '" class="hearing">Hearing</a>';
-        echo '<a href="case_report.php?incident_case_number=' . $incident_case_number . '" class="shownotices">Details</a>';
+        $hearing_type_status = $hearing_data['hearing_type_status'];
+        
+        if ($hearing_type_status == "mediation") {
+            echo '<a href="settlement_page.php?incident_case_number=' . $incident_case_number . '" class="hearing">Hearing</a>';
+            echo '<a href="case_report.php?incident_case_number=' . $incident_case_number . '" class="shownotices">Details</a>';
+        } elseif ($hearing_type_status == "conciliation") {
+            echo '<a href="conciliation_settlement_page.php?incident_case_number=' . $incident_case_number . '" class="hearing">Hearing</a>';
+            echo '<a href="case_report.php?incident_case_number=' . $incident_case_number . '" class="shownotices">Details</a>';
+        }
+        elseif ($hearing_type_status == "arbitration") {
+            echo '<a href="arbitration_settlement_page.php?incident_case_number=' . $incident_case_number . '" class="hearing">Hearing</a>';
+            echo '<a href="case_report.php?incident_case_number=' . $incident_case_number . '" class="shownotices">Details</a>';
+        }
     }
+    
     ?>
 </td>
-
-
-
             </td>
         </tr>
         <?php

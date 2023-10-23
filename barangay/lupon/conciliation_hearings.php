@@ -11,6 +11,8 @@ if(!isset($email)){
 header('location: ../../index.php');
 }
 
+$generate_pangkat = '';
+
 ?>
 
 <!DOCTYPE html>
@@ -58,6 +60,7 @@ header('location: ../../index.php');
                     <th>Complainant</th>
                     <th>Respondent</th>
                     <th>Hearing Date</th>
+                    <th>Conciliation Requirement</th>
                     <th>Action</th>
                 </tr>
             </thead>
@@ -100,8 +103,25 @@ header('location: ../../index.php');
     }
     ?>
 </td>
+<td>
+<?php
+    $check_query = "SELECT generate_pangkat FROM notify_residents WHERE incident_case_number = '$incident_case_number'";
+    $check_result = mysqli_query($conn, $check_query);
+
+    if ($check_result && mysqli_num_rows($check_result) > 0) {
+        $row = mysqli_fetch_assoc($check_result);
+        $generate_pangkat = $row['generate_pangkat'];
+
+        if (empty($generate_pangkat) || $generate_pangkat === 'not generated') {
+            echo '<span class="to-notify">NEEDS PANGKAT CONSTITUTION NOTICE</span>';
+        } else {
+            echo '-';
+        }
+    }
+    ?>
+</td>
             <td>
-                <a href="settlement_page.php?incident_case_number=<?php echo $incident_case_number ?>" class="hearing-1" style="text-decoration: none;">Go to Hearing</a>
+                <a href="conciliation_settlement_page.php?incident_case_number=<?php echo $incident_case_number ?>" class="hearing-1" style="text-decoration: none;">Go to Hearing</a>
                 <a href="../pages/filecourt_action.html" class="filecourt-action" style="text-decoration: none;">File Court Action</a>
             </td>
             </tr>

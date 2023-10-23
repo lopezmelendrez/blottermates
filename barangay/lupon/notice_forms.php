@@ -13,6 +13,8 @@ $generate_hearing_value = '';
 $generate_summon_value = '';
 $notify_complainant_value = '';
 $notify_summon_value = '';
+$generate_pangkat = '';
+$notify_pangkat = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit'])) {
     $incident_case_number = $_POST['incident_case_number'];
@@ -52,6 +54,31 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['hearing_submit'])) {
     } else {
         $insert_query = "INSERT INTO `notify_residents` (`incident_case_number`, `generate_hearing`)
                          VALUES ('$incident_case_number', '$generate_hearing')";
+        $result = mysqli_query($conn, $insert_query);
+    }
+
+    if ($result) {
+        header("Location: incident_reports.php");
+        exit;
+    } else {
+        echo "Error: " . mysqli_error($conn);
+        exit;
+    }
+}
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['pangkat_submit'])) {
+    $incident_case_number = $_POST['incident_case_number'];
+    $generate_pangkat = 'form generated';
+
+    $check_query = "SELECT * FROM `notify_residents` WHERE incident_case_number = '$incident_case_number'";
+    $check_result = mysqli_query($conn, $check_query);
+
+    if ($check_result && mysqli_num_rows($check_result) > 0) {
+        $update_query = "UPDATE `notify_residents` SET `generate_pangkat` = '$generate_pangkat' WHERE incident_case_number = '$incident_case_number'";
+        $result = mysqli_query($conn, $update_query);
+    } else {
+        $insert_query = "INSERT INTO `notify_residents` (`incident_case_number`, `generate_pangkat`)
+                         VALUES ('$incident_case_number', '$generate_pangkat')";
         $result = mysqli_query($conn, $insert_query);
     }
 
@@ -362,10 +389,53 @@ else {
                                     <tr>
                                         <td>Pangkat Notice</td>
                                         <td>-</td>
-                                        <td>-</td>
                                         <td>
-                                        <a href="http://localhost/barangay%20justice%20management%20system%2001/tcpdf/generate_kp10.php?incident_case_number=<?php echo $incident_case_number; ?>" class="summon-record" style="text-decoration:none;">Generate Pangkat Constituition Record</a>
-                                        </td>
+    <?php
+    $check_query = "SELECT generate_pangkat, notify_pangkat FROM notify_residents WHERE incident_case_number = '$incident_case_number'";
+    $check_result = mysqli_query($conn, $check_query);
+
+    if ($check_result && mysqli_num_rows($check_result) > 0) {
+        $row = mysqli_fetch_assoc($check_result);
+        $generate_pangkat = $row['generate_pangkat'];
+        $notify_pangkat = $row['notify_pangkat'];
+
+        if (empty($generate_pangkat) || $generate_pangkat === 'not generated') {
+            echo '-';
+        } elseif ($notify_pangkat === 'notified') {
+            echo '<span class="notified">NOTIFIED</span>';
+        } else {
+            echo '<span class="to-notify">TO NOTIFY</span>';
+        }
+    }
+    ?>
+</td>
+
+<td>
+<?php
+$check_query = "SELECT hearing_type_status FROM hearing WHERE incident_case_number = '$incident_case_number'";
+$check_result = mysqli_query($conn, $check_query);
+
+if ($check_result && mysqli_num_rows($check_result) > 0) {
+    $row = mysqli_fetch_assoc($check_result);
+    $hearing_type_status = $row['hearing_type_status'];
+
+    if (empty($generate_pangkat) || strtolower($generate_pangkat) === 'not generated') {
+        if (strtolower($hearing_type_status) === 'conciliation') {
+            echo '<span class="summon-record" onclick="showPangkatPopup()">Generate Pangkat Constitution Record</span>';
+        } else {
+            echo 'CONCILIATION HEARING IS NOT SCHEDULED';
+        }
+    } elseif ($notify_pangkat === 'notified') {
+        echo '-';
+    } else {
+        echo '<span class="notify" onclick="showNotifyRespondentPopup()">Set To Notified</span>';
+    }
+}
+?>
+
+</td>
+
+
                                     </tr>
                                     <!--<tr>
                                         <td>Subpoena Notice</td>
@@ -434,6 +504,24 @@ else {
                 <form action="" method="post">
                 <input type="hidden" name="incident_case_number" value="<?php echo $incident_case_number; ?>">
                 <input type="submit" name="hearing_submit" value="YES" class="backBtn" style="width: 310px; padding: 12px 12px; font-weight: 600; margin-left: -5px;"></button>
+                </form>
+            </div>
+            </div>
+            </center>
+        </div>
+
+        <div id="pangkat_popup" class="popup">
+            <center>
+            <div class="modal">
+            <h3 class="modal-title" style="font-size: 18px; text-align:center;">GENERATE PANGKAT RECORD CONFIRMATION</h3>
+            <hr style="border: 1px solid #ccc; margin: 10px 0;">
+            <p style="font-size: 14px; text-align: justify;">Are you sure you want to generate the form?</p>
+            
+            <div class="button-container" style="display: flex;">
+                <button class="backBtn" onclick="closePangkatPopup()" style="width: 150px; padding: 12px 12px; font-weight: 600; background: #fff; border: 1px solid #bc1823; color: #bc1823; margin-left: 180px;">NO</button>
+                <form action="" method="post">
+                <input type="hidden" name="incident_case_number" value="<?php echo $incident_case_number; ?>">
+                <input type="submit" name="pangkat_submit" value="YES" class="backBtn" style="width: 310px; padding: 12px 12px; font-weight: 600; margin-left: -5px;"></button>
                 </form>
             </div>
             </div>
@@ -571,6 +659,18 @@ function showPopup() {
 
     function closeHearingPopup() {
         var popup = document.getElementById("hearing_popup");
+        popup.style.display = "none";
+    }
+
+    function showPangkatPopup() {
+        var popup = document.getElementById("pangkat_popup");
+        popup.style.display = "block";
+
+
+    }
+
+    function closePangkatPopup() {
+        var popup = document.getElementById("pangkat_popup");
         popup.style.display = "none";
     }
 
