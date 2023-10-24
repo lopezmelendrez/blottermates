@@ -69,40 +69,53 @@ if (!$result) {
     </div>
 
 
-        <?php
-        // Loop through the results and display each row in a container
-        while ($row = mysqli_fetch_assoc($result)) {
-            echo '<div class="container">';
-            echo '<div class="top-text" style="display: flex;">';
-            echo '<h3 class="case-no-text" style="font-size: 20px;">Case No. #' . $row['incident_case_number'] . '</h3>';
-            echo '</div>';
-            echo '<div class="top-text" style="display: flex;">';
-            $date_of_hearing = $row['date_of_hearing'];
-    $formatted_date = date('l, F j, Y', strtotime($date_of_hearing));
-    $time_of_hearing = $row['time_of_hearing'];
-    $formatted_time = date('h:i A', strtotime($time_of_hearing));
-    $schedule_status = isset($row['date_of_hearing']) && isset($row['time_of_hearing']) ?
-        date('l, F j, Y - h:i A', strtotime($row['date_of_hearing'] . ' ' . $row['time_of_hearing'])) :
-        "NO SCHEDULE YET";
+    <?php
+while ($row = mysqli_fetch_assoc($result)) {
+    $incident_case_number = $row['incident_case_number'];
+    // Check if the data is found in the amicable_settlement table
+    $check_query = "SELECT COUNT(*) as count FROM amicable_settlement WHERE incident_case_number = '$incident_case_number'";
+    $check_result = mysqli_query($conn, $check_query);
+    $row_count = mysqli_fetch_assoc($check_result);
+    $count = $row_count['count'];
 
-    echo '<h3 class="case-no-text" style="font-size: 15px; font-weight: 500; font-style: italic; width: 20%;">' . $row['complainant_last_name'] . ' vs. ' . $row['respondent_last_name'] . '</h3>';
-    
-    if ($schedule_status === "NO SCHEDULE YET") {
-        echo '<h3 class="hearing-text" style="font-size: 15px; font-weight: 500; margin-left: 45%;"><b>Hearing Schedule: </b>NO HEARING SCHEDULE YET</h3>';
-    } else {
-        echo '<h3 class="hearing-text" style="font-size: 15px; font-weight: 500; margin-left: 30%;"><b>Hearing Schedule: </b>' . $schedule_status . '</h3>';
-    }
-            echo '</div>';
-            echo '<table>';
-            echo '<thead>';
+    if ($count == 0) {
+        echo '<div class="container">';
+        echo '<div class="top-text" style="display: flex;">';
+        echo '<h3 class="case-no-text" style="font-size: 20px;">Case No. #' . $row['incident_case_number'] . '</h3>';
+        echo '</div>';
+        echo '<div class="top-text" style="display: flex;">';
+        $date_of_hearing = $row['date_of_hearing'];
+        $formatted_date = date('l, F j, Y', strtotime($date_of_hearing));
+        $time_of_hearing = $row['time_of_hearing'];
+        $formatted_time = date('h:i A', strtotime($time_of_hearing));
+        $schedule_status = isset($row['date_of_hearing']) && isset($row['time_of_hearing']) ?
+            date('l, F j, Y - h:i A', strtotime($row['date_of_hearing'] . ' ' . $row['time_of_hearing'])) :
+            "NO SCHEDULE YET";
+
+        echo '<h3 class="case-no-text" style="font-size: 15px; font-weight: 500; font-style: italic; width: 20%;">' . $row['complainant_last_name'] . ' vs. ' . $row['respondent_last_name'] . '</h3>';
+
+        if ($schedule_status === "NO SCHEDULE YET") {
+            echo '';
+        } else {
+            echo '<h3 class="hearing-text" style="font-size: 15px; font-weight: 500; margin-left: 38%;"><b>Hearing Schedule: </b>' . $schedule_status . '</h3>';
+        }
+        echo '</div>';
+        echo '<table>';
+        echo '<thead>';
+        echo '<tr>';
+        echo '<th>Complainant</th>';
+        echo '<th>Respondent</th>';
+        echo '<th>Requirement</th>';
+        echo '<th>Action</th>';
+        echo '</tr>';
+        echo '</thead>';
+        echo '<tbody>';
+        if ($schedule_status === "NO SCHEDULE YET") {
+            // Display "NO HEARING SCHEDULE" inside the table when there is no schedule
             echo '<tr>';
-            echo '<th>Complainant</th>';
-            echo '<th>Respondent</th>';
-            echo '<th>Requirement</th>';
-            echo '<th>Action</th>';
+            echo '<td colspan="5" style="text-align: center; font-size: 24px;">NO HEARING SCHEDULE YET</td>';
             echo '</tr>';
-            echo '</thead>';
-            echo '<tbody>';
+        } else {
             echo '<tr>';
             echo '<td>' . $row['complainant_last_name'] . ' ' . $row['complainant_first_name'] . ' ' . $row['complainant_middle_name'] . '</td>';
             echo '<td>' . $row['respondent_last_name'] . ' ' . $row['respondent_first_name'] . ' ' . $row['respondent_middle_name'] . '</td>';
@@ -122,35 +135,29 @@ if (!$result) {
             
                 if ($hearing_type_status === 'conciliation') {
                     $check_query = "SELECT generate_pangkat FROM notify_residents WHERE incident_case_number = '" . $row['incident_case_number'] . "'";
-        $check_result = mysqli_query($conn, $check_query);
+                    $check_result = mysqli_query($conn, $check_query);
 
-                                        if ($check_result && mysqli_num_rows($check_result) > 0) {
-                                            $row_notify = mysqli_fetch_assoc($check_result);
-                                            $generate_pangkat = $row_notify['generate_pangkat'];
-                                        
+                    if ($check_result && mysqli_num_rows($check_result) > 0) {
+                        $row_notify = mysqli_fetch_assoc($check_result);
+                        $generate_pangkat = $row_notify['generate_pangkat'];
 
-                                            if (empty($generate_pangkat) || $generate_pangkat === 'not generated') { // Check for the specific value
-                                                echo '<span class="to-notify">NEEDS KP FORM #10</span>';
-                                            } else {
-                                                echo '-';
-                                            }
-                                            
-                                        } 
+                        if (empty($generate_pangkat) || $generate_pangkat === 'not generated') { // Check for the specific value
+                            echo '<span class="to-notify">NEEDS KP FORM #10</span>';
+                        } else {
+                            echo '-';
+                        }
+                    }
                 } elseif ($hearing_type_status === 'arbitration') {
-                    // If hearing_type_status is "arbitration," check for arbitration agreement
-                    $incident_case_number = $row['incident_case_number'];
-                    $select_arbitration_agreement = mysqli_query($conn, "SELECT 1 FROM arbitration_agreement WHERE incident_case_number = '$incident_case_number' LIMIT 1");
-            
+                    $select_arbitration_agreement = mysqli_query($conn, "SELECT 1 FROM arbitration_agreement WHERE incident_case_number = '{$row['incident_case_number']}' LIMIT 1");
+
                     if ($select_arbitration_agreement && mysqli_num_rows($select_arbitration_agreement) > 0) {
-                        // If incident_case_number exists in arbitration_agreement, display a link
                         echo '-';
                     } else {
-                        // If it doesn't exist, display the text "NEEDS ARBITRATION AGREEMENT"
-                        echo '<span class="to-notify">NEEDS ARBITRATION AGREEMENT</span>';
+                        echo '<span class="to-notify">NEEDS KP FORM #14</span>';
                     }
-                } 
-            } 
-            
+                }
+            }
+
             echo '</td>';
             echo '<td>';
             $check_query = "SELECT nr.generate_pangkat, h.hearing_type_status, aa.incident_case_number
@@ -168,43 +175,49 @@ if (!$result) {
             
                 if ($hearing_type_status === 'conciliation') {
                     $check_query = "SELECT generate_pangkat FROM notify_residents WHERE incident_case_number = '" . $row['incident_case_number'] . "'";
-        $check_result = mysqli_query($conn, $check_query);
+                    $check_result = mysqli_query($conn, $check_query);
 
-                                        if ($check_result && mysqli_num_rows($check_result) > 0) {
-                                            $row_notify = mysqli_fetch_assoc($check_result);
-                                            $generate_pangkat = $row_notify['generate_pangkat'];
-                                        
+                    if ($check_result && mysqli_num_rows($check_result) > 0) {
+                        $row_notify = mysqli_fetch_assoc($check_result);
+                        $generate_pangkat = $row_notify['generate_pangkat'];
 
-                                            if (empty($generate_pangkat) || $generate_pangkat === 'not generated') { // Check for the specific value
-                                                echo '<a href="notice_forms.php?incident_case_number=' . $row['incident_case_number'] . '" class="hearing-1" style="text-decoration: none;">Create Notice Form(s)</a>';
-                                            } else {
-                                                echo '<a href="conciliation_settlement_page.php?incident_case_number=' . $row['incident_case_number'] . '" class="hearing-1" style="text-decoration: none;">Go to Hearing</a>';
-                                            }
-                                            
-                                        } 
-                } elseif ($hearing_type_status === 'arbitration') {
-                    // If hearing_type_status is "arbitration," check for arbitration agreement
-                    $incident_case_number = $row['incident_case_number'];
-                    $select_arbitration_agreement = mysqli_query($conn, "SELECT 1 FROM arbitration_agreement WHERE incident_case_number = '$incident_case_number' LIMIT 1");
-            
-                    if ($select_arbitration_agreement && mysqli_num_rows($select_arbitration_agreement) > 0) {
-                        echo '<a href="arbitration_settlement_page.php?incident_case_number=' . $incident_case_number . '" class="hearing-1" style="text-decoration: none;">Go to Hearing</a>';
-                    } else {
-                        echo '<a href="arbitration_agreement.php?incident_case_number=' . $incident_case_number . '" class="hearing-1" style="text-decoration: none;">Create Arbitration Agreement</a>';
+                        if (empty($generate_pangkat) || $generate_pangkat === 'not generated') { // Check for the specific value
+                            echo '<a href="notice_forms.php?incident_case_number=' . $row['incident_case_number'] . '" class="shownotices" style="text-decoration: none;">Create Notice Form(s)</a>';
+                        } else {
+                            echo '<a href="conciliation_settlement_page.php?incident_case_number=' . $row['incident_case_number'] . '" class="shownotices" style="text-decoration: none;">Go to Hearing</a>';
+                        }
                     }
-                } 
-            } 
-            
+                } elseif ($hearing_type_status === 'arbitration') {
+                    $select_arbitration_agreement = mysqli_query($conn, "SELECT 1 FROM arbitration_agreement WHERE incident_case_number = '{$row['incident_case_number']}' LIMIT 1");
+
+                    if ($select_arbitration_agreement && mysqli_num_rows($select_arbitration_agreement) > 0) {
+                        echo '<a href="arbitration_settlement_page.php?incident_case_number=' . $row['incident_case_number'] . '" class="shownotices" style="text-decoration: none;">Go to Hearing</a>';
+                    } else {
+                        echo '<a href="arbitration_agreement.php?incident_case_number=' . $row['incident_case_number'] . '" class="shownotices" style="text-decoration: none;">Create Arbitration Agreement</a>';
+                    }
+                }
+            }
+
             echo '</td>';
             echo '</tr>';
-            echo '</tbody>';
-            echo '</table>';
-            //echo '<td><button class="schedule" style="width: 15%; font-size: 14px; margin-left: 86.5%; top: 20px;"">Manage Notices</button></td>';
-            echo '</div>';
         }
-        ?>
+        echo '</tbody>';
+        echo '</table>';
+        if ($schedule_status === "NO SCHEDULE YET") {
+            echo '<a href="schedule_hearing.php?incident_case_number=' . $row['incident_case_number'] . '" style="text-decoration: none;">';
+            echo '<button class="schedule" style="width: 18%; font-size: 14px; margin-left: 82%; margin-top: 10px;">SET HEARING SCHEDULE</button>';
+            echo '</a>';
+        } else {
+            echo '<a href="notice_forms.php?incident_case_number=' . $row['incident_case_number'] . '" style="text-decoration: none;">';
+            echo '<button class="schedule" style="width: 15%; font-size: 14px; margin-left: 85%; margin-top: 10px;">Manage Notices</button>';
+            echo '</a>';
+        }
+        echo '</div>';
+    }
+}
+?>
+
    
-        
     </section>
 
     <script>
@@ -235,23 +248,7 @@ if (!$result) {
             }
         });
     
-        function loadContent() {
-            // Get the value of the selected option
-            const selectedOption = document.getElementById('transactionTableSelect').value;
-
-            // Perform redirection or load content based on the selected option
-            if (selectedOption === 'ongoing') {
-                window.location.href = 'ongoingcases.php#ongoing';
-            } else if (selectedOption === 'settled') {
-                window.location.href = 'settledcases.php#settled';
-            }
-            else if (selectedOption === 'incomplete') {
-                window.location.href = 'incompletenotices.php#incomplete';
-            }
-        }
-
-
-
+        
     </script>
 
     <style>
@@ -349,8 +346,31 @@ if (!$result) {
         .to-notify{
         font-weight: 900;
         color: #bc1823;
+        }
+
+        .shownotices{
+        background: #fff;
+        padding: 4px 4px;
+        color: #2962ff;
+        border: 1px solid #2962ff;
+        text-transform: uppercase;
+        border-radius: 0.2rem;
+        cursor: pointer;
+        display: block;
+        margin-bottom: 5px;
+        width: 10rem;
+        margin-left: 0;
+        text-decoration: none;
     }
 
+    .shownotices:hover{
+        background: #2962ff;
+        color: #fff;
+        border: 1px solid #fff;
+        transition: .5s;
+    }
+
+        
 
     </style>
 

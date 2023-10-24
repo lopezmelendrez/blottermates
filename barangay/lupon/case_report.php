@@ -167,7 +167,7 @@ $created_at = date("g:i A - F j, Y", $timestamp);
             <div class="card-body">
                 <div class="d-flex justify-content-between align-items-center mb-3">
                     <header class="card-title" style="font-size: 18px;">Case Report Summary of Case #<?php echo $incident_case_number; ?></header>
-                    <a href="../../tcpdf/generate_kp7.php?incident_case_number=<?php echo $incident_case_number ?>" class="generate" style="text-decoration: none;"><i class="fa-solid fa-file-pdf" style="margin-right: 5px;"></i>Generate KPL Form 7</a>
+                    <span class="generate" onclick="showPDFPopup()" style="text-decoration: none;"><i class="fa-solid fa-file-pdf" style="margin-right: 5px;"></i>Generate PDF Forms</span>
                     <p style="font-size: 15px; font-style: italic; margin-top: -5px;"><?php echo $complainant_last_name ?> vs. <?php echo $respondent_last_name ?></p>
                     <hr style="border: 1px solid #ccc; margin: 20px 0;">
                 </div>
@@ -289,114 +289,46 @@ $created_at = date("g:i A - F j, Y", $timestamp);
                     </div> 
                 </div>
 
-                <div class="modal-overlay" id="confirmationModal">
-                    <div class="modal">
-                        <h3 class="modal-title" style="font-size: 18px; text-align:center;">CONFIRM INCIDENT CASE #<?php echo $incident_case_number; ?></h3>
-                        <hr style="border: 1px solid #ccc; margin: 10px 0;">
-                        <h3 style="font-size: 18px;">COMPLAINANT DETAILS</h3>
-                        <div class="name-section">
-                        <p>Last Name: 
-                            <div class="box" style="width: 90%;">
-                            <span id="complainantLastName"></span>
-                            </div>
-                        </p>     
-                        </div>
-                        <div class="name-section" style="margin-left: 22px;">
-                        <p style="margin-left: -25px;">First Name: 
-                            <div class="box" style="width: 12.2rem; margin-left: -25px;">
-                            <span id="complainantFirstName"></span>
-                            </div>
-                        </p>
-                        </div>
-                        <div class="name-section">
-                        <p>Middle Name: 
-                            <div class="box" style="width: 14rem;">
-                            <span id="complainantMiddleName"></span>
-                            </div>
-                        </p>
-                        </div>
-                        <div class="name-section" style="display: inline-block;">
-                        <p>Contact Number:
-                            <div class="box" style="width: 90%;"> 
-                            <span id="complainantCellphone"></span>
-                            </div>
-                            </p>
-                        </div>
-                        <div class="name-section-1" style="width: 27.5rem;">
-                        <p>House Address: 
-                            <div class="box">
-                            <span id="complainantAddress"></span>
-                            </div>
-                        </p>
-                        </div>
-                    <h3 style="font-size: 18px; margin-top: 10px;">RESPONDENT DETAILS</h3>
-                    <div class="name-section">
-                        <p>Last Name: 
-                            <div class="box" style="width: 90%;">
-                            <span id="respondentLastName"></span>
-                            </div>
-                        </p>     
-                        </div>
-                        <div class="name-section" style="margin-left: 22px;">
-                        <p style="margin-left: -25px;">First Name: 
-                            <div class="box" style="width: 12.2rem; margin-left: -25px;">
-                            <span id="respondentFirstName"></span>
-                            </div>
-                        </p>
-                        </div>
-                        <div class="name-section">
-                        <p>Middle Name: 
-                            <div class="box" style="width: 14rem;">
-                            <span id="respondentMiddleName"></span>
-                            </div>
-                        </p>
-                        </div>
-                        <div class="name-section" style="display: inline-block;">
-                        <p>Contact Number:
-                            <div class="box" style="width: 90%;"> 
-                            <span id="respondentCellphone"></span>
-                            </div>
-                            </p>
-                        </div>
-                        <div class="name-section-1" style="width: 27.5rem;">
-                        <p>House Address: 
-                            <div class="box">
-                            <span id="respondentAddress"></span>
-                            </div>
-                        </p>
-                        </div>
-                    <h3 style="font-size: 18px; margin-top: 10px;">INCIDENT DETAILS</h3>
-                    <div class="name-section" style="display: inline-block;">
-                        <p>Date of Incident:
-                            <div class="box" style="width: 90%;"> 
-                            <span id="incidentDate"></span>
-                            </div>
-                            </p>
-                        </div>
-                        <div class="name-section-1" style="width: 27.5rem;">
-                        <p>Incident Case Type: 
-                            <div class="box">
-                            <span id="incidentCaseType"></span>
-                            </div>
-                        </p>
-                        </div>
-                        <div class="name-section">
-                        <p>Description of Violation: 
-                            <div class="box" style="width: 40rem; height: 66px; white-space: normal;">
-                            <span id="descriptionOfViolation"></span>
-                            </div>
-                        </p>
-                        </div>
-            
-        <div class="modal-buttons" style="display: flex; align-items: center; margin-top: -15px; margin-right: 22px;">
-                    <div class="backBtn" id="modalCancelBtn">
-                        <span class="btnText" style="margin-left: -20px;">Back</span>
-                    </div>
-            <button class="modal-confirm" id="modalConfirmBtn">
-            <input type="submit" name="submit" value="Submit" class="btnText" style="font-size: 16px; background: transparent; border: none; font-weight: 600; color: #fff; cursor: pointer;">
-            </button>
-        </div>
+                <div id="pdf_popup" class="popup">
+                <div class="close-icon" onclick="closePDFPopup()">
+                <i class='bx bxs-x-circle' ></i> <!-- Replace with the desired close icon -->
     </div>
+            <center>
+            <div class="modal">
+            <h3 class="modal-title" style="font-size: 18px; text-align:center;">SELECT PDF TO GENERATE</h3>
+            <hr style="border: 1px solid #ebecf0; margin: 10px 0;">
+            <p style="font-size: 14px; text-align: left;">
+    Amicable Settlement Form (KP #16)
+    <a href="your-link-here" class="button" style="margin-left: 17.5%;">
+      Generate
+    </a>
+    <span class="printer-icon">
+      <i class='bx bxs-printer'></i>
+    </span>
+  </p>
+  <hr style="border: 1px solid #ccc; margin: 10px 0;">
+  <p style="font-size: 14px; text-align: left;">
+    Certification to File Action (KP #20)
+    <a href="your-link-here" class="button" style="margin-left: 18%;">
+      Generate
+    </a>
+    <span class="printer-icon">
+      <i class='bx bxs-printer'></i>
+    </span>
+  </p>
+  <hr style="border: 1px solid #ccc; margin: 10px 0;">
+  <p style="font-size: 14px; text-align: left;">
+    Motion for Execution (KP #25)
+    <a href="your-link-here" class="button" style="margin-left: 26%;">
+      Generate
+    </a>
+    <span class="printer-icon">
+      <i class='bx bxs-printer'></i>
+    </span>
+  </p>
+                            
+            </center>
+        </div>
 </div>
             </form>
         </div>
@@ -472,80 +404,17 @@ $created_at = date("g:i A - F j, Y", $timestamp);
 
         });
 
-        const maxLength = 255;
-const inputElement = document.getElementById('description_input');
-const characterCountElement = document.getElementById('character_count');
+        function showPDFPopup() {
+        var popup = document.getElementById("pdf_popup");
+        popup.style.display = "block";
 
-inputElement.addEventListener('input', function() {
-    let inputText = inputElement.value;
 
-    // Remove extra spaces from the beginning and end of the input text
-    inputText = inputText.trim();
-
-    // Remove consecutive spaces within the input text
-    inputText = inputText.replace(/\s+/g, ' ');
-
-    if (inputText.length > maxLength) {
-        inputText = inputText.substring(0, maxLength);
-        inputElement.value = inputText; // Update the input value
     }
-    
-    const remainingCharacters = maxLength - inputText.length;
-    characterCountElement.textContent = `${remainingCharacters} character${remainingCharacters !== 1 ? 's' : ''} left`;
 
-    // Check remaining characters and change text color accordingly
-    if (remainingCharacters <= 20) {
-        characterCountElement.style.color = '#F5BE1D';
-    } else if (remainingCharacters <= 0) {
-        characterCountElement.style.color = 'red';
-    } else {
-        characterCountElement.style.color = ''; // Reset color to default
+    function closePDFPopup() {
+        var popup = document.getElementById("pdf_popup");
+        popup.style.display = "none";
     }
-});
-
-// JavaScript code for the modal and form submission confirmation
-document.addEventListener("DOMContentLoaded", function() {
-    const form = document.querySelector("form");
-    const popUpButton = form.querySelector(".pop-up");
-    const submitInput = form.querySelector("input[type='submit']");
-    const modalOverlay = document.getElementById("confirmationModal");
-    const modalCancelBtn = document.getElementById("modalCancelBtn");
-    const modalConfirmBtn = document.getElementById("modalConfirmBtn");
-
-    // Open modal when the pop-up button is clicked
-    popUpButton.addEventListener("click", function(event) {
-        event.preventDefault();
-        document.getElementById("complainantLastName").textContent = document.querySelector('input[name="complainant_last_name"]').value;
-        document.getElementById("complainantFirstName").textContent = document.querySelector('input[name="complainant_first_name"]').value;
-        document.getElementById("complainantMiddleName").textContent = document.querySelector('input[name="complainant_middle_name"]').value;
-        document.getElementById("complainantCellphone").textContent = document.querySelector('input[name="complainant_cellphone_number"]').value;
-        document.getElementById("complainantAddress").textContent = document.querySelector('input[name="complainant_house_address"]').value;
-        // Add more fields for complainant
-
-        document.getElementById("respondentLastName").textContent = document.querySelector('input[name="respondent_last_name"]').value;
-        document.getElementById("respondentFirstName").textContent = document.querySelector('input[name="respondent_first_name"]').value;
-        document.getElementById("respondentMiddleName").textContent = document.querySelector('input[name="respondent_middle_name"]').value;
-        document.getElementById("respondentCellphone").textContent = document.querySelector('input[name="respondent_cellphone_number"]').value;
-        document.getElementById("respondentAddress").textContent = document.querySelector('input[name="respondent_house_address"]').value;
-        // Add more fields for respondent
-
-        document.getElementById("incidentCaseType").textContent = document.querySelector('select[name="incident_case_type"] option:checked').text;
-        document.getElementById("incidentDate").textContent = document.querySelector('input[name="incident_date"]').value;
-        document.getElementById("descriptionOfViolation").textContent = document.querySelector('textarea[name="description_of_violation"]').value;
-
-        modalOverlay.style.display = "flex";
-    });
-
-    // Close modal when cancel button is clicked
-    modalCancelBtn.addEventListener("click", function() {
-        modalOverlay.style.display = "none";
-    });
-
-    // Submit the form when confirm button is clicked
-    modalConfirmBtn.addEventListener("click", function() {
-        submitInput.click(); // Trigger the submit input element's click event
-    });
-});
 
 
 
@@ -581,7 +450,7 @@ document.addEventListener("DOMContentLoaded", function() {
         background-color: #bc1823;
     }
 
-    .modal-overlay {
+    .popup {
         display: none;
         position: fixed;
         top: 0;
@@ -595,66 +464,15 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
     .modal {
-        background-color: #fff;
-        padding: 20px;
-        border-radius: 5px;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        width: 860px;
-        height: 600px;
-        overflow-y: hidden;
-    }
-
-    .modal-title {
-        font-size: 1.5em;
-        margin-bottom: 10px;
-    }
-
-    .modal p{
-        font-size: 15px;
-    }
-
-    .modal-message {
-        font-size: 1.2em;
-        margin-bottom: 20px;
-    }
-
-    .modal-buttons {
-        position: relative;
-        text-align: center;
-        margin-top: 10px;
-    }
-
-    .modal-cancel,
-    .modal-confirm {
-        padding: 8px 20px;
-        margin: 0 10px;
-        border: none;
-        cursor: pointer;
-    }
-
-    .name-section {
-        display: inline-block;
-        width: 30%;
-        box-sizing: border-box;
-        
-    }
-
-    .name-section-1 {
-        display: inline-block;
-        width: calc(100% / 2 - 15px);
-        box-sizing: border-box;
-        
-    }
-
-    .name-section-2{
-        display: inline-block;
-        width: 100%;
-        box-sizing: border-box;
-    }
-
-    .name-section p, .name-section-1 p, .name-section-2 p{
-        font-size: 13px;
-    }
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 5px;
+    margin-top: 180px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    width: 500px;
+    height: 250px;
+    overflow-y: hidden;
+}
 
     .box{
         outline: none;
@@ -721,6 +539,44 @@ document.addEventListener("DOMContentLoaded", function() {
     border-radius: 8px;
     background-color: #F5BE1D;
 }
+
+.button {
+      display: inline-block;
+      background-color: #007bff;
+      color: #fff;
+      padding: 8px;
+      width: 90px;
+      text-decoration: none;
+      border-radius: 5px;
+      font-weight: bold;
+      font-size: 14px;
+    }
+
+    /* Style the printer icon with a blue border and white background */
+    .printer-icon {
+      display: inline-block;
+      background-color: #fff;
+      border: 1px solid #007bff;
+      border-radius: 5px;
+      padding: 5px;
+      margin-left: -12px;
+    }
+
+    .printer-icon i {
+      font-size: 20px;
+      margin-top: -2px;
+      margin-bottom: 7px;
+      color: #007bff;
+    }
+
+    .close-icon {
+      position: absolute;
+      top: 155px;
+      left: 900px;
+      cursor: pointer;
+      font-size: 50px;
+      color:#bc1823;
+    }
 
 
 </style>

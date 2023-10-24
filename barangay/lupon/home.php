@@ -100,7 +100,9 @@ $select = mysqli_query($conn, "
            incident_report.created_at AS created_at
     FROM `incident_report`
     LEFT JOIN `notify_residents` ON incident_report.incident_case_number = notify_residents.incident_case_number
-    WHERE generate_summon = 'not generated' OR generate_hearing = 'not generated' OR generate_pangkat = 'not generated' OR generate_summon IS NULL OR generate_hearing IS NULL OR generate_pangkat IS NULL 
+    LEFT JOIN `amicable_settlement` ON incident_report.incident_case_number = amicable_settlement.incident_case_number
+    WHERE (generate_summon = 'not generated' OR generate_hearing = 'not generated' OR generate_pangkat = 'not generated' OR generate_summon IS NULL OR generate_hearing IS NULL OR generate_pangkat IS NULL)
+    AND amicable_settlement.incident_case_number IS NULL
 ") or die('query failed');
 
 if (mysqli_num_rows($select) === 0) {
@@ -115,6 +117,7 @@ if (mysqli_num_rows($select) === 0) {
     }
 }
 ?>
+
 
 <tbody id="noResults" style="display: none;">
     <tr>

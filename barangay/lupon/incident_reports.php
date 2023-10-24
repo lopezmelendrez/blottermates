@@ -73,154 +73,160 @@ if (!$result) {
 
 // Loop through the results and display each row in a container
 while ($row = mysqli_fetch_assoc($result)) {
-    echo '<div class="container">';
-    echo '<div class="top-text" style="display: flex;">';
-    echo '<h3 class="case-no-text" style="font-size: 20px;">Case No. #' . $row['incident_case_number'] . '</h3>';
-    echo '</div>';
-    echo '<div class="top-text" style="display: flex;">';
-    $date_of_hearing = $row['date_of_hearing'];
-    $formatted_date = date('l, F j, Y', strtotime($date_of_hearing));
-    $time_of_hearing = $row['time_of_hearing'];
-    $formatted_time = date('h:i A', strtotime($time_of_hearing));
-    $schedule_status = isset($row['date_of_hearing']) && isset($row['time_of_hearing']) ?
-        date('D, F j, Y - h:i A', strtotime($row['date_of_hearing'] . ' ' . $row['time_of_hearing'])) :
-        "NO SCHEDULE YET";
-
-    echo '<h3 class="case-no-text" style="font-size: 15px; font-weight: 500; font-style: italic; width: 20%;">' . $row['complainant_last_name'] . ' vs. ' . $row['respondent_last_name'] . '</h3>';
-
-    if ($schedule_status === "NO SCHEDULE YET") {
-        echo '';
-    } else {
-        echo '<h3 class="hearing-text" style="font-size: 15px; font-weight: 500; margin-left: 38%;"><b>Hearing Schedule: </b>' . $schedule_status . '</h3>';
-    }
-    echo '</div>';
-
-    // Display the table for incident details even when there is no schedule
-    echo '<table>';
-    echo '<thead>';
-    echo '<tr>';
-    echo '<th>Type of Notice</th>';
-    echo '<th>Resident Name</th>';
-    echo '<th>Status</th>';
-    echo '<th>Date Notified</th>';
-    echo '<th>Action</th>';
-    echo '</tr>';
-    echo '</thead>';
-    echo '<tbody>';
+    $incident_case_number = $row['incident_case_number'];
     
-    if ($schedule_status === "NO SCHEDULE YET") {
-        // Display "NO HEARING SCHEDULE" inside the table when there is no schedule
+    // Check if the data is found in the amicable_settlement table
+    $check_query = "SELECT COUNT(*) as count FROM amicable_settlement WHERE incident_case_number = '$incident_case_number'";
+    $check_result = mysqli_query($conn, $check_query);
+    $row_count = mysqli_fetch_assoc($check_result);
+    $count = $row_count['count'];
+
+    if ($count == 0) {
+        echo '<div class="container">';
+        echo '<div class="top-text" style="display: flex;">';
+        echo '<h3 class="case-no-text" style="font-size: 20px;">Case No. #' . $row['incident_case_number'] . '</h3>';
+        echo '</div>';
+        echo '<div class="top-text" style="display: flex;">';
+        $date_of_hearing = $row['date_of_hearing'];
+        $formatted_date = date('l, F j, Y', strtotime($date_of_hearing));
+        $time_of_hearing = $row['time_of_hearing'];
+        $formatted_time = date('h:i A', strtotime($time_of_hearing));
+        $schedule_status = isset($row['date_of_hearing']) && isset($row['time_of_hearing']) ?
+            date('D, F j, Y - h:i A', strtotime($row['date_of_hearing'] . ' ' . $row['time_of_hearing'])) :
+            "NO SCHEDULE YET";
+
+        echo '<h3 class="case-no-text" style="font-size: 15px; font-weight: 500; font-style: italic; width: 20%;">' . $row['complainant_last_name'] . ' vs. ' . $row['respondent_last_name'] . '</h3>';
+
+        if ($schedule_status === "NO SCHEDULE YET") {
+            echo '';
+        } else {
+            echo '<h3 class="hearing-text" style="font-size: 15px; font-weight: 500; margin-left: 38%;"><b>Hearing Schedule: </b>' . $schedule_status . '</h3>';
+        }
+        echo '</div>';
+
+        // Display the table for incident details even when there is no schedule
+        echo '<table>';
+        echo '<thead>';
         echo '<tr>';
-        echo '<td colspan="5" style="text-align: center; font-size: 24px;">NO HEARING SCHEDULE YET</td>';
+        echo '<th>Type of Notice</th>';
+        echo '<th>Resident Name</th>';
+        echo '<th>Status</th>';
+        echo '<th>Date Notified</th>';
+        echo '<th>Action</th>';
         echo '</tr>';
-    } else {
-        // Display the table rows for incident details when there is a schedule
-        echo '<tr>';
-        echo '<td>Hearing Notice</td>';
-        echo '<td>' . $row['complainant_last_name'] . ' ' . $row['complainant_first_name'] . ' ' . $row['complainant_middle_name'] . '</td>';
-        echo '<td>';
-        $check_query = "SELECT generate_hearing, notify_hearing, hearing_notified FROM notify_residents WHERE incident_case_number = '" . $row['incident_case_number'] . "'";
-        $check_result = mysqli_query($conn, $check_query);
+        echo '</thead>';
+        echo '<tbody>';
 
-        if ($check_result && mysqli_num_rows($check_result) > 0) {
-            $row_notify = mysqli_fetch_assoc($check_result);
-            $generate_hearing_value = $row_notify['generate_hearing'];
-            $notify_complainant_value = $row_notify['notify_hearing'];
-            $hearing_notified = $row_notify['hearing_notified'];
-            $formatted_date = date("F j, Y", strtotime($hearing_notified));
+        if ($schedule_status === "NO SCHEDULE YET") {
+            // Display "NO HEARING SCHEDULE" inside the table when there is no schedule
+            echo '<tr>';
+            echo '<td colspan="5" style="text-align: center; font-size: 24px;">NO HEARING SCHEDULE YET</td>';
+            echo '</tr>';
+        } else {
+            // Display the table rows for incident details when there is a schedule
+            echo '<tr>';
+            echo '<td>Hearing Notice</td>';
+            echo '<td>' . $row['complainant_last_name'] . ' ' . $row['complainant_first_name'] . ' ' . $row['complainant_middle_name'] . '</td>';
+            echo '<td>';
+            $check_query = "SELECT generate_hearing, notify_hearing, hearing_notified FROM notify_residents WHERE incident_case_number = '" . $row['incident_case_number'] . "'";
+            $check_result = mysqli_query($conn, $check_query);
 
+            if ($check_result && mysqli_num_rows($check_result) > 0) {
+                $row_notify = mysqli_fetch_assoc($check_result);
+                $generate_hearing_value = $row_notify['generate_hearing'];
+                $notify_complainant_value = $row_notify['notify_hearing'];
+                $hearing_notified = $row_notify['hearing_notified'];
+                $formatted_date = date("F j, Y", strtotime($hearing_notified));
+
+                if (empty($generate_hearing_value) || $generate_hearing_value === 'not generated') {
+                    echo '-';
+                } elseif ($notify_complainant_value === 'notified') {
+                    echo '<span class="notified">NOTIFIED</span>';
+                } else {
+                    echo '<span class="to-notify">TO NOTIFY</span>';
+                }
+            }
+            echo '</td>';
+            echo '<td>';
             if (empty($generate_hearing_value) || $generate_hearing_value === 'not generated') {
                 echo '-';
             } elseif ($notify_complainant_value === 'notified') {
-                echo '<span class="notified">NOTIFIED</span>';
+                echo $formatted_date;
             } else {
-                echo '<span class="to-notify">TO NOTIFY</span>';
+                echo '-';
             }
-        }
-        echo '</td>';
-        echo '<td>';
-        if (empty($generate_hearing_value) || $generate_hearing_value === 'not generated') {
-            echo '-';
-        }  elseif ($notify_complainant_value === 'notified') {
-            echo $formatted_date;
-        }
-        else {
-            echo '-';
-        }
-        echo '</td>';
-        echo '<td>';
-        if (empty($generate_hearing_value) || $generate_hearing_value === 'not generated') {
-            echo '<span class="generate" onclick="showSummonPopup()">Generate KP Form #8</span>';
-        } elseif ($notify_complainant_value === 'notified') {
-            echo '-';
-        }
-        else {
-            echo '<button class="notify" style="cursor: default;">Set To Notified</button>';
-        }
-        echo '</td>';
-        echo '</tr>';
-        echo '<tr>';
-        echo '<td>Summon Notice</td>';
-        echo '<td>' . $row['respondent_last_name'] . ' ' . $row['respondent_first_name'] . ' ' . $row['respondent_middle_name'] . '</td>';
-        echo '<td>';
-        $check_query = "SELECT generate_summon, notify_summon, summon_notified FROM notify_residents WHERE incident_case_number = '" . $row['incident_case_number'] . "'";
-        $check_result = mysqli_query($conn, $check_query);
+            echo '</td>';
+            echo '<td>';
+            if (empty($generate_hearing_value) || $generate_hearing_value === 'not generated') {
+                echo '<span class="generate" onclick="showSummonPopup()">Generate KP Form #8</span>';
+            } elseif ($notify_complainant_value === 'notified') {
+                echo '-';
+            } else {
+                echo '<button class="notify" style="cursor: default;">Set To Notified</button>';
+            }
+            echo '</td>';
+            echo '</tr>';
+            echo '<tr>';
+            echo '<td>Summon Notice</td>';
+            echo '<td>' . $row['respondent_last_name'] . ' ' . $row['respondent_first_name'] . ' ' . $row['respondent_middle_name'] . '</td>';
+            echo '<td>';
+            $check_query = "SELECT generate_summon, notify_summon, summon_notified FROM notify_residents WHERE incident_case_number = '" . $row['incident_case_number'] . "'";
+            $check_result = mysqli_query($conn, $check_query);
 
-                                        if ($check_result && mysqli_num_rows($check_result) > 0) {
-                                            $row_notify = mysqli_fetch_assoc($check_result);
-                                            $generate_summon_value = $row_notify['generate_summon'];
-                                            $notify_summon_value = $row_notify['notify_summon'];
-                                            $date_summon = $row_notify['summon_notified'];
-                                            $summon_notified = date("F j, Y", strtotime($date_summon));
+            if ($check_result && mysqli_num_rows($check_result) > 0) {
+                $row_notify = mysqli_fetch_assoc($check_result);
+                $generate_summon_value = $row_notify['generate_summon'];
+                $notify_summon_value = $row_notify['notify_summon'];
+                $date_summon = $row_notify['summon_notified'];
+                $summon_notified = date("F j, Y", strtotime($date_summon));
 
-                                            if (empty($generate_summon_value) || $generate_summon_value === 'not generated') { // Check for the specific value
-                                                echo '-';
-                                            } elseif ($notify_summon_value === 'notified') {
-                                                echo '<span class="notified">NOTIFIED</span>';
-                                            } else {
-                                                echo '<span class="to-notify">TO NOTIFY</span>';
-                                            }
-                                            
-                                        } 
-        echo '</td>';
-        echo '<td>';
-        if (empty($generate_summon_value) || $generate_summon_value === 'not generated') {
-            echo '-';
-        }  elseif ($notify_summon_value === 'notified') {
-            echo $summon_notified;
+                if (empty($generate_summon_value) || $generate_summon_value === 'not generated') {
+                    echo '-';
+                } elseif ($notify_summon_value === 'notified') {
+                    echo '<span class="notified">NOTIFIED</span>';
+                } else {
+                    echo '<span class="to-notify">TO NOTIFY</span>';
+                }
+            }
+            echo '</td>';
+            echo '<td>';
+            if (empty($generate_summon_value) || $generate_summon_value === 'not generated') {
+                echo '-';
+            } elseif ($notify_summon_value === 'notified') {
+                echo $summon_notified;
+            } else {
+                echo '-';
+            }
+            echo '</td>';
+            echo '<td>';
+            // Check if the generate_summon_value is empty
+            if (empty($generate_summon_value) || $generate_summon_value === 'not generated') {
+                echo '<span class="generate" onclick="showSummonPopup()">Generate KP Form #9</span>';
+            } elseif ($notify_summon_value === 'notified') {
+                echo '-';
+            } else {
+                echo '<button class="notify" style="cursor: default;">Set To Notified</button>';
+            }
+            echo '</td>';
+            echo '</tr>';
         }
-        else {
-            echo '-';
+
+        echo '</tbody>';
+        echo '</table>';
+        if ($schedule_status === "NO SCHEDULE YET") {
+            echo '<a href="schedule_hearing.php?incident_case_number=' . $row['incident_case_number'] . '" style="text-decoration: none;">';
+            echo '<button class="schedule" style="width: 18%; font-size: 14px; margin-left: 82%; margin-top: 10px;">SET HEARING SCHEDULE</button>';
+            echo '</a>';
+        } else {
+            echo '<a href="notice_forms.php?incident_case_number=' . $row['incident_case_number'] . '" style="text-decoration: none;">';
+            echo '<button class="schedule" style="width: 15%; font-size: 14px; margin-left: 85%; margin-top: 10px;">Manage Notices</button>';
+            echo '</a>';
         }
-        echo '</td>';
-        echo '<td>';
-        // Check if the generate_summon_value is empty
-        if (empty($generate_summon_value) || $generate_summon_value === 'not generated') {
-            echo '<span class="generate" onclick="showSummonPopup()">Generate KP Form #9</span>';
-        }  elseif ($notify_summon_value === 'notified') {
-            echo '-';
-        }
-        else {
-            echo '<button class="notify" style="cursor: default;">Set To Notified</button>';
-        }
-        echo '</td>';
-        echo '</tr>';
+        echo '</div>';
     }
-    
-    echo '</tbody>';
-    echo '</table>';
-    if ($schedule_status === "NO SCHEDULE YET") {
-        echo '<a href="conciliation_schedule.php?incident_case_number=' . $row['incident_case_number'] . '" style="text-decoration: none;">';
-        echo '<button class="schedule" style="width: 18%; font-size: 14px; margin-left: 82%; margin-top: 10px;">SET HEARING SCHEDULE</button>';
-        echo '</a>';
-    } else {
-        echo '<a href="notice_forms.php?incident_case_number=' . $row['incident_case_number'] . '" style="text-decoration: none;">';
-        echo '<button class="schedule" style="width: 15%; font-size: 14px; margin-left: 85%; margin-top: 10px;">Manage Notices</button>';
-        echo '</a>';
-    }    
-    echo '</div>';
 }
 ?>
+
 
         
     </section>

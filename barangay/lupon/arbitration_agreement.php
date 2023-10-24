@@ -161,7 +161,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit'])) {
     <section class="home">
 
             <center>
-            <div class="add-account-container" style="height: 535px; width: 800px; margin-top: 2px;">
+            <div class="add-account-container" style="height: 535px; width: 880x; margin-top: 20px; margin-left: -50px;">
             <?php
         $incident_case_number = $_GET['incident_case_number'];
         $select = mysqli_query($conn, "SELECT * FROM `incident_report` WHERE incident_case_number = '$incident_case_number'") or die('query failed');
@@ -196,7 +196,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit'])) {
 
                     </div>
                 
-                    <div class="input-group1 d-flex" style="margin-top: 3%;">
+                    <div class="input-group1 d-flex" style="margin-top: 3%; margin-left: 22%;">
                         <input type="button" value="Back" class="btn btn-secondary back-btn" style="width: 10%; margin-left: 430px;" onclick="history.back()">
                         <input type="button" id="openModalBtn" value="Create Agreement" class="btn btn-danger" style="width: 30%; margin-left: 10px;">
                     </div>
