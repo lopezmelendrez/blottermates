@@ -25,7 +25,7 @@ header('location: ../../index.php');
     <link href="https://cdn.jsdelivr.net/npm/fullcalendar@5.9.0/main.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.9.0/main.js"></script>
     <link rel="icon" type="image/x-icon" href="../../images/favicon.ico">
-    <title>Mediation Hearings</title>
+    <title>Arbitration Hearings</title>
 </head>
 <body>
 
@@ -101,10 +101,28 @@ header('location: ../../index.php');
     }
     ?>
 </td>
-<td>-</td>
+<td>            <?php
+$incident_case_number = $fetch_cases['incident_case_number'];
+$select_arbitration_agreement = mysqli_query($conn, "SELECT 1 FROM arbitration_agreement WHERE incident_case_number = '$incident_case_number' LIMIT 1");
+if (mysqli_num_rows($select_arbitration_agreement) > 0) {
+    echo '-';
+    
+} else {
+    echo '<span class="to-notify">NEEDS ARBITRATION AGREEMENT</span>';
+}
+?></td>
             <td>
-                <a href="settlement_page.php?incident_case_number=<?php echo $incident_case_number ?>" class="hearing-1" style="text-decoration: none;">Go to Hearing</a>
-                <a href="../pages/filecourt_action.html" class="filecourt-action" style="text-decoration: none;">File Court Action</a>
+            <?php
+$incident_case_number = $fetch_cases['incident_case_number'];
+$select_arbitration_agreement = mysqli_query($conn, "SELECT 1 FROM arbitration_agreement WHERE incident_case_number = '$incident_case_number' LIMIT 1");
+if (mysqli_num_rows($select_arbitration_agreement) > 0) {
+    echo '<a href="arbitration_settlement_page.php?incident_case_number=' . $incident_case_number . '" class="hearing-1" style="text-decoration: none;">Go to Hearing</a>';
+} else {
+    // No data in arbitration_agreement, so display "Create Arbitration for Agreement"
+    echo '<a href="arbitration_agreement.php?incident_case_number=' . $incident_case_number . '" class="hearing-1" style="text-decoration: none;">Create Arbitration Agreement</a>';
+}
+?>
+<a href="../pages/filecourt_action.html" class="filecourt-action" style="text-decoration: none;">File Court Action</a>
             </td>
             </tr>
             <?php
@@ -358,6 +376,11 @@ header('location: ../../index.php');
     background: #379711;
     color: #F2F3F5;
 }
+
+.to-notify{
+        font-weight: 900;
+        color: #bc1823;
+    }
 
     </style>
 

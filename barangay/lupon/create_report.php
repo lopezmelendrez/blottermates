@@ -97,7 +97,7 @@ if (isset($_POST['submit'])) {
     if ($fetch['barangay']) {
         echo '<span class="profession">Barangay ' . $fetch['barangay'] . '</span>';
     } else {
-        echo '<span class="profession">Not specified</span>'; // Or handle this case as needed
+        echo '<span class="profession">Not specified</span>'; 
     }
     ?>
                 </div>
@@ -129,7 +129,7 @@ if (isset($_POST['submit'])) {
                     </li>
 
                     <li class="nav-link">
-                        <a href="#">
+                        <a href="hearings.php">
                             <i class='bx bx-calendar-event icon' ></i>
                             <span class="text nav-text">Hearings</span>
                         </a>
