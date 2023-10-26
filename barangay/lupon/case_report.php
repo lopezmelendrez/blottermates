@@ -72,7 +72,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['execution_submit'])) 
                 ?>
                 <?php
     if ($fetch['barangay'] == 'Ibaba') {
-        echo '<span class="image"><img src="../../images/ibaba_logo.jpg"></span>';
+        echo '<span class="image"><img src="../../images/ibaba_logo.png"></span>';
     } else {
         echo '<span class="image"><img src="../../images/logo.png"></span>';
     }
@@ -84,7 +84,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['execution_submit'])) 
     if ($fetch['barangay']) {
         echo '<span class="profession">Barangay ' . $fetch['barangay'] . '</span>';
     } else {
-        echo '<span class="profession">Not specified</span>'; // Or handle this case as needed
+        echo '<span class="profession">Not specified</span>'; 
     }
     ?>
                 </div>
@@ -116,12 +116,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['execution_submit'])) 
                     </li>
 
                     <li class="nav-link">
-                        <a href="#">
+                        <a href="hearings.php">
                             <i class='bx bx-calendar-event icon' ></i>
                             <span class="text nav-text">Hearings</span>
                         </a>
                     </li>
-
 
 
             </div>
@@ -157,8 +156,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['execution_submit'])) 
         </div>
 
     </nav>
-
-
+       
     <section class="home">
         <div class="container" style="margin-left: 15%; margin-top: 22px;">
         <?php
@@ -212,14 +210,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['execution_submit'])) 
                         </div>
                         <div class="buttons" style="margin-top: -2%;">
                             <a href="incident_reports.php" style="text-decoration: none;">
-                            <div class="backBtn-1" style="padding: 12px 12px; width: 250px;">
-                                <span class="btnText" style="margin-left: 10px;">See All Cases</span>
+                            <div class="backBtn-1" style="padding: 12px 12px; width: 100px; border: 1px solid #bc1823; background: #fff; color: #bc1823; margin-left: 550%;">
+                                <span class="btnText" style="text-align: center;">See All Cases</span>
                             </div></a>
-                            
-                            <a href="case_reportPage2.php?incident_case_number=<?php echo $incident_case_number ?>">
-                            <span class="next">next</span>
+                            <a href="case_reportPage2.php?incident_case_number=<?php echo $incident_case_number ?>" style="text-decoration: none;">
+                            <div class="backBtn-1" style="width: 600px; margin-left: 280%; padding: 12px 12px; ">
+                                <span class="btnText">Next</span>
+                            </div>
                             </a>
                         </div>
+                        
                     </div> 
                 </div>
 

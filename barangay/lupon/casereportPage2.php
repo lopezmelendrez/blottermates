@@ -268,8 +268,8 @@ if(mysqli_num_rows($select) > 0){
             <h3 class="modal-title" style="font-size: 18px; text-align:center;">SELECT PDF TO GENERATE</h3>
             <hr style="border: 1px solid #ebecf0; margin: 10px 0;">
             <p style="font-size: 14px; text-align: left;">
-    Amicable Settlement Form (KP #16)
-    <a href="your-link-here" class="button" style="margin-left: 17.5%;">
+    Complainant's Form (KP #7)
+    <a href="your-link-here" class="button" style="margin-left: 29%;">
       Generate
     </a>
     <span class="printer-icon">
@@ -278,8 +278,8 @@ if(mysqli_num_rows($select) > 0){
   </p>
   <hr style="border: 1px solid #ccc; margin: 10px 0;">
   <p style="font-size: 14px; text-align: left;">
-    Certification to File Action (KP #20)
-    <a href="your-link-here" class="button" style="margin-left: 18%;">
+    Hearing Notice for Complainant (KP #18)
+    <a href="your-link-here" class="button" style="margin-left: 10%;">
       Generate
     </a>
     <span class="printer-icon">
@@ -287,11 +287,11 @@ if(mysqli_num_rows($select) > 0){
     </span>
   </p>
   <hr style="border: 1px solid #ccc; margin: 10px 0;">
-  <form action="" method="post">
-  <input type="hidden" name="incident_case_number" value="<?php echo $incident_case_number; ?>">
   <p style="font-size: 14px; text-align: left;">
-    Motion for Execution (KP #25)
-    <input type="submit" name="execution_submit" class="button" value="Generate" style="border: none; cursor: pointer; margin-left: 26%;">
+    Hearing Notice for Respondent (KP #19)
+    <a href="your-link-here" class="button" style="margin-left: 12%;">
+      Generate
+    </a>
     <span class="printer-icon">
       <i class='bx bxs-printer'></i>
     </span>
