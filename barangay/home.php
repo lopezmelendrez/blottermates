@@ -28,9 +28,19 @@ header('location: ../index.php');
     <nav class="sidebar close">
         <header>
             <div class="image-text">
-                <span class="image">
-                    <img src="../images/ibaba_logo.jpg">
-                </span>
+                    <?php
+        $select = mysqli_query($conn, "SELECT * FROM `pb_accounts` WHERE pb_id = '$pb_id'") or die('Query failed');
+
+        if(mysqli_num_rows($select) > 0){
+            $fetch = mysqli_fetch_assoc($select);
+        }
+
+        if ($fetch['barangay'] == 'Ibaba') {
+            echo '<span class="image"><img src="../images/ibaba_logo.png"></span>';
+        } else {
+            echo '<span class="image"><img src="../images/logo.png"></span>';
+        }
+        ?>
 
                 <div class="text logo-text">
                     <span class="name"><?php echo $barangay_captain ?></span>
@@ -109,6 +119,124 @@ header('location: ../index.php');
                 <i class='bx bx-folder-plus'></i>
                 <p>Register Lupon Account</p>
             </div></a>
+        </div>
+
+        <div class="container" style="margin-left: -2%;">
+        <div class="row">
+            <div class="col-md-3">
+            <?php
+              $countQuery = "SELECT pa.barangay, COUNT(*) as caseCount
+              FROM `incident_report` AS ir
+              INNER JOIN `hearing` AS h ON ir.incident_case_number = h.incident_case_number
+              INNER JOIN `lupon_accounts` AS la ON ir.lupon_id = la.lupon_id
+              INNER JOIN `pb_accounts` AS pa ON la.pb_id = pa.pb_id
+              WHERE h.date_of_hearing IS NOT NULL
+                  AND h.time_of_hearing IS NOT NULL
+                  AND NOT EXISTS (SELECT 1 FROM `amicable_settlement` AS amicable WHERE h.hearing_id = amicable.hearing_id)
+                  AND pa.pb_id = '$pb_id'";
+
+
+                $result = mysqli_query($conn, $countQuery);
+
+                if ($result) {
+                    $row = mysqli_fetch_assoc($result);
+                    $ongoingCasesCount = $row['caseCount'];
+                } else {
+                    $ongoingCasesCount = "N/A";
+                }
+
+            ?>
+
+                <div class="ongoing-cases-box">
+                    <p>Ongoing Cases</p>
+                    <p><?php echo $ongoingCasesCount ?></p>
+                </div>
+            </div>
+            
+            <div class="col-md-3">
+            
+            <?php
+              $settledCountQuery = "SELECT pa.barangay, COUNT(*) as settledCaseCount
+              FROM `incident_report` AS ir
+              INNER JOIN `hearing` AS h ON ir.incident_case_number = h.incident_case_number
+              INNER JOIN `lupon_accounts` AS la ON ir.lupon_id = la.lupon_id
+              INNER JOIN `pb_accounts` AS pa ON la.pb_id = pa.pb_id
+              LEFT JOIN `amicable_settlement` AS amicable_settlement ON h.hearing_id = amicable_settlement.hearing_id
+              WHERE h.date_of_hearing IS NOT NULL AND h.time_of_hearing IS NOT NULL AND amicable_settlement.agreement_description IS NOT NULL
+              AND pa.pb_id = '$pb_id'";
+
+                $result = mysqli_query($conn, $settledCountQuery);
+
+                if ($result) {
+                    $row = mysqli_fetch_assoc($result);
+                    $settledCasesCount = $row['settledCaseCount'];
+                } else {
+                    $settledCasesCount = "N/A";
+                }
+
+            ?>
+        
+                <div class="settled-cases-box">
+                    <p>Settled Cases</p>
+                    <p><?php echo $settledCasesCount ?></p>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+            <?php
+              $incompleteCountQuery = "SELECT pa.barangay, COUNT(*) as incompleteCaseCount
+              FROM `incident_report` AS ir
+              INNER JOIN `lupon_accounts` AS la ON ir.lupon_id = la.lupon_id
+              INNER JOIN `pb_accounts` AS pa ON la.pb_id = pa.pb_id
+              WHERE pa.pb_id = '$pb_id'
+              AND NOT EXISTS (
+                  SELECT 1
+                  FROM `hearing` AS h
+                  INNER JOIN `amicable_settlement` AS amicable_settlement ON h.hearing_id = amicable_settlement.hearing_id
+                  WHERE ir.incident_case_number = h.incident_case_number
+              )
+              GROUP BY pa.barangay;
+              ";
+
+                $result = mysqli_query($conn, $incompleteCountQuery);
+
+                if ($result) {
+                    $row = mysqli_fetch_assoc($result);
+                    $incompleteCasesCount = $row['incompleteCaseCount'];
+                } else {
+                    $incompleteCasesCount = "N/A";
+                }
+
+            ?>
+                <div class="incomplete-cases-box">
+                    <p>Cases with Incomplete Notice</p>
+                    <p><?php echo $incompleteCasesCount ?></p>
+                </div>
+            </div>
+            <div class="col-md-3">
+
+            <?php
+              $activeLuponCountQuery = "SELECT pa.barangay, COUNT(*) as activeLuponStaffs
+              FROM `lupon_accounts` AS la
+              INNER JOIN `pb_accounts` AS pa ON la.pb_id = pa.pb_id
+              WHERE pa.pb_id = '$pb_id' AND la.login_status = 'active';
+              ";
+
+                $result = mysqli_query($conn, $activeLuponCountQuery);
+
+                if ($result) {
+                    $row = mysqli_fetch_assoc($result);
+                    $activeLuponCount = $row['activeLuponStaffs'];
+                } else {
+                    $activeLuponCount = "N/A";
+                }
+
+            ?>
+                <div class="lupon-online-box">
+                    <p>Lupon Staff Online</p>
+                    <p><?php echo $activeLuponCount ?></p>
+                </div>
+            </div>
         </div>
 
     </section>
@@ -205,6 +333,82 @@ dateElement.textContent = formatDate(now);
 }, 200);
 
     </script>
+
+    <style>
+
+        .container {
+            display: flex;
+            justify-content: space-around;
+        }
+
+        .ongoing-cases-box {
+            width: 280px;
+            padding: 12px 12px;
+            border: 1px solid #2E5895;
+            background: #fff;
+            border-radius: 5px;
+            text-align: center;
+            margin: 10px;
+        }
+        
+        .ongoing-cases-box p{
+            font-size: 16px;
+            color: #2E5895;
+            font-weight: 600;
+            text-transform: capitalize;            
+        }
+
+        .settled-cases-box {
+            width: 280px;
+            padding: 12px 12px;
+            border: 1px solid #F5BE1D;
+            background: #fff;
+            border-radius: 5px;
+            text-align: center;
+            margin: 10px;
+        }
+        
+        .settled-cases-box p{
+            font-size: 16px;
+            color: #F5BE1D;
+            font-weight: 600;
+            text-transform: capitalize;            
+        }
+
+        .incomplete-cases-box {
+            width: 280px;
+            padding: 12px 12px;
+            border: 1px solid #C23B21;
+            background: #fff;
+            border-radius: 5px;
+            text-align: center;
+            margin: 10px;
+        }
+        
+        .incomplete-cases-box p{
+            font-size: 16px;
+            color: #C23B21;
+            font-weight: 600;
+            text-transform: capitalize;            
+        }
+
+        .lupon-online-box {
+            width: 280px;
+            padding: 12px 12px;
+            background: #5bc236;
+            border-radius: 5px;
+            text-align: center;
+            margin: 10px;
+        }
+        
+        .lupon-online-box p{
+            font-size: 16px;
+            color: #fff;
+            font-weight: 600;
+            text-transform: uppercase;            
+        }
+
+    </style>
 
 </body>
 </html>

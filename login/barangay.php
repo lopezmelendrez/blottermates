@@ -33,6 +33,9 @@ if (isset($_POST['submit'])) {
             $row = mysqli_fetch_assoc($result);
 
             if (password_verify($password, $row['password'])) {
+                $updateQuery = "UPDATE lupon_accounts SET login_status = 'active' WHERE email_address = '$email'";
+                mysqli_query($conn, $updateQuery);
+
                 $_SESSION['email_address'] = $email;
                 header('location: ../barangay/lupon/home.php');
                 exit();
