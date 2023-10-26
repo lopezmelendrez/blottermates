@@ -11,33 +11,35 @@ if(!isset($email)){
 header('location: ../../index.php');
 }
 
-$generate_execution = '';
-
-
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['execution_submit'])) {
-    $incident_case_number = $_POST['incident_case_number'];
-    $generate_execution = 'form generated';
-
-    $check_query = "SELECT * FROM `notify_residents` WHERE incident_case_number = '$incident_case_number'";
-    $check_result = mysqli_query($conn, $check_query);
-
-    if ($check_result && mysqli_num_rows($check_result) > 0) {
-        $update_query = "UPDATE `notify_residents` SET `generate_execution` = '$generate_execution' WHERE incident_case_number = '$incident_case_number'";
-        $result = mysqli_query($conn, $update_query);
-    } else {
-        $insert_query = "INSERT INTO `notify_residents` (`incident_case_number`, `generate_execution`)
-                         VALUES ('$incident_case_number', '$generate_execution')";
-        $result = mysqli_query($conn, $insert_query);
-    }
-
-    if ($result) {
-        header("Location: incident_reports.php");
-        exit;
-    } else {
-        echo "Error: " . mysqli_error($conn);
-        exit;
-    }
+if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['incident_case_number'])) {
+    $incident_case_number = $_GET['incident_case_number'];
+} else {
+    header("Location: incomplete_notices.php");
+    exit;
 }
+
+$select = mysqli_query($conn, "SELECT * FROM `incident_report` WHERE `incident_case_number` = '$incident_case_number'") or die('query failed');
+$row_data = mysqli_fetch_assoc($select);
+
+if (!$row_data) {
+    // If the incident_case_number is not found, handle the error accordingly, e.g., redirect back to the dashboard.
+    header("Location: ../lupon/incomplete_notices.php");
+    exit;
+}
+
+$complainant_last_name = $row_data['complainant_last_name'];
+$complainant_first_name = $row_data['complainant_first_name'];
+$complainant_middle_name = $row_data['complainant_middle_name'];
+$respondent_last_name = $row_data['respondent_last_name'];
+$respondent_first_name = $row_data['respondent_first_name'];
+$respondent_middle_name = $row_data['respondent_middle_name'];
+$description_of_violation = $row_data['description_of_violation'];
+$incident_case_number = $row_data['incident_case_number'];
+$original_date = $row_data['incident_date'];
+$incident_date = date("F j, Y", strtotime($original_date));
+$timestamp = strtotime($row_data['created_at']); // Assuming $row_data['created_at'] contains the timestamp
+$created_at = date("g:i A - F j, Y", $timestamp);
+
 
 
 ?>
@@ -161,43 +163,34 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['execution_submit'])) 
 
     <section class="home">
         <div class="container" style="margin-left: 15%; margin-top: 22px;">
-        <?php
-        $incident_case_number = $_GET['incident_case_number'];
-        $select = mysqli_query($conn, "SELECT * FROM `incident_report` WHERE incident_case_number = '$incident_case_number'") or die('query failed');
-        $fetch_cases = mysqli_fetch_assoc($select);
-        ?>
         <div class="card">
             <div class="card-body">
                 <div class="d-flex justify-content-between align-items-center mb-3">
                     <header class="card-title" style="font-size: 18px;">Case Report Summary of Case #<?php echo $incident_case_number; ?></header>
                     <span class="generate" onclick="showPDFPopup()" style="text-decoration: none;"><i class="fa-solid fa-file-pdf" style="margin-right: 5px;"></i>Generate PDF Forms</span>
-                    <p style="font-size: 15px; font-style: italic; margin-top: -5px;"><?php echo $fetch_cases['complainant_last_name'] ?> vs. <?php echo $fetch_cases['respondent_last_name'] ?></p>
+                    <p style="font-size: 15px; font-style: italic; margin-top: -5px;"><?php echo $complainant_last_name ?> vs. <?php echo $respondent_last_name ?></p>
                     <hr style="border: 1px solid #ccc; margin: 20px 0;">
                 </div>
-            <form action="#">
+            <form action="#" method="post">
                 <div class="form first">
                     <div class="details personal">
                         <div class="fields">
                             <div class="input-field-1">
                                 <label class="label">Complainant</label>
-                                <div class="text-box">
-                                    <p style="padding: 10px 0"><?php echo $fetch_cases['complainant_last_name'] ?>, <?php echo $fetch_cases['complainant_first_name'] ?> <?php echo $fetch_cases['complainant_middle_name'] ?>.</p></div>
+                                <input type="text" value="<?php echo $complainant_last_name ?>, <?php echo $complainant_first_name ?> <?php echo $complainant_middle_name ?>." disabled readonly>
                             </div>
                             <div class="input-field-1">
                                 <label class="label">Respondent</label>
-                                <div class="text-box">
-                                    <p style="padding: 10px 0"><?php echo $fetch_cases['respondent_last_name'] ?>, <?php echo $fetch_cases['respondent_first_name'] ?> <?php echo $fetch_cases['respondent_middle_name'] ?>.</p></div>
+                                <input type="text" value="<?php echo $respondent_last_name ?>, <?php echo $respondent_first_name ?> <?php echo $respondent_middle_name ?>." disabled readonly>
                             </div>
                             <span class="title" style="width: 100%;">Incident Description</span>
                             <div class="input-field-1">
                                 <label class="label">Date Of Incident</label>
-                                <div class="text-box">
-                                    <p style="padding: 10px 0"><?php echo $fetch_cases['incident_date'] ?></p></div>
+                                <input type="text" value="<?php echo $incident_date ?>" disabled readonly>
                             </div>
                             <div class="input-field-1"">
                                 <label class="label">Date Reported</label>
-                                <div class="text-box">
-                                    <p style="padding: 10px 0"><?php echo $fetch_cases['created_at'] ?></p></div>
+                                <input type="text" value="<?php echo $created_at ?>" disabled readonly>
                             </div>
                         </div>
                     </div>
@@ -205,8 +198,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['execution_submit'])) 
                         <div class="fields">
                             <div class="input-field" style="width: 100%;">
                                 <label class="label">Description of Violation</label>
-                                <div class="text-box" style="height: 150px; margin-top: 8px;">
-                                    <p style="padding: 10px 0"><?php echo $fetch_cases['description_of_violation'] ?></p></div>
+                                <input type="text" style="height: 150px; margin-top: 8px;" value="<?php echo $description_of_violation ?>" disabled readonly>
+
+                                <!--<input type="text" style="width: 100%; height: 150px; padding: 10px 15px; border: 1px solid #aaa; outline: none; font-size: 14px; border-radius: 5px; font-weight: 400; margin-top: 8px; resize: vertical;" value="<?php echo $first_name ?>" id="description_input" disabled readonly>-->
                             </div>
                             
                         </div>
@@ -216,28 +210,98 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['execution_submit'])) 
                                 <span class="btnText" style="margin-left: 10px;">See All Cases</span>
                             </div></a>
                             
-                            <a href="case_reportPage2.php?incident_case_number=<?php echo $incident_case_number ?>">
-                            <span class="next">next</span>
-                            </a>
+                            <button class="nextBtn">
+                            <span class="btnText" style="background: transparent; border: none; font-weight: 600; color: #fff; cursor: pointer;">Next</span>
+                            </button>
+                        </div>
+                    </div> 
+                </div>
+                <div class="form second">
+                    <div class="details personal">
+                        <div class="fields">
+                            <span class="title" style="width: 100%; margin-top: -5px;">Hearing Information</span>
+                            <?php
+             $select = mysqli_query($conn, "SELECT * FROM `hearing` WHERE incident_case_number = '$incident_case_number'") or die('query failed');
+             if(mysqli_num_rows($select) > 0){
+                $fetch = mysqli_fetch_assoc($select);
+             }
+             $hearing_date = date('M j, Y', strtotime($fetch['date_of_hearing']));
+             $formatted_time = date('g:i A', strtotime($fetch['time_of_hearing']));
+             $hearing_status = $fetch['hearing_type_status'];
+            ?>
+                            <div class="input-field">
+                                <label class="label">Hearing/Action</label>
+                                <input type="text" value="<?php echo $hearing_status ?>" disabled readonly>
+                            </div>
+                            <div class="input-field">
+                                <label class="label">Date of Hearing</label>
+                                <input type="text" value="<?php echo $formatted_time ?> - <?php echo $hearing_date?>" disabled readonly>
+                            </div>
+                            <?php
+$select = mysqli_query($conn, "SELECT * FROM `amicable_settlement` WHERE `incident_case_number` = '$incident_case_number'") or die('query failed');
+if(mysqli_num_rows($select) > 0){
+    $fetch = mysqli_fetch_assoc($select);
+    $date_agreed = $fetch['date_agreed'];
+    $agreed_date = date("F j, Y", strtotime($date_agreed));
+    $agreement_description = $fetch['agreement_description'];
+} else {
+    $agreed_date = "NO SETTLEMENT YET";
+    $agreement_description = "NO SETTLEMENT YET";
+}
+?>
+<div class="input-field">
+    <label class="label">Date of Settlement</label>
+    <input type="text" value="<?php echo $agreed_date ?>" disabled readonly>
+</div>
+<div class="input-field" style="width: 100%; position: relative;">
+    <label class="label">Final Agreement</label>
+    <input type="text" value="<?php echo $agreement_description ?>" disabled readonly>
+</div>
+
+                            <span class="title" style="width: 100%;">Execution of Agreement</span>
+                            <div class="input-field-1">
+                                <label class="label">Date of Agreement Execution</label>
+                                <input type="date" name="agreement_execution" placeholder="" >
+                            </div>
+                            <div class="input-field-1">
+                                <label class="label">Compliance Status</label>
+                                <select name="compliance_status">
+                                    <option disabled selected>Select...</option>
+                                    <option>COMPLIANCE</option>
+                                    <option>NON-COMPLIANCE</option>
+                                </select>
+                            </div>
+                            <div class="input-field" style="width: 100%; position: relative;">
+                                <label class="label">Remarks</label>
+                                <input type="text" name="complainant_first_name" onkeypress="return validateName(event)" placeholder="" required>
+                            </div>
+
+                            
+                        </div>
+                    </div>
+
+                    <div class="details family">
+                        <div class="buttons" style="margin-top: -2%;">
+                            <div class="backBtn">
+                                <span class="btnText" style="margin-left: -20px;">Back</span>
+                            </div>
+                            
+                            
                         </div>
                     </div> 
                 </div>
 
-                
-                
-                </form>
-
                 <div id="pdf_popup" class="popup">
                 <div class="close-icon" onclick="closePDFPopup()">
-                <i class='bx bxs-x-circle' ></i> <!-- Replace with the desired close icon -->
+                <i class='bx bxs-x-circle' ></i>
     </div>
             <center>
             <div class="modal">
             <h3 class="modal-title" style="font-size: 18px; text-align:center;">SELECT PDF TO GENERATE</h3>
             <hr style="border: 1px solid #ebecf0; margin: 10px 0;">
             <p style="font-size: 14px; text-align: left;">
-    Amicable Settlement Form (KP #16)
-    <a href="your-link-here" class="button" style="margin-left: 17.5%;">
+    Complainant's Form (KP #7)
+    <a href="your-link-here" class="button" style="margin-left: 29%;">
       Generate
     </a>
     <span class="printer-icon">
@@ -246,8 +310,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['execution_submit'])) 
   </p>
   <hr style="border: 1px solid #ccc; margin: 10px 0;">
   <p style="font-size: 14px; text-align: left;">
-    Certification to File Action (KP #20)
-    <a href="your-link-here" class="button" style="margin-left: 18%;">
+    Hearing Notice for Complainant (KP #18)
+    <a href="your-link-here" class="button" style="margin-left: 10%;">
       Generate
     </a>
     <span class="printer-icon">
@@ -255,21 +319,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['execution_submit'])) 
     </span>
   </p>
   <hr style="border: 1px solid #ccc; margin: 10px 0;">
-  <form action="" method="post">
-  <input type="hidden" name="incident_case_number" value="<?php echo $incident_case_number; ?>">
   <p style="font-size: 14px; text-align: left;">
-    Motion for Execution (KP #25)
-    <input type="submit" name="execution_submit" class="button" value="Generate" style="border: none; cursor: pointer; margin-left: 26%;">
+    Hearing Notice for Respondent (KP #19)
+    <a href="your-link-here" class="button" style="margin-left: 12%;">
+      Generate
+    </a>
     <span class="printer-icon">
       <i class='bx bxs-printer'></i>
     </span>
   </p>
-  </form>
                             
             </center>
         </div>
 </div>
-
+            </form>
         </div>
 
     </section>
@@ -516,18 +579,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['execution_submit'])) 
       font-size: 50px;
       color:#bc1823;
     }
-
-    .text-box{
-    outline: none;
-    font-size: 14px;
-    font-weight: 400;
-    color: #333;
-    border-radius: 5px;
-    border: 1px solid #aaa;
-    padding: 0 15px;
-    height: 42px;
-    margin: 8px 0;
-}
 
 
 </style>

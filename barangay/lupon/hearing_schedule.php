@@ -46,7 +46,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit'])) {
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css"/>
     <link rel="stylesheet" href="bootstrap/bootstrap-5.0.2-dist/css/bootstrap.min.css">
     <link rel="icon" type="image/x-icon" href="../../images/favicon.ico">
-    <title>Create Hearing Schedule</title>
+    <title>Set Hearing Schedule</title>
 </head>
 <body>
     

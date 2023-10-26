@@ -178,45 +178,76 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['execution_submit'])) 
                 <div class="form first">
                     <div class="details personal">
                         <div class="fields">
-                            <div class="input-field-1">
-                                <label class="label">Complainant</label>
+                        <span class="title" style="width: 100%; margin-top: -5px;">Hearing Information</span>
+                            <?php
+             $select = mysqli_query($conn, "SELECT * FROM `hearing` WHERE incident_case_number = '$incident_case_number'") or die('query failed');
+             if(mysqli_num_rows($select) > 0){
+                $fetch = mysqli_fetch_assoc($select);
+             }
+             $hearing_date = date('M j, Y', strtotime($fetch['date_of_hearing']));
+             $formatted_time = date('g:i A', strtotime($fetch['time_of_hearing']));
+             $hearing_status = $fetch['hearing_type_status'];
+            ?>
+                            <div class="input-field">
+                                <label class="label">Hearing Status</label>
                                 <div class="text-box">
-                                    <p style="padding: 10px 0"><?php echo $fetch_cases['complainant_last_name'] ?>, <?php echo $fetch_cases['complainant_first_name'] ?> <?php echo $fetch_cases['complainant_middle_name'] ?>.</p></div>
+                                    <p style="padding: 10px 0"><?php echo $hearing_status ?></p></div>
+                            </div>
+                            <div class="input-field">
+                                <label class="label">Date of Hearing</label>
+                                <div class="text-box">
+                                    <p style="padding: 10px 0"><?php echo $formatted_time ?> - <?php echo $hearing_date?></p></div>
+                            </div>
+                            <?php
+$select = mysqli_query($conn, "SELECT * FROM `amicable_settlement` WHERE `incident_case_number` = '$incident_case_number'") or die('query failed');
+if(mysqli_num_rows($select) > 0){
+    $fetch = mysqli_fetch_assoc($select);
+    $date_agreed = $fetch['date_agreed'];
+    $agreed_date = date("F j, Y", strtotime($date_agreed));
+    $agreement_description = $fetch['agreement_description'];
+} else {
+    $agreed_date = "NO SETTLEMENT YET";
+    $agreement_description = "NO SETTLEMENT YET";
+}
+?><div class="input-field">
+<label class="label">Date of Settlement</label>
+<div class="text-box">
+    <p style="padding: 10px 0"><?php echo $agreed_date ?></p></div>
+</div>
+<div class="input-field" style="width: 100%; position: relative;">
+<label class="label">Final Agreement</label>
+<div class="text-box">
+    <p style="padding: 10px 0"><?php echo $agreement_description ?></p></div>
+</div>
+                            
+                            <span class="title" style="width: 100%;">Execution of Agreement</span>
+                            <div class="input-field-1">
+                                <label class="label">Date of Agreement Execution</label>
+                                <input type="date" name="agreement_execution" placeholder="" >
                             </div>
                             <div class="input-field-1">
-                                <label class="label">Respondent</label>
-                                <div class="text-box">
-                                    <p style="padding: 10px 0"><?php echo $fetch_cases['respondent_last_name'] ?>, <?php echo $fetch_cases['respondent_first_name'] ?> <?php echo $fetch_cases['respondent_middle_name'] ?>.</p></div>
+                                <label class="label">Compliance Status</label>
+                                <select name="compliance_status">
+                                    <option disabled selected>Select...</option>
+                                    <option>COMPLIANCE</option>
+                                    <option>NON-COMPLIANCE</option>
+                                </select>
                             </div>
-                            <span class="title" style="width: 100%;">Incident Description</span>
-                            <div class="input-field-1">
-                                <label class="label">Date Of Incident</label>
-                                <div class="text-box">
-                                    <p style="padding: 10px 0"><?php echo $fetch_cases['incident_date'] ?></p></div>
-                            </div>
-                            <div class="input-field-1"">
-                                <label class="label">Date Reported</label>
-                                <div class="text-box">
-                                    <p style="padding: 10px 0"><?php echo $fetch_cases['created_at'] ?></p></div>
+                            <div class="input-field" style="width: 100%; position: relative;">
+                                <label class="label">Remarks</label>
+                                <input type="text" name="complainant_first_name" onkeypress="return validateName(event)" placeholder="" required>
                             </div>
                         </div>
                     </div>
                     <div class="details ID">
-                        <div class="fields">
-                            <div class="input-field" style="width: 100%;">
-                                <label class="label">Description of Violation</label>
-                                <div class="text-box" style="height: 150px; margin-top: 8px;">
-                                    <p style="padding: 10px 0"><?php echo $fetch_cases['description_of_violation'] ?></p></div>
-                            </div>
-                            
-                        </div>
+                        
                         <div class="buttons" style="margin-top: -2%;">
-                            <a href="incident_reports.php" style="text-decoration: none;">
+                            <a href="case_report.php?incident_case_number=<?php echo $incident_case_number ?>" style="text-decoration: none;">
                             <div class="backBtn-1" style="padding: 12px 12px; width: 250px;">
-                                <span class="btnText" style="margin-left: 10px;">See All Cases</span>
+                                <span class="btnText" style="margin-left: 10px;">Back</span>
                             </div></a>
                             
-                            <a href="case_reportPage2.php?incident_case_number=<?php echo $incident_case_number ?>">
+                            <a href="try.html">
                             <span class="next">next</span>
                             </a>
                         </div>

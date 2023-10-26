@@ -113,27 +113,35 @@ if (mysqli_num_rows($select_hearing) > 0) {
             <td><?php echo date("F j, Y", strtotime($fetch_cases['created_at'])); ?></td>
             <td>
             <?php
-    $incident_case_number = $fetch_cases['incident_case_number'];
-    $select_hearing = mysqli_query($conn, "SELECT hearing_type_status FROM hearing WHERE incident_case_number = '$incident_case_number'") or die('hearing query failed');
-    
-    if (mysqli_num_rows($select_hearing) > 0) {
-        $hearing_data = mysqli_fetch_assoc($select_hearing);
-        $hearing_type_status = $hearing_data['hearing_type_status'];
-        
+$incident_case_number = $fetch_cases['incident_case_number'];
+$select_hearing = mysqli_query($conn, "SELECT hearing_type_status, date_of_hearing FROM hearing WHERE incident_case_number = '$incident_case_number'") or die('hearing query failed');
+
+if (mysqli_num_rows($select_hearing) > 0) {
+    $hearing_data = mysqli_fetch_assoc($select_hearing);
+    $hearing_type_status = $hearing_data['hearing_type_status'];
+    $date_of_hearing = strtotime($hearing_data['date_of_hearing']);
+    $current_time = time();
+
+    if ($current_time >= $date_of_hearing) {
+        // Hearing has already occurred, so display the "Hearing" link
         if ($hearing_type_status == "mediation") {
             echo '<a href="settlement_page.php?incident_case_number=' . $incident_case_number . '" class="hearing">Hearing</a>';
-            echo '<a href="case_report.php?incident_case_number=' . $incident_case_number . '" class="shownotices">Details</a>';
         } elseif ($hearing_type_status == "conciliation") {
             echo '<a href="conciliation_settlement_page.php?incident_case_number=' . $incident_case_number . '" class="hearing">Hearing</a>';
-            echo '<a href="case_report.php?incident_case_number=' . $incident_case_number . '" class="shownotices">Details</a>';
-        }
-        elseif ($hearing_type_status == "arbitration") {
+        } elseif ($hearing_type_status == "arbitration") {
             echo '<a href="arbitration_settlement_page.php?incident_case_number=' . $incident_case_number . '" class="hearing">Hearing</a>';
-            echo '<a href="case_report.php?incident_case_number=' . $incident_case_number . '" class="shownotices">Details</a>';
         }
+    } else {
+        // Hearing is upcoming, display an appropriate text
+        echo '<div class="hearing">Upcoming Hearing</div>';
     }
-    
-    ?>
+
+    // In either case, you can still display the "Details" link
+    echo '<a href="casereport.php?incident_case_number=' . $incident_case_number . '" class="shownotices">Details</a>';
+}
+?>
+
+
 </td>
             </td>
         </tr>

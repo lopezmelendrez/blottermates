@@ -121,7 +121,7 @@ header('location: ../../index.php');
                 } else {
                     // No hearing date, display "NO HEARING SCHEDULE YET"
                     echo '<a href="../../barangay/lupon/hearing_schedule.php?incident_case_number=' . $incident_case_number . '" class="schedule">Set Hearing Schedule</a>';
-                    echo '<a href="../../tcpdf/generate_kp7.php?incident_case_number=' . $incident_case_number . '" class="generate"><i class="bx bx-printer" style="margin-right: 5px;"></i>Generate KPL Form 7</a>';
+                    echo '<a href="../../tcpdf/generate_kp7.php?incident_case_number=' . $incident_case_number . '" class="shownotices"><i class="bx bx-printer" style="margin-right: 5px;"></i>Generate KPL Form 7</a>';
                 }   
                 ?>    
                 </td>
