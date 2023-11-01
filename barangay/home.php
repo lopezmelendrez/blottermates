@@ -211,30 +211,34 @@ header('location: ../index.php');
 
             <div class="col-md-3">
             <?php
-              $incompleteCountQuery = "SELECT pa.barangay, COUNT(*) as incompleteCaseCount
-              FROM `incident_report` AS ir
-              INNER JOIN `lupon_accounts` AS la ON ir.lupon_id = la.lupon_id
-              INNER JOIN `pb_accounts` AS pa ON la.pb_id = pa.pb_id
-              WHERE pa.pb_id = '$pb_id'
-              AND NOT EXISTS (
-                  SELECT 1
-                  FROM `hearing` AS h
-                  INNER JOIN `amicable_settlement` AS amicable_settlement ON h.hearing_id = amicable_settlement.hearing_id
-                  WHERE ir.incident_case_number = h.incident_case_number
-              )
-              GROUP BY pa.barangay;
-              ";
+$incompleteCountQuery = "SELECT pa.barangay, COUNT(*) as incompleteCaseCount
+FROM `incident_report` AS ir
+INNER JOIN `lupon_accounts` AS la ON ir.lupon_id = la.lupon_id
+INNER JOIN `pb_accounts` AS pa ON la.pb_id = pa.pb_id
+WHERE pa.pb_id = '$pb_id'
+AND NOT EXISTS (
+    SELECT 1
+    FROM `hearing` AS h
+    INNER JOIN `amicable_settlement` AS amicable_settlement ON h.hearing_id = amicable_settlement.hearing_id
+    WHERE ir.incident_case_number = h.incident_case_number
+)
+GROUP BY pa.barangay;";
 
-                $result = mysqli_query($conn, $incompleteCountQuery);
+$result = mysqli_query($conn, $incompleteCountQuery);
 
-                if ($result) {
-                    $row = mysqli_fetch_assoc($result);
-                    $incompleteCasesCount = $row['incompleteCaseCount'];
-                } else {
-                    $incompleteCasesCount = "N/A";
-                }
+if ($result) {
+    // Check if there are rows returned
+    if (mysqli_num_rows($result) > 0) {
+        $row = mysqli_fetch_assoc($result);
+        $incompleteCasesCount = $row['incompleteCaseCount'];
+    } else {
+        $incompleteCasesCount = 0; // No results found
+    }
+} else {
+    $incompleteCasesCount = "N/A";
+}
+?>
 
-            ?>
                 <div class="incomplete-cases-box">
                     <p>Cases with Incomplete Notice</p>
                     <p style="font-size: 30px; margin-top: -8%; font-weight: 600;"><?php echo $incompleteCasesCount ?></p>

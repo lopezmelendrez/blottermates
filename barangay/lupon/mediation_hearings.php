@@ -64,10 +64,18 @@ header('location: ../../index.php');
             <tbody>
             <?php
 
+            $selectLuponId = mysqli_query($conn, "SELECT lupon_id FROM `lupon_accounts` WHERE email_address = '$email'");
+            if (!$selectLuponId) {
+                die('Failed to fetch lupon_id: ' . mysqli_error($conn));
+            }
+            $row = mysqli_fetch_assoc($selectLuponId);
+            $lupon_id = $row['lupon_id'];
+
             $select = mysqli_query($conn, "SELECT ir.incident_case_number, ir.complainant_last_name, ir.complainant_first_name, ir.complainant_middle_name, ir.respondent_last_name, ir.respondent_first_name, ir.respondent_middle_name, ir.description_of_violation, ir.incident_date, ir.submitter_first_name, ir.submitter_last_name, ir.created_at 
                 FROM `incident_report` AS ir
                 INNER JOIN `hearing` AS h ON ir.incident_case_number = h.incident_case_number
-                WHERE h.date_of_hearing IS NOT NULL 
+                WHERE h.date_of_hearing IS NOT NULL
+                AND ir.lupon_id = $lupon_id 
                 AND h.time_of_hearing IS NOT NULL 
                 AND NOT EXISTS (SELECT 1 FROM `amicable_settlement` AS amicable WHERE h.hearing_id = amicable.hearing_id)
                 AND h.hearing_type_status = 'mediation'")

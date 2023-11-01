@@ -61,75 +61,77 @@ header('location: ../../index.php');
                 </tr>
             </thead>
             <tbody>
-                <?php
-    $itemsPerPage = 4;
-    $currentPage = isset($_GET['page']) ? $_GET['page'] : 1;
-    $offset = ($currentPage - 1) * $itemsPerPage;
+            <?php
+$itemsPerPage = 4;
+$currentPage = isset($_GET['page']) ? $_GET['page'] : 1;
+$offset = ($currentPage - 1) * $itemsPerPage;
 
-    $select = mysqli_query($conn, "SELECT * FROM `incident_report` AS ir
+$selectLuponId = mysqli_query($conn, "SELECT lupon_id FROM `lupon_accounts` WHERE email_address = '$email'");
+if (!$selectLuponId) {
+    die('Failed to fetch lupon_id: ' . mysqli_error($conn));
+}
+$row = mysqli_fetch_assoc($selectLuponId);
+$lupon_id = $row['lupon_id'];
+
+
+$select = mysqli_query($conn, "SELECT * FROM `incident_report` AS ir
     WHERE NOT EXISTS (
         SELECT 1 FROM `hearing` AS h
         INNER JOIN `amicable_settlement` AS amicable_settlement ON h.hearing_id = amicable_settlement.hearing_id
         WHERE ir.incident_case_number = h.incident_case_number
-    )") or die('query failed');
-    
-    $num_rows = mysqli_num_rows($select);
-    $numPages = ceil($num_rows / $itemsPerPage);
+    ) AND ir.lupon_id = $lupon_id LIMIT $offset, $itemsPerPage") or die('query failed');
 
-    if ($num_rows === 0) {
-        echo '<tr><td colspan="6" style="font-size: 25px; font-weight: 600; text-transform: uppercase;">no ongoing incident cases yet</td></tr>';
-    } else {
-        // Adjust the query to include LIMIT
-        $select = mysqli_query($conn, "SELECT * FROM `incident_report` AS ir
-            WHERE NOT EXISTS (
-                SELECT 1 FROM `hearing` AS h
-                INNER JOIN `amicable_settlement` AS amicable_settlement ON h.hearing_id = amicable_settlement.hearing_id
-                WHERE ir.incident_case_number = h.incident_case_number
-            ) LIMIT $offset, $itemsPerPage") or die('query failed');
-        while ($fetch_cases = mysqli_fetch_assoc($select)) {
-            $submitter_first_name = $fetch_cases['submitter_first_name'];
-            $submitter_last_name = $fetch_cases['submitter_last_name'];
-            $submitter_full_name = $submitter_first_name . ' ' . $submitter_last_name;
-            ?>
-            <tr>
-                <td><?php echo $fetch_cases['incident_case_number']; ?></td>
-                <td><?php echo $fetch_cases['complainant_last_name']; ?> vs. <?php echo $fetch_cases['respondent_last_name']; ?></td>
-                <td><?php echo date("F j, Y", strtotime($fetch_cases['created_at'])); ?></td>
-                <td><?php echo $submitter_full_name; ?></td>
-                <td>
-                <?php
-                $incident_case_number = $fetch_cases['incident_case_number'];
-                $select_hearing = mysqli_query($conn, "SELECT date_of_hearing FROM hearing WHERE incident_case_number = '$incident_case_number'") or die('hearing query failed');
+$num_rows = mysqli_num_rows($select);
+$numPages = ceil($num_rows / $itemsPerPage);
 
-                if (mysqli_num_rows($select_hearing) > 0) {
-                    $hearing_data = mysqli_fetch_assoc($select_hearing);
-                    echo date("F j, Y", strtotime($hearing_data['date_of_hearing']));
-                } else {
-                    echo '<span style="font-weight: 600;">NO HEARING SCHEDULE YET</span>';
-                }
-                ?>
-                </td>
-                <td>
-                <?php
-                $incident_case_number = $fetch_cases['incident_case_number'];
-                $select_hearing = mysqli_query($conn, "SELECT date_of_hearing FROM hearing WHERE incident_case_number = '$incident_case_number'") or die('hearing query failed');
-
-                if (mysqli_num_rows($select_hearing) > 0) {
-                    $hearing_data = mysqli_fetch_assoc($select_hearing);
-                    $hearing_date = date("F j, Y", strtotime($hearing_data['date_of_hearing']));
-                    echo '<a href="../../barangay/lupon/notice_forms.php?incident_case_number=' . $incident_case_number . '" class="shownotices">Create Notice Form(s)</a>';
-                } else {
-                    // No hearing date, display "NO HEARING SCHEDULE YET"
-                    echo '<a href="../../barangay/lupon/hearing_schedule.php?incident_case_number=' . $incident_case_number . '" class="schedule">Set Hearing Schedule</a>';
-                    echo '<a href="../../tcpdf/generate_kp7.php?incident_case_number=' . $incident_case_number . '" class="shownotices"><i class="bx bx-printer" style="margin-right: 5px;"></i>Generate KPL Form 7</a>';
-                }   
-                ?>    
-                </td>
-            </tr>
+if ($num_rows === 0) {
+    echo '<tr><td colspan="6" style="font-size: 25px; font-weight: 600; text-transform: uppercase;">no ongoing incident cases yet</td></tr>';
+} else {
+    while ($fetch_cases = mysqli_fetch_assoc($select)) {
+        $submitter_first_name = $fetch_cases['submitter_first_name'];
+        $submitter_last_name = $fetch_cases['submitter_last_name'];
+        $submitter_full_name = $submitter_first_name . ' ' . $submitter_last_name;
+        ?>
+        <tr>
+            <td><?php echo $fetch_cases['incident_case_number']; ?></td>
+            <td><?php echo $fetch_cases['complainant_last_name']; ?> vs. <?php echo $fetch_cases['respondent_last_name']; ?></td>
+            <td><?php echo date("F j, Y", strtotime($fetch_cases['created_at'])); ?></td>
+            <td><?php echo $submitter_full_name; ?></td>
+            <td>
             <?php
-        }
+            $incident_case_number = $fetch_cases['incident_case_number'];
+            $select_hearing = mysqli_query($conn, "SELECT date_of_hearing FROM hearing WHERE incident_case_number = '$incident_case_number'") or die('hearing query failed');
+
+            if (mysqli_num_rows($select_hearing) > 0) {
+                $hearing_data = mysqli_fetch_assoc($select_hearing);
+                echo date("F j, Y", strtotime($hearing_data['date_of_hearing']));
+            } else {
+                echo '<span style="font-weight: 600;">NO HEARING SCHEDULE YET</span>';
+            }
+            ?>
+            </td>
+            <td>
+            <?php
+            $incident_case_number = $fetch_cases['incident_case_number'];
+            $select_hearing = mysqli_query($conn, "SELECT date_of_hearing FROM hearing WHERE incident_case_number = '$incident_case_number'") or die('hearing query failed');
+
+            if (mysqli_num_rows($select_hearing) > 0) {
+                $hearing_data = mysqli_fetch_assoc($select_hearing);
+                $hearing_date = date("F j, Y", strtotime($hearing_data['date_of_hearing']));
+                echo '<a href="../../barangay/lupon/notice_forms.php?incident_case_number=' . $incident_case_number . '" class="shownotices">Create Notice Form(s)</a>';
+            } else {
+                // No hearing date, display "NO HEARING SCHEDULE YET"
+                echo '<a href="../../barangay/lupon/hearing_schedule.php?incident_case_number=' . $incident_case_number . '" class="schedule">Set Hearing Schedule</a>';
+                echo '<a href="../../tcpdf/generate_kp7.php?incident_case_number=' . $incident_case_number . '" class="shownotices"><i class="bx bx-printer" style="margin-right: 5px;"></i>Generate KPL Form 7</a>';
+            }
+            ?>    
+            </td>
+        </tr>
+        <?php
     }
-    ?>
+}
+?>
+
             </tbody>
         </table>
 

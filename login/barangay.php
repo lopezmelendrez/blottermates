@@ -37,6 +37,8 @@ if (isset($_POST['submit'])) {
                 mysqli_query($conn, $updateQuery);
 
                 $_SESSION['email_address'] = $email;
+                $_SESSION['lupon_id'] = $lupon_id;
+                $_SESSION['pb_id'] = $pb_id;
                 header('location: ../barangay/lupon/home.php');
                 exit();
             } else {

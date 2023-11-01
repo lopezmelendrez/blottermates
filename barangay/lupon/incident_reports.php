@@ -10,15 +10,26 @@ if(!isset($email)){
 header('location: ../../index.php');
 }
 
+$selectLuponId = mysqli_query($conn, "SELECT lupon_id FROM `lupon_accounts` WHERE email_address = '$email'");
+if (!$selectLuponId) {
+    die('Failed to fetch lupon_id: ' . mysqli_error($conn));
+}
+$row = mysqli_fetch_assoc($selectLuponId);
+$lupon_id = $row['lupon_id'];
+
+
 $query = "SELECT i.*, h.incident_case_number AS hearing_incident_case_number,
                  h.date_of_hearing, h.time_of_hearing
           FROM incident_report i
-          LEFT JOIN hearing h ON i.incident_case_number = h.incident_case_number";
+          LEFT JOIN hearing h ON i.incident_case_number = h.incident_case_number
+          WHERE i.lupon_id = $lupon_id";
+
 $result = mysqli_query($conn, $query);
 
 if (!$result) {
     die('Query failed: ' . mysqli_error($conn));
 }
+
 
 ?>
 
