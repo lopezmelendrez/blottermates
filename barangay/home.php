@@ -210,34 +210,34 @@ header('location: ../index.php');
             </div>
 
             <div class="col-md-3">
-            <?php
-$incompleteCountQuery = "SELECT pa.barangay, COUNT(*) as incompleteCaseCount
-FROM `incident_report` AS ir
-INNER JOIN `lupon_accounts` AS la ON ir.lupon_id = la.lupon_id
-INNER JOIN `pb_accounts` AS pa ON la.pb_id = pa.pb_id
-WHERE pa.pb_id = '$pb_id'
-AND NOT EXISTS (
-    SELECT 1
-    FROM `hearing` AS h
-    INNER JOIN `amicable_settlement` AS amicable_settlement ON h.hearing_id = amicable_settlement.hearing_id
-    WHERE ir.incident_case_number = h.incident_case_number
-)
-GROUP BY pa.barangay;";
+                            <?php
+                $incompleteCountQuery = "SELECT pa.barangay, COUNT(*) as incompleteCaseCount
+                FROM `incident_report` AS ir
+                INNER JOIN `lupon_accounts` AS la ON ir.lupon_id = la.lupon_id
+                INNER JOIN `pb_accounts` AS pa ON la.pb_id = pa.pb_id
+                WHERE pa.pb_id = '$pb_id'
+                AND NOT EXISTS (
+                    SELECT 1
+                    FROM `hearing` AS h
+                    INNER JOIN `amicable_settlement` AS amicable_settlement ON h.hearing_id = amicable_settlement.hearing_id
+                    WHERE ir.incident_case_number = h.incident_case_number
+                )
+                GROUP BY pa.barangay;";
 
-$result = mysqli_query($conn, $incompleteCountQuery);
+                $result = mysqli_query($conn, $incompleteCountQuery);
 
-if ($result) {
-    // Check if there are rows returned
-    if (mysqli_num_rows($result) > 0) {
-        $row = mysqli_fetch_assoc($result);
-        $incompleteCasesCount = $row['incompleteCaseCount'];
-    } else {
-        $incompleteCasesCount = 0; // No results found
-    }
-} else {
-    $incompleteCasesCount = "N/A";
-}
-?>
+                if ($result) {
+                    // Check if there are rows returned
+                    if (mysqli_num_rows($result) > 0) {
+                        $row = mysqli_fetch_assoc($result);
+                        $incompleteCasesCount = $row['incompleteCaseCount'];
+                    } else {
+                        $incompleteCasesCount = 0; // No results found
+                    }
+                } else {
+                    $incompleteCasesCount = "N/A";
+                }
+                ?>
 
                 <div class="incomplete-cases-box">
                     <p>Cases with Incomplete Notice</p>
@@ -265,38 +265,38 @@ if ($result) {
             </thead>
             <tbody id="tableBody" style="overflow-y: hidden;">
             <?php
-$currentPage = isset($_GET['page']) ? $_GET['page'] : 1;
+            $currentPage = isset($_GET['page']) ? $_GET['page'] : 1;
 
-$select = mysqli_query($conn, "
-SELECT pa.barangay,
-       incident_report.incident_case_number AS incident_case_number,
-       incident_report.complainant_last_name AS complainant_last_name,
-       incident_report.respondent_last_name AS respondent_last_name,
-       incident_report.created_at AS created_at
-FROM `incident_report`
-INNER JOIN `lupon_accounts` AS la ON incident_report.lupon_id = la.lupon_id
-INNER JOIN `pb_accounts` AS pa ON la.pb_id = pa.pb_id
-LEFT JOIN `notify_residents` AS nr ON incident_report.incident_case_number = nr.incident_case_number
-LEFT JOIN `execution_notice` AS en ON incident_report.incident_case_number = en.incident_case_number
-WHERE pa.pb_id = '$pb_id'
-  AND nr.generate_execution = 'form generated'
-  AND en.incident_case_number IS NULL
-") or die('query failed');
+            $select = mysqli_query($conn, "
+            SELECT pa.barangay,
+                incident_report.incident_case_number AS incident_case_number,
+                incident_report.complainant_last_name AS complainant_last_name,
+                incident_report.respondent_last_name AS respondent_last_name,
+                incident_report.created_at AS created_at
+            FROM `incident_report`
+            INNER JOIN `lupon_accounts` AS la ON incident_report.lupon_id = la.lupon_id
+            INNER JOIN `pb_accounts` AS pa ON la.pb_id = pa.pb_id
+            LEFT JOIN `notify_residents` AS nr ON incident_report.incident_case_number = nr.incident_case_number
+            LEFT JOIN `execution_notice` AS en ON incident_report.incident_case_number = en.incident_case_number
+            WHERE pa.pb_id = '$pb_id'
+            AND nr.generate_execution = 'form generated'
+            AND en.incident_case_number IS NULL
+            ") or die('query failed');
 
 
 
-if (mysqli_num_rows($select) === 0) {
-    echo '<tr><td colspan="3" style="font-size: 16px; font-weight: 600; text-transform: capitalize; text-align: center; padding-top: 8%;">No Cases Pending for Filing of Motion Yet</td></tr>';
-} else {
-    while ($fetchCases = mysqli_fetch_assoc($select)) {
-        echo '<tr>';
-        echo '<td>' . $fetchCases['incident_case_number'] . '</td>';
-        echo '<td>' . $fetchCases['complainant_last_name'] . ' vs. ' . $fetchCases['respondent_last_name'] . '</td>';
-        echo '<td><a href="execution_notice.php?incident_case_number=' . $fetchCases['incident_case_number'] . '" style="text-decoration: none;"><span class="summon-record" onclick="showPangkatPopup()">Validate</span><a/></td>';
-        echo '</tr>';
-    }
-}
-?>
+            if (mysqli_num_rows($select) === 0) {
+                echo '<tr><td colspan="3" style="font-size: 16px; font-weight: 600; text-transform: capitalize; text-align: center; padding-top: 8%;">No Cases Pending for Filing of Motion Yet</td></tr>';
+            } else {
+                while ($fetchCases = mysqli_fetch_assoc($select)) {
+                    echo '<tr>';
+                    echo '<td>' . $fetchCases['incident_case_number'] . '</td>';
+                    echo '<td>' . $fetchCases['complainant_last_name'] . ' vs. ' . $fetchCases['respondent_last_name'] . '</td>';
+                    echo '<td><a href="execution_notice.php?incident_case_number=' . $fetchCases['incident_case_number'] . '" style="text-decoration: none;"><span class="summon-record" onclick="showPangkatPopup()">Validate</span><a/></td>';
+                    echo '</tr>';
+                }
+            }
+            ?>
 
 
 <tbody id="noResults" style="display: none;">

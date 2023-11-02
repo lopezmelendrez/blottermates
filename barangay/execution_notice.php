@@ -24,6 +24,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit'])) {
     $result = mysqli_query($conn, $insert_query);
     if ($result) {
         // Data inserted successfully, redirect to a success page or perform other actions
+        //hello
         header("Location: kpform.php");
         exit;
     } else {
