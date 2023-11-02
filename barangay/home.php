@@ -110,7 +110,7 @@ header('location: ../index.php');
 
     <section class="home" style="margin-left: -0.3%;">
         
-        <div class="datetime-container" style="display: flex;">
+        <div class="datetime-container" style="display: flex; margin-top: -1.5%;">
             <div class="datetime mb-3" style="margin-top: 0; margin-left: 3%;">
                 <div class="time" id="time"></div>
                 <div class="date" style="font-size: 23px;"></div>
@@ -249,7 +249,7 @@ header('location: ../index.php');
         
             <div class="incident-case-table" style="display: flex; margin-top: 15px; height: 250px;">
             <div class="head-text">
-                <p class="incident-case">Recent Incident Cases</p>
+                <p class="incident-case">Incident Report Cases</p>
                 <p class="notice-records">* Validate File of Motion</p>
 
 
@@ -308,6 +308,27 @@ header('location: ../index.php');
         </table>
         </div>
     </div>
+
+    <div class="incident-case-table" style="display: flex; margin-top: -16px; height: 250px; margin-left: 10%; width: 600px;">
+    <div class="head-text">
+        <p class="incident-case">Recent Activity Log</p>
+
+        <div class="table-container" style="max-height: 310px; overflow-y: hidden; margin-top: -6%;">
+            <hr style="border: 1px solid #949494; margin: 5px 0; width: 100%; margin-top: 5%;">
+            <table class="incident-table" style="width: 530px;">
+                <tbody>
+                <?php
+include 'activity_log.php';
+?>
+
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
 
     </section>
 
