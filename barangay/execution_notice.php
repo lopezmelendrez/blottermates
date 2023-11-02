@@ -24,7 +24,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit'])) {
     $result = mysqli_query($conn, $insert_query);
     if ($result) {
         // Data inserted successfully, redirect to a success page or perform other actions
-        //hello
         header("Location: kpform.php");
         exit;
     } else {
@@ -164,7 +163,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit'])) {
                         
                     <div class="input-group1 d-flex" style="margin-top: 4%;">
                         <a href="home.php" style="text-decoration: none;"><input type="button" value="Back" class="btn btn-secondary back-btn" style="width: 15%; margin-left: 450px;" onclick="history.back()"></a>
-                        <input type="submit" name="submit" value="Execute Notice" class="btn btn-danger" style="width: 25%; margin-left: 10px;">
+                        <input type="submit" name="submit" value="Execute Agreement" class="btn btn-danger" style="width: 25%; margin-left: 10px;">
                     </div>
 
 

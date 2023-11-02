@@ -304,7 +304,6 @@ header('location: ../index.php');
         <td colspan="3" style="padding-top: 13%; font-size: 12x; font-weight: 400; text-transform: uppercase; padding-left: 18%;">No Cases Yet</td>
     </tr>
 </tbody>
-
             </tbody>
         </table>
         </div>
