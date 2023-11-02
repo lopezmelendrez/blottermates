@@ -277,9 +277,12 @@ FROM `incident_report`
 INNER JOIN `lupon_accounts` AS la ON incident_report.lupon_id = la.lupon_id
 INNER JOIN `pb_accounts` AS pa ON la.pb_id = pa.pb_id
 LEFT JOIN `notify_residents` AS nr ON incident_report.incident_case_number = nr.incident_case_number
+LEFT JOIN `execution_notice` AS en ON incident_report.incident_case_number = en.incident_case_number
 WHERE pa.pb_id = '$pb_id'
   AND nr.generate_execution = 'form generated'
+  AND en.incident_case_number IS NULL
 ") or die('query failed');
+
 
 
 if (mysqli_num_rows($select) === 0) {
@@ -465,7 +468,7 @@ if (mysqli_num_rows($select) === 0) {
         }
 
         .lupon-online-box {
-            width: 280px;
+            width: 290px;
             height: 45px;
             padding: 12px 12px;
             background: #fff;
