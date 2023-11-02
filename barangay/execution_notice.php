@@ -204,16 +204,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit'])) {
         const incidentDateInput = document.querySelector('input[name="execution_date"]');
 
         incidentDateInput.addEventListener('change', function(event) {
-        const selectedDate = new Date(event.target.value);
-        const currentDate = new Date();
+            const selectedDate = new Date(event.target.value);
+            const currentDate = new Date();
 
-    
-        if (selectedDate > currentDate) {
-        
-        const formattedCurrentDate = currentDate.toISOString().slice(0, 10); 
-        incidentDateInput.value = formattedCurrentDate;
-        }
-
+            if (selectedDate < currentDate) {
+                const formattedCurrentDate = currentDate.toISOString().slice(0, 10);
+                incidentDateInput.value = formattedCurrentDate;
+            }
         });
 
         
