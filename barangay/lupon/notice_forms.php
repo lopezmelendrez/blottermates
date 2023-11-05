@@ -24,11 +24,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit'])) {
     $check_result = mysqli_query($conn, $check_query);
 
     if ($check_result && mysqli_num_rows($check_result) > 0) {
-        $update_query = "UPDATE `notify_residents` SET `generate_summon` = '$generate_summon' WHERE incident_case_number = '$incident_case_number'";
+        $update_query = "UPDATE `notify_residents` SET `generate_summon` = '$generate_summon', `generated_summon_timestamp` = NOW() WHERE incident_case_number = '$incident_case_number'";
         $result = mysqli_query($conn, $update_query);
     } else {
-        $insert_query = "INSERT INTO `notify_residents` (`incident_case_number`, `generate_summon`)
-                         VALUES ('$incident_case_number', '$generate_summon')";
+        $insert_query = "INSERT INTO `notify_residents` (`incident_case_number`, `generate_summon`, `generated_summon_timestamp`)
+                         VALUES ('$incident_case_number', '$generate_summon', NOW())";
         $result = mysqli_query($conn, $insert_query);
     }
 
@@ -49,11 +49,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['hearing_submit'])) {
     $check_result = mysqli_query($conn, $check_query);
 
     if ($check_result && mysqli_num_rows($check_result) > 0) {
-        $update_query = "UPDATE `notify_residents` SET `generate_hearing` = '$generate_hearing' WHERE incident_case_number = '$incident_case_number'";
+        $update_query = "UPDATE `notify_residents` SET `generate_hearing` = '$generate_hearing', `generated_hearing_timestamp` = NOW() WHERE incident_case_number = '$incident_case_number'";
         $result = mysqli_query($conn, $update_query);
     } else {
-        $insert_query = "INSERT INTO `notify_residents` (`incident_case_number`, `generate_hearing`)
-                         VALUES ('$incident_case_number', '$generate_hearing')";
+        $insert_query = "INSERT INTO `notify_residents` (`incident_case_number`, `generate_hearing`, `generated_hearing_timestamp`)
+                         VALUES ('$incident_case_number', '$generate_hearing', NOW())";
         $result = mysqli_query($conn, $insert_query);
     }
 
@@ -65,6 +65,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['hearing_submit'])) {
         exit;
     }
 }
+
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['pangkat_submit'])) {
     $incident_case_number = $_POST['incident_case_number'];
@@ -74,11 +75,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['pangkat_submit'])) {
     $check_result = mysqli_query($conn, $check_query);
 
     if ($check_result && mysqli_num_rows($check_result) > 0) {
-        $update_query = "UPDATE `notify_residents` SET `generate_pangkat` = '$generate_pangkat' WHERE incident_case_number = '$incident_case_number'";
+        $update_query = "UPDATE `notify_residents` SET `generate_pangkat` = '$generate_pangkat', `generated_pangkat_timestamp` = NOW() WHERE incident_case_number = '$incident_case_number'";
         $result = mysqli_query($conn, $update_query);
     } else {
-        $insert_query = "INSERT INTO `notify_residents` (`incident_case_number`, `generate_pangkat`)
-                         VALUES ('$incident_case_number', '$generate_pangkat')";
+        $insert_query = "INSERT INTO `notify_residents` (`incident_case_number`, `generate_pangkat`, `generated_pangkat_timestamp`)
+                         VALUES ('$incident_case_number', '$generate_pangkat', NOW())";
         $result = mysqli_query($conn, $insert_query);
     }
 
@@ -90,6 +91,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['pangkat_submit'])) {
         exit;
     }
 }
+
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['notify_complainant_submit'])) {
     $incident_case_number = $_POST['incident_case_number'];

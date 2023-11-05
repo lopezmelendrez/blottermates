@@ -112,7 +112,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit'])) {
                     <div class="fields">
                         <div class="input-field-1" style="width: 46rem;">
                             <label class="required-label">Select Hearing Schedule</label>
-                            <input type="date" name="date_of_hearing" placeholder="" required>
+                            <input type="date" name="date_of_hearing" required>
                         </div>
                         <div class="input-field-1" style="width: 46rem;">
                             <label class="required-label">Hearing Time</label>
@@ -167,30 +167,18 @@ nextBtn.addEventListener("click", ()=> {
 
 backBtn.addEventListener("click", () => form.classList.remove('secActive'));
 
-// Get the input element by its name
-const timeInput = document.getElementById('time_of_hearing');
 
-// Function to check if the time is within the allowed range
-function isTimeValid(timeStr) {
-    const timeParts = timeStr.split(':');
-    const hours = parseInt(timeParts[0]);
-    const minutes = parseInt(timeParts[1]);
+const incidentDateInput = document.querySelector('input[name="date_of_hearing"]');
 
-    // Check if the time is between 8:00 AM (08:00) and 5:00 PM (17:00)
-    return (hours > 7 && hours < 17) || (hours === 17 && minutes === 0);
-}
+        incidentDateInput.addEventListener('change', function(event) {
+            const selectedDate = new Date(event.target.value);
+            const currentDate = new Date();
 
-// Function to handle time input change
-function handleTimeInput() {
-    const inputTime = timeInput.value;
-    if (!isTimeValid(inputTime)) {
-        // If the time is not valid, reset the value to the default (08:00 AM)
-        timeInput.value = '08:00';
-    }
-}
-
-// Attach an event listener to the time input
-timeInput.addEventListener('input', handleTimeInput);
+            if (selectedDate < currentDate) {
+                const formattedCurrentDate = currentDate.toISOString().slice(0, 10);
+                incidentDateInput.value = formattedCurrentDate;
+            }
+        });
 
 
     </script>

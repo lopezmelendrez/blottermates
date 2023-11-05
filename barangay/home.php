@@ -24,6 +24,7 @@ header('location: ../index.php');
     <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="../css/dilg.css">
     <link rel="stylesheet" href="../css/lupon_home.css">
+    <title>Punong Barangay Dashboard</title>
 </head>
 <body>
     <nav class="sidebar close">
@@ -69,15 +70,15 @@ header('location: ../index.php');
 
                     <li class="nav-link">
                         <a href="#">
-                            <i class='bx bx-bell icon'></i>
-                            <span class="text nav-text">Notifications</span>
+                            <i class='bx bx-history icon'></i>
+                            <span class="text nav-text">Activity History</span>
                         </a>
                     </li>
 
                     <li class="nav-link">
                         <a href="#">
-                            <i class='bx bx-pie-chart-alt icon' ></i>
-                            <span class="text nav-text">Analytics</span>
+                            <i class='bx bx-receipt icon' ></i>
+                            <span class="text nav-text"></span>
                         </a>
                     </li>
 
@@ -85,7 +86,7 @@ header('location: ../index.php');
 
             <div class="bottom-content">
                 <li class="">
-                    <a href="../logout.php">
+                    <a href="logout.php">
                         <i class='bx bx-log-out icon' ></i>
                         <span class="text nav-text">Logout</span>
                     </a>
@@ -108,7 +109,7 @@ header('location: ../index.php');
 
     </nav>
 
-    <section class="home" style="margin-left: -0.3%;">
+    <section class="home" style="margin-left: -0.3%; margin-top: 3%;">
         
         <div class="datetime-container" style="display: flex; margin-top: -1.5%;">
             <div class="datetime mb-3" style="margin-top: 0; margin-left: 3%;">
@@ -247,7 +248,7 @@ header('location: ../index.php');
         </div>
             </center>
         
-            <div class="incident-case-table" style="display: flex; margin-top: 15px; height: 250px;">
+            <div class="incident-case-table" style="display: flex; margin-top: 15px; height: 350px;">
             <div class="head-text">
                 <p class="incident-case">Incident Report Cases</p>
                 <p class="notice-records">* Validate File of Motion</p>
@@ -309,11 +310,11 @@ header('location: ../index.php');
         </div>
     </div>
 
-    <div class="incident-case-table" style="display: flex; margin-top: -16px; height: 250px; margin-left: 10%; width: 600px;">
+    <div class="incident-case-table" style="display: flex; margin-top: -16px; height: 350px; margin-left: 10%; width: 600px;">
     <div class="head-text">
         <p class="incident-case">Recent Activity Log</p>
 
-        <div class="table-container" style="max-height: 310px; overflow-y: hidden; margin-top: -6%;">
+        <div class="table-container" style="max-height: 265px; overflow-y: hidden; margin-top: -6%;">
             <hr style="border: 1px solid #949494; margin: 5px 0; width: 100%; margin-top: 5%;">
             <table class="incident-table" style="width: 530px;">
                 <tbody>
@@ -426,6 +427,22 @@ include 'activity_log.php';
     </script>
 
     <style>
+        .home{
+            position: absolute;
+            top: 0;
+            top: 0;
+            left: 250px;
+            height: 100vh;
+            width: calc(100% - 78px);
+            background-color: var(--body-color);
+            transition: var(--tran-05);
+        }
+
+        .sidebar.close ~ .home{
+            left: 78px;
+            height: 100vh;
+            width: calc(100% - 78px);
+        }
 
         .container {
             display: flex;

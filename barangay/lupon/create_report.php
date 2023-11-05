@@ -49,7 +49,7 @@ if (isset($_POST['submit'])) {
 
 
         mysqli_query($conn, "INSERT INTO `incident_report` (complainant_last_name, complainant_first_name, complainant_middle_name, complainant_cellphone_number, complainant_house_address, respondent_last_name, respondent_first_name, respondent_middle_name, respondent_cellphone_number, respondent_house_address, incident_case_number, incident_case_type, incident_date, description_of_violation, created_at, submitter_first_name, submitter_last_name, lupon_id) VALUES('$complainant_last_name', '$complainant_first_name', '$complainant_middle_name', '$complainant_cellphone_number', '$complainant_house_address', '$respondent_last_name', '$respondent_first_name', '$respondent_middle_name', '$respondent_cellphone_number', '$respondent_house_address', '$incident_case_number', '$incident_case_type', '$incident_date', '$description_of_violation', NULL, '$submitter_first_name', '$submitter_last_name', '$lupon_id')") or die('query failed');
-        header("location: case_report.php?incident_case_number=<?php echo $incident_case_number ?>");
+        header("location: incomplete_notices.php");
         }
     }
 }
