@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 05, 2023 at 07:05 AM
+-- Generation Time: Nov 05, 2023 at 02:47 PM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -55,7 +55,8 @@ CREATE TABLE `amicable_settlement` (
   `date_agreed` timestamp NOT NULL DEFAULT current_timestamp(),
   `agreement_description` text DEFAULT NULL,
   `hearing_id` int(11) DEFAULT NULL,
-  `incident_case_number` varchar(50) DEFAULT NULL
+  `incident_case_number` varchar(50) DEFAULT NULL,
+  `timestamp` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -68,7 +69,8 @@ CREATE TABLE `arbitration_agreement` (
   `arbitration_agreement_id` int(11) NOT NULL,
   `lupon_signature` mediumblob DEFAULT NULL,
   `hearing_id` int(11) DEFAULT NULL,
-  `incident_case_number` varchar(50) DEFAULT NULL
+  `incident_case_number` varchar(50) DEFAULT NULL,
+  `timestamp` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -98,15 +100,18 @@ CREATE TABLE `hearing` (
   `date_of_hearing` date DEFAULT NULL,
   `time_of_hearing` time DEFAULT NULL,
   `hearing_type_status` varchar(50) DEFAULT 'mediation',
-  `timestamp` timestamp NOT NULL DEFAULT current_timestamp()
+  `timestamp` timestamp NOT NULL DEFAULT current_timestamp(),
+  `schedule_change_timestamp` timestamp NULL DEFAULT NULL,
+  `conciliation_timestamp` timestamp NULL DEFAULT NULL,
+  `arbitration_timestamp` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `hearing`
 --
 
-INSERT INTO `hearing` (`hearing_id`, `incident_case_number`, `date_of_hearing`, `time_of_hearing`, `hearing_type_status`, `timestamp`) VALUES
-(21, '2023-0001', '2023-11-10', '13:30:00', 'mediation', '2023-11-05 04:40:27');
+INSERT INTO `hearing` (`hearing_id`, `incident_case_number`, `date_of_hearing`, `time_of_hearing`, `hearing_type_status`, `timestamp`, `schedule_change_timestamp`, `conciliation_timestamp`, `arbitration_timestamp`) VALUES
+(21, '2023-0001', '2023-11-07', '10:00:00', 'conciliation', '2023-11-05 11:40:47', '2023-11-05 11:18:50', '2023-11-05 11:23:44', NULL);
 
 -- --------------------------------------------------------
 
@@ -203,7 +208,7 @@ CREATE TABLE `notify_residents` (
 --
 
 INSERT INTO `notify_residents` (`notify_id`, `incident_case_number`, `generate_summon`, `generated_summon_timestamp`, `notify_summon`, `generate_hearing`, `notify_hearing`, `hearing_notified`, `summon_notified`, `generate_pangkat`, `notify_pangkat`, `pangkat_notified`, `generate_arbitration`, `generate_execution`, `generated_hearing_timestamp`, `generated_pangkat_timestamp`, `generated_arbitration_timestamp`, `generated_execution_timestamp`) VALUES
-(21, '2023-0001', 'not generated', NULL, 'not notified', 'form generated', 'notified', '2023-11-05 05:27:16', NULL, 'not generated', 'not notified', NULL, 'not generated', 'not generated', '2023-11-05 04:57:37', NULL, NULL, NULL);
+(21, '2023-0001', 'form generated', '2023-11-04 06:45:10', 'notified', 'form generated', 'notified', '2023-11-05 05:27:16', '2023-11-05 11:51:22', 'form generated', 'notified', '2023-11-05 11:58:12', 'not generated', 'not generated', '2023-11-05 04:57:37', '2023-11-05 11:42:21', NULL, NULL);
 
 -- --------------------------------------------------------
 
