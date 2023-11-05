@@ -6,8 +6,8 @@ session_start();
 
 $email = $_SESSION['email_address'];
 
-if(!isset($email)){
-header('location: ../../index.php');
+if (!isset($email)) {
+    header('location: ../../index.php');
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit'])) {
@@ -16,31 +16,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit'])) {
     $time_of_hearing = $_POST['time_of_hearing'];
     $incident_case_number = $_POST['incident_case_number'];
 
-    // Check if the incident case number exists in the database
-    $check_query = "SELECT * FROM `hearing` WHERE `incident_case_number` = '$incident_case_number'";
-    $check_result = mysqli_query($conn, $check_query);
+    // Update the hearing schedule with the current timestamp
+    $update_query = "UPDATE `hearing` SET `date_of_hearing`='$date_of_hearing', `time_of_hearing`='$time_of_hearing', `schedule_change_timestamp`=NOW() WHERE `incident_case_number`='$incident_case_number'";
+    $result = mysqli_query($conn, $update_query);
 
-    if (mysqli_num_rows($check_result) > 0) {
-        // If the incident case number exists, update the hearing date and time
-        $update_query = "UPDATE `hearing` SET `date_of_hearing`='$date_of_hearing', `time_of_hearing`='$time_of_hearing' WHERE `incident_case_number`='$incident_case_number'";
-        $result = mysqli_query($conn, $update_query);
-
-        if ($result) {
-            // Data updated successfully, redirect to a success page or perform other actions
-            header("Location: notice_forms.php?incident_case_number=" . $incident_case_number);
-            exit;
-        } else {
-            // Error occurred while updating data, handle the error or redirect to an error page
-            echo "Error: " . mysqli_error($conn);
-            exit;
-        }
+    if ($result) {
+        // Data updated successfully, redirect to a success page or perform other actions
+        header("Location: notice_forms.php?incident_case_number=" . $incident_case_number);
+        exit;
     } else {
-        // If the incident case number does not exist, you may choose to insert a new record
-        // or handle the error accordingly (e.g., show an error message to the user).
-        echo "Error: Incident case number not found in the database.";
+        // Error occurred while updating data, handle the error or redirect to an error page
+        echo "Error: " . mysqli_error($conn);
         exit;
     }
 }
+
+
 ?>
 <!DOCTYPE html>
 <html lang="en">

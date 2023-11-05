@@ -22,10 +22,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit'])) {
         $fetch_hearing = mysqli_fetch_assoc($select_hearing_id_result);
         $hearing_id = $fetch_hearing['hearing_id'];
 
-        
-        $insert_query = "INSERT INTO `arbitration_agreement` (`lupon_signature`, `hearing_id`, `incident_case_number`)
-        VALUES ('$signatureData', '$hearing_id', '$incident_case_number')";
-
+        // Update your INSERT query to include the `timestamp` column and set it to the current timestamp
+        $insert_query = "INSERT INTO `arbitration_agreement` (`lupon_signature`, `hearing_id`, `incident_case_number`, `timestamp`)
+        VALUES ('$signatureData', '$hearing_id', '$incident_case_number', NOW())";
 
         $insert_result = mysqli_query($conn, $insert_query);
 
@@ -42,6 +41,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit'])) {
         exit;
     }
 }
+
 
 ?>
 
