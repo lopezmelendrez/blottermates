@@ -147,6 +147,33 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['notify_respondent_sub
     }
 }
 
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['notify_pangkat_submit'])) {
+    $incident_case_number = $_POST['incident_case_number'];
+    $notify_pangkat = 'notified';
+
+    $check_query = "SELECT * FROM `notify_residents` WHERE incident_case_number = '$incident_case_number'";
+    $check_result = mysqli_query($conn, $check_query);
+
+    if ($check_result && mysqli_num_rows($check_result) > 0) {
+        $update_query = "UPDATE `notify_residents` 
+        SET `notify_pangkat` = '$notify_pangkat', `pangkat_notified` = NOW() 
+        WHERE incident_case_number = '$incident_case_number'";
+        $result = mysqli_query($conn, $update_query);
+    } else {
+        $insert_query = "INSERT INTO `notify_residents` (`incident_case_number`, `notify_pangkat`, `pangkat_notified`)
+        VALUES ('$incident_case_number', '$notify_pangkat', NOW())";
+        $result = mysqli_query($conn, $insert_query);
+    }
+
+    if ($result) {
+        header("Location: incident_reports.php");
+        exit;
+    } else {
+        echo "Error: " . mysqli_error($conn);
+        exit;
+    }
+}
+
 ?>
 
 
@@ -223,7 +250,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['notify_respondent_sub
                     </li>
 
                     <li class="nav-link">
-                        <a href="#">
+                        <a href="hearings.php">
                             <i class='bx bx-calendar-event icon' ></i>
                             <span class="text nav-text">Hearings</span>
                         </a>
@@ -240,7 +267,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['notify_respondent_sub
                 </li>
 
                 <li class="">
-                    <a href="#">
+                    <a href="../../logout.php">
                         <i class='bx bx-log-out icon' ></i>
                         <span class="text nav-text">Logout</span>
                     </a>
@@ -430,7 +457,7 @@ if ($check_result && mysqli_num_rows($check_result) > 0) {
     } elseif ($notify_pangkat === 'notified') {
         echo '-';
     } else {
-        echo '<span class="notify" onclick="showNotifyRespondentPopup()">Set To Notified</span>';
+        echo '<span class="notify" onclick="showNotifyPangkatPopup()">Set To Notified</span>';
     }
 }
 ?>
@@ -560,6 +587,24 @@ if ($check_result && mysqli_num_rows($check_result) > 0) {
                 <form action="" method="post">
                 <input type="hidden" name="incident_case_number" value="<?php echo $incident_case_number; ?>">
                 <input type="submit" name="notify_respondent_submit" value="YES" class="backBtn" style="width: 310px; padding: 12px 12px; font-weight: 600; margin-left: -5px;"></button>
+                </form>
+            </div>
+            </div>
+            </center>
+        </div>
+
+        <div id="notify_pangkat" class="popup">
+            <center>
+            <div class="modal">
+            <h3 class="modal-title" style="font-size: 18px; text-align:center;">NOTIFY RESPONDENT FOR PANGKAT</h3>
+            <hr style="border: 1px solid #ccc; margin: 10px 0;">
+            <p style="font-size: 14px; text-align: justify;">The respondent's contact number will promptly receive their hearing notice details via message.</p>
+            
+            <div class="button-container" style="display: flex;">
+                <button class="backBtn" onclick="closeNotifyPangkatPopup()" style="width: 150px; padding: 12px 12px; font-weight: 600; background: #fff; border: 1px solid #bc1823; color: #bc1823; margin-left: 180px;">NO</button>
+                <form action="" method="post">
+                <input type="hidden" name="incident_case_number" value="<?php echo $incident_case_number; ?>">
+                <input type="submit" name="notify_pangkat_submit" value="YES" class="backBtn" style="width: 310px; padding: 12px 12px; font-weight: 600; margin-left: -5px;"></button>
                 </form>
             </div>
             </div>
@@ -697,6 +742,18 @@ function showPopup() {
 
     function closeNotifyRespondentPopup() {
         var popup = document.getElementById("notify_respondent");
+        popup.style.display = "none";
+    }
+
+    function showNotifyPangkatPopup() {
+        var popup = document.getElementById("notify_pangkat");
+        popup.style.display = "block";
+
+
+    }
+
+    function closeNotifyPangkatPopup() {
+        var popup = document.getElementById("notify_pangkat");
         popup.style.display = "none";
     }
 

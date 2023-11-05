@@ -18,8 +18,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit'])) {
     $incident_case_number = $_POST['incident_case_number'];
     $hearing_type_status = 'mediation'; 
 
-    $insert_query = "INSERT INTO `hearing` (`incident_case_number`, `date_of_hearing`, `time_of_hearing`, `hearing_type_status`)
-                     VALUES ('$incident_case_number', '$date_of_hearing', '$time_of_hearing', '$hearing_type_status')";
+    // Include timestamp in the INSERT statement
+    $insert_query = "INSERT INTO `hearing` (`incident_case_number`, `date_of_hearing`, `time_of_hearing`, `hearing_type_status`, `timestamp`)
+                     VALUES ('$incident_case_number', '$date_of_hearing', '$time_of_hearing', '$hearing_type_status', NOW())";
 
     $result = mysqli_query($conn, $insert_query);
     if ($result) {
@@ -32,6 +33,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit'])) {
         exit;
     }
 }
+
 ?>
 
 <!DOCTYPE html>

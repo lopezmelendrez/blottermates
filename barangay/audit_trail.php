@@ -206,20 +206,67 @@ $activityLogQuery = "
     ORDER BY formatted_timestamp DESC LIMIT 10
 ";
 
-
-
 $result = mysqli_query($conn, $activityLogQuery);
 
 if ($result && mysqli_num_rows($result) > 0) {
+    $currentDate = null;
+
+    echo '
+    <style>
+        
+        .activity-history{
+            margin-top: 3%;
+            width: 1190px;
+            font-size: 16px;
+        }
+
+        .activity-date {
+            background-color: #f0f0f0;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 10px;
+            font-weight: bold;
+        }
+
+        .activity {
+            background: #fff;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin: 10px 0;
+            padding: 20px;
+        }
+
+        .activity-time {
+            color: #777;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+
+    <div class="activity-history">';
+
     while ($row = mysqli_fetch_assoc($result)) {
-        echo '<div style="display: flex; justify-content: space-between; margin-bottom: 5px;">';
-        echo '<div style="font-size: 14px; positiion: fixed; width: 17rem;">' . $row['activity'] . '</div>';       
-        $formattedTimestamp = date('M, d, Y - h:i A', strtotime($row['formatted_timestamp']));
-        echo '<div style="color: gray; font-style: italic; font-size: 11px;">• ' . $formattedTimestamp . '</div>';
+        $formattedTimestamp = date('d M Y', strtotime($row['formatted_timestamp']));
+
+        // Check if the date has changed
+        if ($formattedTimestamp != $currentDate) {
+            // Display the date as a header
+            echo '<div class="activity-date">' . $formattedTimestamp . '</div>';
+            $currentDate = $formattedTimestamp;
+        }
+
+        echo '<div class="activity">';
+        echo '<div class="activity-time">' . date('h:i A', strtotime($row['formatted_timestamp'])) . '</div>';
+        echo $row['activity'];
         echo '</div>';
     }
+
+    echo '</div>
+    </div>
+</body>
+</html>';
 } else {
     echo 'No recent activity found.';
 }
-
 ?>

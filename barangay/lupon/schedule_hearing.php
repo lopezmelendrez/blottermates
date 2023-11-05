@@ -11,7 +11,6 @@ if (!isset($email)) {
     exit; // You should exit after redirecting to prevent further execution
 }
 
-// Assuming you have already established the database connection
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit'])) {
     $date_of_hearing = $_POST['date_of_hearing'];
     $time_of_hearing = $_POST['time_of_hearing'];
@@ -25,7 +24,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit'])) {
     if ($check_result) {
         if (mysqli_num_rows($check_result) > 0) {
             // Hearing schedule exists, so update it
-            $update_query = "UPDATE `hearing` SET `date_of_hearing` = '$date_of_hearing', `time_of_hearing` = '$time_of_hearing' WHERE incident_case_number = '$incident_case_number'";
+            $update_query = "UPDATE `hearing` SET `date_of_hearing` = '$date_of_hearing', `time_of_hearing` = '$time_of_hearing', `timestamp` = NOW() WHERE incident_case_number = '$incident_case_number'";
             $result = mysqli_query($conn, $update_query);
 
             if ($result) {
@@ -39,7 +38,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit'])) {
             }
         } else {
             // Hearing schedule doesn't exist, so insert a new one
-            $insert_query = "INSERT INTO `hearing` (`date_of_hearing`, `time_of_hearing`, `incident_case_number`, `hearing_type_status`) VALUES ('$date_of_hearing', '$time_of_hearing', '$incident_case_number', '$hearing_type_status')";
+            $insert_query = "INSERT INTO `hearing` (`date_of_hearing`, `time_of_hearing`, `incident_case_number`, `hearing_type_status`, `timestamp`) 
+                            VALUES ('$date_of_hearing', '$time_of_hearing', '$incident_case_number', '$hearing_type_status', NOW())";
             $result = mysqli_query($conn, $insert_query);
 
             if ($result) {
@@ -58,6 +58,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit'])) {
         exit;
     }
 }
+
 
 ?>
 

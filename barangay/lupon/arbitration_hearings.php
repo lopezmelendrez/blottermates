@@ -122,15 +122,32 @@ if (mysqli_num_rows($select_arbitration_agreement) > 0) {
             <td>
             <?php
 $incident_case_number = $fetch_cases['incident_case_number'];
+
 $select_arbitration_agreement = mysqli_query($conn, "SELECT 1 FROM arbitration_agreement WHERE incident_case_number = '$incident_case_number' LIMIT 1");
+
 if (mysqli_num_rows($select_arbitration_agreement) > 0) {
-    echo '<a href="arbitration_settlement_page.php?incident_case_number=' . $incident_case_number . '" class="hearing-1" style="text-decoration: none;">Go to Hearing</a>';
+    $hearing_data = mysqli_query($conn, "SELECT hearing_type_status, date_of_hearing FROM hearing WHERE incident_case_number = '$incident_case_number' LIMIT 1");
+    if (mysqli_num_rows($hearing_data) > 0) {
+        $hearing_row = mysqli_fetch_assoc($hearing_data);
+        $hearing_type_status = $hearing_row['hearing_type_status'];
+        $date_of_hearing = strtotime($hearing_row['date_of_hearing']);
+        $current_time = time();
+
+        if ($current_time >= $date_of_hearing && $hearing_type_status == "conciliation") {
+            echo '<a href="settlement_page.php?incident_case_number=' . $incident_case_number . '" class="hearing-1" style="text-decoration: none;">Go to Hearing</a>';
+        } else {
+            echo '<div class="hearing-1">Upcoming Hearing</div>';
+        }
+    } else {
+        // Handle the case where hearing data is not found
+    }
 } else {
-    // No data in arbitration_agreement, so display "Create Arbitration for Agreement"
     echo '<a href="arbitration_agreement.php?incident_case_number=' . $incident_case_number . '" class="hearing-1" style="text-decoration: none;">Create Arbitration Agreement</a>';
 }
+
+echo '<a href="../pages/filecourt_action.html" class="filecourt-action" style="text-decoration: none;">File Court Action</a>';
 ?>
-<a href="../pages/filecourt_action.html" class="filecourt-action" style="text-decoration: none;">File Court Action</a>
+
             </td>
             </tr>
             <?php

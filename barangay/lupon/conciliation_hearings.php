@@ -129,8 +129,28 @@ $generate_pangkat = '';
     ?>
 </td>
             <td>
-                <a href="conciliation_settlement_page.php?incident_case_number=<?php echo $incident_case_number ?>" class="hearing-1" style="text-decoration: none;">Go to Hearing</a>
-                <a href="../pages/filecourt_action.html" class="filecourt-action" style="text-decoration: none;">File Court Action</a>
+            <?php
+            $incident_case_number = $fetch_cases['incident_case_number'];
+            $select_hearing = mysqli_query($conn, "SELECT hearing_type_status, date_of_hearing FROM hearing WHERE incident_case_number = '$incident_case_number'") or die('hearing query failed');
+
+            if (mysqli_num_rows($select_hearing) > 0) {
+                $hearing_data = mysqli_fetch_assoc($select_hearing);
+                $hearing_type_status = $hearing_data['hearing_type_status'];
+                $date_of_hearing = strtotime($hearing_data['date_of_hearing']);
+                $current_time = time();
+
+                if ($current_time >= $date_of_hearing && $hearing_type_status == "conciliation") {
+                    // Display the "Go to Hearing" link for mediation cases
+                    echo '<a href="settlement_page.php?incident_case_number=' . $incident_case_number . '" class="hearing-1" style="text-decoration: none;">Go to Hearing</a>';
+                } else {
+                    // Display an appropriate text for upcoming mediation hearings
+                    echo '<div class="hearing-1">Upcoming Hearing</div>';
+                }
+
+                // Display the "File Court Action" link in either case
+                echo '<a href="../pages/filecourt_action.html" class="filecourt-action" style="text-decoration: none;">File Court Action</a>';
+            }
+            ?>
             </td>
             </tr>
             <?php

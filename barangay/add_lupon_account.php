@@ -61,12 +61,22 @@ if (isset($_POST['submit'])) {
     <link rel="stylesheet" href="../css/dilg.css">
 </head>
 <body>
-    <nav class="sidebar close">
+<nav class="sidebar close">
         <header>
             <div class="image-text">
-                <span class="image">
-                    <img src="../images/ibaba_logo.jpg">
-                </span>
+                    <?php
+        $select = mysqli_query($conn, "SELECT * FROM `pb_accounts` WHERE pb_id = '$pb_id'") or die('Query failed');
+
+        if(mysqli_num_rows($select) > 0){
+            $fetch = mysqli_fetch_assoc($select);
+        }
+
+        if ($fetch['barangay'] == 'Ibaba') {
+            echo '<span class="image"><img src="../images/ibaba_logo.png"></span>';
+        } else {
+            echo '<span class="image"><img src="../images/logo.png"></span>';
+        }
+        ?>
 
                 <div class="text logo-text">
                     <span class="name"><?php echo $barangay_captain ?></span>
@@ -94,15 +104,15 @@ if (isset($_POST['submit'])) {
 
                     <li class="nav-link">
                         <a href="#">
-                            <i class='bx bx-bell icon'></i>
-                            <span class="text nav-text">Notifications</span>
+                            <i class='bx bx-history icon'></i>
+                            <span class="text nav-text">Activity History</span>
                         </a>
                     </li>
 
                     <li class="nav-link">
                         <a href="#">
-                            <i class='bx bx-pie-chart-alt icon' ></i>
-                            <span class="text nav-text">Analytics</span>
+                            <i class='bx bx-receipt icon' ></i>
+                            <span class="text nav-text"></span>
                         </a>
                     </li>
 

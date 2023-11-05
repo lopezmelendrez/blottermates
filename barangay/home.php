@@ -69,7 +69,7 @@ header('location: ../index.php');
                     </li>
 
                     <li class="nav-link">
-                        <a href="#">
+                        <a href="activity_history.php">
                             <i class='bx bx-history icon'></i>
                             <span class="text nav-text">Activity History</span>
                         </a>
@@ -86,7 +86,7 @@ header('location: ../index.php');
 
             <div class="bottom-content">
                 <li class="">
-                    <a href="logout.php">
+                    <a href="../logout.php">
                         <i class='bx bx-log-out icon' ></i>
                         <span class="text nav-text">Logout</span>
                     </a>
@@ -314,7 +314,7 @@ header('location: ../index.php');
     <div class="head-text">
         <p class="incident-case">Recent Activity Log</p>
 
-        <div class="table-container" style="max-height: 265px; overflow-y: hidden; margin-top: -6%;">
+        <div class="table-container" style="max-height: 283px; overflow-y: hidden; margin-top: -6%;">
             <hr style="border: 1px solid #949494; margin: 5px 0; width: 100%; margin-top: 5%;">
             <table class="incident-table" style="width: 530px;">
                 <tbody>

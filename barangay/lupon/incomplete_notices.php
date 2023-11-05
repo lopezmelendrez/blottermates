@@ -101,29 +101,43 @@ if ($num_rows === 0) {
             <?php
             $incident_case_number = $fetch_cases['incident_case_number'];
             $select_hearing = mysqli_query($conn, "SELECT date_of_hearing FROM hearing WHERE incident_case_number = '$incident_case_number'") or die('hearing query failed');
-
+            
             if (mysqli_num_rows($select_hearing) > 0) {
                 $hearing_data = mysqli_fetch_assoc($select_hearing);
-                echo date("F j, Y", strtotime($hearing_data['date_of_hearing']));
+                $hearing_date = $hearing_data['date_of_hearing'];
+            
+                if ($hearing_date !== NULL) {
+                    echo date("F j, Y", strtotime($hearing_date));
+                } else {
+                    echo '<span style="font-weight: 600;">NO HEARING SCHEDULE YET</span>';
+                }
             } else {
-                echo '<span style="font-weight: 600;">NO HEARING SCHEDULE YET</span>';
-            }
+                echo 'No hearing records found.';
+            }            
             ?>
             </td>
             <td>
             <?php
             $incident_case_number = $fetch_cases['incident_case_number'];
             $select_hearing = mysqli_query($conn, "SELECT date_of_hearing FROM hearing WHERE incident_case_number = '$incident_case_number'") or die('hearing query failed');
-
+            
             if (mysqli_num_rows($select_hearing) > 0) {
                 $hearing_data = mysqli_fetch_assoc($select_hearing);
-                $hearing_date = date("F j, Y", strtotime($hearing_data['date_of_hearing']));
-                echo '<a href="../../barangay/lupon/notice_forms.php?incident_case_number=' . $incident_case_number . '" class="shownotices">Create Notice Form(s)</a>';
+                $hearing_date = $hearing_data['date_of_hearing'];
+                if (empty($hearing_date)) {
+                    // Hearing date is empty, display "Set Hearing Schedule"
+                    echo '<a href="../../barangay/lupon/hearing_schedule.php?incident_case_number=' . $incident_case_number . '" class="schedule">Set Hearing Schedule</a>';
+                    echo '<a href="../../tcpdf/generate_kp7.php?incident_case_number=' . $incident_case_number . '" class="shownotices"><i class="bx bx-printer" style="margin-right: 5px;"></i>Generate KPL Form 7</a>';
+                } else {
+                    // Hearing date is not empty, display "Create Notice Form(s)"
+                    $hearing_date = date("F j, Y", strtotime($hearing_date));
+                    echo '<a href="../../barangay/lupon/notice_forms.php?incident_case_number=' . $incident_case_number . '" class="shownotices">Create Notice Form(s)</a>';
+                }
             } else {
-                // No hearing date, display "NO HEARING SCHEDULE YET"
-                echo '<a href="../../barangay/lupon/hearing_schedule.php?incident_case_number=' . $incident_case_number . '" class="schedule">Set Hearing Schedule</a>';
-                echo '<a href="../../tcpdf/generate_kp7.php?incident_case_number=' . $incident_case_number . '" class="shownotices"><i class="bx bx-printer" style="margin-right: 5px;"></i>Generate KPL Form 7</a>';
+                // Handle the case where there are no hearing records or show an error message.
+                echo 'No hearing records found.';
             }
+               
             ?>    
             </td>
         </tr>
