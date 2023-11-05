@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="css/style.css">
     <link rel="icon" type="image/x-icon" href="images/favicon.ico">
+    <title>Barangay Blotter Management System</title>
     </head>
     <body>
 
@@ -20,7 +21,7 @@
                     <div class="featured-image mb-3" style="margin-top: 20px; text-align: center;">
                         <img src="images/logo.png" class="img-fluid" style="width: 255px;">
                     </div>
-                        <p style="font-size: 23px; font-weight: 700; text-align: center; color: #010203; text-transform: uppercase;">Barangay Justice Management System</p>
+                        <p style="font-size: 23px; font-weight: 700; text-align: center; color: #010203; text-transform: uppercase;">Barangay Blotter Management System</p>
                 </div>
 
                 <div class="col-md-6 right-box">
