@@ -54,7 +54,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['execution_submit'])) 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css"/>
     <link rel="stylesheet" href="bootstrap/bootstrap-5.0.2-dist/css/bootstrap.min.css">
     <link rel="icon" type="image/x-icon" href="../../images/favicon.ico">
-    <title>Create Incident Report Record</title>
+    <title>Case Report Summary</title>
 </head>
 <body>
     
@@ -220,22 +220,33 @@ if(mysqli_num_rows($select) > 0){
 </div>
                             
 <?php
-$select = mysqli_query($conn, "SELECT * FROM `execution_notice` WHERE `incident_case_number` = '$incident_case_number'") or die('query failed');
-if(mysqli_num_rows($select) > 0){
-    $fetch = mysqli_fetch_assoc($select);
-    $execution_date = $fetch['execution_date'];
-    $compliance_status = $fetch['compliance_status'];
-    $remarks = $fetch['remarks'];
-    $showExecution = true;
-} else {
-    $showExecution = false;
+$select_execution = mysqli_query($conn, "SELECT * FROM `execution_notice` WHERE `incident_case_number` = '$incident_case_number'") or die('query failed');
+$select_notify = mysqli_query($conn, "SELECT * FROM `notify_residents` WHERE `incident_case_number` = '$incident_case_number'") or die('query failed');
+
+$showExecution = false;
+$showNotify = false;
+
+if (mysqli_num_rows($select_execution) > 0) {
+    $fetch_execution = mysqli_fetch_assoc($select_execution);
+    $execution_date = $fetch_execution['execution_date'];
+    $compliance_status = $fetch_execution['compliance_status'];
+    $remarks = $fetch_execution['remarks'];
+    $generate_execution = $fetch_execution['generate_execution'];
+    
+    if (!empty($generate_execution)) {
+        $showExecution = true;
+    }
+}
+
+if (mysqli_num_rows($select_notify) > 0) {
+    $showNotify = true;
 }
 ?>
 
 <span class="title" style="width: 100%;">Execution of Agreement</span>
 
-<?php if (!$showExecution) { ?>
-<span class="title" style="width: 100%;">FILE OF MOTION HAS NOT BEEN VALIDATED BY THE PUNONG BARANGAY YET.</span>
+<?php if (!$showNotify) { ?>
+<span class="title" style="width: 100%;">PLEASE FILE MOTION FOR EXECUTION FIRST.</span>
 <?php } ?>
 
 <?php if ($showExecution && $execution_date !== "Motion has not been validated yet") { ?>
@@ -250,7 +261,7 @@ if(mysqli_num_rows($select) > 0){
 <?php if ($showExecution && $compliance_status !== "Motion has not been validated yet") { ?>
 <div class="input-field-1">
     <label class="label">Compliance Status</label>
-    <div class="text-box">
+    <div class "text-box">
         <p style="padding: 10px 0"><?php echo $compliance_status; ?></p>
     </div>
 </div>
@@ -261,6 +272,7 @@ if(mysqli_num_rows($select) > 0){
     </div>
 </div>
 <?php } ?>
+
 
                         </div>
                     </div>
