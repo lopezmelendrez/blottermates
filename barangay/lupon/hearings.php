@@ -170,43 +170,55 @@ while ($row = mysqli_fetch_assoc($result)) {
 
             echo '</td>';
             echo '<td>';
-            $check_query = "SELECT nr.generate_pangkat, h.hearing_type_status, aa.incident_case_number
+            $check_query = "SELECT nr.generate_pangkat, h.hearing_type_status, aa.incident_case_number, h.date_of_hearing
                 FROM notify_residents nr
                 LEFT JOIN hearing h ON nr.incident_case_number = h.incident_case_number
                 LEFT JOIN arbitration_agreement aa ON nr.incident_case_number = aa.incident_case_number
                 WHERE nr.incident_case_number = '" . $row['incident_case_number'] . "'";
             
-            $check_result = mysqli_query($conn, $check_query);
+$check_result = mysqli_query($conn, $check_query);
             
-            if ($check_result && mysqli_num_rows($check_result) > 0) {
-                $row_notify = mysqli_fetch_assoc($check_result);
-                $generate_pangkat = $row_notify['generate_pangkat'];
-                $hearing_type_status = $row_notify['hearing_type_status'];
-            
-                if ($hearing_type_status === 'conciliation') {
-                    $check_query = "SELECT generate_pangkat FROM notify_residents WHERE incident_case_number = '" . $row['incident_case_number'] . "'";
-                    $check_result = mysqli_query($conn, $check_query);
+if ($check_result && mysqli_num_rows($check_result) > 0) {
+    $row_notify = mysqli_fetch_assoc($check_result);
+    $generate_pangkat = $row_notify['generate_pangkat'];
+    $hearing_type_status = $row_notify['hearing_type_status'];
+    $date_of_hearing = strtotime($row_notify['date_of_hearing']);
+    $current_time = time();
 
-                    if ($check_result && mysqli_num_rows($check_result) > 0) {
-                        $row_notify = mysqli_fetch_assoc($check_result);
-                        $generate_pangkat = $row_notify['generate_pangkat'];
+    if ($hearing_type_status === 'conciliation') {
+        $check_query = "SELECT generate_pangkat FROM notify_residents WHERE incident_case_number = '" . $row['incident_case_number'] . "'";
+        $check_result = mysqli_query($conn, $check_query);
 
-                        if (empty($generate_pangkat) || $generate_pangkat === 'not generated') { // Check for the specific value
-                            echo '<a href="notice_forms.php?incident_case_number=' . $row['incident_case_number'] . '" class="shownotices" style="text-decoration: none;">Create Notice Form(s)</a>';
-                        } else {
-                            echo '<a href="conciliation_settlement_page.php?incident_case_number=' . $row['incident_case_number'] . '" class="shownotices" style="text-decoration: none;">Go to Hearing</a>';
-                        }
-                    }
-                } elseif ($hearing_type_status === 'arbitration') {
-                    $select_arbitration_agreement = mysqli_query($conn, "SELECT 1 FROM arbitration_agreement WHERE incident_case_number = '{$row['incident_case_number']}' LIMIT 1");
+        if ($check_result && mysqli_num_rows($check_result) > 0) {
+            $row_notify = mysqli_fetch_assoc($check_result);
+            $generate_pangkat = $row_notify['generate_pangkat'];
 
-                    if ($select_arbitration_agreement && mysqli_num_rows($select_arbitration_agreement) > 0) {
-                        echo '<a href="arbitration_settlement_page.php?incident_case_number=' . $row['incident_case_number'] . '" class="shownotices" style="text-decoration: none;">Go to Hearing</a>';
-                    } else {
-                        echo '<a href="arbitration_agreement.php?incident_case_number=' . $row['incident_case_number'] . '" class="shownotices" style="text-decoration: none;">Create Arbitration Agreement</a>';
-                    }
+            if (empty($generate_pangkat) || $generate_pangkat === 'not generated') { // Check for the specific value
+                echo '<a href="notice_forms.php?incident_case_number=' . $row['incident_case_number'] . '" class="shownotices" style="text-decoration: none;">Create Notice Form(s)</a>';
+            } else {
+                if (date('Y-m-d', $current_time) == date('Y-m-d', $date_of_hearing)) {
+                    echo '<a href="conciliation_settlement_page.php?incident_case_number=' . $row['incident_case_number'] . '" class="shownotices" style="text-decoration: none;">Go to Hearing</a>';
+                } else {
+                    echo '<span class="shownotices" style="text-decoration: none;">Upcoming Hearing</span>';
                 }
             }
+        }
+    } elseif ($hearing_type_status === 'arbitration') {
+        $select_arbitration_agreement = mysqli_query($conn, "SELECT 1 FROM arbitration_agreement WHERE incident_case_number = '{$row['incident_case_number']}' LIMIT 1");
+    
+        if ($select_arbitration_agreement && mysqli_num_rows($select_arbitration_agreement) > 0) {
+            // Check if the arbitration date is in the future
+            if (date('Y-m-d', $current_time) < date('Y-m-d', $date_of_hearing)) {
+                echo '<span class="shownotices" style="text-decoration: none;">Upcoming Hearing</span>';
+            } else {
+                echo '<a href="arbitration_settlement_page.php?incident_case_number=' . $row['incident_case_number'] . '" class="shownotices" style="text-decoration: none;">Go to Hearing</a>';
+            }
+        } else {
+            echo '<a href="arbitration_agreement.php?incident_case_number=' . $row['incident_case_number'] . '" class="shownotices" style="text-decoration: none;">Create Arbitration Agreement</a>';
+        }
+    }
+    
+}
 
             echo '</td>';
             echo '</tr>';

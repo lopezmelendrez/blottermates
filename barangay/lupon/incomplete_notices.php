@@ -74,18 +74,31 @@ $row = mysqli_fetch_assoc($selectLuponId);
 $lupon_id = $row['lupon_id'];
 
 
-$select = mysqli_query($conn, "SELECT * FROM `incident_report` AS ir
-    WHERE NOT EXISTS (
-        SELECT 1 FROM `hearing` AS h
-        INNER JOIN `amicable_settlement` AS amicable_settlement ON h.hearing_id = amicable_settlement.hearing_id
-        WHERE ir.incident_case_number = h.incident_case_number
-    ) AND ir.lupon_id = $lupon_id LIMIT $offset, $itemsPerPage") or die('query failed');
+$select = mysqli_query($conn, "
+SELECT incident_report.incident_case_number AS incident_case_number,
+incident_report.complainant_last_name AS complainant_last_name,
+incident_report.respondent_last_name AS respondent_last_name,
+incident_report.created_at AS created_at
+FROM `incident_report`
+LEFT JOIN `notify_residents` ON incident_report.incident_case_number = notify_residents.incident_case_number
+LEFT JOIN `amicable_settlement` ON incident_report.incident_case_number = amicable_settlement.incident_case_number
+WHERE (generate_summon = 'not generated' OR generate_hearing = 'not generated' OR generate_pangkat = 'not generated' OR generate_summon IS NULL OR generate_hearing IS NULL OR generate_pangkat IS NULL)
+AND amicable_settlement.incident_case_number IS NULL
+AND incident_report.lupon_id = $lupon_id
+AND NOT EXISTS (
+    SELECT 1 FROM `hearing` AS h
+    INNER JOIN `amicable_settlement` AS amicable_settlement ON h.hearing_id = amicable_settlement.hearing_id
+    WHERE incident_report.incident_case_number = h.incident_case_number
+)
+LIMIT $offset, $itemsPerPage
+") or die('query failed');
+
 
 $num_rows = mysqli_num_rows($select);
 $numPages = ceil($num_rows / $itemsPerPage);
 
 if ($num_rows === 0) {
-    echo '<tr><td colspan="6" style="font-size: 25px; font-weight: 600; text-transform: uppercase;">no ongoing incident cases yet</td></tr>';
+    echo '<tr><td colspan="6" style="font-size: 25px; font-weight: 600; text-transform: uppercase;">no incident cases with incomplete notice</td></tr>';
 } else {
     while ($fetch_cases = mysqli_fetch_assoc($select)) {
         $submitter_first_name = $fetch_cases['submitter_first_name'];

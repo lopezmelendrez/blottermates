@@ -125,7 +125,7 @@ AND incident_report.lupon_id = $lupon_id
 ") or die('query failed');
 
 if (mysqli_num_rows($select) === 0) {
-    echo '<tr><td colspan="3" style="font-size: 25px; font-weight: 600; text-transform: capitalize;">no ongoing incident cases yet</td></tr>';
+    echo '<tr><td colspan="3" style="font-size: 18px; font-weight: 600; text-transform: capitalize;">No Incident Cases with Incomplete Notice</td></tr>';
 } else {
     while ($fetchCases = mysqli_fetch_assoc($select)) {
         echo '<tr>';
