@@ -78,7 +78,9 @@ $select = mysqli_query($conn, "
 SELECT incident_report.incident_case_number AS incident_case_number,
 incident_report.complainant_last_name AS complainant_last_name,
 incident_report.respondent_last_name AS respondent_last_name,
-incident_report.created_at AS created_at
+incident_report.created_at AS created_at,
+incident_report.submitter_first_name as submitter_first_name,
+incident_report.submitter_last_name as submitter_last_name
 FROM `incident_report`
 LEFT JOIN `notify_residents` ON incident_report.incident_case_number = notify_residents.incident_case_number
 LEFT JOIN `amicable_settlement` ON incident_report.incident_case_number = amicable_settlement.incident_case_number
@@ -93,12 +95,11 @@ AND NOT EXISTS (
 LIMIT $offset, $itemsPerPage
 ") or die('query failed');
 
-
 $num_rows = mysqli_num_rows($select);
 $numPages = ceil($num_rows / $itemsPerPage);
 
 if ($num_rows === 0) {
-    echo '<tr><td colspan="6" style="font-size: 25px; font-weight: 600; text-transform: uppercase;">no incident cases with incomplete notice</td></tr>';
+    echo '<tr><td colspan="6" style="font-size: 25px; font-weight: 600; text-transform: uppercase;">no ongoing incident cases yet</td></tr>';
 } else {
     while ($fetch_cases = mysqli_fetch_assoc($select)) {
         $submitter_first_name = $fetch_cases['submitter_first_name'];
@@ -125,7 +126,7 @@ if ($num_rows === 0) {
                     echo '<span style="font-weight: 600;">NO HEARING SCHEDULE YET</span>';
                 }
             } else {
-                echo 'No hearing records found.';
+                echo '<span style="font-weight: 600;">NO HEARING SCHEDULE YET</span>';
             }            
             ?>
             </td>
@@ -147,8 +148,9 @@ if ($num_rows === 0) {
                     echo '<a href="../../barangay/lupon/notice_forms.php?incident_case_number=' . $incident_case_number . '" class="shownotices">Create Notice Form(s)</a>';
                 }
             } else {
-                // Handle the case where there are no hearing records or show an error message.
-                echo 'No hearing records found.';
+                // Hearing date is empty, display "Set Hearing Schedule"
+                echo '<a href="../../barangay/lupon/hearing_schedule.php?incident_case_number=' . $incident_case_number . '" class="schedule">Set Hearing Schedule</a>';
+                echo '<a href="../../tcpdf/generate_kp7.php?incident_case_number=' . $incident_case_number . '" class="shownotices"><i class="bx bx-printer" style="margin-right: 5px;"></i>Generate KPL Form 7</a>';
             }
                
             ?>    

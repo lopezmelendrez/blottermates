@@ -46,9 +46,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit'])) {
     <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="../css/dilg.css">
     <link rel="stylesheet" href="../css/lupon_home.css">
+    <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
 </head>
 <body>
-    <nav class="sidebar close">
+<nav class="sidebar close">
         <header>
             <div class="image-text">
                     <?php
@@ -83,23 +84,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit'])) {
                 </li>
 
                     <li class="nav-link">
-                        <a href="#">
+                        <a href="home.php">
                             <i class='bx bx-home-alt icon' ></i>
                             <span class="text nav-text">Dashboard</span>
                         </a>
                     </li>
 
                     <li class="nav-link">
-                        <a href="#">
-                            <i class='bx bx-bell icon'></i>
-                            <span class="text nav-text">Notifications</span>
+                        <a href="activity_history.php">
+                            <i class='bx bx-history icon'></i>
+                            <span class="text nav-text">Activity History</span>
                         </a>
                     </li>
 
                     <li class="nav-link">
                         <a href="#">
-                            <i class='bx bx-pie-chart-alt icon' ></i>
-                            <span class="text nav-text">Analytics</span>
+                            <i class='bx bx-receipt icon' ></i>
+                            <span class="text nav-text"></span>
                         </a>
                     </li>
 

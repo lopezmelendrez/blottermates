@@ -24,6 +24,7 @@ header('location: ../index.php');
     <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="../css/dilg.css">
     <link rel="stylesheet" href="../css/lupon_home.css">
+    <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
     <title>Punong Barangay Dashboard</title>
 </head>
 <body>
@@ -287,7 +288,7 @@ header('location: ../index.php');
 
 
             if (mysqli_num_rows($select) === 0) {
-                echo '<tr><td colspan="3" style="font-size: 16px; font-weight: 600; text-transform: capitalize; text-align: center; padding-top: 8%;">No Cases Pending for Filing of Motion Yet</td></tr>';
+                echo '<tr><td colspan="3" style="font-size: 16px; font-weight: 600; text-transform: capitalize; text-align: center; padding-top: 8%;">No Incident cases require motion filing yet</td></tr>';
             } else {
                 while ($fetchCases = mysqli_fetch_assoc($select)) {
                     echo '<tr>';

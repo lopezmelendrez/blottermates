@@ -203,7 +203,7 @@ $activityLogQuery = "
     FROM incident_report ir
     INNER JOIN lupon_accounts la ON ir.lupon_id = la.lupon_id
     WHERE la.pb_id = $pb_id)
-    ORDER BY formatted_timestamp DESC LIMIT 10
+    ORDER BY formatted_timestamp DESC
 ";
 
 $result = mysqli_query($conn, $activityLogQuery);

@@ -235,6 +235,7 @@ $result = mysqli_query($conn, $activityLogQuery);
     <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="../css/dilg.css">
     <link rel="stylesheet" href="../css/lupon_home.css">
+    <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
     <title>Activity History</title>
 </head>
 <body>
