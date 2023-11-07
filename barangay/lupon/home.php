@@ -68,23 +68,23 @@ $hasEvents = !empty($events);
     <section class="home">
         
         <div class="datetime-container" style="display: flex;">
-            <div class="datetime mb-3">
+            <div class="datetime mb-3" style="width: 26rem;">
                 <div class="time" id="time"></div>
-                <div class="date" style="font-size: 23px;"></div>
+                <div class="date" style="font-size: 24px; width: 24rem;"></div>
             </div>
 
-            <a href="../lupon_register.php" style="text-decoration: none; margin-left: 1%;"><div class="add-account" style="display: flex; margin-top: 20%; width: 69%;">
+            <a href="../lupon_register.php" style="text-decoration: none; margin-left: 1%;"><div class="add-account" style="display: flex; margin-top: 20%; width: 85%;">
                 <i class='bx bx-download'></i>
                 <p>Generate Monthly Report</p>
             </div></a>
             
         </div>
 
-        <div class="incident-case-table" style="display: flex;">
+        <div class="incident-case-table" style="display: flex; width: 615px;">
             <div class="head-text">
                 <p class="incident-case">Recent Incident Cases</p>
                 <p class="notice-records">* Needs Notice Records</p>
-                <div class="box">
+                <div class="box" style="margin-left: 300px; margin-top: -60px;">
                     <input type="text" id="searchInput" placeholder="Search...">
                     <a href="#">
                         <i class="bx bx-search"></i>
@@ -150,8 +150,8 @@ if (mysqli_num_rows($select) === 0) {
         </div>
     </div>
 
-    <div class="calendar-container" style="display: flex;">
-        <div id="calendar" style="width: 600px;"></div>
+    <div class="calendar-container" style="display: flex; margin-left: -7%;">
+        <div id="calendar" style="width: 500px;"></div>
     </div>
 
 
@@ -231,25 +231,27 @@ document.addEventListener('DOMContentLoaded', function() {
     var calendar = new FullCalendar.Calendar(calendarEl, {
         initialView: 'listMonth',
         headerToolbar: {
-            left: 'prev,next',
-            center: 'title',
-            right: 'listMonth'
+            right: 'prev,next', // Only show prev and next buttons
+            center: '', // Remove the title
+            left: 'listMonth'
         },
         events: <?php echo json_encode($events); ?>,
         views: {
             listMonth: {
-                buttonText: 'HEARINGS',
+                buttonText: 'SCHEDULED HEARINGS',
             }
         },
-        // Use the 'noEventsContent' callback to customize the "No events to display" text
         noEventsContent: function() {
             return "No Scheduled Hearings Yet";
+        },
+        eventClick: function(arg) {
+            // Handle the click event and navigate to hearings.php
+            window.location.href = 'hearings.php'; // Change this URL to your desired page
         }
     });
 
     calendar.render();
 });
-
 
 
 const searchInput = document.getElementById("searchInput");
@@ -317,8 +319,6 @@ table th{
     height: 100vh;
     width: calc(100% - 78px);
 }
-
-
 
     </style>
 
