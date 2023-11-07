@@ -66,6 +66,9 @@ if (isset($_POST['submit'])) {
     <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css"/>
     <link rel="stylesheet" href="bootstrap/bootstrap-5.0.2-dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <link rel="icon" type="image/x-icon" href="../../images/favicon.ico">
     <title>Create Incident Report Record</title>
 </head>
@@ -152,18 +155,6 @@ if (isset($_POST['submit'])) {
                         <span class="text nav-text">Logout</span>
                     </a>
                 </li>
-
-                <li class="mode">
-                    <div class="sun-moon">
-                        <i class='bx bx-moon icon moon'></i>
-                        <i class='bx bx-sun icon sun'></i>
-                    </div>
-                    <span class="mode-text text">Dark mode</span>
-
-                    <div class="toggle-switch">
-                        <span class="switch"></span>
-                    </div>
-                </li>
                 
             </div>
         </div>
@@ -176,7 +167,7 @@ if (isset($_POST['submit'])) {
         <div class="card">
             <div class="card-body">
                 <div class="d-flex justify-content-between align-items-center mb-3">
-                    <header class="card-title" style="font-size: 18px;">Create Incident Report Form</header>
+                    <header class="card-title" style="font-size: 22px;">Create Incident Report Form</header>
                     <hr style="border: 1px solid #ccc; margin: 20px 0;">
                     <div class="case-number-box" style="text-align: center; font-size: 28px;">
                         <span>INCIDENT CASE #<?php echo $incident_case_number; ?></span>
@@ -201,10 +192,10 @@ if (isset($_POST['submit'])) {
                             </div>
                             <div class="input-field">
                                 <label class="required-label">Cellphone Number</label>
-                                <input type="text" name="complainant_cellphone_number" placeholder="" required>
+                                <input type="text" name="complainant_cellphone_number" id="complainant_cellphone_number" placeholder="" required>
 
                             </div>
-                            <div class="input-field-1" style="width: 28rem;">
+                            <div class="input-field-1" style="width: 35rem;">
                                 <label class="required-label">House Address</label>
                                 <input type="text" name="complainant_house_address" placeholder="" required>
                             </div>
@@ -226,11 +217,10 @@ if (isset($_POST['submit'])) {
                                 <input type="text" name="respondent_middle_name" onkeypress="return validateName(event)" placeholder="">
                             </div>
                             <div class="input-field">
-                            <label class="required-label">Cellphone Number</label>
-                            <input type="text" name="respondent_cellphone_number" placeholder="" required>
+                                <label class="required-label">Cellphone Number</label>
+                                <input type="text" name="respondent_cellphone_number" id="respondent_cellphone_number" placeholder="">
                             </div>
-
-                            <div class="input-field-1" style="width: 28rem;">
+                            <div class="input-field-1" style="width: 35rem;">
                                 <label class="required-label">House Address</label>
                                 <input type="text" name="respondent_house_address" placeholder="" required>
                             </div>
@@ -244,7 +234,7 @@ if (isset($_POST['submit'])) {
                     <div class="details address">
                         <span class="title">Incident Details</span>
                         <div class="fields">
-                            <div class="input-field-1" style="width: 28rem;">
+                            <div class="input-field-1" style="width: 35rem;">
                                 <label class="required-label">Incident Case Type</label>
                                 <select name="incident_case_type" id="incident_case_type" required>
                                     <option disabled selected>Select...</option>
@@ -296,10 +286,17 @@ if (isset($_POST['submit'])) {
                                 </select>
                             </div>
                             
-                            <div class="input-field">
+                            <div class="input-field" style="width: 17rem;">
                                 <label class="required-label">Incident Date</label>
-                                <input type="date" name="incident_date" placeholder="" required>
+                                <input type="text" name="incident_date" id="datepicker" placeholder="" required readonly>
                             </div>
+
+                            <div id="otherIncident" style="display: none;">
+                                <div class="input-field" style="width: 53.7rem;">
+                                <input type="text" id="otherIncidentType" placeholder="Other Incident Case Type" name="other_incident_case_type">
+                                </div>
+                            </div>
+
                             <div class="input-field" style="width: 100%; position: relative;">
                                 <label class="required-label">Description of Violation</label>
                                 <textarea style="width: 100%; height: 150px; padding: 10px 15px; border: 1px solid #aaa; outline: none; font-size: 14px; border-radius: 5px; font-weight: 400; margin-top: 8px; resize: vertical;" name="description_of_violation" id="description_input" required></textarea>
@@ -441,6 +438,50 @@ if (isset($_POST['submit'])) {
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
+
+function validateName(event) {
+    var keyCode = event.keyCode;
+
+    if ((keyCode >= 65 && keyCode <= 90) || (keyCode >= 97 && keyCode <= 122)) {
+        return true;
+    }
+
+    if (keyCode === 32 || keyCode === 46 || keyCode === 45 || keyCode === 9) {
+        return true;
+    }
+
+    event.preventDefault();
+    return false;
+}
+
+$(function() {
+            $("#datepicker").datepicker({
+                minDate: new Date(2019, 0, 1), // January 1, 2019
+                maxDate: new Date() // Current date
+            });
+        });
+
+        $(function() {
+            $("#incident_case_type").change(function() {
+                if ($(this).val() === "Other") {
+                    $("#otherIncident").show();
+                } else {
+                    $("#otherIncident").hide();
+                }
+            });
+        });
+
+const respondentCellphoneInput = document.getElementById('respondent_cellphone_number');
+        respondentCellphoneInput.addEventListener('input', function() {
+            this.value = this.value.replace(/[^0-9+]/g, '');
+        });
+
+        const complainantCellphoneInput = document.getElementById('complainant_cellphone_number');
+        complainantCellphoneInput.addEventListener('input', function() {
+            this.value = this.value.replace(/[^0-9+]/g, '');
+        });
+
+
         const body = document.querySelector('body'),
         sidebar = body.querySelector('nav'),
         toggle = body.querySelector(".toggle"),
@@ -475,36 +516,6 @@ if (isset($_POST['submit'])) {
 
         backBtn.addEventListener("click", () => form.classList.remove('secActive'));
 
-
-        function validateName(event) {
-                    var keyCode = event.keyCode;
-
-                    if ((keyCode >= 65 && keyCode <= 90) || (keyCode >= 97 && keyCode <= 122)) {
-                        return true;
-                    }
-
-                    if (keyCode === 32 || keyCode === 46 || keyCode === 45 || keyCode === 9) {
-                        return true;
-                    }
-
-                    event.preventDefault();
-                    return false;
-                }
-    
-        const incidentDateInput = document.querySelector('input[name="incident_date"]');
-
-        incidentDateInput.addEventListener('change', function(event) {
-        const selectedDate = new Date(event.target.value);
-        const currentDate = new Date();
-
-    
-        if (selectedDate > currentDate) {
-        
-        const formattedCurrentDate = currentDate.toISOString().slice(0, 10); 
-        incidentDateInput.value = formattedCurrentDate;
-        }
-
-        });
 
         const maxLength = 255;
 const inputElement = document.getElementById('description_input');
@@ -581,29 +592,7 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 });
 
-const phoneNumberInput = document.getElementById('phoneNumber');
-const validationMessage = document.getElementById('validationMessage');
-const warningSign = document.querySelector('.warning-sign');
-
-// Regular expression to validate a Philippine cellphone number.
-const regex = /^(09|\+639)\d{9}$/;
-
-phoneNumberInput.addEventListener('input', function () {
-  const phoneNumber = phoneNumberInput.value;
-
-  if (regex.test(phoneNumber)) {
-    validationMessage.textContent = '';
-    phoneNumberInput.classList.remove('invalid-input');
-    warningSign.style.visibility = 'hidden';
-  } else {
-    validationMessage.textContent = 'Invalid cellphone number. Please enter a valid Philippine cellphone number.';
-    phoneNumberInput.classList.add('invalid-input');
-    warningSign.style.visibility = 'visible';
-  }
-});
-
     </script>
-    <script src="../script.js"></script>
 <style>
 
     .container form{
@@ -620,7 +609,7 @@ phoneNumberInput.addEventListener('input', function () {
         left: 0;
         bottom: -2px;
         height: 3px;
-        width: 260px;
+        width: 312px;
         border-radius: 8px;
         background-color: #F5BE1D;
     }

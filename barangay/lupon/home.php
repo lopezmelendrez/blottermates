@@ -73,7 +73,7 @@ $hasEvents = !empty($events);
                 <div class="date" style="font-size: 24px; width: 24rem;"></div>
             </div>
 
-            <a href="../lupon_register.php" style="text-decoration: none; margin-left: 1%;"><div class="add-account" style="display: flex; margin-top: 20%; width: 85%;">
+            <a href="../lupon_register.php" style="text-decoration: none; margin-left: 1%;"><div class="add-account" style="display: flex; margin-top: 22.5%; width: 85%;">
                 <i class='bx bx-download'></i>
                 <p>Generate Monthly Report</p>
             </div></a>
