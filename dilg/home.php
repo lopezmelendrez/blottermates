@@ -193,7 +193,7 @@ header('location: ../index.php');
         <div class="table-container" style="max-height: 283px; overflow-y: hidden; margin-top: -6%;">
             <hr style="border: 1px solid #ebecf0; margin: 3px 0; width: 100%; margin-top: 3%">
             <table class="incident-table" style="width: 530px; margin-top: 3%;">
-            <p>habol ko 'to wait lang po babygirl mode muna</p>
+            <p>habol ko 'to wait lang po babygirl mode</p>
             </table>
         </div>
     </div>
@@ -322,23 +322,6 @@ dateElement.textContent = formatDate(now);
         font-weight: 500;
         display: flex;
     }
-
-    .home{
-            position: absolute;
-            top: 0;
-            top: 0;
-            left: 250px;
-            height: 100vh;
-            width: calc(100% - 78px);
-            background-color: var(--body-color);
-            transition: var(--tran-05);
-        }
-
-        .sidebar.close ~ .home{
-            left: 78px;
-            height: 100vh;
-            width: calc(100% - 78px);
-        }
 
     
 </style>

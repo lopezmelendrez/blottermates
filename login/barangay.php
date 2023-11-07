@@ -79,7 +79,7 @@ if (isset($_POST['submit'])) {
                 </div>
 
                 <div class="col-md-6 right-box">
-                            <span class="fs-4 header-text-1">Login to start session</span>
+                            <span class="header-text-1" style="font-size: 37.5px; margin-left: -100px;">Login to start session</span>
                             <hr style="border: 1px solid #949494; margin: 20px 0;">
                                
                             <form action="" method="post">
@@ -102,8 +102,8 @@ if (isset($_POST['submit'])) {
                                 </div>
     
                                 <div class="input-group1 d-flex">
-                                    <input type="button" value="Back" class="btn btn-secondary back-btn" style="width: 20%; margin-left: 95px;" onclick="history.back()">
-                                    <input type="submit" name="submit" value="Login" class="btn btn-danger" style="width: 60%; margin-left: 10px;">
+                                    <input type="button" value="Back" class="btn btn-secondary back-btn fs-4" style="width: 20%; margin-left: 95px;" onclick="history.back()">
+                                    <input type="submit" name="submit" value="Login" class="btn btn-danger fs-4" style="width: 60%; margin-left: 10px;">
                                 </div>
                             </form>
                 </div>

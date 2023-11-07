@@ -25,20 +25,20 @@
                 </div>
 
                 <div class="col-md-6 right-box">
-                    <span class="fs-4 header-text">Start Your Session As</span>
+                    <span class="header-text" style="font-size: 34px;">Start Your Session As</span>
                     <hr style="border: 1px solid #949494; margin: 20px 0;">
                     <center>
                     <div class="row" style="margin-top: 11%;">
                         <div class="col-md-6">
                             <a href="login/barangay.php" style="text-decoration: none;">
-                            <button class="btn btn-danger d-flex flex-column align-items-center barangay-btn" style="height: 150px; width: 240px;">
+                            <button class="btn btn-danger d-flex flex-column align-items-center barangay-btn" style="height: 150px; width: 240px; font-size: 22px;">
                                 <i class="fa-solid fa-users fa-3x mb-2" style="margin-top: 8%;"></i>
                                 <hr style="border: 1px solid white; width: 100%; margin: 5px 0;">Barangay
                             </button></a>
                         </div>
                         <div class="col-md-6">
                             <a href="login/dilg.php" style="text-decoration: none;">
-                            <button class="btn btn-danger d-flex flex-column align-items-center" style="height: 150px; width: 240px;">
+                            <button class="btn btn-danger d-flex flex-column align-items-center" style="height: 150px; width: 240px; font-size: 22px;">
                                 <i class="fa-solid fa-circle-user fa-3x mb-2" style="margin-top: 8%;"></i>
                                 <hr style="border: 1px solid white; width: 100%; margin: 5px 0;">DILG
                             </button></a>

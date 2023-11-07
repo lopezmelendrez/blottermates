@@ -245,81 +245,40 @@ if (mysqli_num_rows($select_notify) > 0) {
 
 <span class="title" style="width: 100%;">Execution of Agreement</span>
 
-<?php if (!$showNotify) { ?>
-<span class="title" style="width: 100%;">PLEASE FILE MOTION FOR EXECUTION FIRST.</span>
-<?php } ?>
+<?php
+if (!$showNotify) {
+    if ($generate_execution == "not generated") {
+        echo '<span class="title" style="width: 100%;">PLEASE FILE A MOTION FOR EXECUTION FIRST.</span>';
+    } elseif ($generate_execution == "form generated") {
+        echo '<span class="title" style="width: 100%;">Punong Barangay has not validated the Filing of Motion Yet.</span>';
+    }
+}
 
-<?php if ($showExecution && $execution_date !== "Motion has not been validated yet") { ?>
-<div class="input-field-1">
-    <label class="label">Date of Agreement Execution</label>
-    <div class="text-box">
-        <p style="padding: 10px 0"><?php echo $execution_date; ?></p>
-    </div>
-</div>
-<?php } ?>
+if ($showExecution && $execution_date !== "Motion has not been validated yet") {
+    echo '<div class="input-field-1">';
+    echo '<label class="label">Date of Agreement Execution</label>';
+    echo '<div class="text-box">';
+    echo '<p style="padding: 10px 0">' . $execution_date . '</p>';
+    echo '</div>';
+    echo '</div>';
+}
 
-<?php if ($showExecution && $compliance_status !== "Motion has not been validated yet") { ?>
-<div class="input-field-1">
-    <label class="label">Compliance Status</label>
-    <div class "text-box">
-        <p style="padding: 10px 0"><?php echo $compliance_status; ?></p>
-    </div>
-</div>
-<div class="input-field" style="width: 100%; position: relative;">
-    <label class="label">Remarks</label>
-    <div class="text-box">
-        <p style="padding: 10px 0"><?php echo $remarks; ?></p>
-    </div>
-</div>
-<?php } ?>
-
-
-                        </div>
-                    </div>
-                    <div class="details ID">
-                        
-                        <div class="buttons" style="margin-top: -2%;">
-                        <?php
-$select = mysqli_query($conn, "SELECT * FROM `execution_notice` WHERE `incident_case_number` = '$incident_case_number'") or die('query failed');
-if(mysqli_num_rows($select) > 0){
-    $fetch = mysqli_fetch_assoc($select);
-    $execution_date = $fetch['execution_date'];
-    $compliance_status = $fetch['compliance_status'];
-    $remarks = $fetch['remarks'];
-    $showExecution = true;
-} else {
-    $showExecution = false;
+if ($showExecution && $compliance_status !== "Motion has not been validated yet") {
+    echo '<div class="input-field-1">';
+    echo '<label class="label">Compliance Status</label>';
+    echo '<div class "text-box">';
+    echo '<p style="padding: 10px 0">' . $compliance_status . '</p>';
+    echo '</div>';
+    echo '</div>';
+    echo '<div class="input-field" style="width: 100%; position: relative;">';
+    echo '<label class="label">Remarks</label>';
+    echo '<div class="text-box">';
+    echo '<p style="padding: 10px 0">' . $remarks . '</p>';
+    echo '</div>';
+    echo '</div>';
 }
 ?>
 
-<?php if (!$showExecution) { ?>
-    <a href="case_report.php?incident_case_number=<?php echo $incident_case_number ?>" style="text-decoration: none;">
-        <div class="backBtn-1" style="padding: 12px 12px; width: 200px; border: 1px solid #bc1823; background: #fff; color: #bc1823; margin-left: 330%; margin-top: 70%;">
-            <span class="btnText" style="text-align: center;">Back</span>
-        </div>
-    </a>
-<?php } else { ?>
-    <a href="case_report.php?incident_case_number=<?php echo $incident_case_number ?>" style="text-decoration: none;">
-        <div class="backBtn-1" style="padding: 12px 12px; width: 100px; border: 1px solid #bc1823; background: #fff; color: #bc1823; margin-left: 550%;">
-            <span class="btnText" style="text-align: center;">Back</span>
-        </div>
-    </a>
-<?php } ?>
-                            <?php if (!$showExecution) { ?>
-    <a href="try.html" style="text-decoration: none;">
-        <div class="backBtn-1" style="width: 600px; margin-left: 280%; padding: 12px 12px; display: none;">
-            <span class="btnText">Generate Notice of Execution</span>
-        </div>
-    </a>
-<?php } ?>
-
-<?php if ($showExecution && $execution_date !== "Motion has not been validated yet") { ?>
-    <a href="try.html" style="text-decoration: none;">
-        <div class="backBtn-1" style="width: 600px; margin-left: 280%; padding: 12px 12px;">
-            <span class="btnText">Generate Notice of Execution</span>
-        </div>
-    </a>
-<?php } ?>
                         </div>
                         
                     </div> 
