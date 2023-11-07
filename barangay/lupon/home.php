@@ -65,7 +65,7 @@ $hasEvents = !empty($events);
     
 <?php include 'navbar.php';?>
 
-    <section class="home">
+    <section class="home" style="margin-top: -10px;">
         
         <div class="datetime-container" style="display: flex;">
             <div class="datetime mb-3" style="width: 26rem;">
@@ -84,16 +84,16 @@ $hasEvents = !empty($events);
             <div class="head-text">
                 <p class="incident-case">Recent Incident Cases</p>
                 <p class="notice-records">* Needs Notice Records</p>
-                <div class="box" style="margin-left: 300px; margin-top: -60px;">
+                <div class="box" style="margin-left: 360px; margin-top: -60px;">
                     <input type="text" id="searchInput" placeholder="Search...">
                     <a href="#">
-                        <i class="bx bx-search"></i>
+                        <i class="bx bx-search" style="font-size: 20px; margin-top: 5px;"></i>
                     </a>
                 </div>
 
         <div class="table-container"  style="max-height: 310px; overflow-y: hidden">
-        <hr style="border: 1px solid #949494; margin: 20px 0; width: 80%; margin-top: 5%;">
-        <table class="incident-table" style="width: 650px;">
+        <hr style="border: 1px solid #949494; margin: 20px 0; width: 80%; margin-top: 4%;">
+        <table class="incident-table" style="width: 710px;">
             <thead>
                 <tr>
                     <th>Case No</th>
@@ -150,7 +150,7 @@ if (mysqli_num_rows($select) === 0) {
         </div>
     </div>
 
-    <div class="calendar-container" style="display: flex; margin-left: -7%;">
+    <div class="calendar-container" style="display: flex; margin-left: -17%;">
         <div id="calendar" style="width: 500px;"></div>
     </div>
 
