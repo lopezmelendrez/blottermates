@@ -34,8 +34,6 @@ if (isset($_POST['submit'])) {
     $incident_case_type = $_POST['incident_case_type'];
     $incident_date = $_POST['incident_date'];
     $description_of_violation = $_POST['description_of_violation'];
-    
-    // Add the other_incident_case_type field here
     $other_incident_case_type = $_POST['other_incident_case_type'];
 
     $result = mysqli_query($conn, "SELECT incident_case_number FROM incident_report WHERE incident_case_number = '$incident_case_number'");
@@ -55,7 +53,6 @@ if (isset($_POST['submit'])) {
     }
 }
 ?>
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -443,7 +440,8 @@ if (isset($_POST['submit'])) {
             INVALID
             </h3>
             <hr style="border: 1px solid #ccc; margin: 10px 0;">
-            <p id="customAlertMessage" style="font-size: 18px; text-align: center; margin-top: 10%;"></p>
+            <p style="font-size: 14px; text-align: center; font-weight: 500; text-transform: uppercase; letter-spacing: 2px; margin-top: 12%;">Please input a valid Cellphone number for the: </p>
+            <p id="customAlertMessage" style="font-size: 18px; text-align: center; margin-top: 3%; font-weight: 600;"></p>
             </div>
     <center>
 </div>
@@ -607,11 +605,11 @@ document.addEventListener("DOMContentLoaded", function() {
 
         if (!validatePhoneNumber(complainantPhoneNumber) || !validatePhoneNumber(respondentPhoneNumber)) {
     if (!validatePhoneNumber(complainantPhoneNumber) && !validatePhoneNumber(respondentPhoneNumber)) {
-        openCustomAlert("Please input valid Cellphone Numbers for both the COMPLAINANT and RESPONDENT.");
+        openCustomAlert("COMPLAINANT and RESPONDENT");
     } else if (!validatePhoneNumber(complainantPhoneNumber)) {
-        openCustomAlert("Please input a valid Cellphone Number for the COMPLAINANT.");
+        openCustomAlert("COMPLAINANT");
     } else {
-        openCustomAlert("Please input a valid Cellphone Number for the RESPONDENT.");
+        openCustomAlert("RESPONDENT");
     }
 }  else {
         document.getElementById("complainantLastName").textContent = document.querySelector('input[name="complainant_last_name"]').value;

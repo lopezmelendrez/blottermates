@@ -1,4 +1,4 @@
-<!--<?php
+<?php
 
 include '../../config.php';
 
@@ -10,7 +10,7 @@ if(!isset($email)){
 header('location: ../../index.php');
 }
 
-?>-->
+?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -107,7 +107,7 @@ if ($num_rows === 0) {
         $submitter_full_name = $submitter_first_name . ' ' . $submitter_last_name;
         ?>
         <tr>
-            <td><?php echo $fetch_cases['incident_case_number']; ?></td>
+            <td style="width: 9rem;"><?php echo $fetch_cases['incident_case_number']; ?></td>
             <td><?php echo $fetch_cases['complainant_last_name']; ?> vs. <?php echo $fetch_cases['respondent_last_name']; ?></td>
             <td><?php echo date("F j, Y", strtotime($fetch_cases['created_at'])); ?></td>
             <td><?php echo $submitter_full_name; ?></td>
@@ -139,18 +139,15 @@ if ($num_rows === 0) {
                 $hearing_data = mysqli_fetch_assoc($select_hearing);
                 $hearing_date = $hearing_data['date_of_hearing'];
                 if (empty($hearing_date)) {
-                    // Hearing date is empty, display "Set Hearing Schedule"
                     echo '<a href="../../barangay/lupon/hearing_schedule.php?incident_case_number=' . $incident_case_number . '" class="schedule">Set Hearing Schedule</a>';
-                    echo '<a href="../../tcpdf/generate_kp7.php?incident_case_number=' . $incident_case_number . '" class="shownotices"><i class="bx bx-printer" style="margin-right: 5px;"></i>Generate KPL Form 7</a>';
+                    echo '<a href="../../tcpdf/generate_kp7.php?incident_case_number=' . $incident_case_number . '" class="shownotices" target="_blank"><i class="bx bx-printer" style="margin-right: 5px;"></i>Generate KPL Form 7</a>';
                 } else {
-                    // Hearing date is not empty, display "Create Notice Form(s)"
                     $hearing_date = date("F j, Y", strtotime($hearing_date));
                     echo '<a href="../../barangay/lupon/notice_forms.php?incident_case_number=' . $incident_case_number . '" class="shownotices">Create Notice Form(s)</a>';
                 }
             } else {
-                // Hearing date is empty, display "Set Hearing Schedule"
                 echo '<a href="../../barangay/lupon/hearing_schedule.php?incident_case_number=' . $incident_case_number . '" class="schedule">Set Hearing Schedule</a>';
-                echo '<a href="../../tcpdf/generate_kp7.php?incident_case_number=' . $incident_case_number . '" class="shownotices"><i class="bx bx-printer" style="margin-right: 5px;"></i>Generate KPL Form 7</a>';
+                echo '<a href="../../tcpdf/generate_kp7.php?incident_case_number=' . $incident_case_number . '" class="shownotices" target="_blank"><i class="bx bx-printer" style="margin-right: 5px;"></i>Generate KPL Form 7</a>';
             }
                
             ?>    
