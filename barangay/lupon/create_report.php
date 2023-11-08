@@ -111,11 +111,6 @@ if (isset($_POST['submit'])) {
         <div class="menu-bar">
             <div class="menu">
 
-                <li class="search-box">
-                    <i class='bx bx-search icon'></i>
-                    <input type="text" placeholder="Search...">
-                </li>
-
                     <li class="nav-link">
                         <a href="home.php">
                             <i class='bx bx-home-alt icon' ></i>

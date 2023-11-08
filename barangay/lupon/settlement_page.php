@@ -168,11 +168,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <div class="menu-bar">
             <div class="menu">
 
-                <li class="search-box">
-                    <i class='bx bx-search icon'></i>
-                    <input type="text" placeholder="Search...">
-                </li>
-
                     <li class="nav-link">
                         <a href="home.php">
                             <i class='bx bx-home-alt icon' ></i>
@@ -211,17 +206,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     </a>
                 </li>
 
-                <li class="mode">
-                    <div class="sun-moon">
-                        <i class='bx bx-moon icon moon'></i>
-                        <i class='bx bx-sun icon sun'></i>
-                    </div>
-                    <span class="mode-text text">Dark mode</span>
-
-                    <div class="toggle-switch">
-                        <span class="switch"></span>
-                    </div>
-                </li>
                 
             </div>
         </div>

@@ -45,7 +45,7 @@ $generate_pangkat = '';
         <div class="cases-container" style="display: flex;">
             <a href="hearings.php" style="text-decoration: none;">
             <div class="back" style="width: 150%;">
-                <p>Back</p>
+            <p style="font-size: 18px; margin-top: 3px;">Back</p>
             </div></a>
             <div class="settled-cases" style="width: 80%; margin-left: 90px; height: 40px;">
                 <p>Conciliation Hearings</p>
