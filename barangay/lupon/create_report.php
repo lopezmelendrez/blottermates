@@ -111,6 +111,11 @@ if (isset($_POST['submit'])) {
         <div class="menu-bar">
             <div class="menu">
 
+                <li class="search-box" style="background-color: transparent;">
+                    <i class='bx bx-search icon'></i>
+                    <input type="text" placeholder="Search...">
+                </li>
+
                     <li class="nav-link">
                         <a href="home.php">
                             <i class='bx bx-home-alt icon' ></i>
@@ -436,7 +441,7 @@ if (isset($_POST['submit'])) {
             </h3>
             <hr style="border: 1px solid #ccc; margin: 10px 0;">
             <p style="font-size: 14px; text-align: center; font-weight: 500; text-transform: uppercase; letter-spacing: 2px; margin-top: 12%;">Please input a valid Cellphone number for the: </p>
-            <p id="customAlertMessage" style="font-size: 18px; text-align: center; margin-top: 3%; font-weight: 600;"></p>
+            <p id="customAlertMessage" style="font-size: 20px; text-align: center; margin-top: 3%; font-weight: 600;"></p>
             </div>
     <center>
 </div>
