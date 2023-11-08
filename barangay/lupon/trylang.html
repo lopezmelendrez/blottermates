@@ -314,121 +314,43 @@ if (isset($_POST['submit'])) {
                             </div>
                             
                             <button class="pop-up">
-                            <span class="btnText" style="font-size: 11px; background: transparent; border: none; font-weight: 600; color: #fff; cursor: pointer;">Create Incident Report Record</span>
+                            <span class="btnText" onclick="showPopup()" style="font-size: 11px; background: transparent; border: none; font-weight: 600; color: #fff; cursor: pointer;">Create Incident Report Record</span>
                             </button>
                         </div>
                     </div> 
                 </div>
 
-                <div class="modal-overlay" id="confirmationModal">
-                    <div class="modal">
-                    <h3 class="title-text" style="font-size: 23px;">CONFIRM INCIDENT CASE #<?php echo $incident_case_number; ?> DETAILS</h3>
+                <div id="popup" class="popup">
+            <center>
+            <div class="modal">
+                <h3 class="title-text" style="font-size: 23px;">CONFIRM INCIDENT CASE #<?php echo $incident_case_number; ?> DETAILS</h3>
                 <hr style="border: 1px solid #ccc; margin: 20px 0;">
                 <p style="font-weight: 600; text-align: left; margin-top: -10px; margin-bottom: 15px;">COMPLAINANT DETAILS</p>
                 <div class="details-container" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;">
                 <div class="inputfield">
                                 <label class="label">Last Name</label>
                                 <div class="text-box">
-                                    <p id="complainantLastName" style="padding: 10px 0;"></p></div>
+                                    <p style="padding: 10px 0;">Jamie Denise Lopez</p></div>
                 </div>
                 <div class="inputfield">
                                 <label class="label">First Name</label>
                                 <div class="text-box">
-                                    <p id="complainantFirstName" style="padding: 10px 0"></p></div>
+                                    <p style="padding: 10px 0">sample</p></div>
                 </div>
                 <div class="inputfield">
                                 <label class="label">Middle Name</label>
                                 <div class="text-box">
-                                    <p id="complainantMiddleName" style="padding: 10px 0"></p></div>
-                </div>
-                </div>     
-                <div class="details-container" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; margin-top: 6%;">
-                <div class="inputfield">
-                                <label class="label">Cellphone Number</label>
-                                <div class="text-box">
-                                    <p id="complainantCellphone" style="padding: 10px 0;"></p></div>
-                </div>
-                <div class="inputfield">
-                                <label class="label">House Address</label>
-                                <div class="text-box" style="width: 600px;">
-                                    <p id="complainantAddress" style="padding: 10px 0"></p></div>
-                </div>
-                <div class="inputfield">
+                                    <p style="padding: 10px 0">sample</p></div>
                 </div>
                 </div>
-                <p style="font-weight: 600; text-align: left; margin-top: 5%; margin-bottom: 15px;">RESPONDENT DETAILS</p>
-                <div class="details-container" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;">
-                <div class="inputfield">
-                                <label class="label">Last Name</label>
-                                <div class="text-box">
-                                    <p id="respondentLastName" style="padding: 10px 0;"></p></div>
-                </div>
-                <div class="inputfield">
-                                <label class="label">First Name</label>
-                                <div class="text-box">
-                                    <p id="respondentFirstName" style="padding: 10px 0"></p></div>
-                </div>
-                <div class="inputfield">
-                                <label class="label">Middle Name</label>
-                                <div class="text-box">
-                                    <p id="respondentMiddleName" style="padding: 10px 0"></p></div>
-                </div>
-                </div>     
-                <div class="details-container" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; margin-top: 6%;">
-                <div class="inputfield">
-                                <label class="label">Cellphone Number</label>
-                                <div class="text-box">
-                                    <p id="respondentCellphone" style="padding: 10px 0;"></p></div>
-                </div>
-                <div class="inputfield">
-                                <label class="label">House Address</label>
-                                <div class="text-box" style="width: 600px;">
-                                    <p id="respondentAddress" style="padding: 10px 0"></p></div>
-                </div>
-                <div class="inputfield">
-                </div>
-                </div>
-                <p style="font-weight: 600; text-align: left; margin-top: 5%; margin-bottom: 5px;">INCIDENT DETAILS</p>
-                <div class="details-container" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; margin-top: 2%;">
-                <div class="inputfield">
-                                <label class="label">Incident Date</label>
-                                <div class="text-box">
-                                    <p id="incidentDate" style="padding: 10px 0"></p></div>
-                </div>
-                <div class="inputfield">
-                                <label class="label">Incident Case Type</label>
-                                <div class="text-box" style="width: 600px;">
-                                    <p id="incidentCaseType" style="padding: 10px 0"></p></div>
-                </div>
-                <div class="inputfield">
-                </div>
-                </div>
-                <div class="details-container" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; margin-top: 6%;">
-                <div class="inputfield">
-                                <label class="label">Description of VIolation</label>
-                                <div class="text-box" style="width: 900px; height: 60px;">
-                                    <p id="descriptionOfViolation" style="padding: 10px 0;"></p></div>
-                </div>
-                <div class="inputfield">
-                </div>
-                <div class="inputfield">
-                </div>
-                </div>        
-        
-                        <div id="popup" class="popup">
-            
-        <div class="modal-buttons" style="display: flex; align-items: center; margin-top: 6%; margin-right: 22px;">
-                    <div class="backBtn" id="modalCancelBtn">
-                        <span class="btnText" style="margin-left: -20px;">Back</span>
-                    </div>
-            <button class="modal-confirm" id="modalConfirmBtn" name="submit">
-            <input type="submit" value="Submit" class="btnText" style="font-size: 16px; background: transparent; border: none; font-weight: 600; color: #fff; cursor: pointer;">
-            </button>
-        </div>
-    </div>
-</div>
+            </div>
+            </center>
+            </div>
+
+                
+                   
             </form>
-        </div>
+        
 
     </section>
 
@@ -436,6 +358,21 @@ if (isset($_POST['submit'])) {
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
+
+function showPopup() {
+        // Get the popup element
+        var popup = document.getElementById("popup");
+
+        // Display the popup
+        popup.style.display = "block";
+
+
+    }
+
+    function closePopup() {
+        var popup = document.getElementById("popup");
+        popup.style.display = "none";
+    }
 
 function validateName(event) {
     var keyCode = event.keyCode;
@@ -575,7 +512,6 @@ document.addEventListener("DOMContentLoaded", function() {
         document.getElementById("incidentCaseType").textContent = document.querySelector('select[name="incident_case_type"] option:checked').text;
         document.getElementById("incidentDate").textContent = document.querySelector('input[name="incident_date"]').value;
         document.getElementById("descriptionOfViolation").textContent = document.querySelector('textarea[name="description_of_violation"]').value;
-        
 
         modalOverlay.style.display = "flex";
     });
@@ -593,6 +529,30 @@ document.addEventListener("DOMContentLoaded", function() {
 
     </script>
 <style>
+
+.popup {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .modal {
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 5px;
+        margin-top: 60px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        width: 600px;
+        height: 280px;
+        overflow-y: hidden;
+    }
 
     .container form{
         position: relative;
@@ -623,26 +583,25 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
     .modal-overlay {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        justify-content: center;
+        align-items: center;
+        z-index: 1000;
     }
 
     .modal {
         background-color: #fff;
         padding: 20px;
         border-radius: 5px;
-        margin-top: 30px;
         box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        width: 800px;
-        height: 635px;
+        width: 860px;
+        height: 600px;
         overflow-y: hidden;
     }
 
@@ -651,6 +610,14 @@ document.addEventListener("DOMContentLoaded", function() {
         margin-bottom: 10px;
     }
 
+    .modal p{
+        font-size: 15px;
+    }
+
+    .modal-message {
+        font-size: 1.2em;
+        margin-bottom: 20px;
+    }
 
     .modal-buttons {
         position: relative;
@@ -665,6 +632,31 @@ document.addEventListener("DOMContentLoaded", function() {
         border: none;
         cursor: pointer;
     }
+
+    .name-section {
+        display: inline-block;
+        width: 30%;
+        box-sizing: border-box;
+        
+    }
+
+    .name-section-1 {
+        display: inline-block;
+        width: calc(100% / 2 - 15px);
+        box-sizing: border-box;
+        
+    }
+
+    .name-section-2{
+        display: inline-block;
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    .name-section p, .name-section-1 p, .name-section-2 p{
+        font-size: 13px;
+    }
+
 
     .text-box{
     outline: none;
@@ -692,17 +684,13 @@ document.addEventListener("DOMContentLoaded", function() {
     margin: 4px 0;
 }
 
-
-
-.inputfield label, .inputfield2 label{
+.inputfield label{
     font-size: 13px;
     font-weight: 500;
     color: #2e2e2e;
     text-align: left;
     margin-top: -15px;
 }
-
-    
 
 
 
