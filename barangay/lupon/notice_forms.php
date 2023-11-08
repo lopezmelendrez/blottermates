@@ -303,10 +303,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['notify_pangkat_submit
                 <div class="form first">
                     <div class="details personal">
                         <span class="title" style="font-style: italic; margin-top: -5px; text-align: center; font-size: 22px;"><?php echo $fetch_cases['complainant_last_name'] ?> vs. <?php echo $fetch_cases['respondent_last_name'] ?> </span>
-                        <hr style="border: 1px solid #ccc; margin: 20px 0;">
+                        <hr style="border: 1px solid #ccc; margin: 20px 0; width: 860px;">
                     </div>
                         <div class="fields">
-                            <div class="input-field-1" style="width: 43rem;">
+                            <div class="input-field-1" style="width: 53.5rem;">
                             <?php
              $select = mysqli_query($conn, "SELECT * FROM `hearing` WHERE incident_case_number = '$incident_case_number'") or die('query failed');
              if(mysqli_num_rows($select) > 0){
@@ -323,14 +323,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['notify_pangkat_submit
                             </div>
                             
                         </div>
-                    </div>
+            </div>
 
-                    <hr style="border: 1px solid #ccc; margin: 20px 0;">
+                    <hr style="border: 1px solid #ccc; margin: 20px 0; margin-top: 25%;">
 
                     <div class="details ID">
                         <span class="title"></span>
                         <div class="fields">
-                            <table class="notice-table" style="width: 100%; margin-left: 1%; margin-top: 20%;">
+                            <table class="notice-table" style="width: 100%; margin-left: 1%; margin-top: 1%;">
                                 
                                 <thead>
                                     <tr style="text-align: center;">
