@@ -165,7 +165,7 @@ if (isset($_POST['submit'])) {
 
 
     <section class="home">
-        <div class="container" style="margin-left: 15%; margin-top: 10px;">
+        <div class="container" style="margin-left: 15%; margin-top: 25px;">
         <div class="card">
             <div class="card-body">
                 <div class="d-flex justify-content-between align-items-center mb-3">
@@ -313,8 +313,8 @@ if (isset($_POST['submit'])) {
                                 <span class="btnText" style="margin-left: -20px;">Back</span>
                             </div>
                             
-                            <button class="pop-up">
-                            <span class="btnText" style="font-size: 11px; background: transparent; border: none; font-weight: 600; color: #fff; cursor: pointer;">Create Incident Report Record</span>
+                            <button class="pop-up" style="margin-right: 1px;">
+                            <span class="btnText" style="background: transparent; border: none; font-weight: 600; color: #fff; cursor: pointer;">CREATE</span>
                             </button>
                         </div>
                     </div> 
@@ -322,9 +322,9 @@ if (isset($_POST['submit'])) {
 
                 <div class="modal-overlay" id="confirmationModal">
                     <div class="modal">
-                    <h3 class="title-text" style="font-size: 23px;">CONFIRM INCIDENT CASE #<?php echo $incident_case_number; ?> DETAILS</h3>
-                <hr style="border: 1px solid #ccc; margin: 20px 0;">
-                <p style="font-weight: 600; text-align: left; margin-top: -10px; margin-bottom: 15px;">COMPLAINANT DETAILS</p>
+                    <h3 class="title-text" style="font-size: 23px; text-align: center;">CONFIRM INCIDENT CASE #<?php echo $incident_case_number; ?> DETAILS</h3>
+                <hr style="border: 1px solid #ccc; margin: 10px 0;">
+                <p style="font-weight: 600; text-align: left; margin-top: 5px; margin-bottom: 15px;">COMPLAINANT DETAILS</p>
                 <div class="details-container" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;">
                 <div class="inputfield">
                                 <label class="label">Last Name</label>
@@ -350,7 +350,7 @@ if (isset($_POST['submit'])) {
                 </div>
                 <div class="inputfield">
                                 <label class="label">House Address</label>
-                                <div class="text-box" style="width: 600px;">
+                                <div class="text-box" style="width: 500px;">
                                     <p id="complainantAddress" style="padding: 10px 0"></p></div>
                 </div>
                 <div class="inputfield">
@@ -382,7 +382,7 @@ if (isset($_POST['submit'])) {
                 </div>
                 <div class="inputfield">
                                 <label class="label">House Address</label>
-                                <div class="text-box" style="width: 600px;">
+                                <div class="text-box" style="width: 500px;">
                                     <p id="respondentAddress" style="padding: 10px 0"></p></div>
                 </div>
                 <div class="inputfield">
@@ -397,7 +397,7 @@ if (isset($_POST['submit'])) {
                 </div>
                 <div class="inputfield">
                                 <label class="label">Incident Case Type</label>
-                                <div class="text-box" style="width: 600px;">
+                                <div class="text-box" style="width: 500px;">
                                     <p id="incidentCaseType" style="padding: 10px 0"></p></div>
                 </div>
                 <div class="inputfield">
@@ -406,7 +406,7 @@ if (isset($_POST['submit'])) {
                 <div class="details-container" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; margin-top: 6%;">
                 <div class="inputfield">
                                 <label class="label">Description of VIolation</label>
-                                <div class="text-box" style="width: 900px; height: 60px;">
+                                <div class="text-box" style="width: 762px; height: 60px;">
                                     <p id="descriptionOfViolation" style="padding: 10px 0;"></p></div>
                 </div>
                 <div class="inputfield">
@@ -417,9 +417,9 @@ if (isset($_POST['submit'])) {
         
                         <div id="popup" class="popup">
             
-        <div class="modal-buttons" style="display: flex; align-items: center; margin-top: 6%; margin-right: 22px;">
-                    <div class="backBtn" id="modalCancelBtn">
-                        <span class="btnText" style="margin-left: -20px;">Back</span>
+        <div class="modal-buttons" style="display: flex; align-items: center; margin-top: 7.5%; margin-right: 1px;">
+                    <div class="backBtn" id="modalCancelBtn" style="padding: 12px 12px; width: 100px; border: 1px solid #bc1823; background: #fff; color: #bc1823; margin-left: 60%;">
+                        <span class="btnText" style="margin-left: -5px;">Back</span>
                     </div>
             <button class="modal-confirm" id="modalConfirmBtn" name="submit">
             <input type="submit" value="Submit" class="btnText" style="font-size: 16px; background: transparent; border: none; font-weight: 600; color: #fff; cursor: pointer;">
@@ -431,6 +431,22 @@ if (isset($_POST['submit'])) {
         </div>
 
     </section>
+
+    <div id="customAlertModal" class="modal-overlay">
+    <div class="close-icon" id="customAlertClose">
+                <i class='bx bxs-x-circle' ></i> <!-- Replace with the desired close icon -->
+    </div>
+    <center>
+            <div class="modal-content">
+            <h3 class="modal-title" style="font-size: 18px; text-align:center; color: #bc1823; font-size: 30px;">
+            <i class="fa-solid fa-triangle-exclamation" style="color: #bc1823; font-size: 45px;"></i>
+            INVALID
+            </h3>
+            <hr style="border: 1px solid #ccc; margin: 10px 0;">
+            <p id="customAlertMessage" style="font-size: 18px; text-align: center; margin-top: 10%;"></p>
+            </div>
+    <center>
+</div>
 
     
 
@@ -546,6 +562,34 @@ inputElement.addEventListener('input', function() {
     }
 });
 
+function openCustomAlert(message) {
+    const modal = document.getElementById('customAlertModal');
+    const messageElement = document.getElementById('customAlertMessage');
+
+    messageElement.textContent = message;
+    modal.style.display = 'block';
+
+    // Close the modal when the close button is clicked
+    const closeButton = document.getElementById('customAlertClose');
+    closeButton.addEventListener('click', function() {
+        modal.style.display = 'none';
+    });
+
+    // Close the modal when the user clicks outside the modal
+    window.addEventListener('click', function(event) {
+        if (event.target === modal) {
+            modal.style.display = 'none';
+        }
+    });
+}
+
+function validatePhoneNumber(phoneNumber) {
+  // Regular expression pattern for a valid Philippine phone number
+  const phoneNumberPattern = /^(?:\+63|0)[0-9]{10}$/;
+
+  return phoneNumberPattern.test(phoneNumber);
+}
+
 // JavaScript code for the modal and form submission confirmation
 document.addEventListener("DOMContentLoaded", function() {
     const form = document.querySelector("form");
@@ -558,6 +602,18 @@ document.addEventListener("DOMContentLoaded", function() {
     // Open modal when the pop-up button is clicked
     popUpButton.addEventListener("click", function(event) {
         event.preventDefault();
+        const complainantPhoneNumber = document.querySelector('input[name="complainant_cellphone_number"]').value;
+        const respondentPhoneNumber = document.querySelector('input[name="respondent_cellphone_number"]').value;
+
+        if (!validatePhoneNumber(complainantPhoneNumber) || !validatePhoneNumber(respondentPhoneNumber)) {
+    if (!validatePhoneNumber(complainantPhoneNumber) && !validatePhoneNumber(respondentPhoneNumber)) {
+        openCustomAlert("Please input valid Cellphone Numbers for both the COMPLAINANT and RESPONDENT.");
+    } else if (!validatePhoneNumber(complainantPhoneNumber)) {
+        openCustomAlert("Please input a valid Cellphone Number for the COMPLAINANT.");
+    } else {
+        openCustomAlert("Please input a valid Cellphone Number for the RESPONDENT.");
+    }
+}  else {
         document.getElementById("complainantLastName").textContent = document.querySelector('input[name="complainant_last_name"]').value;
         document.getElementById("complainantFirstName").textContent = document.querySelector('input[name="complainant_first_name"]').value;
         document.getElementById("complainantMiddleName").textContent = document.querySelector('input[name="complainant_middle_name"]').value;
@@ -572,12 +628,20 @@ document.addEventListener("DOMContentLoaded", function() {
         document.getElementById("respondentAddress").textContent = document.querySelector('input[name="respondent_house_address"]').value;
         // Add more fields for respondent
 
-        document.getElementById("incidentCaseType").textContent = document.querySelector('select[name="incident_case_type"] option:checked').text;
+        const incidentCaseType = document.querySelector('select[name="incident_case_type"] option:checked').text;
+const otherCaseType = document.querySelector('input[name="other_incident_case_type"]').value;
+
+if (otherCaseType) {
+    document.getElementById("incidentCaseType").textContent = incidentCaseType + " — " + otherCaseType;
+} else {
+    document.getElementById("incidentCaseType").textContent = incidentCaseType;
+}
         document.getElementById("incidentDate").textContent = document.querySelector('input[name="incident_date"]').value;
         document.getElementById("descriptionOfViolation").textContent = document.querySelector('textarea[name="description_of_violation"]').value;
         
 
         modalOverlay.style.display = "flex";
+    }
     });
 
     // Close modal when cancel button is clicked
@@ -639,7 +703,7 @@ document.addEventListener("DOMContentLoaded", function() {
         background-color: #fff;
         padding: 20px;
         border-radius: 5px;
-        margin-top: 30px;
+        margin-top: 5px;
         box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
         width: 800px;
         height: 635px;
@@ -676,13 +740,14 @@ document.addEventListener("DOMContentLoaded", function() {
     padding: 0 5px;
     height: 30px;
     margin: 8px 0;
-    width: 250px;
+    width: 239px;
     position: fixed;
 }
 
 .text-box p{
     text-align: left;
-    margin-top: -8px;
+    margin-left: 5px;
+    margin-top: -6px;
 }
 
 .details-container .inputfield{
@@ -692,8 +757,6 @@ document.addEventListener("DOMContentLoaded", function() {
     margin: 4px 0;
 }
 
-
-
 .inputfield label, .inputfield2 label{
     font-size: 13px;
     font-weight: 500;
@@ -702,6 +765,25 @@ document.addEventListener("DOMContentLoaded", function() {
     margin-top: -15px;
 }
 
+.modal-content {
+    background-color: #fff;
+        padding: 20px;
+        border-radius: 5px;
+        margin-top: 180px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        width: 500px;
+        height: 280px;
+        overflow-y: hidden;
+}
+
+.close-icon {
+      position: absolute;
+      top: 155px;
+      left: 875px;
+      cursor: pointer;
+      font-size: 50px;
+      color:#bc1823;
+    }
     
 
 
