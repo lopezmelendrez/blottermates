@@ -11,6 +11,7 @@ if(!isset($email)){
 header('location: ../../index.php');
 }
 
+
 // Assuming you have already established the database connection
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit'])) {
     $date_of_hearing = $_POST['date_of_hearing'];
@@ -42,14 +43,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../../css/incidentform.css">
     <link href='https://unpkg.com/boxicons@2.1.1/css/boxicons.min.css' rel='stylesheet'>
-    <link rel="stylesheet" href="../../jonthornton-jquery-timepicker-1.14.1-1-g18c2143/jonthornton-jquery-timepicker-18c2143/jquery.timepicker.css">
-    <link rel="stylesheet" href="../../jonthornton-jquery-timepicker-1.14.1-1-g18c2143/jonthornton-jquery-timepicker-18c2143/jquery.timepicker.min.css">
     <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css"/>
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-    <script src="../../jonthornton-jquery-timepicker-1.14.1-1-g18c2143/jonthornton-jquery-timepicker-18c2143/jquery.timepicker.js"></script>
     <link rel="icon" type="image/x-icon" href="../../images/favicon.ico">
     <title>Set Hearing Schedule</title>
 </head>
@@ -93,7 +91,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit'])) {
                     </div>
                     <div class="input-field-1" style="width: 57.8rem; margin-top: 15px;">
                         <label class="required-label">Hearing Time</label>
-                        <input type="text" name="time_of_hearing" id="time_of_hearing" placeholder="" required>
+                        <select name="time_of_hearing" readonly>
+                            <option disabled selected>Select Hearing Schedule...</option>
+                            <option value="08:00">8:00 AM</option>
+                            <option value="09:00">9:00 AM</option>
+                            <option value="10:00">10:00 AM</option>
+                            <option value="11:00">11:00 AM</option>
+                            <option value="13:00">1:00 PM</option>
+                            <option value="14:00">2:00 PM</option>
+                            <option value="15:00">3:00 PM</option>
+                            <option value="16:00">4:00 PM</option>
+                            <option value="17:00">5:00 PM</option>
+                        </select>
                     </div>
                     </div>
 
@@ -143,23 +152,32 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit'])) {
 
     <script>
 
-        $(function() {
+        $(function () {
             $("#datepicker").datepicker({
                 dateFormat: 'yy-mm-dd',
-                minDate: 0, 
-                beforeShowDay: function(date) {
+                minDate: 0,
+                beforeShowDay: function (date) {
                     var day = date.getDay();
                     return [day != 0 && day != 6, ''];
                 }
-                
             });
 
-            $("#time_of_hearing").timepicker({
-                timeFormat: 'h:i A', 
-                minTime: '8:00 AM', 
-                maxTime: '5:00 PM',
-                step: 60 
-            }); 
+            // Set time_of_hearing field as readonly
+            $('select[name="time_of_hearing"]').prop('disabled', true);
+
+            // Enable time_of_hearing field only when a date is selected
+            $('input[name="date_of_hearing"]').change(function () {
+                if ($(this).val() !== "") {
+                    $('select[name="time_of_hearing"]').prop('disabled', false);
+
+                    // Disable time options for existing dates
+                    var selectedDate = $(this).val();
+                    disableExistingTimes(selectedDate);
+                } else {
+                    $('select[name="time_of_hearing"]').prop('disabled', true);
+                }
+            });
+
         });
 
         document.addEventListener("DOMContentLoaded", function() {
@@ -174,7 +192,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit'])) {
         popUpButton.addEventListener("click", function(event) {
             event.preventDefault();
             document.getElementById("dateOfHearing").textContent = document.querySelector('input[name="date_of_hearing"]').value;
-            document.getElementById("timeOfHearing").textContent = document.querySelector('input[name="time_of_hearing"]').value;
+            document.getElementById("timeOfHearing").textContent = document.querySelector('select[name="time_of_hearing"] option:checked').text;
 
             modalOverlay.style.display = "flex";
         });

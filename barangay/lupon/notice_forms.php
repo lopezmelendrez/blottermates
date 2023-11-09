@@ -192,7 +192,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['notify_pangkat_submit
 </head>
 <body>
 
-    <nav class="sidebar close">
+<nav class="sidebar close">
         <header>
             <div class="image-text">
             <?php
@@ -218,7 +218,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['notify_pangkat_submit
     if ($fetch['barangay']) {
         echo '<span class="profession">Barangay ' . $fetch['barangay'] . '</span>';
     } else {
-        echo '<span class="profession">Not specified</span>';
+        echo '<span class="profession">Not specified</span>'; 
     }
     ?>
                 </div>
@@ -230,10 +230,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['notify_pangkat_submit
         <div class="menu-bar">
             <div class="menu">
 
-                <li class="search-box">
+            <li class="search-box">
                     <i class='bx bx-search icon'></i>
                     <input type="text" placeholder="Search...">
-                </li>
+            </li>
 
                     <li class="nav-link">
                         <a href="home.php">
@@ -250,7 +250,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['notify_pangkat_submit
                     </li>
 
                     <li class="nav-link">
-                        <a href="hearings.php">
+                        <a href="#">
                             <i class='bx bx-calendar-event icon' ></i>
                             <span class="text nav-text">Hearings</span>
                         </a>
@@ -273,17 +273,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['notify_pangkat_submit
                     </a>
                 </li>
 
-                <li class="mode">
-                    <div class="sun-moon">
-                        <i class='bx bx-moon icon moon'></i>
-                        <i class='bx bx-sun icon sun'></i>
-                    </div>
-                    <span class="mode-text text">Dark mode</span>
-
-                    <div class="toggle-switch">
-                        <span class="switch"></span>
-                    </div>
-                </li>
                 
             </div>
         </div>

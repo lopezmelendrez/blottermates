@@ -103,7 +103,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 </head>
 <body>
     
-    <nav class="sidebar close">
+<nav class="sidebar close">
         <header>
             <div class="image-text">
             <?php
@@ -116,22 +116,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     }
                 ?>
                 <?php
-                    if ($fetch['barangay'] == 'Ibaba') {
-                        echo '<span class="image"><img src="../../images/ibaba_logo.png"></span>';
-                    } else {
-                        echo '<span class="image"><img src="../../images/logo.png"></span>';
-                    }
-                    ?>
-                                <div class="text logo-text">
-                                
-                                    <span class="name"><?php echo $fetch['first_name'] . ' ' . $fetch['last_name']; ?></span>
-                                    <?php
-                    if ($fetch['barangay']) {
-                        echo '<span class="profession">Barangay ' . $fetch['barangay'] . '</span>';
-                    } else {
-                        echo '<span class="profession">Not specified</span>'; 
-                    }
-                ?>
+    if ($fetch['barangay'] == 'Ibaba') {
+        echo '<span class="image"><img src="../../images/ibaba_logo.png"></span>';
+    } else {
+        echo '<span class="image"><img src="../../images/logo.png"></span>';
+    }
+    ?>
+                <div class="text logo-text">
+                
+                    <span class="name"><?php echo $fetch['first_name'] . ' ' . $fetch['last_name']; ?></span>
+                    <?php
+    if ($fetch['barangay']) {
+        echo '<span class="profession">Barangay ' . $fetch['barangay'] . '</span>';
+    } else {
+        echo '<span class="profession">Not specified</span>'; 
+    }
+    ?>
                 </div>
             </div>
 
@@ -140,6 +140,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         <div class="menu-bar">
             <div class="menu">
+
+            <li class="search-box">
+                    <i class='bx bx-search icon'></i>
+                    <input type="text" placeholder="Search...">
+            </li>
 
                     <li class="nav-link">
                         <a href="home.php">

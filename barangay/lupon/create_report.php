@@ -111,7 +111,7 @@ if (isset($_POST['submit'])) {
         <div class="menu-bar">
             <div class="menu">
 
-                <li class="search-box" style="background-color: transparent;">
+                <li class="search-box">
                     <i class='bx bx-search icon'></i>
                     <input type="text" placeholder="Search...">
                 </li>
@@ -419,7 +419,7 @@ if (isset($_POST['submit'])) {
                         <span class="btnText" style="margin-left: -5px;">Back</span>
                     </div>
             <button class="modal-confirm" id="modalConfirmBtn" name="submit">
-            <input type="submit" value="Submit" class="btnText" style="font-size: 16px; background: transparent; border: none; font-weight: 600; color: #fff; cursor: pointer;">
+            <input type="submit" name="submit" value="Submit" class="btnText" style="font-size: 16px; background: transparent; border: none; font-weight: 600; color: #fff; cursor: pointer;">
             </button>
         </div>
     </div>

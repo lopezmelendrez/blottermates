@@ -96,6 +96,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['execution_submit'])) 
         <div class="menu-bar">
             <div class="menu">
 
+            <li class="search-box">
+                    <i class='bx bx-search icon'></i>
+                    <input type="text" placeholder="Search...">
+            </li>
+
                     <li class="nav-link">
                         <a href="home.php">
                             <i class='bx bx-home-alt icon' ></i>
@@ -111,12 +116,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['execution_submit'])) 
                     </li>
 
                     <li class="nav-link">
-                        <a href="hearings.php">
+                        <a href="#">
                             <i class='bx bx-calendar-event icon' ></i>
                             <span class="text nav-text">Hearings</span>
                         </a>
                     </li>
-
 
             </div>
 
@@ -134,6 +138,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['execution_submit'])) 
                         <span class="text nav-text">Logout</span>
                     </a>
                 </li>
+
                 
             </div>
         </div>

@@ -168,6 +168,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <div class="menu-bar">
             <div class="menu">
 
+            <li class="search-box">
+                    <i class='bx bx-search icon'></i>
+                    <input type="text" placeholder="Search...">
+            </li>
+
                     <li class="nav-link">
                         <a href="home.php">
                             <i class='bx bx-home-alt icon' ></i>
