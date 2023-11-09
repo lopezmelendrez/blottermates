@@ -206,66 +206,64 @@ if(mysqli_num_rows($select) > 0){
 <div class="text-box">
     <p style="padding: 10px 0"><?php echo $agreement_description ?></p></div>
 </div>
-                            
-<?php
-$select_execution = mysqli_query($conn, "SELECT * FROM `execution_notice` WHERE `incident_case_number` = '$incident_case_number'") or die('query failed');
-$select_notify = mysqli_query($conn, "SELECT * FROM `notify_residents` WHERE `incident_case_number` = '$incident_case_number'") or die('query failed');
-
-$showExecution = false;
-$showNotify = false;
-
-if (mysqli_num_rows($select_execution) > 0) {
-    $fetch_execution = mysqli_fetch_assoc($select_execution);
-    $execution_date = $fetch_execution['execution_date'];
-    $compliance_status = $fetch_execution['compliance_status'];
-    $remarks = $fetch_execution['remarks'];
-    $generate_execution = $fetch_execution['generate_execution'];
-    
-    if (!empty($generate_execution)) {
-        $showExecution = true;
-    }
-}
-
-if (mysqli_num_rows($select_notify) > 0) {
-    $showNotify = true;
-}
-?>
 
 <span class="title" style="width: 100%;">Execution of Agreement</span>
-
+                            
 <?php
-if (!$showNotify) {
-    if ($generate_execution == "not generated") {
-        echo '<span class="title" style="width: 100%;">PLEASE FILE A MOTION FOR EXECUTION FIRST.</span>';
-    } elseif ($generate_execution == "form generated") {
-        echo '<span class="title" style="width: 100%;">Punong Barangay has not validated the Filing of Motion Yet.</span>';
+// Assuming you have a connection to the database ($conn)
+$generate_execution_query = "SELECT * FROM `notify_residents` WHERE incident_case_number = '$incident_case_number'";
+$generate_execution_result = mysqli_query($conn, $generate_execution_query);
+
+if ($generate_execution_result && mysqli_num_rows($generate_execution_result) > 0) {
+    $generate_execution_data = mysqli_fetch_assoc($generate_execution_result);
+    
+    // Check the value of generate_execution
+    $generate_execution_value = $generate_execution_data['generate_execution'];
+
+    if ($generate_execution_value == '' || strtolower($generate_execution_value) == 'not generated') {
+        // Display "PLEASE FILE A MOTION FIRST"
+        echo '<p style="padding: 10px 0">PLEASE FILE A MOTION FIRST</p>';
+    } elseif ($generate_execution_value == 'form generated') {
+        // Check if there is data in the execution_notice table
+        $execution_query = "SELECT * FROM `execution_notice` WHERE incident_case_number = '$incident_case_number'";
+        $execution_result = mysqli_query($conn, $execution_query);
+
+        if ($execution_result && mysqli_num_rows($execution_result) > 0) {
+            // Display the fields from execution_notice
+            $execution_data = mysqli_fetch_assoc($execution_result);
+            ?>
+            <div class="input-field-1">
+                <label class="label">Date of Agreement Execution</label>
+                <div class="text-box">
+                    <p style="padding: 10px 0"><?php echo $execution_data['execution_date']; ?></p>
+                </div>
+            </div>
+
+            <div class="input-field-1">
+                <label class="label">Compliance Status</label>
+                <div class="text-box">
+                    <p style="padding: 10px 0"><?php echo $execution_data['compliance_status']; ?></p>
+                </div>
+            </div>
+
+            <div class="input-field" style="width: 100%; position: relative;">
+                <label class="label">Remarks</label>
+                <div class="text-box">
+                    <p style="padding: 10px 0"><?php echo $execution_data['remarks']; ?></p>
+                </div>
+            </div>
+            <?php
+        } else {
+            // Display "THE MOTION FOR EXECUTION IS SUBMITTED TO THE BARANGAY FOR VALIDATION"
+            echo '<p style="padding: 10px 0">THE MOTION FOR EXECUTION IS SUBMITTED TO THE BARANGAY FOR VALIDATION</p>';
+        }
     }
-}
-
-if ($showExecution && $execution_date !== "Motion has not been validated yet") {
-    echo '<div class="input-field-1">';
-    echo '<label class="label">Date of Agreement Execution</label>';
-    echo '<div class="text-box">';
-    echo '<p style="padding: 10px 0">' . $execution_date . '</p>';
-    echo '</div>';
-    echo '</div>';
-}
-
-if ($showExecution && $compliance_status !== "Motion has not been validated yet") {
-    echo '<div class="input-field-1">';
-    echo '<label class="label">Compliance Status</label>';
-    echo '<div class "text-box">';
-    echo '<p style="padding: 10px 0">' . $compliance_status . '</p>';
-    echo '</div>';
-    echo '</div>';
-    echo '<div class="input-field" style="width: 100%; position: relative;">';
-    echo '<label class="label">Remarks</label>';
-    echo '<div class="text-box">';
-    echo '<p style="padding: 10px 0">' . $remarks . '</p>';
-    echo '</div>';
-    echo '</div>';
+} else {
+    // No else block needed to display default content
 }
 ?>
+
+
 
                         </div>
                         
