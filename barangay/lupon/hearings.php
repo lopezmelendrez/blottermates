@@ -18,11 +18,22 @@ $row = mysqli_fetch_assoc($selectLuponId);
 $lupon_id = $row['lupon_id'];
 
 
-$query = "SELECT i.*, h.incident_case_number AS hearing_incident_case_number,
-                 h.date_of_hearing, h.time_of_hearing
-          FROM incident_report i
-          LEFT JOIN hearing h ON i.incident_case_number = h.incident_case_number
-          WHERE i.lupon_id = $lupon_id";
+if(isset($_POST['submit_search'])){
+    $search_case = mysqli_real_escape_string($conn, $_POST['search_case']);
+    $query = "SELECT i.*, h.incident_case_number AS hearing_incident_case_number,
+                     h.date_of_hearing, h.time_of_hearing
+              FROM incident_report i
+              LEFT JOIN hearing h ON i.incident_case_number = h.incident_case_number
+              WHERE i.lupon_id = $lupon_id AND i.incident_case_number LIKE '%$search_case%'
+              ORDER BY i.created_at DESC";
+} else {
+    $query = "SELECT i.*, h.incident_case_number AS hearing_incident_case_number,
+                     h.date_of_hearing, h.time_of_hearing
+              FROM incident_report i
+              LEFT JOIN hearing h ON i.incident_case_number = h.incident_case_number
+              WHERE i.lupon_id = $lupon_id
+              ORDER BY i.created_at DESC";
+}
 
 $result = mysqli_query($conn, $query);
 
@@ -73,13 +84,20 @@ if (!$result) {
         </div>
 
         <div class="search-container">
-        <button class="case-button" style="padding: 0px 12px;">CASE NO.</button>
-        <input type="text" id="searchInput" class="search-input" placeholder="Search...">
-        <button class="search-button" style="padding: 0px 12px;">Search</button>
-    </div>
+            <form action="" method="post">
+                <button class="case-button" style="padding: 0px 12px;">CASE NO.</button>
+                <input type="text" class="search-input" name="search_case" placeholder="Search...">
+                <button type="submit" name="submit_search" class="search-button" style="padding: 0px 12px;">Search</button>
+            </form>
+        </div>
 
 
     <?php
+
+if (mysqli_num_rows($result) == 0) {
+    echo '<div class="text-box">No Incident Cases found</div>';
+} else {
+
 while ($row = mysqli_fetch_assoc($result)) {
     $incident_case_number = $row['incident_case_number'];
     // Check if the data is found in the amicable_settlement table
@@ -99,7 +117,7 @@ while ($row = mysqli_fetch_assoc($result)) {
         $time_of_hearing = $row['time_of_hearing'];
         $formatted_time = date('h:i A', strtotime($time_of_hearing));
         $schedule_status = isset($row['date_of_hearing']) && isset($row['time_of_hearing']) ?
-            date('l, F j, Y - h:i A', strtotime($row['date_of_hearing'] . ' ' . $row['time_of_hearing'])) :
+            date('D, F j, Y - h:i A', strtotime($row['date_of_hearing'] . ' ' . $row['time_of_hearing'])) :
             "NO SCHEDULE YET";
 
         echo '<h3 class="case-no-text" style="font-size: 15px; font-weight: 500; font-style: italic; width: 20%;">' . $row['complainant_last_name'] . ' vs. ' . $row['respondent_last_name'] . '</h3>';
@@ -236,6 +254,7 @@ if ($check_result && mysqli_num_rows($check_result) > 0) {
         }
         echo '</div>';
     }
+}
 }
 ?>
 
@@ -390,6 +409,20 @@ if ($check_result && mysqli_num_rows($check_result) > 0) {
         color: #fff;
         border: 1px solid #fff;
         transition: .5s;
+    }
+
+    .text-box{
+        margin-left: 30%;
+        margin-top: 15%;
+        background: #bc1823;
+        border-radius: 5px;
+        color: #fff;
+        font-size: 35px;
+        width: 500px;
+        padding: 13px 13px;
+        text-align: center;
+        letter-spacing: 1;
+        text-transform: uppercase;
     }
 
         
