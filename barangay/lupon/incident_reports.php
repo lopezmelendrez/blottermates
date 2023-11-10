@@ -257,6 +257,8 @@ while ($row = mysqli_fetch_assoc($result)) {
         
     </section>
 
+    
+
     <script>
         const body = document.querySelector('body'),
         sidebar = body.querySelector('nav'),

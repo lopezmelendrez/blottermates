@@ -217,6 +217,12 @@ if (mysqli_num_rows($select) === 0) {
 
     </section>
 
+    <footer>
+            <p>Department of the Interior and Local Government</p>
+            <p>F. Gomez St., Brgy.Kanluran, Old Municipal Hall (Gusaling Museo) 4026, Santa Rosa, 4026 Laguna</p>
+            <p>&copy; 2023 DILG All Rights Reserved.</p>
+        </footer>
+
   
     <script>
 
