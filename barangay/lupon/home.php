@@ -44,7 +44,56 @@ while ($fetchHearing = mysqli_fetch_assoc($selectHearing)) {
 
 $hasEvents = !empty($events);
 
+if (isset($_POST['submit'])) {
+    $generate_report = strtolower(date('F')) . '_report';
+
+        $select_submitter = mysqli_query($conn, "SELECT * FROM lupon_accounts WHERE email_address = '$email'");
+        if (mysqli_num_rows($select_submitter) > 0) {
+            $submitter_data = mysqli_fetch_assoc($select_submitter);
+            $lupon_id = $submitter_data['lupon_id'];
+            $submitter_first_name = $submitter_data['first_name'];
+            $submitter_last_name = $submitter_data['last_name'];
+            $pb_id = $submitter_data['pb_id'];
+
+            mysqli_query($conn, "INSERT INTO `monthly_reports` (generate_report, timestamp, lupon_id, submitter_first_name, submitter_last_name, pb_id) VALUES ('$generate_report', NULL, '$lupon_id', '$submitter_first_name', '$submitter_last_name', '$pb_id')") or die('query failed');
+            header("location: home.php");
+        }
+    }
+
+// Get the current date
+$currentDate = date('Y-m-d');
+
+// Check if it's the end of the month
+$isEndOfMonth = date('Y-m-t', strtotime($currentDate)) === $currentDate;
+
+// Define the content based on the condition
+if ($isEndOfMonth) {
+    // Default content if it's the end of the month
+    $modalContent = '
+    <h3 class="modal-title" style="font-size: 18px; text-align:center;">GENERATE MONTHLY TRANSMITTAL REPORTS</h3>
+    <hr style="border: 1px solid #ccc; margin: 10px 0;">
+    <p style="font-size: 15px; text-align: justify; font-weight: 600;">By clicking the generate button, the report will be automatically submitted to the DILG.</p>
+    <p style="font-size: 14px; text-align: center;">To obtain the report for the previous month, click <a href="link.html" class="click-here">here</a>.</p>
+    <div class="button-container" style="margin-top: 3%;">
+        <form action="" method="post">
+        <input type="submit" name="submit" value="GENERATE REPORT" class="backBtn" style="width: 310px; padding: 12px 12px; font-weight: 600; margin-left: -5px; background: #bc1823; color: #fff; border: none;"></button>
+        </form>
+    </div>';
+} else {
+    // Alternative content if it's not the end of the month
+    $modalContent = '
+    <h3 class="modal-title" style="font-size: 18px; text-align:center;">GENERATE MONTHLY TRANSMITTAL REPORT</h3>
+    <hr style="border: 1px solid #ccc; margin: 10px 0;">
+    <p style="font-size: 15px; text-align: justify; font-weight: 600;">Report generation is only available at the end of the month. Please try again later.</p>
+    <p style="font-size: 14px; text-align: center;">To obtain the report for the previous month, kindly click the button below:</p>
+    <div class="button-container" style="margin-top: 3%;">
+    <a href="download_last_month_report.php" download="Last_Month_Report.pdf" class="backBtn" style="width: 310px; padding: 12px 12px; font-weight: 600; margin-left: 15px; background: #bc1823; color: #fff; text-decoration: none;" target="_blank">DOWNLOAD LAST MONTH REPORT</a>
+    </div>';
+}
+
 ?>
+
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -73,10 +122,10 @@ $hasEvents = !empty($events);
                 <div class="date" style="font-size: 24px; width: 24rem;"></div>
             </div>
 
-            <a href="../lupon_register.php" style="text-decoration: none; margin-left: 1%;"><div class="add-account" style="display: flex; margin-top: 22.5%; width: 85%;">
+            <div class="add-account" onclick="showMonthlyReportPopup()" style="display: flex; margin-top: 6%; width: 21.7%;">
                 <i class='bx bx-download'></i>
                 <p>Generate Monthly Report</p>
-            </div></a>
+            </div>
             
         </div>
 
@@ -129,9 +178,9 @@ if (mysqli_num_rows($select) === 0) {
 } else {
     while ($fetchCases = mysqli_fetch_assoc($select)) {
         echo '<tr>';
-        echo '<td>' . $fetchCases['incident_case_number'] . '</td>';
+        echo '<td><a href="notice_forms.php?incident_case_number=' . $fetchCases['incident_case_number'] . '" target="_blank">' . $fetchCases['incident_case_number'] . '</a></td>';
         echo '<td>' . $fetchCases['complainant_last_name'] . ' vs. ' . $fetchCases['respondent_last_name'] . '</td>';
-        echo '<td>' . date("M, d, Y", strtotime($fetchCases['created_at'])) . '</td>';
+        echo '<td>' . date("M d, Y", strtotime($fetchCases['created_at'])) . '</td>';
         echo '</tr>';
     }
 }
@@ -139,11 +188,11 @@ if (mysqli_num_rows($select) === 0) {
 ?>
 
 
-<tbody id="noResults" style="display: none;">
-    <tr>
-        <td colspan="3" style="padding-top: 13%; font-size: 23px; font-weight: 400; text-transform: uppercase; padding-left: 18%;">No Incident Cases Found</td>
-    </tr>
-</tbody>
+            <tbody id="noResults" style="display: none;">
+                <tr>
+                    <td colspan="3" style="padding-top: 13%; font-size: 23px; font-weight: 400; text-transform: uppercase; padding-left: 18%;">No Incident Cases Found</td>
+                </tr>
+            </tbody>
 
             </tbody>
         </table>
@@ -152,6 +201,17 @@ if (mysqli_num_rows($select) === 0) {
 
     <div class="calendar-container" style="display: flex; margin-left: -17%;">
         <div id="calendar" style="width: 500px;"></div>
+    </div>
+
+    <div id="monthly_report" class="popup">
+    <div class="close-icon" onclick="closeMonthlyReportPopup()">
+                <i class='bx bxs-x-circle' ></i> <!-- Replace with the desired close icon -->
+    </div>
+            <center>
+            <div class="modal">
+            <?php echo $modalContent; ?>
+            </div>
+            </center>
     </div>
 
 
@@ -283,6 +343,18 @@ searchInput.addEventListener("input", function() {
     }
 });
 
+    function showMonthlyReportPopup() {
+        var popup = document.getElementById("monthly_report");
+        popup.style.display = "block";
+
+
+    }
+
+    function closeMonthlyReportPopup() {
+        var popup = document.getElementById("monthly_report");
+        popup.style.display = "none";
+    }
+
     </script>
 
     <style>
@@ -319,6 +391,56 @@ table th{
     height: 100vh;
     width: calc(100% - 78px);
 }
+
+.popup {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        justify-content: center;
+        align-items: center;
+        z-index: 1000;
+    }
+
+    .modal {
+    display: flex; /* Add this line to make the modal visible */
+    flex-direction: column; /* Adjust to your needs */
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 5px;
+    margin-top: 180px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    width: 500px;
+    height: 280px;
+    overflow-y: hidden;
+    position: relative;
+    z-index: 1001; /* Make sure the modal is on top of the overlay */
+}
+
+.close-icon {
+      position: absolute;
+      top: 155px;
+      left: 875px;
+      cursor: pointer;
+      font-size: 50px;
+      color:#bc1823;
+      z-index: 1002;
+    }
+
+.click-here{
+    font-style: italic;
+}
+
+.click-here:hover{
+    font-weight: 500;
+    transition: .5s linear;
+    letter-spacing: 1;
+}
+    
+
 
     </style>
 
