@@ -49,7 +49,7 @@ header('location: ../../index.php');
             </div>
         </div>
 
-        <table style="margin-left: 120px; width: 84%; background: #fff; text-align: center;">
+        <table style="margin-left: 118px; width: 83.7%; background: #fff; text-align: center;">
             <thead>
                 <tr>
                     <th>Case No.</th>
@@ -62,9 +62,7 @@ header('location: ../../index.php');
             </thead>
             <tbody>
             <?php
-$itemsPerPage = 4;
-$currentPage = isset($_GET['page']) ? $_GET['page'] : 1;
-$offset = ($currentPage - 1) * $itemsPerPage;
+
 
 $selectLuponId = mysqli_query($conn, "SELECT lupon_id FROM `lupon_accounts` WHERE email_address = '$email'");
 if (!$selectLuponId) {
@@ -92,11 +90,10 @@ AND NOT EXISTS (
     INNER JOIN `amicable_settlement` AS amicable_settlement ON h.hearing_id = amicable_settlement.hearing_id
     WHERE incident_report.incident_case_number = h.incident_case_number
 )
-LIMIT $offset, $itemsPerPage
+ORDER BY incident_report.created_at DESC
 ") or die('query failed');
 
 $num_rows = mysqli_num_rows($select);
-$numPages = ceil($num_rows / $itemsPerPage);
 
 if ($num_rows === 0) {
     echo '<tr><td colspan="6" style="font-size: 25px; font-weight: 600; text-transform: uppercase;">no ongoing incident cases yet</td></tr>';
@@ -160,33 +157,6 @@ if ($num_rows === 0) {
 
             </tbody>
         </table>
-
-        <div class="pagination" style="margin-left: 15%;">
-    <?php
-    $numPages = ceil($num_rows / $itemsPerPage);
-
-    // Check if there's more than one page before displaying pagination
-    if ($numPages > 1) {
-        if ($currentPage > 1) {
-            echo '<a href="?page=' . ($currentPage - 1) . '">Previous</a>';
-        }
-
-        for ($i = 1; $i <= $numPages; $i++) {
-            if ($i == $currentPage) {
-                echo '<a class="active" href="?page=' . $i . '">' . $i . '</a>';
-            } else {
-                echo '<a href="?page=' . $i . '">' . $i . '</a>';
-            }
-        }
-
-        if ($currentPage < $numPages) {
-            echo '<a href="?page=' . ($currentPage + 1) . '">Next</a>';
-        }
-    }
-    ?>
-</div>
-
-
         
         
     </section>
