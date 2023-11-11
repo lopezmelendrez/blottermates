@@ -129,7 +129,7 @@ if ($isEndOfMonth) {
             
         </div>
 
-        <div class="incident-case-table" style="display: flex; width: 615px;">
+        <div class="incident-case-table" style="display: flex; width: 615px; height: 470px;">
             <div class="head-text">
                 <p class="incident-case">Recent Incident Cases</p>
                 <p class="notice-records">* Needs Notice Records</p>
@@ -162,15 +162,17 @@ $row = mysqli_fetch_assoc($selectLuponId);
 $lupon_id = $row['lupon_id'];
 $select = mysqli_query($conn, "
 SELECT incident_report.incident_case_number AS incident_case_number,
-incident_report.complainant_last_name AS complainant_last_name,
-incident_report.respondent_last_name AS respondent_last_name,
-incident_report.created_at AS created_at
+       incident_report.complainant_last_name AS complainant_last_name,
+       incident_report.respondent_last_name AS respondent_last_name,
+       incident_report.created_at AS created_at
 FROM `incident_report`
 LEFT JOIN `notify_residents` ON incident_report.incident_case_number = notify_residents.incident_case_number
 LEFT JOIN `amicable_settlement` ON incident_report.incident_case_number = amicable_settlement.incident_case_number
+LEFT JOIN `hearing` ON incident_report.incident_case_number = hearing.incident_case_number
 WHERE (generate_summon = 'not generated' OR generate_hearing = 'not generated' OR generate_pangkat = 'not generated' OR generate_summon IS NULL OR generate_hearing IS NULL OR generate_pangkat IS NULL)
 AND amicable_settlement.incident_case_number IS NULL
 AND incident_report.lupon_id = $lupon_id
+AND hearing.incident_case_number IS NOT NULL
 ") or die('query failed');
 
 if (mysqli_num_rows($select) === 0) {
@@ -199,7 +201,7 @@ if (mysqli_num_rows($select) === 0) {
         </div>
     </div>
 
-    <div class="calendar-container" style="display: flex; margin-left: -17%;">
+    <div class="calendar-container" style="display: flex; margin-left: -17%; height: 470px;">
         <div id="calendar" style="width: 500px;"></div>
     </div>
 
