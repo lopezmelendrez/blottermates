@@ -156,9 +156,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit'])) {
             $("#datepicker").datepicker({
                 dateFormat: 'yy-mm-dd',
                 minDate: 0,
+                maxDate: '+2w', // Set maximum date to 2 weeks from today
                 beforeShowDay: function (date) {
                     var day = date.getDay();
-                    return [day != 0 && day != 6, ''];
+                    return [day !== 0 && day !== 6, ''];
                 }
             });
 
