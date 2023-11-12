@@ -56,7 +56,6 @@ header('location: ../../index.php');
                         <th>Case No.</th>
                         <th>Case Title</th>
                         <th>Hearing Status</th>
-                        <th>Incident Description</th>
                         <th>Processed By</th>
                         <th>Date Processed</th>
                         <th>Actions</th>
@@ -115,7 +114,6 @@ header('location: ../../index.php');
                         }
                 ?>
                             </td>
-                            <td><?php echo (strlen($fetch_cases['description_of_violation']) > 50) ? substr($fetch_cases['description_of_violation'], 0, 50) . '...' : $fetch_cases['description_of_violation']; ?></td>
                             <td><?php echo $submitter_full_name; ?></td>
                             <td><?php echo date("M d, Y", strtotime($fetch_cases['created_at'])); ?></td>
                             <td>

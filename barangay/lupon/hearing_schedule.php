@@ -138,7 +138,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit'])) {
                                 <span class="btnText" style="margin-left: -5px;">Back</span>
                             </div>
                             <button class="modal-confirm" id="modalConfirmBtn" name="submit">
-                            <input type="submit" value="Submit" class="btnText" style="font-size: 16px; background: transparent; border: none; font-weight: 600; color: #fff; cursor: pointer;">
+                            <input type="submit" name="submit" value="Submit" class="btnText" style="font-size: 16px; background: transparent; border: none; font-weight: 600; color: #fff; cursor: pointer;">
                             </button>
 
                         </div>

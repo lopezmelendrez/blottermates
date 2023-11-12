@@ -22,14 +22,14 @@ $pb_id = $row['pb_id'];
 if(isset($_POST['submit_search'])){
     $search_case = mysqli_real_escape_string($conn, $_POST['search_case']);
     $query = "SELECT i.*, h.incident_case_number AS hearing_incident_case_number,
-                     h.date_of_hearing, h.time_of_hearing
+                     h.date_of_hearing, h.time_of_hearing, h.hearing_type_status
               FROM incident_report i
               LEFT JOIN hearing h ON i.incident_case_number = h.incident_case_number
               WHERE i.pb_id = $pb_id AND i.incident_case_number LIKE '%$search_case%'
               ORDER BY i.created_at DESC";
 } else {
     $query = "SELECT i.*, h.incident_case_number AS hearing_incident_case_number,
-                     h.date_of_hearing, h.time_of_hearing
+                     h.date_of_hearing, h.time_of_hearing, h.hearing_type_status
               FROM incident_report i
               LEFT JOIN hearing h ON i.incident_case_number = h.incident_case_number
               WHERE i.pb_id = $pb_id
@@ -112,6 +112,9 @@ while ($row = mysqli_fetch_assoc($result)) {
         echo '<div class="container">';
         echo '<div class="top-text" style="display: flex;">';
         echo '<h3 class="case-no-text" style="font-size: 20px;">Case No. #' . $row['incident_case_number'] . '</h3>';
+        echo '</div>';
+        echo '<div class="top-text" style="display: flex;">';
+        echo '<h3 class="hearing-text" style="font-size: 15px; margin-top: -2.8%; margin-left: 58%; font-weight: 500;"><b>HEARING TYPE STATUS</b>: For ' . strtoupper($row['hearing_type_status']) . '</h3>';
         echo '</div>';
         echo '<div class="top-text" style="display: flex;">';
         $date_of_hearing = $row['date_of_hearing'];
