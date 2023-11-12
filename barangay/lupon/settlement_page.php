@@ -69,7 +69,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['court_action_submit']
 
     if ($result) {
         if (mysqli_affected_rows($conn) > 0) {
-            header("Location: incident_reports.php");
+            header("Location: file_court_action.php?incident_case_number=$incident_case_number");
             exit;
         } else {
             // The row did not exist, you might want to handle this case or ignore it
@@ -81,6 +81,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['court_action_submit']
         exit;
     }
 }
+
 
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {

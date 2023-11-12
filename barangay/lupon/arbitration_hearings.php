@@ -141,18 +141,18 @@ if (mysqli_num_rows($select_arbitration_agreement) > 0) {
         $current_time = time();
 
         if ($current_time >= $date_of_hearing && $hearing_type_status == "arbitration") {
-            echo '<a href="arbitration_settlement_page.php?incident_case_number=' . $incident_case_number . '" class="hearing-1" style="text-decoration: none;">Hearing</a>';
+            echo '<a href="arbitration_settlement_page.php?incident_case_number=' . $incident_case_number . '" class="hearing-1" style="text-decoration: none; margin-left: 0%;">Hearing</a>';
+            echo '<a href="file_court_action.php?incident_case_number=' . $incident_case_number . '" class="filecourt-action" style="text-decoration: none; margin-left: 0%;">File Court Action</a>';
         } else {
-            echo '<div class="hearing-1">Upcoming Hearing</div>';
+            echo '<div class="upcoming-hearing">Upcoming Hearing</div>';
         }
     } else {
         // Handle the case where hearing data is not found
     }
 } else {
-    echo '<a href="arbitration_agreement.php?incident_case_number=' . $incident_case_number . '" class="hearing-1" style="text-decoration: none;">Create Arbitration Agreement</a>';
+    echo '<a href="arbitration_agreement.php?incident_case_number=' . $incident_case_number . '" class="hearing-1" style="text-decoration: none; margin-left: 0%;">Create Arbitration Agreement</a>';
 }
 
-echo '<a href="../pages/filecourt_action.html" class="filecourt-action" style="text-decoration: none;">File Court Action</a>';
 ?>
 
             </td>
@@ -412,6 +412,20 @@ echo '<a href="../pages/filecourt_action.html" class="filecourt-action" style="t
 .to-notify{
         font-weight: 900;
         color: #bc1823;
+    }
+
+    .upcoming-hearing{
+        background: #2962ff;
+        padding: 4px 4px;
+        color: #fff;
+        text-transform: uppercase;
+        border-radius: 0.2rem;
+        cursor: default;
+        display: block;
+        margin-bottom: 5px;
+        width: 10rem;
+        margin-left: 0;
+        text-decoration: none;
     }
 
     </style>
