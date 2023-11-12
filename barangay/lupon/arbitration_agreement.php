@@ -58,8 +58,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit'])) {
     <link rel="stylesheet" href="../../css/dilg.css">
 </head>
 <body>
-    <nav class="sidebar close">
-    <header>
+
+<nav class="sidebar close">
+        <header>
             <div class="image-text">
             <?php
                     $select = mysqli_query($conn, "SELECT l.*, pb.barangay 
@@ -116,12 +117,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit'])) {
                     </li>
 
                     <li class="nav-link">
-                        <a href="hearings.php">
+                        <a href="#">
                             <i class='bx bx-calendar-event icon' ></i>
                             <span class="text nav-text">Hearings</span>
                         </a>
                     </li>
-
 
             </div>
 
@@ -139,16 +139,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit'])) {
                         <span class="text nav-text">Logout</span>
                     </a>
                 </li>
+
                 
             </div>
         </div>
-
 
     </nav>
 
     <section class="home">
 
-            <center>
+    <center>
             <div class="add-account-container" style="height: 535px; width: 880x; margin-top: 20px; margin-left: -50px;">
             <?php
         $incident_case_number = $_GET['incident_case_number'];
@@ -159,7 +159,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit'])) {
                 
                 <form action="" method="post" style="height: 425px;">
                 <input type="hidden" name="incident_case_number" value="<?php echo $incident_case_number; ?>">
-            <span class="title" style="font-style: italic; margin-top: -5px;"><?php echo $fetch_cases['complainant_last_name']; ?> vs. <?php echo $fetch_cases['respondent_last_name']; ?> </span>
+            <span class="title" style="font-style: italic; margin-top: -5px; font-size: 23px; text-transform: uppercase;"><?php echo $fetch_cases['complainant_last_name']; ?> vs. <?php echo $fetch_cases['respondent_last_name']; ?> </span>
                     <div class="fields">
                         <div class="input-field-1">
                             <label>Complainant</label>
@@ -170,14 +170,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit'])) {
                             <input type="text"  onkeypress="return validateName(event)" placeholder="" value="<?php echo $fetch_cases['respondent_last_name']; ?>, <?php echo $fetch_cases['respondent_first_name']; ?> <?php echo $fetch_cases['respondent_middle_name']; ?>" disabled readonly>
                         </div>
                         <div class="input-field" style="width: 100%;">
-                        <small style="font-size: 13px; text-align: justify;">We hereby agree to submit our dispute for arbitration to the Punong Barangay/Pangkat ng Tagapagsundo and bind ourselves to comply with the award that may be rendered thereon. We have made this agreement freely with a fully understanding of its nature and consequences.</small>
+                        <small style="font-size: 15px; text-align: justify;">We hereby agree to submit our dispute for arbitration to the Punong Barangay/Pangkat ng Tagapagsundo and bind ourselves to comply with the award that may be rendered thereon. We have made this agreement freely with a fully understanding of its nature and consequences.</small>
                         </div>
 
                         <hr style="border: 1px solid #ccc; margin: 10px 0;">
 
                             <div class="input-field-1" style="width: 100%;">
-                            <span class="title" style="font-size: 18px; text-align: left; text-transform: uppercase;">Attestation</span>
-                        <p style="font-size: 12px;">I hereby certify that the foregoing Agreement for Arbitration was entered into by the parties freely and voluntarily, after I had explained to them the consequences of such agreement.</p>
+                            <span class="title" style="font-size: 19px; font-weight: 500; text-align: left; text-transform: uppercase;">Attestation</span>
+                        <p style="font-size: 15px;">I hereby certify that the foregoing Agreement for Arbitration was entered into by the parties freely and voluntarily, after I had explained to them the consequences of such agreement.</p>
                                 
                         </div>
                     
@@ -186,7 +186,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit'])) {
                 
                     <div class="input-group1 d-flex" style="margin-top: 3%; margin-left: 22%;">
                         <input type="button" value="Back" class="btn btn-secondary back-btn" style="width: 10%; margin-left: 430px;" onclick="history.back()">
-                        <input type="button" id="openModalBtn" value="Create Agreement" class="btn btn-danger" style="width: 30%; margin-left: 10px;">
+                        <input type="button" id="openModalBtn" value="CREATE AGREEMENT" class="btn btn-danger" style="width: 30%; margin-left: 10px;">
                     </div>
 
                     
@@ -230,16 +230,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit'])) {
             sidebar.classList.remove("close");
         })
 
-        modeSwitch.addEventListener("click" , () =>{
-            body.classList.toggle("dark");
-            
-            if(body.classList.contains("dark")){
-                modeText.innerText = "Light mode";
-            }else{
-                modeText.innerText = "Dark mode";
-                
-            }
-        });
+        
 
 // Get the modal and button elements
 const modal = document.getElementById("signatureModal");

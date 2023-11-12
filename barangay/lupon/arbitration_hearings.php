@@ -75,8 +75,6 @@ header('location: ../../index.php');
             $select = mysqli_query($conn, "SELECT ir.incident_case_number, ir.complainant_last_name, ir.complainant_first_name, ir.complainant_middle_name, ir.respondent_last_name, ir.respondent_first_name, ir.respondent_middle_name, ir.description_of_violation, ir.incident_date, ir.submitter_first_name, ir.submitter_last_name, ir.created_at 
                 FROM `incident_report` AS ir
                 INNER JOIN `hearing` AS h ON ir.incident_case_number = h.incident_case_number
-                WHERE h.date_of_hearing IS NOT NULL 
-                AND h.time_of_hearing IS NOT NULL 
                 AND ir.pb_id = $pb_id
                 AND NOT EXISTS (SELECT 1 FROM `amicable_settlement` AS amicable WHERE h.hearing_id = amicable.hearing_id)
                 AND h.hearing_type_status = 'arbitration'
@@ -105,11 +103,19 @@ header('location: ../../index.php');
 
     if (mysqli_num_rows($select_hearing) > 0) {
         $hearing_data = mysqli_fetch_assoc($select_hearing);
-        $hearing_date = date("F j, Y", strtotime($hearing_data['date_of_hearing']));
-        echo $hearing_date;
+        
+        if ($hearing_data['date_of_hearing'] !== null) {
+            $hearing_date = date("F j, Y", strtotime($hearing_data['date_of_hearing']));
+            echo $hearing_date;
+        } else {
+            echo '<span style="font-weight: 600;">NO HEARING SCHEDULE YET</span>';
+        }
+    } else {
+        echo '<span style="font-weight: 600;">NO HEARING SCHEDULE YET</span>';
     }
     ?>
 </td>
+
 <td>            <?php
 $incident_case_number = $fetch_cases['incident_case_number'];
 $select_arbitration_agreement = mysqli_query($conn, "SELECT 1 FROM arbitration_agreement WHERE incident_case_number = '$incident_case_number' LIMIT 1");
@@ -134,8 +140,8 @@ if (mysqli_num_rows($select_arbitration_agreement) > 0) {
         $date_of_hearing = strtotime($hearing_row['date_of_hearing']);
         $current_time = time();
 
-        if ($current_time >= $date_of_hearing && $hearing_type_status == "conciliation") {
-            echo '<a href="settlement_page.php?incident_case_number=' . $incident_case_number . '" class="hearing-1" style="text-decoration: none;">Go to Hearing</a>';
+        if ($current_time >= $date_of_hearing && $hearing_type_status == "arbitration") {
+            echo '<a href="arbitration_settlement_page.php?incident_case_number=' . $incident_case_number . '" class="hearing-1" style="text-decoration: none;">Hearing</a>';
         } else {
             echo '<div class="hearing-1">Upcoming Hearing</div>';
         }

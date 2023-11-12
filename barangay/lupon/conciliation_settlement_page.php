@@ -21,7 +21,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['arbitration_submit'])
 
     if ($result) {
         if (mysqli_affected_rows($conn) > 0) {
-            header("Location: incident_reports.php");
+            header("Location: arbitration_hearings.php");
             exit;
         } else {
             // The row did not exist; you might want to handle this case or ignore it
@@ -192,7 +192,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     
 
     <section class="home">
-        <div class="container" style="margin-left: 15%; margin-top: 8%; height: 23rem;">
+        <div class="container" style="margin-left: 15%; margin-top: 8%; height: 29rem;">
         <?php
         $incident_case_number = $_GET['incident_case_number'];
         $select = mysqli_query($conn, "SELECT * FROM `incident_report` WHERE incident_case_number = '$incident_case_number'") or die('query failed');
@@ -201,7 +201,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <header>Conciliation Hearing Record for Case <?php echo $fetch_cases['incident_case_number']; ?></header>
             <form action="#" method="post">
             <input type="hidden" name="incident_case_number" value="<?php echo $incident_case_number; ?>">
-            <span class="title" style="font-style: italic;"><?php echo $fetch_cases['complainant_last_name']; ?> vs. <?php echo $fetch_cases['respondent_last_name']; ?> </span>
+            <span class="title" style="font-style: italic; font-size: 23px; text-align: center;"><?php echo $fetch_cases['complainant_last_name']; ?> vs. <?php echo $fetch_cases['respondent_last_name']; ?> </span>
                         <div class="fields">
                             <div class="input-field-1">
                                 <label>Complainant</label>
@@ -215,7 +215,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 <label>Witness</label>
                                 <input type="text" onkeypress="return validateName(event)" placeholder="" value="<?php echo $fetch_cases['witness_last_name'] ? ($fetch_cases['witness_last_name'] . ', ' . $fetch_cases['witness_first_name'] . ' ' . $fetch_cases['witness_middle_name']) : 'NO WITNESS'; ?>" required readonly>
                             </div>-->
-                            <div class="input-field-1" style="width: 43rem;">
+                            <div class="input-field-1" style="width: 54rem;">
                                 <label class="required-label">Amicable Settlement Agreement</label>
                                 <input type="text" style="height: 5rem;" name="agreement_description" placeholder="" required>
                             </div>
@@ -225,7 +225,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             <span class="filecourt-action" onclick="showCourtActionPopup()" style="cursor: pointer;">File Court Action</span>
                         </div>
                         <button class="submit">
-                                <input type="submit" name="submit" value="Create Settlement Agreement" class="btnText" style="font-size: 12px; background: transparent; border: none; font-weight: 600; color: #fff; cursor: pointer;">
+                                <input type="submit" value="Create Agreement" class="btnText" style="font-size: 17px; background: transparent; border: none; font-weight: 600; color: #fff; cursor: pointer;">
                         </button>
             </form>
         </div>
@@ -237,7 +237,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <div class="modal">
             <h3 class="modal-title" style="font-size: 18px; text-align:center;">ARE YOU SURE?</h3>
             <hr style="border: 1px solid #ccc; margin: 10px 0;">
-            <p style="font-size: 18px; text-align: center; margin-top: 10%;">By clicking the "Confirm" button, you will initiate the progression of the mediation record into the arbitration process.</p>
+            <p style="font-size: 18px; text-align: center; margin-top: 10%;">By clicking the "Confirm" button, you will initiate the progression of the CONCILIATION record into the ARBITRATION process.</p>
             <div class="button-container" style="display: flex;">
             <button class="backBtn" onclick="closeArbitrationPopup()" style="width: 150px; padding: 12px 12px; font-weight: 600; background: #fff; border: 1px solid #bc1823; color: #bc1823; margin-left: 180px;">NO</button>
                 <form action="" method="post">
@@ -254,7 +254,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <div class="modal">
             <h3 class="modal-title" style="font-size: 18px; text-align:center;">ARE YOU SURE?</h3>
             <hr style="border: 1px solid #ccc; margin: 10px 0;">
-            <p style="font-size: 18px; text-align: center; margin-top: 10%;">By clicking the "Confirm" button, you will initiate the progression of the mediation record to "File Court Action".</p>
+            <p style="font-size: 18px; text-align: center; margin-top: 10%;">By clicking the "Confirm" button, you will initiate the progression of the CONCILIATION record to "File Court Action".</p>
             <div class="button-container" style="display: flex;">
             <button class="backBtn" onclick="closeCourtActionPopup()" style="width: 150px; padding: 12px 12px; font-weight: 600; background: #fff; border: 1px solid #bc1823; color: #bc1823; margin-left: 180px;">NO</button>
                 <form action="" method="post">
@@ -443,7 +443,7 @@ function validateName(event) {
     left: 0;
     bottom: -2px;
     height: 3px;
-    width: 450px;
+    width: 488px;
     border-radius: 8px;
     background-color: #F5BE1D;
 }
