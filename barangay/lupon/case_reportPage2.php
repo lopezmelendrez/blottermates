@@ -208,6 +208,7 @@ if(mysqli_num_rows($select) > 0){
 </div>
 
 <span class="title" style="width: 100%;">Execution of Agreement</span>
+
                             
 <?php
 // Assuming you have a connection to the database ($conn)
@@ -222,7 +223,7 @@ if ($generate_execution_result && mysqli_num_rows($generate_execution_result) > 
 
     if ($generate_execution_value == '' || strtolower($generate_execution_value) == 'not generated') {
         // Display "PLEASE FILE A MOTION FIRST"
-        echo '<p style="padding: 10px 0">PLEASE FILE A MOTION FIRST</p>';
+        echo '<p class="file" style="padding: 10px 0">PLEASE GENERATE A MOTION FOR EXECUTION</p>';
     } elseif ($generate_execution_value == 'form generated') {
         // Check if there is data in the execution_notice table
         $execution_query = "SELECT * FROM `execution_notice` WHERE incident_case_number = '$incident_case_number'";
@@ -232,6 +233,7 @@ if ($generate_execution_result && mysqli_num_rows($generate_execution_result) > 
             // Display the fields from execution_notice
             $execution_data = mysqli_fetch_assoc($execution_result);
             ?>
+            <span class="generate" style="font-size: 14px; text-align: center; margin-top: -3%;">Generate KP Form #27</span>
             <div class="input-field-1">
                 <label class="label">Date of Agreement Execution</label>
                 <div class="text-box">
@@ -255,7 +257,7 @@ if ($generate_execution_result && mysqli_num_rows($generate_execution_result) > 
             <?php
         } else {
             // Display "THE MOTION FOR EXECUTION IS SUBMITTED TO THE BARANGAY FOR VALIDATION"
-            echo '<p style="padding: 10px 0">THE MOTION FOR EXECUTION IS SUBMITTED TO THE BARANGAY FOR VALIDATION</p>';
+            echo '<p class="pending" style="padding: 10px 0">THE MOTION FOR EXECUTION IS SUBMITTED TO THE PUNONG BARANGAY FOR VALIDATION</p>';
         }
     }
 } else {
@@ -266,9 +268,22 @@ if ($generate_execution_result && mysqli_num_rows($generate_execution_result) > 
 
 
                         </div>
+                        <div class="buttons" style="margin-top: -2%;">
+                            <a href="case_report.php?incident_case_number=<?php echo $incident_case_number ?>" style="text-decoration: none;">
+                            <div class="backBtn-1" style="padding: 12px 12px; width: 100px; border: 1px solid #bc1823; background: #fff; color: #bc1823; margin-left: 550%;">
+                                <span class="btnText" style="text-align: center;">Back</span>
+                            </div></a>
+                            <a href="incident_reports.php" style="text-decoration: none;">
+                            <div class="backBtn-1" style="width: 600px; margin-left: 280%; padding: 12px 12px; ">
+                                <span class="btnText">See All Cases</span>
+                            </div>
+                            </a>
+                        </div>
                         
                     </div> 
                 </div>
+
+
 
                 
                 
@@ -574,6 +589,32 @@ if ($generate_execution_result && mysqli_num_rows($generate_execution_result) > 
     padding: 0 15px;
     height: 42px;
     margin: 8px 0;
+}
+
+.pending{
+    background: #FFd300;
+    width: 80%;
+    text-align: center;
+    border-radius: 5px;
+    color: #fff;
+    font-weight: 500;
+    margin-left: 10%;
+    margin-top: 4%;
+    margin-bottom: 5%;
+    font-size: 22px;
+}
+
+.file{
+    background: #bc1823;
+    width: 80%;
+    text-align: center;
+    border-radius: 5px;
+    color: #fff;
+    font-weight: 500;
+    margin-left: 10%;
+    margin-top: 4%;
+    margin-bottom: 5%;
+    font-size: 22px;
 }
 
 
