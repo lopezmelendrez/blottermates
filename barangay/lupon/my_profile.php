@@ -6,44 +6,75 @@ session_start();
 
 $email = $_SESSION['email_address'];
 
+if (isset($_POST['submit'])) {
 
-if(!isset($email)){
-header('location: ../../index.php');
-}
+    // Sanitize and validate user input
+    $first_name = mysqli_real_escape_string($conn, $_POST["first_name"]);
+    $last_name = mysqli_real_escape_string($conn, $_POST["last_name"]);
+    $email_address = mysqli_real_escape_string($conn, $_POST["email_address"]);
+    $old_password = mysqli_real_escape_string($conn, $_POST["old_password"]);
+    $password = mysqli_real_escape_string($conn, $_POST["password"]);
+    $confirmPassword = mysqli_real_escape_string($conn, $_POST["confirmPassword"]);
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit'])) {
-    $incident_case_number = $_POST['incident_case_number'];
-    $signatureData = mysqli_real_escape_string($conn, $_POST["lupon_signature"]);
+    // Check if the old password is correct
+    $check_password_query = "SELECT password FROM lupon_accounts WHERE email_address = '$email'";
+    $result = $conn->query($check_password_query);
 
-    $select_hearing_id_query = "SELECT hearing_id FROM hearing WHERE incident_case_number = '$incident_case_number'";
-    $select_hearing_id_result = mysqli_query($conn, $select_hearing_id_query);
+    if ($result->num_rows > 0) {
+        $row = $result->fetch_assoc();
+        $old_password_hash = $row['password'];
 
-    if ($select_hearing_id_result && mysqli_num_rows($select_hearing_id_result) > 0) {
-        $fetch_hearing = mysqli_fetch_assoc($select_hearing_id_result);
-        $hearing_id = $fetch_hearing['hearing_id'];
+        if (password_verify($old_password, $old_password_hash)) {
+            // Old password is correct, proceed with the update
 
-        // Update your INSERT query to include the `timestamp` column and set it to the current timestamp
-        $insert_query = "INSERT INTO `arbitration_agreement` (`lupon_signature`, `hearing_id`, `incident_case_number`, `timestamp`)
-        VALUES ('$signatureData', '$hearing_id', '$incident_case_number', NOW())";
+            // Check if a new password is provided
+            if (!empty($password) && !empty($confirmPassword)) {
+                // Check if passwords match
+                if ($password != $confirmPassword) {
+                    // Handle password mismatch error
+                    echo "<p style='font-size: 30px; margin-left: 50%;'>Passwords do not Match.</p>";
+                } else {
+                    // Hash the new password for security
+                    $hashed_password = password_hash($password, PASSWORD_DEFAULT);
+                    // Include the new password in the update query
+                    $update_query = "UPDATE lupon_accounts SET 
+                        first_name = '$first_name',
+                        last_name = '$last_name',
+                        email_address = '$email_address',
+                        password = '$hashed_password'
+                        WHERE email_address = '$email'";
+                }
+            } else {
+                // Do not update the password in the query
+                $update_query = "UPDATE lupon_accounts SET 
+                    first_name = '$first_name',
+                    last_name = '$last_name',
+                    email_address = '$email_address'
+                    WHERE email_address = '$email'";
+            }
 
-        $insert_result = mysqli_query($conn, $insert_query);
-
-        if ($insert_result) {
-            header("Location: arbitration_hearings.php");
-            exit;
+            // Execute the update query
+            if ($conn->query($update_query) === TRUE) {
+                // Redirect to the manage_accounts.php page after a successful update
+                header("Location: my_profile.php");
+                exit();
+            } else {
+                echo "Error: " . $update_query . "<br>" . $conn->error;
+            }
         } else {
-            // Insertion failed, handle the error accordingly
-            echo "Error: " . mysqli_error($conn);
+            // Old password is incorrect, display an error message
+            echo "<p style='font-size: 30px; margin-left: 50%;'>Incorrect old password.</p>";
         }
-    } else {
-        // Handle the case where the agreement is not found, you can redirect back or show an error message.
-        echo "Error: Hearing record not found for the incident case number.";
-        exit;
     }
-}
 
+    // Close the database connection
+    $conn->close();
+}
 
 ?>
+
+<!-- ... (rest of your HTML code remains unchanged) ... -->
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -127,7 +158,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit'])) {
 
             <div class="bottom-content">
                 <li class="">
-                    <a href="my_profile.php">
+                    <a href="#">
                         <i class='bx bx-user-circle icon' ></i>
                         <span class="text nav-text">My Account</span>
                     </a>
@@ -148,51 +179,79 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit'])) {
 
     <section class="home">
 
-    <center>
-            <div class="add-account-container" style="height: 535px; width: 880x; margin-top: 20px; margin-left: -50px;">
-            <?php
-        $incident_case_number = $_GET['incident_case_number'];
-        $select = mysqli_query($conn, "SELECT * FROM `incident_report` WHERE incident_case_number = '$incident_case_number'") or die('query failed');
-        $fetch_cases = mysqli_fetch_assoc($select);
-        ?>
-                <div class="header-text">Arbitration Agreement for Case <?php echo $fetch_cases['incident_case_number']; ?></div>
+            <center>
+            <div class="add-account-container" style="height: 600px; width: 800px; margin-top: 2px;">
+                <div class="header-text">Add Lupon Account</div>
+
+                <?php
+             $select = mysqli_query($conn, "SELECT * FROM `lupon_accounts` WHERE email_address = '$email'") or die('query failed');
+             if(mysqli_num_rows($select) > 0){
+                $fetch = mysqli_fetch_assoc($select);
+             }
+             
+            ?>
                 
-                <form action="" method="post" style="height: 425px;">
-                <input type="hidden" name="incident_case_number" value="<?php echo $incident_case_number; ?>">
-            <span class="title" style="font-style: italic; margin-top: -5px; font-size: 23px; text-transform: uppercase;"><?php echo $fetch_cases['complainant_last_name']; ?> vs. <?php echo $fetch_cases['respondent_last_name']; ?> </span>
+                <form action="" method="post" style="height: 490px;">
                     <div class="fields">
                         <div class="input-field-1">
-                            <label>Complainant</label>
-                            <input type="text"  onkeypress="return validateName(event)" placeholder="" value="<?php echo $fetch_cases['complainant_last_name']; ?>, <?php echo $fetch_cases['complainant_first_name']; ?> <?php echo $fetch_cases['complainant_middle_name']; ?>" disabled readonly>
+                            <label>First Name</label>
+                            <input type="text" name="first_name" value="<?php echo $fetch['first_name']; ?>" required>
                         </div>
                         <div class="input-field-1">
-                            <label>Respondent</label>
-                            <input type="text"  onkeypress="return validateName(event)" placeholder="" value="<?php echo $fetch_cases['respondent_last_name']; ?>, <?php echo $fetch_cases['respondent_first_name']; ?> <?php echo $fetch_cases['respondent_middle_name']; ?>" disabled readonly>
+                            <label>Last Name</label>
+                            <input type="text" name="last_name" value=<?php echo $fetch['last_name']; ?> required>
                         </div>
-                        <div class="input-field" style="width: 100%;">
-                        <small style="font-size: 15px; text-align: justify;">We hereby agree to submit our dispute for arbitration to the Punong Barangay/Pangkat ng Tagapagsundo and bind ourselves to comply with the award that may be rendered thereon. We have made this agreement freely with a fully understanding of its nature and consequences.</small>
+                        <div class="input-field-1">
+                            <label>Email Address</label>
+                            <input type="text" name="email_address" value="<?php echo $fetch['email_address']; ?>" required>
+                        </div>
+                        <div class="input-field-1">
+                            <label>Old Password</label>
+                            <input type="password" name="old_password" placeholder="" required>
                         </div>
 
-                        <hr style="border: 1px solid #ccc; margin: 10px 0;">
-
+                       
                             <div class="input-field-1" style="width: 100%;">
-                            <span class="title" style="font-size: 19px; font-weight: 500; text-align: left; text-transform: uppercase;">Attestation</span>
-                        <p style="font-size: 15px;">I hereby certify that the foregoing Agreement for Arbitration was entered into by the parties freely and voluntarily, after I had explained to them the consequences of such agreement.</p>
+                                <label>New Password</label>
+                                <i class="uil uil-question-circle" data-bs-toggle="tooltip" data-bs-placement="top" title="Password must contain: At least one lowercase letter (a-z), at least one uppercase letter (A-Z), at least one number, and at least one special character." style="right: 0; display: flex; margin-top: -2.3%; margin-left: 13%;"></i>
+                                <div class="pw-meter" style="margin-top: 3px;">
+                                <input type="password" name="password" id="password" placeholder="">
+                                <div class="pw-display-toggle-btn" style="margin-top: 178px;">
+                                </div>
+
+                            <div class="pw-strength" id="strength-meter">
+                                <span></span>
+                                <span></span>
+                            </div>
+
+                        </div>
+                        
                                 
                         </div>
                     
+                        <div class="input-field-1" style="width: 100%;">
+                            <label>Confirm Password</label>
+                            <input type="password" name="confirmPassword" placeholder="">
+                        </div>
 
                     </div>
                 
-                    <div class="input-group1 d-flex" style="margin-top: 3%; margin-left: 22%;">
-                        <input type="button" value="Back" class="btn btn-secondary back-btn" style="width: 10%; margin-left: 430px;" onclick="history.back()">
-                        <input type="button" id="openModalBtn" value="CREATE AGREEMENT" class="btn btn-danger" style="width: 30%; margin-left: 10px;">
+                    <!--<div class="signature-container" id="openModalBtn">
+                        Place Signature Here
+                    </div>-->
+                    <div class="input-field" style="margin-top: -23px;">
+                    <div id="copyMessage" class="clipboard" style="display: none; margin-top: 5px;">Copied to Clipboard!</div>
+                    </div>
+
+                    <div class="input-group1 d-flex" style="margin-top: 8%;">
+                        <input type="button" value="Back" class="btn btn-secondary back-btn" style="width: 10%; margin-left: 470px;" onclick="history.back()">
+                        <input type="button" id="openModalBtn" value="Update Account" class="btn btn-danger" style="width: 25%; margin-left: 10px;">
                     </div>
 
                     
                     <div id="signatureModal" class="modal">
                         <div class="modal-content">
-                            <p style="text-align: justify; font-size: 13px;">By adding a digital signature, you are ensuring the authenticity and integrity of the Agreement for Arbitration.</p>
+                        <p style="text-align: justify; font-size: 13px;">By updating your digital signature, you are ensuring the ongoing authenticity and integrity of your account information.</p>
                             <div class="signature-pad">
                                 <canvas id="signatureCanvas" width="400" height="200"></canvas>
                             </div>
@@ -202,10 +261,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit'])) {
                                 <input type="submit" name="submit" value="Confirm" class="btn btn-danger" id="saveSignatureBtn" style="width: 30%; margin-left: 15px; font-size: 17px; text-transform: uppercase;">
                             </div>
                         </div>
-                        <input type="hidden" id="signatureData" name="lupon_signature">
+                        <input type="hidden" id="signatureData" name="signatureData">
                     </div>
                     
                     
+
                 </form>
             </div>
             </center>
@@ -281,21 +341,6 @@ window.addEventListener("click", (event) => {
 });
 
 
-
-    const confirmPasswordInput = document.querySelector('input[name="confirmPassword"]');
-const showHidePwIcon = document.querySelector('.showHidePw');
-
-showHidePwIcon.addEventListener('click', () => {
-    if (confirmPasswordInput.type === 'password') {
-        confirmPasswordInput.type = 'text';
-        showHidePwIcon.classList.remove('uil-eye-slash');
-        showHidePwIcon.classList.add('uil-eye');
-    } else {
-        confirmPasswordInput.type = 'password';
-        showHidePwIcon.classList.remove('uil-eye');
-        showHidePwIcon.classList.add('uil-eye-slash');
-    }
-});
 
 function getPasswordStrength(password){
     let s = 0;
@@ -414,65 +459,6 @@ document.querySelector(".pw-meter .pw-display-toggle-btn").addEventListener("cli
     height: 100vh;
     width: calc(100% - 78px);
 }
-
-.pw-meter .form-element {
-    position:absolute;
-  }
-  .pw-meter label {
-    display:block;
-  }
-  .pw-meter input {
-    padding:8px 30px 8px 10px;
-    width:100%;
-    outline:none;
-  }
-  .pw-meter .pw-display-toggle-btn {
-    position:absolute;
-    right:10px;
-    top:45px;
-    width:20px;
-    height:20px;
-    text-align:center;
-    line-height:20px;
-    cursor:pointer;
-  }
-  .pw-meter .pw-display-toggle-btn i.fa-eye-slash {
-    display:none;
-  }
-  .pw-meter .pw-display-toggle-btn.active i.fa-eye-slash {
-    display:block;
-  }
-  .pw-meter .pw-display-toggle-btn.active i.fa-eye {
-    display:none;
-  }
-  .pw-meter .pw-strength {
-    position:relative;
-    width:100%;
-    height:25px;
-    margin-top:10px;
-    text-align:center;
-    background:#f2f2f2;
-    display:none;
-  }
-  .pw-meter .pw-strength span:nth-child(1) {
-    position:relative;
-    font-size:14px;
-    padding-bottom: 5px;
-    text-transform: uppercase;
-    color:#111;
-    z-index:2;
-    font-weight:600;
-  }
-  .pw-meter .pw-strength span:nth-child(2) {
-    position:absolute;
-    top:0px;
-    left:0px;
-    width:0%;
-    height:100%;
-    border-radius:5px;
-    z-index:1;
-    transition:all 300ms ease-in-out;
-  }
 
 
 </style>
