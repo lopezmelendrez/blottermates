@@ -78,7 +78,8 @@ $select = mysqli_query($conn, "SELECT ir.incident_case_number, ir.complainant_la
 FROM `incident_report` AS ir
 INNER JOIN `hearing` AS h ON ir.incident_case_number = h.incident_case_number
 LEFT JOIN `amicable_settlement` AS amicable_settlement ON h.hearing_id = amicable_settlement.hearing_id
-WHERE h.date_of_hearing IS NOT NULL AND h.time_of_hearing IS NOT NULL AND amicable_settlement.agreement_description IS NOT NULL AND ir.pb_id = $pb_id")
+WHERE h.date_of_hearing IS NOT NULL AND h.time_of_hearing IS NOT NULL AND amicable_settlement.agreement_description IS NOT NULL AND ir.pb_id = $pb_id
+ORDER BY ir.created_at DESC")
 or die('query failed');
 $num_rows = mysqli_num_rows($select);
 

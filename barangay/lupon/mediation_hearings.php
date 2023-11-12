@@ -78,7 +78,8 @@ header('location: ../../index.php');
                 AND ir.pb_id = $pb_id 
                 AND h.time_of_hearing IS NOT NULL 
                 AND NOT EXISTS (SELECT 1 FROM `amicable_settlement` AS amicable WHERE h.hearing_id = amicable.hearing_id)
-                AND h.hearing_type_status = 'mediation'")
+                AND h.hearing_type_status = 'mediation'
+                ORDER BY ir.created_at DESC")
                 or die('query failed');
 
             $num_rows = mysqli_num_rows($select);
