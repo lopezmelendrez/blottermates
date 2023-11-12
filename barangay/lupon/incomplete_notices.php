@@ -64,12 +64,12 @@ header('location: ../../index.php');
             <?php
 
 
-$selectLuponId = mysqli_query($conn, "SELECT lupon_id FROM `lupon_accounts` WHERE email_address = '$email'");
+$selectLuponId = mysqli_query($conn, "SELECT pb_id FROM `lupon_accounts` WHERE email_address = '$email'");
 if (!$selectLuponId) {
     die('Failed to fetch lupon_id: ' . mysqli_error($conn));
 }
 $row = mysqli_fetch_assoc($selectLuponId);
-$lupon_id = $row['lupon_id'];
+$pb_id = $row['pb_id'];
 
 
 $select = mysqli_query($conn, "
@@ -84,7 +84,7 @@ LEFT JOIN `notify_residents` ON incident_report.incident_case_number = notify_re
 LEFT JOIN `amicable_settlement` ON incident_report.incident_case_number = amicable_settlement.incident_case_number
 WHERE (generate_summon = 'not generated' OR generate_hearing = 'not generated' OR generate_pangkat = 'not generated' OR generate_summon IS NULL OR generate_hearing IS NULL OR generate_pangkat IS NULL)
 AND amicable_settlement.incident_case_number IS NULL
-AND incident_report.lupon_id = $lupon_id
+AND incident_report.pb_id = $pb_id
 AND NOT EXISTS (
     SELECT 1 FROM `hearing` AS h
     INNER JOIN `amicable_settlement` AS amicable_settlement ON h.hearing_id = amicable_settlement.hearing_id

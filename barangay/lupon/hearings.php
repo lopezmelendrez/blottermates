@@ -10,12 +10,12 @@ if(!isset($email)){
 header('location: ../../index.php');
 }
 
-$selectLuponId = mysqli_query($conn, "SELECT lupon_id FROM `lupon_accounts` WHERE email_address = '$email'");
+$selectLuponId = mysqli_query($conn, "SELECT pb_id FROM `lupon_accounts` WHERE email_address = '$email'");
 if (!$selectLuponId) {
     die('Failed to fetch lupon_id: ' . mysqli_error($conn));
 }
 $row = mysqli_fetch_assoc($selectLuponId);
-$lupon_id = $row['lupon_id'];
+$pb_id = $row['pb_id'];
 
 
 if(isset($_POST['submit_search'])){
@@ -24,14 +24,14 @@ if(isset($_POST['submit_search'])){
                      h.date_of_hearing, h.time_of_hearing
               FROM incident_report i
               LEFT JOIN hearing h ON i.incident_case_number = h.incident_case_number
-              WHERE i.lupon_id = $lupon_id AND i.incident_case_number LIKE '%$search_case%'
+              WHERE i.pb_id = $pb_id AND i.incident_case_number LIKE '%$search_case%'
               ORDER BY i.created_at DESC";
 } else {
     $query = "SELECT i.*, h.incident_case_number AS hearing_incident_case_number,
                      h.date_of_hearing, h.time_of_hearing
               FROM incident_report i
               LEFT JOIN hearing h ON i.incident_case_number = h.incident_case_number
-              WHERE i.lupon_id = $lupon_id
+              WHERE i.pb_id = $pb_id
               ORDER BY i.created_at DESC";
 }
 

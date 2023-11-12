@@ -44,10 +44,11 @@ if (isset($_POST['submit'])) {
         if (mysqli_num_rows($select_submitter) > 0) {
             $submitter_data = mysqli_fetch_assoc($select_submitter);
             $lupon_id = $submitter_data['lupon_id'];
+            $pb_id = $submitter_data['pb_id'];
             $submitter_first_name = $submitter_data['first_name'];
             $submitter_last_name = $submitter_data['last_name'];
 
-            mysqli_query($conn, "INSERT INTO `incident_report` (complainant_last_name, complainant_first_name, complainant_middle_name, complainant_cellphone_number, complainant_house_address, respondent_last_name, respondent_first_name, respondent_middle_name, respondent_cellphone_number, respondent_house_address, incident_case_number, incident_case_type, other_incident_case_type, incident_date, description_of_violation, created_at, submitter_first_name, submitter_last_name, lupon_id) VALUES ('$complainant_last_name', '$complainant_first_name', '$complainant_middle_name', '$complainant_cellphone_number', '$complainant_house_address', '$respondent_last_name', '$respondent_first_name', '$respondent_middle_name', '$respondent_cellphone_number', '$respondent_house_address', '$incident_case_number', '$incident_case_type', '$other_incident_case_type', '$incident_date', '$description_of_violation', NULL, '$submitter_first_name', '$submitter_last_name', '$lupon_id')") or die('query failed');
+            mysqli_query($conn, "INSERT INTO `incident_report` (complainant_last_name, complainant_first_name, complainant_middle_name, complainant_cellphone_number, complainant_house_address, respondent_last_name, respondent_first_name, respondent_middle_name, respondent_cellphone_number, respondent_house_address, incident_case_number, incident_case_type, other_incident_case_type, incident_date, description_of_violation, created_at, pb_id, submitter_first_name, submitter_last_name, lupon_id) VALUES ('$complainant_last_name', '$complainant_first_name', '$complainant_middle_name', '$complainant_cellphone_number', '$complainant_house_address', '$respondent_last_name', '$respondent_first_name', '$respondent_middle_name', '$respondent_cellphone_number', '$respondent_house_address', '$incident_case_number', '$incident_case_type', '$other_incident_case_type', '$incident_date', '$description_of_violation', NULL, $pb_id, '$submitter_first_name', '$submitter_last_name', '$lupon_id')") or die('query failed');
             header("location: incomplete_notices.php");
         }
     }
@@ -468,6 +469,7 @@ function validateName(event) {
 
 $(function() {
             $("#datepicker").datepicker({
+                dateFormat: 'yy-mm-dd',
                 minDate: new Date(2019, 0, 1), // January 1, 2019
                 maxDate: new Date() // Current date
             });

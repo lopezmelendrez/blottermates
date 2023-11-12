@@ -66,18 +66,18 @@ header('location: ../../index.php');
             </thead>
             <tbody>
                 <?php
-$selectLuponId = mysqli_query($conn, "SELECT lupon_id FROM `lupon_accounts` WHERE email_address = '$email'");
+$selectLuponId = mysqli_query($conn, "SELECT pb_id FROM `lupon_accounts` WHERE email_address = '$email'");
 if (!$selectLuponId) {
     die('Failed to fetch lupon_id: ' . mysqli_error($conn));
 }
 $row = mysqli_fetch_assoc($selectLuponId);
-$lupon_id = $row['lupon_id'];
+$pb_id = $row['pb_id'];
 
 $select = mysqli_query($conn, "SELECT ir.incident_case_number, ir.complainant_last_name, ir.respondent_last_name, ir.description_of_violation, ir.incident_date, ir.submitter_first_name, ir.submitter_last_name, ir.created_at 
     FROM `incident_report` AS ir
     INNER JOIN `hearing` AS h ON ir.incident_case_number = h.incident_case_number
     WHERE h.date_of_hearing IS NOT NULL AND h.time_of_hearing IS NOT NULL
-    AND ir.lupon_id = $lupon_id
+    AND ir.pb_id = $pb_id
     AND NOT EXISTS (SELECT 1 FROM `amicable_settlement` AS amicable WHERE h.hearing_id = amicable.hearing_id)")
     or die('query failed');
 $num_rows = mysqli_num_rows($select);

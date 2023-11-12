@@ -12,19 +12,19 @@ header('location: ../../index.php');
 }
 
 // Get the lupon_id for the logged-in user using their email address
-$selectLuponId = mysqli_query($conn, "SELECT lupon_id FROM `lupon_accounts` WHERE email_address = '$email'");
+$selectLuponId = mysqli_query($conn, "SELECT pb_id FROM `lupon_accounts` WHERE email_address = '$email'");
 if (!$selectLuponId) {
     die('Failed to fetch lupon_id: ' . mysqli_error($conn));
 }
 $row = mysqli_fetch_assoc($selectLuponId);
-$lupon_id = $row['lupon_id'];
+$pb_id = $row['pb_id'];
 
 // Use the obtained lupon_id to filter the hearing records based on the incident_case_number
 $selectHearing = mysqli_query($conn, "
 SELECT hearing.date_of_hearing, hearing.time_of_hearing, hearing.incident_case_number
 FROM `hearing`
 LEFT JOIN `incident_report` ON hearing.incident_case_number = incident_report.incident_case_number
-WHERE incident_report.lupon_id = $lupon_id
+WHERE incident_report.pb_id = $pb_id
 ") or die('query failed');
 
 $events = [];
@@ -154,12 +154,13 @@ if ($isEndOfMonth) {
             <?php
 $currentPage = isset($_GET['page']) ? $_GET['page'] : 1;
 
-$selectLuponId = mysqli_query($conn, "SELECT lupon_id FROM `lupon_accounts` WHERE email_address = '$email'");
+$selectLuponId = mysqli_query($conn, "SELECT pb_id FROM `lupon_accounts` WHERE email_address = '$email'");
 if (!$selectLuponId) {
     die('Failed to fetch lupon_id: ' . mysqli_error($conn));
 }
 $row = mysqli_fetch_assoc($selectLuponId);
-$lupon_id = $row['lupon_id'];
+$pb_id = $row['pb_id'];
+
 $select = mysqli_query($conn, "
 SELECT incident_report.incident_case_number AS incident_case_number,
        incident_report.complainant_last_name AS complainant_last_name,
@@ -171,9 +172,10 @@ LEFT JOIN `amicable_settlement` ON incident_report.incident_case_number = amicab
 LEFT JOIN `hearing` ON incident_report.incident_case_number = hearing.incident_case_number
 WHERE (generate_summon = 'not generated' OR generate_hearing = 'not generated' OR generate_pangkat = 'not generated' OR generate_summon IS NULL OR generate_hearing IS NULL OR generate_pangkat IS NULL)
 AND amicable_settlement.incident_case_number IS NULL
-AND incident_report.lupon_id = $lupon_id
 AND hearing.incident_case_number IS NOT NULL
+AND incident_report.pb_id = $pb_id
 ") or die('query failed');
+
 
 if (mysqli_num_rows($select) === 0) {
     echo '<tr><td colspan="3" style="font-size: 22px; font-weight: 600; text-transform: capitalize;">No Incident Cases with Incomplete Notice</td></tr>';
