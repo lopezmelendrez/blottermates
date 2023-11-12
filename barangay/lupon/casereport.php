@@ -162,7 +162,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['execution_submit'])) 
                     <hr style="border: 1px solid #ccc; margin: 20px 0;">
                 </div>
             <form action="#">
-                <div class="form first">
+                <div class="form first" style="width: 855px;">
                     <div class="details personal">
                         <div class="fields">
                             <div class="input-field-1">
@@ -199,7 +199,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['execution_submit'])) 
                         </div>
                         <div class="buttons" style="margin-top: -2%;">
                             <a href="incident_reports.php" style="text-decoration: none;">
-                            <div class="backBtn-1" style="padding: 12px 12px; width: 600px; border: 1px solid #bc1823; background: #fff; color: #bc1823; margin-left: 315%;">
+                            <div class="backBtn-1" style="padding: 12px 12px; width: 600px; border: 1px solid #bc1823; background: #fff; color: #bc1823; margin-left: 327%;">
                                 <span class="btnText" style="text-align: center;">See All Cases</span>
                             </div></a>
                             

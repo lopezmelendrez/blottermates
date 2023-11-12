@@ -161,6 +161,8 @@ if (mysqli_num_rows($select_hearing) > 0) {
         </table>
 
         
+
+        
         
     </section>
 
@@ -192,21 +194,7 @@ if (mysqli_num_rows($select_hearing) > 0) {
             }
         });
     
-        function loadContent() {
-            // Get the value of the selected option
-            const selectedOption = document.getElementById('transactionTableSelect').value;
-
-            // Perform redirection or load content based on the selected option
-            if (selectedOption === 'ongoing') {
-                window.location.href = 'ongoingcases.php#ongoing';
-            } else if (selectedOption === 'settled') {
-                window.location.href = 'settledcases.php#settled';
-            }
-            else if (selectedOption === 'incomplete') {
-                window.location.href = 'incompletenotices.php#incomplete';
-            }
-        }
-
+       
     </script>
 
     <style>
@@ -334,6 +322,30 @@ if (mysqli_num_rows($select_hearing) > 0) {
     border-radius: 5px;
     text-align: center;
     padding: 3px 3px;
+}
+
+.popup {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        justify-content: center;
+        align-items: center;
+        z-index: 1000;
+    }
+
+    .modal {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 5px;
+    margin-top: 180px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    width: 500px;
+    height: 280px;
+    overflow-y: hidden;
 }
 
     </style>
