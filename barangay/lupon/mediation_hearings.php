@@ -122,10 +122,10 @@ header('location: ../../index.php');
 
         if ($current_time >= $date_of_hearing && $hearing_type_status == "mediation") {
             // Display the "Go to Hearing" link for mediation cases
-            echo '<a href="settlement_page.php?incident_case_number=' . $incident_case_number . '" class="hearing-1" style="text-decoration: none;">Go to Hearing</a>';
+            echo '<a href="settlement_page.php?incident_case_number=' . $incident_case_number . '" class="hearing-1" style="text-decoration: none;">Hearing</a>';
         } else {
             // Display an appropriate text for upcoming mediation hearings
-            echo '<div class="hearing-1">Upcoming Hearing</div>';
+            echo '<div class="upcoming-hearing">Upcoming Hearing</div>';
         }
 
         // Display the "File Court Action" link in either case
@@ -386,6 +386,20 @@ header('location: ../../index.php');
     background: #0956BF;
     color: #F2F3F5;
 }
+
+.upcoming-hearing{
+        background: #2962ff;
+        padding: 4px 4px;
+        color: #fff;
+        text-transform: uppercase;
+        border-radius: 0.2rem;
+        cursor: default;
+        display: block;
+        margin-bottom: 5px;
+        width: 10rem;
+        margin-left: 0;
+        text-decoration: none;
+    }
 
     </style>
 

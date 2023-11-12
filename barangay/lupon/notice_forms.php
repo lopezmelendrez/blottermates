@@ -58,7 +58,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['hearing_submit'])) {
     }
 
     if ($result) {
-        header("Location: incident_reports.php");
+        $incident_case_number = $_POST['incident_case_number'];
+        header("Location: " . $_SERVER['PHP_SELF'] . "?incident_case_number=" . $incident_case_number);
         exit;
     } else {
         echo "Error: " . mysqli_error($conn);
@@ -84,7 +85,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['pangkat_submit'])) {
     }
 
     if ($result) {
-        header("Location: incident_reports.php");
+        $incident_case_number = $_POST['incident_case_number'];
+        header("Location: " . $_SERVER['PHP_SELF'] . "?incident_case_number=" . $incident_case_number);
         exit;
     } else {
         echo "Error: " . mysqli_error($conn);
@@ -112,7 +114,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['notify_complainant_su
     }
 
     if ($result) {
-        header("Location: incident_reports.php");
+        $incident_case_number = $_POST['incident_case_number'];
+        header("Location: " . $_SERVER['PHP_SELF'] . "?incident_case_number=" . $incident_case_number);
         exit;
     } else {
         echo "Error: " . mysqli_error($conn);
@@ -139,7 +142,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['notify_respondent_sub
     }
 
     if ($result) {
-        header("Location: incident_reports.php");
+        $incident_case_number = $_POST['incident_case_number'];
+        header("Location: " . $_SERVER['PHP_SELF'] . "?incident_case_number=" . $incident_case_number);
         exit;
     } else {
         echo "Error: " . mysqli_error($conn);
@@ -166,7 +170,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['notify_pangkat_submit
     }
 
     if ($result) {
-        header("Location: incident_reports.php");
+        $incident_case_number = $_POST['incident_case_number'];
+        header("Location: " . $_SERVER['PHP_SELF'] . "?incident_case_number=" . $incident_case_number);
         exit;
     } else {
         echo "Error: " . mysqli_error($conn);
@@ -450,6 +455,7 @@ if ($check_result && mysqli_num_rows($check_result) > 0) {
     }
 }
 ?>
+
 </td>
 
 
