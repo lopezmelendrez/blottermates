@@ -117,7 +117,7 @@ while ($row = mysqli_fetch_assoc($result)) {
         $time_of_hearing = $row['time_of_hearing'];
         $formatted_time = date('h:i A', strtotime($time_of_hearing));
         $schedule_status = isset($row['date_of_hearing']) && isset($row['time_of_hearing']) ?
-            date('D, F j, Y - h:i A', strtotime($row['date_of_hearing'] . ' ' . $row['time_of_hearing'])) :
+            date('D, j F, Y - h:i A', strtotime($row['date_of_hearing'] . ' ' . $row['time_of_hearing'])) :
             "NO SCHEDULE YET";
 
         echo '<h3 class="case-no-text" style="font-size: 15px; font-weight: 500; font-style: italic; width: 20%;">' . $row['complainant_last_name'] . ' vs. ' . $row['respondent_last_name'] . '</h3>';
