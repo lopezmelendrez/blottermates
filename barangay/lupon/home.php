@@ -106,6 +106,7 @@ if ($isEndOfMonth) {
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href='https://unpkg.com/boxicons@2.1.1/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="../../node_modules/bootstrap/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="../../css/lupon_home.css">
     <link href="https://cdn.jsdelivr.net/npm/fullcalendar@5.9.0/main.css" rel="stylesheet">
@@ -130,6 +131,63 @@ if ($isEndOfMonth) {
                 <i class='bx bx-download'></i>
                 <p>Generate Monthly Report</p>
             </div>
+
+            <?php
+
+$selectLuponId = mysqli_query($conn, "SELECT pb_id FROM `lupon_accounts` WHERE email_address = '$email'");
+if (!$selectLuponId) {
+    die('Failed to fetch lupon_id: ' . mysqli_error($conn));
+}
+$row = mysqli_fetch_assoc($selectLuponId);
+$pb_id = $row['pb_id'];
+
+$currentTimestamp = date('Y-m-d H:i:s'); // Get the current timestamp in the format 'YYYY-MM-DD H:i:s'
+
+$select = mysqli_query($conn, "
+SELECT execution_notice.incident_case_number AS incident_case_number
+FROM `execution_notice`
+WHERE execution_notice.pb_id = $pb_id
+  AND execution_notice.timestamp >= DATE_SUB('$currentTimestamp', INTERVAL 2 DAY)
+") or die('query failed');
+
+
+$notifications = array();
+while ($row = mysqli_fetch_assoc($select)) {
+    $incident_case_number = $row['incident_case_number'];
+    
+    // Create a link to case_reportPage2.php with the incident_case_number as a parameter
+    $link = 'case_reportPage2.php?incident_case_number=' . $incident_case_number;
+    
+    // Create the notification message with the link
+    $notification = 
+                    'Case <a href="' . $link . '" style="font-size: 11px;">#' . $incident_case_number . '</a> Motion for Execution has been validated.';
+    
+    // Add the notification to the array
+    $notifications[] = $notification;
+}
+
+
+// Display notifications in the HTML structure
+echo '<div class="notification-box" style="cursor: default;">';
+echo '<div class="online" style="display: flex; margin-top: -5px;">';
+echo '<i class="fa-solid fa-bell" style="font-size: 25px;"></i>';
+echo '<p style="margin-top: -2px; margin-left: 10px;">NOTIFICATIONS</p>';
+echo '<div class="dropdown">';
+echo '<p id="notificationCount" style="margin-left: 35px; margin-top: -1px; font-weight: 600; font-size: 20px; cursor: pointer;">(' . count($notifications) . ')</p>';
+// Check if there are notifications before displaying the dropdown content
+if (!empty($notifications)) {
+    echo '<div class="dropdown-content" style="max-height: 500px; overflow-y: auto">';
+    foreach ($notifications as $notification) {
+        echo '<p style="font-size: 12.5px; color: #3d3d3d;">' . $notification . '</p>';
+    }
+    echo '</div>';
+}
+echo '</div>';
+
+echo '</div>';
+echo '</div>';
+?>
+
             
         </div>
 
@@ -456,6 +514,58 @@ table th{
     transition: .5s linear;
     letter-spacing: 1;
 }
+
+.notification-box {
+            width: 290px;
+            height: 45px;
+            padding: 12px 12px;
+            background: #fff;
+            border: 2px solid #Fada5f;
+            border-radius: 5px;
+            text-align: center;
+            margin: 10px;
+            position: fixed;
+            right: -10px;
+            top: -10px;
+        }
+        
+        .notification-box p, .notification-box i{
+            font-size: 22px;
+            color: #F5be1d;
+            font-weight: 600;
+            text-transform: uppercase;            
+        }
+
+        .dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+/* Dropdown content (hidden by default) */
+.dropdown-content {
+  display: none;
+  position: absolute;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+}
+
+/* Show the dropdown content when hovering over the dropdown container */
+.dropdown:hover .dropdown-content {
+  display: block;
+  width: 290px;
+            height: 115px;
+            padding: 12px 12px;
+            background: #fff;
+            border: 2px solid #Fada5f;
+            border-top: 2px solid white;
+            border-radius: 5px;
+            text-align: center;
+            margin: 10px;
+            position: fixed;
+            right: -10px;
+            top: 28px;
+}
+
     
 
 

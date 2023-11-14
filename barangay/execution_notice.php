@@ -18,13 +18,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit'])) {
     $incident_case_number = $_POST['incident_case_number'];
     
 
-    $insert_query = "INSERT INTO `execution_notice` (`execution_date`, `compliance_status`, `remarks`, `incident_case_number`)
-                     VALUES ('$execution_date', '$compliance_status', '$remarks', '$incident_case_number')";
+    $insert_query = "INSERT INTO `execution_notice` (`pb_id`, `execution_date`, `compliance_status`, `remarks`, `incident_case_number`)
+                 VALUES ('$pb_id', '$execution_date', '$compliance_status', '$remarks', '$incident_case_number')";
+
 
     $result = mysqli_query($conn, $insert_query);
     if ($result) {
         // Data inserted successfully, redirect to a success page or perform other actions
-        header("Location: kpform.php");
+        header("Location: incident_reports.php");
         exit;
     } else {
         // Error occurred while inserting data, handle the error or redirect to an error page
@@ -89,7 +90,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit'])) {
                     <li class="nav-link">
                         <a href="home.php">
                             <i class='bx bx-home-alt icon' ></i>
-                            <span class="text nav-text">Dashboard</span>
+                            <span class="text nav-text">Home</span>
                         </a>
                     </li>
 
@@ -101,9 +102,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit'])) {
                     </li>
 
                     <li class="nav-link">
-                        <a href="#">
+                        <a href="incident_reports.php">
                             <i class='bx bx-receipt icon' ></i>
-                            <span class="text nav-text"></span>
+                            <span class="text nav-text">Incident Reports</span>
                         </a>
                     </li>
 
@@ -111,23 +112,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit'])) {
 
             <div class="bottom-content">
                 <li class="">
+                <a href="my_account.php">
+                <i class="fa-solid fa-users-line icon"></i>
+                        <span class="text nav-text">Manage Accounts</span>
+                    </a>
+                </li>
+
+           
+                <li class="">
                     <a href="../logout.php">
                         <i class='bx bx-log-out icon' ></i>
                         <span class="text nav-text">Logout</span>
                     </a>
                 </li>
 
-                <li class="mode">
-                    <div class="sun-moon">
-                        <i class='bx bx-moon icon moon'></i>
-                        <i class='bx bx-sun icon sun'></i>
-                    </div>
-                    <span class="mode-text text">Dark mode</span>
-
-                    <div class="toggle-switch">
-                        <span class="switch"></span>
-                    </div>
-                </li>
+                
                 
             </div>
         </div>
@@ -137,7 +136,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit'])) {
     <section class="home" style="margin-left: -0.3%;">
         
     <center>
-            <div class="add-account-container" style="height: 485px; width: 800px; margin-top: 7%;">
+            <div class="add-account-container" style="height: 485px; width: 800px; margin-top: 5%; margin-left: 3%;">
             <?php
             $incident_case_number = $_GET['incident_case_number'];
             $select = mysqli_query($conn, "SELECT * FROM `incident_report` WHERE incident_case_number = '$incident_case_number'") or die('query failed');
@@ -145,29 +144,29 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit'])) {
             ?>
                 <div class="header-text" style="font-size: 25px;">AGREEMENT OF EXECUTION FOR CASE #<?php echo $incident_case_number ?></div>
                 
-                <form action="" method="post" style="height: 380px;">
+                <form action="" method="post" style="height: 380px; width: 750px;">
                     <div class="fields">
                     <input type="hidden" name="incident_case_number" value="<?php echo $incident_case_number; ?>">
                         <div class="input-field-1">
-                            <label>Date of Agreement Execution</label>
+                            <label class="required-label">Date of Agreement Execution</label>
                             <input type="text" name="execution_date" id="datepicker" placeholder="" required readonly>
                         </div>
                         <div class="input-field-1">
-                            <label>Compliance Status</label>
+                            <label class="required-label">Compliance Status</label>
                             <select name="compliance status">
                                 <option>COMPLIANCE</option>
                                 <option>NON-COMPLIANCE</option>
                             </select>
                         </div>
                         <div class="input-field" style="width: 100%;">
-                            <label>Remarks</label>
+                            <label class="required-label">Remarks</label>
                             <textarea style="width: 100%; height: 150px; padding: 10px 15px; border: 1px solid #aaa; outline: none; font-size: 14px; border-radius: 5px; font-weight: 400; margin-top: 8px; resize: vertical;" name="remarks" required></textarea>
                         </div>    
                                 
                         
                     <div class="input-group1 d-flex" style="margin-top: 4%;">
-                        <a href="home.php" style="text-decoration: none;"><input type="button" value="Back" class="btn btn-secondary back-btn" style="width: 15%; margin-left: 450px;" onclick="history.back()"></a>
-                        <input type="submit" name="submit" value="Execute Agreement" class="btn btn-danger" style="width: 25%; margin-left: 10px;">
+                        <a href="home.php" style="text-decoration: none;"><input type="button" value="Back" class="btn btn-secondary back-btn" style="width: 15%; margin-left: 460px;" onclick="history.back()"></a>
+                        <input type="submit" name="submit" value="Execute Agreement" class="btn btn-danger" style="width: 25%; margin-left: 25px;">
                     </div>
 
 
@@ -204,17 +203,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit'])) {
         searchBtn.addEventListener("click" , () =>{
             sidebar.classList.remove("close");
         })
-
-        modeSwitch.addEventListener("click" , () =>{
-            body.classList.toggle("dark");
-            
-            if(body.classList.contains("dark")){
-                modeText.innerText = "Light mode";
-            }else{
-                modeText.innerText = "Dark mode";
-                
-            }
-        });
 
         const incidentDateInput = document.querySelector('input[name="execution_date"]');
 
@@ -333,6 +321,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit'])) {
         background: #2962ff;
         color: #fff;
         transition: .5s;
+    }
+
+    .required-label::after{
+    content: '*';
+    color: red;
+    margin-left: 5px;
     }
 
     </style>

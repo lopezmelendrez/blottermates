@@ -63,9 +63,9 @@ header('location: ../index.php');
                 </li>
 
                     <li class="nav-link">
-                        <a href="#">
+                        <a href="home.php">
                             <i class='bx bx-home-alt icon' ></i>
-                            <span class="text nav-text">Dashboard</span>
+                            <span class="text nav-text">Home</span>
                         </a>
                     </li>
 
@@ -77,9 +77,9 @@ header('location: ../index.php');
                     </li>
 
                     <li class="nav-link">
-                        <a href="#">
+                        <a href="incident_reports.php">
                             <i class='bx bx-receipt icon' ></i>
-                            <span class="text nav-text"></span>
+                            <span class="text nav-text">Incident Reports</span>
                         </a>
                     </li>
 
@@ -87,23 +87,21 @@ header('location: ../index.php');
 
             <div class="bottom-content">
                 <li class="">
+                <a href="my_account.php">
+                <i class="fa-solid fa-users-line icon"></i>
+                        <span class="text nav-text">Manage Accounts</span>
+                    </a>
+                </li>
+
+           
+                <li class="">
                     <a href="../logout.php">
                         <i class='bx bx-log-out icon' ></i>
                         <span class="text nav-text">Logout</span>
                     </a>
                 </li>
 
-                <li class="mode">
-                    <div class="sun-moon">
-                        <i class='bx bx-moon icon moon'></i>
-                        <i class='bx bx-sun icon sun'></i>
-                    </div>
-                    <span class="mode-text text">Dark mode</span>
-
-                    <div class="toggle-switch">
-                        <span class="switch"></span>
-                    </div>
-                </li>
+                
                 
             </div>
         </div>
@@ -351,16 +349,7 @@ include 'activity_log.php';
             sidebar.classList.remove("close");
         })
 
-        modeSwitch.addEventListener("click" , () =>{
-            body.classList.toggle("dark");
-            
-            if(body.classList.contains("dark")){
-                modeText.innerText = "Light mode";
-            }else{
-                modeText.innerText = "Dark mode";
-                
-            }
-        });
+       
 
         const timeElement = document.querySelector(".time");
         const dateElement = document.querySelector(".date");
