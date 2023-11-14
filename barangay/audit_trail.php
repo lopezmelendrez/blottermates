@@ -242,9 +242,9 @@ if ($result && mysqli_num_rows($result) > 0) {
     </style>
 </head>
 <body>
-    <div class="container">
+    <div class="container" style="margin-top: 0.5%;">
 
-    <div class="activity-history">';
+    <div class="activity-history" style="width: 880px;">';
 
     while ($row = mysqli_fetch_assoc($result)) {
         $formattedTimestamp = date('d M Y', strtotime($row['formatted_timestamp']));

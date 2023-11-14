@@ -96,23 +96,23 @@ if (isset($_POST['submit'])) {
                 </li>
 
                     <li class="nav-link">
-                        <a href="#">
+                        <a href="home.php">
                             <i class='bx bx-home-alt icon' ></i>
-                            <span class="text nav-text">Dashboard</span>
+                            <span class="text nav-text">Home</span>
                         </a>
                     </li>
 
                     <li class="nav-link">
-                        <a href="#">
+                        <a href="activity_history.php">
                             <i class='bx bx-history icon'></i>
                             <span class="text nav-text">Activity History</span>
                         </a>
                     </li>
 
                     <li class="nav-link">
-                        <a href="#">
+                        <a href="incident_reports.php">
                             <i class='bx bx-receipt icon' ></i>
-                            <span class="text nav-text"></span>
+                            <span class="text nav-text">Incident Reports</span>
                         </a>
                     </li>
 
@@ -120,23 +120,21 @@ if (isset($_POST['submit'])) {
 
             <div class="bottom-content">
                 <li class="">
+                <a href="manage_accounts.php">
+                <i class="fa-solid fa-users-line icon"></i>
+                        <span class="text nav-text">Manage Accounts</span>
+                    </a>
+                </li>
+
+           
+                <li class="">
                     <a href="../logout.php">
                         <i class='bx bx-log-out icon' ></i>
                         <span class="text nav-text">Logout</span>
                     </a>
                 </li>
 
-                <li class="mode">
-                    <div class="sun-moon">
-                        <i class='bx bx-moon icon moon'></i>
-                        <i class='bx bx-sun icon sun'></i>
-                    </div>
-                    <span class="mode-text text">Dark mode</span>
-
-                    <div class="toggle-switch">
-                        <span class="switch"></span>
-                    </div>
-                </li>
+                
                 
             </div>
         </div>

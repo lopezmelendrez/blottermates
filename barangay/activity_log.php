@@ -217,6 +217,7 @@ if ($result && mysqli_num_rows($result) > 0) {
         $formattedTimestamp = date('M, d, Y - h:i A', strtotime($row['formatted_timestamp']));
         echo '<div style="color: gray; font-style: italic; font-size: 11px;">• ' . $formattedTimestamp . '</div>';
         echo '</div>';
+        echo '<hr style="border: 1px solid #bfbfbf; margin: 5px 0; width: 100%; margin-top: 2%;">';
     }
 } else {
     echo 'No recent activity found.';

@@ -87,7 +87,7 @@ header('location: ../index.php');
 
             <div class="bottom-content">
                 <li class="">
-                <a href="my_account.php">
+                <a href="manage_accounts.php">
                 <i class="fa-solid fa-users-line icon"></i>
                         <span class="text nav-text">Manage Accounts</span>
                     </a>
@@ -110,13 +110,13 @@ header('location: ../index.php');
 
     <section class="home" style="margin-left: -0.3%; margin-top: 3%;">
         
-        <div class="datetime-container" style="display: flex; margin-top: -1.5%;">
-            <div class="datetime mb-3" style="margin-top: 0; margin-left: 3%;">
+        <div class="datetime-container" style="display: flex; margin-top: -4.5%;">
+        <div class="datetime mb-3" style="width: 26rem;">
                 <div class="time" id="time"></div>
-                <div class="date" style="font-size: 23px;"></div>
+                <div class="date" style="font-size: 24px; width: 24rem;"></div>
             </div>
 
-            <a href="add_lupon_account.php" style="text-decoration: none; margin-left: 1%;"><div class="add-account" style="display: flex; margin-top: 35px;">
+            <a href="add_lupon_account.php" style="text-decoration: none; margin-left: 1%;"><div class="add-account" style="display: flex; margin-top: 73px;">
                 <i class='bx bx-folder-plus'></i>
                 <p>Register Lupon Account</p>
             </div></a>
@@ -254,8 +254,8 @@ header('location: ../index.php');
 
 
         <div class="table-container"  style="max-height: 310px; overflow-y: hidden; margin-top: -6%;">
-        <hr style="border: 1px solid #949494; margin: 5px 0; width: 100%; margin-top: 5%;">
-        <table class="incident-table" style="width: 530px;">
+        <hr style="border: 1px solid #949494; margin: 5px 0; width: 95%; margin-top: 5%;">
+        <table class="incident-table" style="width: 530px; margin-top: 10px;">
             <thead>
                 <tr>
                     <th>Case No</th>
@@ -313,18 +313,20 @@ header('location: ../index.php');
     <div class="head-text">
         <p class="incident-case">Recent Activity Log</p>
 
-        <div class="table-container" style="max-height: 283px; overflow-y: hidden; margin-top: -6%;">
-            <hr style="border: 1px solid #949494; margin: 5px 0; width: 100%; margin-top: 5%;">
+        <div class="table-container" style="max-height: 240px; overflow-y: hidden; margin-top: -6%;">
+            <hr style="border: 1px solid #949494; margin: 5px 0; width: 100%; margin-top: 3%;">
             <table class="incident-table" style="width: 530px;">
                 <tbody>
-                <?php
-include 'activity_log.php';
-?>
+                                    <?php
+                    include 'activity_log.php';
+                    ?>
 
 
                 </tbody>
             </table>
         </div>
+        <a href="activity_history.php" style="text-decoration: none;">
+        <span class="seeall">See All</span></a>
     </div>
 </div>
 
@@ -532,6 +534,30 @@ include 'activity_log.php';
     .summon-record:hover{
         background: #2962ff;
         color: #fff;
+        transition: .5s;
+    }
+
+    .seeall{
+        font-size: 16px;
+        background: #fff;
+        padding: 4px 4px;
+        color: #363636;
+        border: 1px solid #363636;
+        text-transform: uppercase;
+        border-radius: 0.2rem;
+        cursor: pointer;
+        display: block;
+        width: 8rem;
+        margin-left: 77%;
+        text-align: center;
+        text-decoration: none;
+        margin-top: 2%;
+    }
+
+    .seeall:hover{
+        background: #363636;
+        color: #fff;
+        border: 1px solid #fff;
         transition: .5s;
     }
 

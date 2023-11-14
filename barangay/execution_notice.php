@@ -112,7 +112,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit'])) {
 
             <div class="bottom-content">
                 <li class="">
-                <a href="my_account.php">
+                <a href="manage_accounts.php">
                 <i class="fa-solid fa-users-line icon"></i>
                         <span class="text nav-text">Manage Accounts</span>
                     </a>
