@@ -8,7 +8,6 @@ $email = $_SESSION['email_address'];
 
 if (isset($_POST['submit'])) {
 
-    // Sanitize and validate user input
     $first_name = mysqli_real_escape_string($conn, $_POST["first_name"]);
     $last_name = mysqli_real_escape_string($conn, $_POST["last_name"]);
     $email_address = mysqli_real_escape_string($conn, $_POST["email_address"]);
@@ -16,7 +15,6 @@ if (isset($_POST['submit'])) {
     $password = mysqli_real_escape_string($conn, $_POST["password"]);
     $confirmPassword = mysqli_real_escape_string($conn, $_POST["confirmPassword"]);
 
-    // Check if the old password is correct
     $check_password_query = "SELECT password FROM lupon_accounts WHERE email_address = '$email'";
     $result = $conn->query($check_password_query);
 
@@ -25,16 +23,11 @@ if (isset($_POST['submit'])) {
         $old_password_hash = $row['password'];
 
         if (password_verify($old_password, $old_password_hash)) {
-            // Old password is correct, proceed with the update
 
-            // Check if a new password is provided
             if (!empty($password) && !empty($confirmPassword)) {
-                // Check if passwords match
                 if ($password != $confirmPassword) {
-                    // Handle password mismatch error
-                    echo "<p style='font-size: 30px; margin-left: 50%;'>Passwords do not Match.</p>";
+                    $error = "New and Confirm Password do not Match";
                 } else {
-                    // Hash the new password for security
                     $hashed_password = password_hash($password, PASSWORD_DEFAULT);
                     // Include the new password in the update query
                     $update_query = "UPDATE lupon_accounts SET 
@@ -52,23 +45,19 @@ if (isset($_POST['submit'])) {
                     email_address = '$email_address'
                     WHERE email_address = '$email'";
             }
-
+    
             // Execute the update query
-            if ($conn->query($update_query) === TRUE) {
+            if (!empty($update_query) && $conn->query($update_query) === TRUE) {
                 // Redirect to the manage_accounts.php page after a successful update
-                header("Location: my_profile.php");
+                header("Location: my_account.php");
                 exit();
             } else {
-                echo "Error: " . $update_query . "<br>" . $conn->error;
             }
         } else {
-            // Old password is incorrect, display an error message
-            echo "<p style='font-size: 30px; margin-left: 50%;'>Incorrect old password.</p>";
+            $msg_error = "Old Password is Incorrect";
         }
     }
 
-    // Close the database connection
-    $conn->close();
 }
 
 ?>
@@ -181,7 +170,7 @@ if (isset($_POST['submit'])) {
 
             <center>
             <div class="add-account-container" style="height: 600px; width: 800px; margin-top: 2px;">
-                <div class="header-text">Add Lupon Account</div>
+                <div class="header-text">MY ACCOUNT</div>
 
                 <?php
              $select = mysqli_query($conn, "SELECT * FROM `lupon_accounts` WHERE email_address = '$email'") or die('query failed');
@@ -191,24 +180,32 @@ if (isset($_POST['submit'])) {
              
             ?>
                 
-                <form action="" method="post" style="height: 490px;">
+                <form action="" method="post" style="height: 490px; width: 750px;">
                     <div class="fields">
                         <div class="input-field-1">
                             <label>First Name</label>
-                            <input type="text" name="first_name" value="<?php echo $fetch['first_name']; ?>" required>
+                            <input type="text" name="first_name" value="<?php echo $fetch['first_name']; ?>">
                         </div>
                         <div class="input-field-1">
                             <label>Last Name</label>
-                            <input type="text" name="last_name" value=<?php echo $fetch['last_name']; ?> required>
+                            <input type="text" name="last_name" value="<?php echo $fetch['last_name']; ?>">
                         </div>
                         <div class="input-field-1">
                             <label>Email Address</label>
-                            <input type="text" name="email_address" value="<?php echo $fetch['email_address']; ?>" required>
+                            <input type="text" name="email_address" value="<?php echo $fetch['email_address']; ?>">
                         </div>
                         <div class="input-field-1">
-                            <label>Old Password</label>
+                            <label class="required-label">Old Password</label>
                             <input type="password" name="old_password" placeholder="" required>
                         </div>
+
+                        <?php if (isset($msg_error) && !empty($msg_error)) { ?>
+                            <div class="message d-flex" style="background: #F5E2D1; border: none; border-radius: 5px; width: 50%; margin-top: -1%; padding: 2px 2px; margin-left: 380px;">
+                                <i class="fa-solid fa-circle-exclamation" style="margin-left: 3%; margin-top: 1%; font-size: 20px; color: #D52826;"></i>
+                                <span style="margin-left: 5%; font-size: 15.5px; color: #D52826; font-weight: 600; margin-top: 1%;"><?php echo $msg_error; ?></span>
+                                <i class="fas fa-times" style="margin-left: 21%; margin-top: 0.5%; color: #D52826; font-size: 24px;" onclick="this.parentElement.remove();"></i>
+                            </div>
+                        <?php } ?>
 
                        
                             <div class="input-field-1" style="width: 100%;">
@@ -234,18 +231,23 @@ if (isset($_POST['submit'])) {
                             <input type="password" name="confirmPassword" placeholder="">
                         </div>
 
+                        <?php if (isset($error) && !empty($error)) { ?>
+        <div class="message d-flex" style="background: #F5E2D1; border: none; border-radius: 5px; width: 100%; margin-top: -1%; padding: 2px 2px; margin-left: 0;">
+            <i class="fa-solid fa-circle-exclamation" style="margin-left: 3%; margin-top: 0.6%; font-size: 20px; color: #D52826;"></i>
+            <span style="margin-left: 2%; font-size: 16px; color: #D52826; font-weight: 600; margin-top: 0.5%;"><?php echo $error; ?></span>
+            <i class="fas fa-times" style="margin-left: 42%; margin-top: 0.4%; color: #D52826; font-size: 24px;" onclick="this.parentElement.remove();"></i>
+        </div>
+    <?php } ?>
+
                     </div>
                 
-                    <!--<div class="signature-container" id="openModalBtn">
-                        Place Signature Here
-                    </div>-->
                     <div class="input-field" style="margin-top: -23px;">
                     <div id="copyMessage" class="clipboard" style="display: none; margin-top: 5px;">Copied to Clipboard!</div>
                     </div>
 
-                    <div class="input-group1 d-flex" style="margin-top: 8%;">
-                        <input type="button" value="Back" class="btn btn-secondary back-btn" style="width: 10%; margin-left: 470px;" onclick="history.back()">
-                        <input type="button" id="openModalBtn" value="Update Account" class="btn btn-danger" style="width: 25%; margin-left: 10px;">
+                    <div class="input-group1 d-flex" style="margin-top: 7%;">
+                        <input type="button" value="Back" class="btn btn-secondary back-btn" style="width: 10%; margin-left: 430px; font-size: 20px;" onclick="history.back()">
+                        <input type="button" id="openModalBtn" value="Update Account" class="btn btn-danger" style="width: 30%; margin-left: 10px; font-size: 20px;">
                     </div>
 
                     
@@ -305,7 +307,18 @@ const signaturePad = new SignaturePad(signatureCanvas);
 
 // Open the modal when the button is clicked
 openModalBtn.addEventListener("click", () => {
-    modal.style.display = "block";
+    // Check if the old password field is not empty
+    const oldPasswordInput = document.querySelector("input[name='old_password']");
+    const passwordInput = document.querySelector("input[name='password']");
+    const confirmPasswordInput = document.querySelector("input[name='confirmPassword']");
+
+    if (oldPasswordInput.value.trim() === "") {
+        // Display the alert message for empty old password
+        alert("Please enter your old password.");
+    } else {
+        // Open the modal if the old password is not empty and passwords match
+        modal.style.display = "block";
+    }
 });
 
 // Close the modal when the close button is clicked
@@ -452,13 +465,19 @@ document.querySelector(".pw-meter .pw-display-toggle-btn").addEventListener("cli
     width: calc(100% - 78px);
     background-color: var(--body-color);
     transition: var(--tran-05);
-}
+    }
 
-.sidebar.close ~ .home{
-    left: 78px;
-    height: 100vh;
-    width: calc(100% - 78px);
-}
+    .sidebar.close ~ .home{
+        left: 78px;
+        height: 100vh;
+        width: calc(100% - 78px);
+    }
+
+    .required-label::after{
+    content: '*';
+    color: red;
+    margin-left: 5px;
+    }
 
 
 </style>

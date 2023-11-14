@@ -143,7 +143,7 @@ if (isset($_POST['submit'])) {
 
             <div class="bottom-content">
                 <li class="">
-                <a href="my_profile.php">
+                <a href="my_account.php">
                         <i class='bx bx-user-circle icon' ></i>
                         <span class="text nav-text">My Account</span>
                     </a>
