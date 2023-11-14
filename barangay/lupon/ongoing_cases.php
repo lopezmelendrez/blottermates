@@ -73,11 +73,15 @@ header('location: ../../index.php');
                         $select = mysqli_query($conn, "SELECT ir.incident_case_number, ir.complainant_last_name, ir.respondent_last_name, ir.description_of_violation, ir.incident_date, ir.submitter_first_name, ir.submitter_last_name, ir.created_at 
                             FROM `incident_report` AS ir
                             INNER JOIN `hearing` AS h ON ir.incident_case_number = h.incident_case_number
-                            WHERE h.date_of_hearing IS NOT NULL AND h.time_of_hearing IS NOT NULL
+                            LEFT JOIN `court_action` AS ca ON ir.incident_case_number = ca.incident_case_number
+                            WHERE h.date_of_hearing IS NOT NULL 
+                            AND h.time_of_hearing IS NOT NULL
                             AND ir.pb_id = $pb_id
                             AND NOT EXISTS (SELECT 1 FROM `amicable_settlement` AS amicable WHERE h.hearing_id = amicable.hearing_id)
+                            AND ca.incident_case_number IS NULL -- Change 'some_column' to an actual column in court_action
                             ORDER BY ir.created_at DESC")
                             or die('query failed');
+
 
                         $num_rows = mysqli_num_rows($select);
 

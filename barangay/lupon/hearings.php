@@ -24,16 +24,22 @@ if(isset($_POST['submit_search'])){
                      h.date_of_hearing, h.time_of_hearing, h.hearing_type_status
               FROM incident_report i
               LEFT JOIN hearing h ON i.incident_case_number = h.incident_case_number
-              WHERE i.pb_id = $pb_id AND i.incident_case_number LIKE '%$search_case%'
+              LEFT JOIN court_action ca ON i.incident_case_number = ca.incident_case_number
+              WHERE i.pb_id = $pb_id 
+                    AND i.incident_case_number LIKE '%$search_case%'
+                    AND ca.incident_case_number IS NULL
               ORDER BY i.created_at DESC";
 } else {
     $query = "SELECT i.*, h.incident_case_number AS hearing_incident_case_number,
                      h.date_of_hearing, h.time_of_hearing, h.hearing_type_status
               FROM incident_report i
               LEFT JOIN hearing h ON i.incident_case_number = h.incident_case_number
+              LEFT JOIN court_action ca ON i.incident_case_number = ca.incident_case_number
               WHERE i.pb_id = $pb_id
+                    AND ca.incident_case_number IS NULL
               ORDER BY i.created_at DESC";
 }
+
 
 $result = mysqli_query($conn, $query);
 

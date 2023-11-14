@@ -24,7 +24,11 @@ $selectHearing = mysqli_query($conn, "
 SELECT hearing.date_of_hearing, hearing.time_of_hearing, hearing.incident_case_number
 FROM `hearing`
 LEFT JOIN `incident_report` ON hearing.incident_case_number = incident_report.incident_case_number
+LEFT JOIN `amicable_settlement` ON hearing.incident_case_number = amicable_settlement.incident_case_number
+LEFT JOIN `court_action` ON hearing.incident_case_number = court_action.incident_case_number
 WHERE incident_report.pb_id = $pb_id
+AND court_action.incident_case_number IS NULL
+AND amicable_settlement.incident_case_number IS NULL
 ") or die('query failed');
 
 $events = [];
@@ -170,11 +174,14 @@ FROM `incident_report`
 LEFT JOIN `notify_residents` ON incident_report.incident_case_number = notify_residents.incident_case_number
 LEFT JOIN `amicable_settlement` ON incident_report.incident_case_number = amicable_settlement.incident_case_number
 LEFT JOIN `hearing` ON incident_report.incident_case_number = hearing.incident_case_number
+LEFT JOIN `court_action` ON incident_report.incident_case_number = court_action.incident_case_number
 WHERE (generate_summon = 'not generated' OR generate_hearing = 'not generated' OR generate_pangkat = 'not generated' OR generate_summon IS NULL OR generate_hearing IS NULL OR generate_pangkat IS NULL)
 AND amicable_settlement.incident_case_number IS NULL
 AND hearing.incident_case_number IS NOT NULL
+AND court_action.incident_case_number IS NULL
 AND incident_report.pb_id = $pb_id
 ") or die('query failed');
+
 
 
 if (mysqli_num_rows($select) === 0) {

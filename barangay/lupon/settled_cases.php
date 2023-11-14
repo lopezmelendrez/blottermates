@@ -60,7 +60,6 @@ header('location: ../../index.php');
                     <th>Date of Agreement</th>
                     <th>Date of Execution</th>
                     <th>Agreement</th>
-<!--                        <th class="agreement-status">Agreement Status</th>-->
                     <th>Status of Compliance</th>
                     <th>Action</th>
                 </tr>
@@ -74,13 +73,34 @@ if (!$selectLuponId) {
 $row = mysqli_fetch_assoc($selectLuponId);
 $pb_id = $row['pb_id'];
 
-$select = mysqli_query($conn, "SELECT ir.incident_case_number, ir.complainant_last_name, ir.respondent_last_name, ir.description_of_violation, ir.incident_case_type, ir.incident_date, ir.submitter_first_name, ir.submitter_last_name, ir.created_at, amicable_settlement.date_agreed, amicable_settlement.agreement_description
-FROM `incident_report` AS ir
-INNER JOIN `hearing` AS h ON ir.incident_case_number = h.incident_case_number
-LEFT JOIN `amicable_settlement` AS amicable_settlement ON h.hearing_id = amicable_settlement.hearing_id
-WHERE h.date_of_hearing IS NOT NULL AND h.time_of_hearing IS NOT NULL AND amicable_settlement.agreement_description IS NOT NULL AND ir.pb_id = $pb_id
-ORDER BY ir.created_at DESC")
-or die('query failed');
+$select = mysqli_query($conn, "
+    SELECT 
+        ir.incident_case_number, 
+        ir.complainant_last_name, 
+        ir.respondent_last_name, 
+        ir.description_of_violation, 
+        ir.incident_case_type, 
+        ir.incident_date, 
+        ir.submitter_first_name, 
+        ir.submitter_last_name, 
+        ir.created_at, 
+        amicable_settlement.date_agreed, 
+        amicable_settlement.agreement_description,
+        court_action.lupon_signature
+    FROM `incident_report` AS ir
+    INNER JOIN `hearing` AS h ON ir.incident_case_number = h.incident_case_number
+    LEFT JOIN `amicable_settlement` AS amicable_settlement ON h.hearing_id = amicable_settlement.hearing_id
+    LEFT JOIN `court_action` AS court_action ON h.hearing_id = court_action.hearing_id  -- Left join with court_action
+    WHERE h.date_of_hearing IS NOT NULL 
+        AND h.time_of_hearing IS NOT NULL 
+        AND (
+            amicable_settlement.agreement_description IS NOT NULL 
+            OR court_action.lupon_signature IS NOT NULL
+        ) 
+        AND ir.pb_id = $pb_id
+    ORDER BY ir.created_at DESC
+") or die('query failed');
+
 $num_rows = mysqli_num_rows($select);
 
 if ($num_rows === 0) {
@@ -112,6 +132,9 @@ if (mysqli_num_rows($select_hearing) > 0) {
         echo '<p class="conciliation">Conciliation</p>';
     } elseif ($hearing_type_status === 'arbitration') {
         echo '<p class="arbitration">Arbitration</p>';
+    }
+    elseif ($hearing_type_status === 'filed to court action') {
+        echo '<p class="court" style="width: 120px;">Filed to Court Action</p>';
     } else {
         // Handle the case when hearing_type_status is not one of the specified values
         // You may choose to display a default message or handle the error accordingly.
@@ -120,11 +143,17 @@ if (mysqli_num_rows($select_hearing) > 0) {
 }
 ?>
             </td>
-            <td><?php echo date("F j, Y", strtotime($fetch_cases['date_agreed'])); ?></td>
+            <td><?php echo ($hearing_type_status === 'filed to court action') ? '-' : date("F j, Y", strtotime($fetch_cases['date_agreed'])); ?></td>
             <td>-</td>
-            <td><?php echo $fetch_cases['agreement_description']; ?></td>
+            <td><?php echo ($hearing_type_status === 'filed to court action') ? '-' : $fetch_cases['agreement_description']; ?></td>
             <td>-</td>
-            <td><a href="case_report.php?incident_case_number=<?php echo $incident_case_number ?>" class="shownotices" style="width: 100%; padding: 4px 15px;">Details</a></td>
+            <td>
+            <?php if ($hearing_type_status === 'filed to court action'): ?>
+        <a href="casereport.php?incident_case_number=<?php echo $incident_case_number ?>" class="shownotices" style="width: 100%; padding: 4px 15px;">Details</a>
+    <?php else: ?>
+        <a href="case_report.php?incident_case_number=<?php echo $incident_case_number ?>" class="shownotices" style="width: 100%; padding: 4px 15px;">Details</a>
+    <?php endif; ?>
+            </td>
     </tr>
 <?php
     }
@@ -234,6 +263,16 @@ if (mysqli_num_rows($select_hearing) > 0) {
     .conciliation {
         border-radius: 0.2rem;
         background-color: #ECD407;
+        color: #fff;
+        padding: 5px 5px;
+        text-align: center;
+        text-transform: uppercase;
+        font-weight: 600;
+    }
+
+    .court {
+        border-radius: 0.2rem;
+        background-color: #bc1823;
         color: #fff;
         padding: 5px 5px;
         text-align: center;
