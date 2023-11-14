@@ -161,7 +161,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['execution_submit'])) 
                     <hr style="border: 1px solid #ccc; margin: 20px 0;">
                 </div>
             <form action="#">
-                <div class="form first">
+                <div class="form first" style="width: 855px;">
                     <div class="details personal">
                         <div class="fields">
                             <div class="input-field-1">
