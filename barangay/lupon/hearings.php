@@ -107,14 +107,6 @@ while ($row = mysqli_fetch_assoc($result)) {
     $count = $row_count['count'];
 
     if ($count == 0) {
-        echo '<div class="container">';
-        echo '<div class="top-text" style="display: flex;">';
-        echo '<h3 class="case-no-text" style="font-size: 20px;">Case No. #' . $row['incident_case_number'] . '</h3>';
-        echo '</div>';
-        echo '<div class="top-text" style="display: flex;">';
-        echo '<h3 class="hearing-text" style="font-size: 15px; margin-top: -2.8%; margin-left: 58%; font-weight: 500;"><b>HEARING TYPE STATUS</b>: For ' . strtoupper($row['hearing_type_status']) . '</h3>';
-        echo '</div>';
-        echo '<div class="top-text" style="display: flex;">';
         $date_of_hearing = $row['date_of_hearing'];
         $formatted_date = date('l, F j, Y', strtotime($date_of_hearing));
         $time_of_hearing = $row['time_of_hearing'];
@@ -123,6 +115,16 @@ while ($row = mysqli_fetch_assoc($result)) {
             date('D, j F, Y - h:i A', strtotime($row['date_of_hearing'] . ' ' . $row['time_of_hearing'])) :
             "NO SCHEDULE YET";
 
+        echo '<div class="container">';
+        echo '<div class="top-text" style="display: flex;">';
+        echo '<h3 class="case-no-text" style="font-size: 20px;">Case No. #' . $row['incident_case_number'] . '</h3>';
+        echo '</div>';
+        if ($schedule_status !== "NO SCHEDULE YET") {
+            echo '<div class="top-text" style="display: flex;">';
+            echo '<h3 class="hearing-text" style="font-size: 15px; margin-top: -2.8%; margin-left: 58%; font-weight: 500;"><b>HEARING TYPE STATUS</b>: For ' . strtoupper($row['hearing_type_status']) . '</h3>';
+            echo '</div>';
+        }        
+        echo '<div class="top-text" style="display: flex;">';
         echo '<h3 class="case-no-text" style="font-size: 15px; font-weight: 500; font-style: italic; width: 20%;">' . $row['complainant_last_name'] . ' vs. ' . $row['respondent_last_name'] . '</h3>';
 
         if ($schedule_status === "NO SCHEDULE YET") {
