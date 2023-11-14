@@ -169,7 +169,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     
 
     <section class="home">
-        <div class="container" style="margin-left: 15%; margin-top: 8%; height: 23rem;">
+        <div class="container" style="margin-left: 15%; margin-top: 8%; height: 29rem;">
         <?php
         $incident_case_number = $_GET['incident_case_number'];
         $select = mysqli_query($conn, "SELECT * FROM `incident_report` WHERE incident_case_number = '$incident_case_number'") or die('query failed');
@@ -192,7 +192,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 <label>Witness</label>
                                 <input type="text" onkeypress="return validateName(event)" placeholder="" value="<?php echo $fetch_cases['witness_last_name'] ? ($fetch_cases['witness_last_name'] . ', ' . $fetch_cases['witness_first_name'] . ' ' . $fetch_cases['witness_middle_name']) : 'NO WITNESS'; ?>" required readonly>
                             </div>-->
-                            <div class="input-field-1" style="width: 43rem;">
+                            <div class="input-field-1" style="width: 54rem;">
                                 <label class="required-label">Amicable Settlement Agreement</label>
                                 <input type="text" style="height: 5rem;" name="agreement_description" placeholder="" required>
                             </div>
@@ -201,7 +201,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             <span class="filecourt-action" onclick="showCourtActionPopup()" style="cursor: pointer;">File Court Action</span>
                         </div>
                         <button class="submit">
-                                <input type="submit" name="submit" value="Create Settlement Agreement" class="btnText" style="font-size: 12px; background: transparent; border: none; font-weight: 600; color: #fff; cursor: pointer;">
+                                <input type="submit" name="submit" value="Create Agreement" class="btnText" style="font-size: 12px; background: transparent; border: none; font-weight: 600; color: #fff; cursor: pointer;">
                         </button>
             </form>
         </div>
@@ -220,6 +220,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <input type="hidden" name="incident_case_number" value="<?php echo $incident_case_number; ?>">
                 <input type="submit" name="court_action_submit" value="CONFIRM" class="backBtn" style="width: 310px; padding: 12px 12px; font-weight: 600; margin-left: -5px;"></button>
                 </form>
+            </div>
+            </div>
+            </center>
+    </div>
+
+    <div id="autoPopup" class="popup-1">
+            <center>
+            <div class="modal" style="width: 600px; height: 270px;">
+            <h3 class="modal-title" style="font-size: 18px; text-align:center;">ARBITRATION HEARING</h3>
+            <hr style="border: 1px solid #ccc; margin: 10px 0;">
+            <p style="font-size: 17px; text-align: center; margin-top: 8%; letter-spacing: 1; text-transform: uppercase;">Would you like to proceed with the creation of the Settlement record, or reschedule the hearing?</p>
+            <div class="button-container" style="display: flex;">
+            <a href="change_schedule.php?incident_case_number=<?php echo $incident_case_number; ?>" style="text-decoration: none;">
+            <button class="backBtn" style="width: 150px; padding: 12px 12px; font-weight: 600; background: #fff; border: 1px solid #bc1823; color: #bc1823; margin-left: 190px; font-size: 19px;">RESCHEDULE</button>
+            </a>    
+            <input type="submit" onclick="closeAutoPopup()" value="PROCEED" class="backBtn" style="width: 310px; padding: 5px 5px; font-weight: 600; margin-left: -5px; font-size: 19px;"></button>
             </div>
             </div>
             </center>
@@ -338,6 +354,11 @@ function validateName(event) {
         popup.style.display = "none";
     }
 
+    function closeAutoPopup() {
+        var popup = document.getElementById("autoPopup");
+        popup.style.display = "none";
+    }
+
 
     
     </script>
@@ -372,6 +393,18 @@ function validateName(event) {
         height: 280px;
         overflow-y: hidden;
     }
+
+    .popup-1 {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
 
     .box{
         outline: none;

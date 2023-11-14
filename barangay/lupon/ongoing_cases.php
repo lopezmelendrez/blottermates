@@ -103,11 +103,11 @@ header('location: ../../index.php');
                             $hearing_type_status = $hearing_data['hearing_type_status'];
 
                             if ($hearing_type_status === 'mediation') {
-                                echo '<p class="mediation">Mediation</p>';
+                                echo '<p class="mediation" style="margin-top: 10%;">Mediation</p>';
                             } elseif ($hearing_type_status === 'conciliation') {
-                                echo '<p class="conciliation">Conciliation</p>';
+                                echo '<p class="conciliation" style="margin-top: 10%;">Conciliation</p>';
                             } elseif ($hearing_type_status === 'arbitration') {
-                                echo '<p class="arbitration">Arbitration</p>';
+                                echo '<p class="arbitration" style="margin-top: 10%;">Arbitration</p>';
                             } else {
                                 echo '<p class="unknown">Unknown</p>';
                             }
@@ -131,11 +131,11 @@ header('location: ../../index.php');
                                 if ($current_time >= $date_of_hearing) {
                                     // Hearing has already occurred, so display the "Hearing" link
                                     if ($hearing_type_status == "mediation") {
-                                        echo '<a href="settlement_page.php?incident_case_number=' . $incident_case_number . '" class="hearing" style="margin-top: -5%;">Hearing</a>';
+                                        echo '<a href="settlement_page.php?incident_case_number=' . $incident_case_number . '" class="hearing" style="margin-top: -5%; width: 10rem;">Hearing</a>';
                                     } elseif ($hearing_type_status == "conciliation") {
-                                        echo '<a href="conciliation_settlement_page.php?incident_case_number=' . $incident_case_number . '" class="hearing" style="margin-top: -5%;">Hearing</a>';
+                                        echo '<a href="conciliation_settlement_page.php?incident_case_number=' . $incident_case_number . '" class="hearing" style="margin-top: -5%; width: 10rem;">Hearing</a>';
                                     } elseif ($hearing_type_status == "arbitration") {
-                                        echo '<a href="arbitration_settlement_page.php?incident_case_number=' . $incident_case_number . '" class="hearing" style="margin-top: -5%;">Hearing</a>';
+                                        echo '<a href="arbitration_settlement_page.php?incident_case_number=' . $incident_case_number . '" class="hearing" style="margin-top: -5%; width: 10rem;">Hearing</a>';
                                     }
                                 } else {
                                     // Hearing is upcoming, display an appropriate text
