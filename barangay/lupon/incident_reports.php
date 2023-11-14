@@ -98,11 +98,9 @@ if (mysqli_num_rows($result) == 0) {
     echo '<div class="text-box">No Incident Cases found</div>';
 } else {
 
-// Loop through the results and display each row in a container
 while ($row = mysqli_fetch_assoc($result)) {
     $incident_case_number = $row['incident_case_number'];
     
-    // Check if the data is found in the amicable_settlement table
     $check_query = "SELECT COUNT(*) as count FROM amicable_settlement WHERE incident_case_number = '$incident_case_number'";
     $check_result = mysqli_query($conn, $check_query);
     $row_count = mysqli_fetch_assoc($check_result);
@@ -122,7 +120,7 @@ while ($row = mysqli_fetch_assoc($result)) {
         echo '</div>';
         if ($schedule_status !== "NO SCHEDULE YET") {
             echo '<div class="top-text" style="display: flex;">';
-            echo '<h3 class="hearing-text" style="font-size: 15px; margin-top: -2.8%; margin-left: 58%; font-weight: 500;"><b>HEARING TYPE STATUS</b>: For ' . strtoupper($row['hearing_type_status']) . '</h3>';
+            echo '<h3 class="hearing-text" style="font-size: 15px; margin-top: -2.8%; margin-left: 58%; font-weight: 500;"><b>Hearing Type Status</b>: ' . strtoupper($row['hearing_type_status']) . '</h3>';
             echo '</div>';
         }
         echo '<div class="top-text" style="display: flex;">';
@@ -135,7 +133,6 @@ while ($row = mysqli_fetch_assoc($result)) {
         }
         echo '</div>';
 
-        // Display the table for incident details even when there is no schedule
         echo '<table>';
         echo '<thead>';
         echo '<tr>';
@@ -149,12 +146,10 @@ while ($row = mysqli_fetch_assoc($result)) {
         echo '<tbody>';
 
         if ($schedule_status === "NO SCHEDULE YET") {
-            // Display "NO HEARING SCHEDULE" inside the table when there is no schedule
             echo '<tr>';
             echo '<td colspan="5" style="text-align: center; font-size: 24px;">NO HEARING SCHEDULE YET</td>';
             echo '</tr>';
         } else {
-            // Display the table rows for incident details when there is a schedule
             echo '<tr>';
             echo '<td>Hearing Notice</td>';
             echo '<td>' . $row['complainant_last_name'] . ' ' . $row['complainant_first_name'] . ' ' . $row['complainant_middle_name'] . '</td>';
@@ -230,7 +225,6 @@ while ($row = mysqli_fetch_assoc($result)) {
             }
             echo '</td>';
             echo '<td>';
-            // Check if the generate_summon_value is empty
             if (empty($generate_summon_value) || $generate_summon_value === 'not generated') {
                 echo '<span class="generate" onclick="showSummonPopup()">Generate KP Form #9</span>';
             } elseif ($notify_summon_value === 'notified') {

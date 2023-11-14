@@ -112,7 +112,7 @@ while ($row = mysqli_fetch_assoc($result)) {
         $time_of_hearing = $row['time_of_hearing'];
         $formatted_time = date('h:i A', strtotime($time_of_hearing));
         $schedule_status = isset($row['date_of_hearing']) && isset($row['time_of_hearing']) ?
-            date('D, j F, Y - h:i A', strtotime($row['date_of_hearing'] . ' ' . $row['time_of_hearing'])) :
+            date('D, j F Y - h:i A', strtotime($row['date_of_hearing'] . ' ' . $row['time_of_hearing'])) :
             "NO SCHEDULE YET";
 
         echo '<div class="container">';
@@ -121,7 +121,7 @@ while ($row = mysqli_fetch_assoc($result)) {
         echo '</div>';
         if ($schedule_status !== "NO SCHEDULE YET") {
             echo '<div class="top-text" style="display: flex;">';
-            echo '<h3 class="hearing-text" style="font-size: 15px; margin-top: -2.8%; margin-left: 58%; font-weight: 500;"><b>HEARING TYPE STATUS</b>: For ' . strtoupper($row['hearing_type_status']) . '</h3>';
+            echo '<h3 class="hearing-text" style="font-size: 15px; margin-top: -2.8%; margin-left: 58%; font-weight: 500;"><b>Hearing Type Status</b>: ' . strtoupper($row['hearing_type_status']) . '</h3>';
             echo '</div>';
         }        
         echo '<div class="top-text" style="display: flex;">';
@@ -153,7 +153,7 @@ while ($row = mysqli_fetch_assoc($result)) {
             echo '<td>' . $row['complainant_last_name'] . ' ' . $row['complainant_first_name'] . ' ' . $row['complainant_middle_name'] . '</td>';
             echo '<td>' . $row['respondent_last_name'] . ' ' . $row['respondent_first_name'] . ' ' . $row['respondent_middle_name'] . '</td>';
             echo '<td>';
-            $check_query = "SELECT nr.generate_pangkat, h.hearing_type_status, aa.incident_case_number
+            $check_query = "SELECT nr.generate_pangkat, nr.generate_summon, nr.generate_hearing, h.hearing_type_status, aa.incident_case_number
                 FROM notify_residents nr
                 LEFT JOIN hearing h ON nr.incident_case_number = h.incident_case_number
                 LEFT JOIN arbitration_agreement aa ON nr.incident_case_number = aa.incident_case_number
@@ -189,24 +189,37 @@ while ($row = mysqli_fetch_assoc($result)) {
                         echo '<span class="to-notify">NEEDS KP FORM #14</span>';
                     }
                 }
+                elseif ($hearing_type_status === 'mediation') {
+                    // Check for KP forms based on generate_summon and generate_hearing status
+                    if (empty($generate_summon) || $generate_summon === 'not generated') {
+                        // Display NEEDS KP FORM #9
+                        echo '<span class="to-notify">NEEDS KP FORM #9</span>';
+                    } elseif (empty($generate_hearing) || $generate_hearing === 'not generated') {
+                        // Display NEEDS KP FORM #8
+                        echo '<span class="to-notify">NEEDS KP FORM #8</span>';
+                    } else {
+                        // Display NEEDS KP FORM #8 AND #9
+                        echo '<span class="to-notify">NEEDS KP FORM #8 AND #9</span>';
+                    }
+                }
             }
 
             echo '</td>';
             echo '<td>';
-            $check_query = "SELECT nr.generate_pangkat, h.hearing_type_status, aa.incident_case_number, h.date_of_hearing
+            $check_query = "SELECT nr.generate_pangkat, nr.generate_summon, nr.generate_hearing, h.hearing_type_status, aa.incident_case_number, h.date_of_hearing
                 FROM notify_residents nr
                 LEFT JOIN hearing h ON nr.incident_case_number = h.incident_case_number
                 LEFT JOIN arbitration_agreement aa ON nr.incident_case_number = aa.incident_case_number
                 WHERE nr.incident_case_number = '" . $row['incident_case_number'] . "'";
             
-$check_result = mysqli_query($conn, $check_query);
+                $check_result = mysqli_query($conn, $check_query);
             
-if ($check_result && mysqli_num_rows($check_result) > 0) {
-    $row_notify = mysqli_fetch_assoc($check_result);
-    $generate_pangkat = $row_notify['generate_pangkat'];
-    $hearing_type_status = $row_notify['hearing_type_status'];
-    $date_of_hearing = strtotime($row_notify['date_of_hearing']);
-    $current_time = time();
+                if ($check_result && mysqli_num_rows($check_result) > 0) {
+                    $row_notify = mysqli_fetch_assoc($check_result);
+                    $generate_pangkat = $row_notify['generate_pangkat'];
+                    $hearing_type_status = $row_notify['hearing_type_status'];
+                    $date_of_hearing = strtotime($row_notify['date_of_hearing']);
+                    $current_time = time();
 
     if ($hearing_type_status === 'conciliation') {
         $check_query = "SELECT generate_pangkat FROM notify_residents WHERE incident_case_number = '" . $row['incident_case_number'] . "'";
@@ -217,14 +230,15 @@ if ($check_result && mysqli_num_rows($check_result) > 0) {
             $generate_pangkat = $row_notify['generate_pangkat'];
 
             if (empty($generate_pangkat) || $generate_pangkat === 'not generated') { // Check for the specific value
-                echo '<a href="notice_forms.php?incident_case_number=' . $row['incident_case_number'] . '" class="shownotices" style="text-decoration: none;">Create Notice Form(s)</a>';
+                echo '<span class="forms" style="text-decoration: none; width: 90%; margin-left: 6%; cursor: default">Create Notice Form(s)</span>';
             } else {
                 if (date('Y-m-d', $current_time) == date('Y-m-d', $date_of_hearing)) {
-                    echo '<a href="conciliation_settlement_page.php?incident_case_number=' . $row['incident_case_number'] . '" class="shownotices" style="text-decoration: none;">Go to Hearing</a>';
+                    echo '<a href="conciliation_settlement_page.php?incident_case_number=' . $row['incident_case_number'] . '" class="shownotices" style="text-decoration: none; width: 90%; margin-left: 6%;">Hearing</a>';
                 } else {
-                    echo '<span class="shownotices" style="text-decoration: none;">Upcoming Hearing</span>';
+                    echo '<span class="forms" style="text-decoration: none; width: 90%; margin-left: 6%; cursor: default;">Upcoming Hearing</span>';
                 }
             }
+            
         }
     } elseif ($hearing_type_status === 'arbitration') {
         $select_arbitration_agreement = mysqli_query($conn, "SELECT 1 FROM arbitration_agreement WHERE incident_case_number = '{$row['incident_case_number']}' LIMIT 1");
@@ -240,7 +254,19 @@ if ($check_result && mysqli_num_rows($check_result) > 0) {
             echo '<a href="arbitration_agreement.php?incident_case_number=' . $row['incident_case_number'] . '" class="shownotices" style="text-decoration: none;">Create Arbitration Agreement</a>';
         }
     }
-    
+    elseif ($hearing_type_status === 'mediation') {
+        // Check if generate_summon or generate_hearing is empty or "not generated"
+        if (empty($generate_summon) || $generate_summon === 'not generated' || empty($generate_hearing) || $generate_hearing === 'not generated') {
+            echo '<span class="forms" style="text-decoration: none; width: 90%; margin-left: 6%; cursor: default">Create Notice Form(s)</span>';
+        } else {
+            // Check if the date is at the time of the hearing schedule
+            if (date('Y-m-d', $current_time) == date('Y-m-d', $date_of_hearing)) {
+                echo '<a href="mediation_settlement_page.php?incident_case_number=' . $row['incident_case_number'] . '" class="shownotices" style="text-decoration: none; width: 90%; margin-left: 6%;">Hearing</a>';
+            } else {
+                echo '<span class="forms" style="text-decoration: none; width: 90%; margin-left: 6%; cursor: default;">Upcoming Hearing</span>';
+            }
+        }
+    }
 }
 
             echo '</td>';
@@ -394,7 +420,7 @@ if ($check_result && mysqli_num_rows($check_result) > 0) {
         color: #bc1823;
         }
 
-        .shownotices{
+        .forms{
         background: #fff;
         padding: 4px 4px;
         color: #2962ff;
