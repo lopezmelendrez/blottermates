@@ -8,7 +8,7 @@ $email = $_SESSION['email_address'];
 
 if (!isset($email)) {
     header('location: ../../index.php');
-    exit; // You should exit after redirecting to prevent further execution
+    exit;
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit'])) {
@@ -17,48 +17,39 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit'])) {
     $incident_case_number = $_POST['incident_case_number'];
     $hearing_type_status = 'mediation';
 
-    // Check if a hearing schedule already exists for the incident case number
     $check_query = "SELECT * FROM `hearing` WHERE incident_case_number = '$incident_case_number'";
     $check_result = mysqli_query($conn, $check_query);
 
     if ($check_result) {
         if (mysqli_num_rows($check_result) > 0) {
-            // Hearing schedule exists, so update it
             $update_query = "UPDATE `hearing` SET `date_of_hearing` = '$date_of_hearing', `time_of_hearing` = '$time_of_hearing', `timestamp` = NOW() WHERE incident_case_number = '$incident_case_number'";
             $result = mysqli_query($conn, $update_query);
 
             if ($result) {
-                // Data updated successfully, redirect to a success page or perform other actions
                 header("Location: incident_reports.php");
                 exit;
             } else {
-                // Error occurred while updating data, handle the error or redirect to an error page
                 echo "Error: " . mysqli_error($conn);
                 exit;
             }
         } else {
-            // Hearing schedule doesn't exist, so insert a new one
             $insert_query = "INSERT INTO `hearing` (`date_of_hearing`, `time_of_hearing`, `incident_case_number`, `hearing_type_status`, `timestamp`) 
                             VALUES ('$date_of_hearing', '$time_of_hearing', '$incident_case_number', '$hearing_type_status', NOW())";
             $result = mysqli_query($conn, $insert_query);
 
             if ($result) {
-                // Data inserted successfully, redirect to a success page or perform other actions
-                header("Location: incident_reports.php");
+                header("Location: notice_forms.php?incident_case_number=" . $incident_case_number);
                 exit;
             } else {
-                // Error occurred while inserting data, handle the error or redirect to an error page
                 echo "Error: " . mysqli_error($conn);
                 exit;
             }
         }
     } else {
-        // Error occurred while checking for existing data, handle the error or redirect to an error page
         echo "Error: " . mysqli_error($conn);
         exit;
     }
 }
-
 
 ?>
 

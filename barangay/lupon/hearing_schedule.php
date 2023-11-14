@@ -11,15 +11,12 @@ if(!isset($email)){
 header('location: ../../index.php');
 }
 
-
-// Assuming you have already established the database connection
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit'])) {
     $date_of_hearing = $_POST['date_of_hearing'];
     $time_of_hearing = $_POST['time_of_hearing'];
     $incident_case_number = $_POST['incident_case_number'];
     $hearing_type_status = 'mediation'; 
 
-    // Include timestamp in the INSERT statement
     $insert_query = "INSERT INTO `hearing` (`incident_case_number`, `date_of_hearing`, `time_of_hearing`, `hearing_type_status`, `timestamp`)
                      VALUES ('$incident_case_number', '$date_of_hearing', '$time_of_hearing', '$hearing_type_status', NOW())";
 

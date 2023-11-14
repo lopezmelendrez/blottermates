@@ -11,26 +11,21 @@ if (!isset($email)) {
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit'])) {
-    // Assuming you have already established the database connection
     $date_of_hearing = $_POST['date_of_hearing'];
     $time_of_hearing = $_POST['time_of_hearing'];
     $incident_case_number = $_POST['incident_case_number'];
 
-    // Update the hearing schedule with the current timestamp
     $update_query = "UPDATE `hearing` SET `date_of_hearing`='$date_of_hearing', `time_of_hearing`='$time_of_hearing', `schedule_change_timestamp`=NOW() WHERE `incident_case_number`='$incident_case_number'";
     $result = mysqli_query($conn, $update_query);
 
     if ($result) {
-        // Data updated successfully, redirect to a success page or perform other actions
         header("Location: notice_forms.php?incident_case_number=" . $incident_case_number);
         exit;
     } else {
-        // Error occurred while updating data, handle the error or redirect to an error page
         echo "Error: " . mysqli_error($conn);
         exit;
     }
 }
-
 
 ?>
 
