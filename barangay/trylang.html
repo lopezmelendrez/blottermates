@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        .actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn {
+            padding: 8px 12px;
+            cursor: pointer;
+        }
+
+        .view {
+            background-color: #4caf50;
+            color: white;
+        }
+
+        .remove {
+            background-color: #f44336;
+            color: white;
+        }
+
+        .disable {
+            background-color: #2196f3;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+
+<table>
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Email Address</th>
+            <th>Status</th>
+            <th>Created At</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>John Doe</td>
+            <td>johndoe@example.com</td>
+            <td>Active</td>
+            <td>2023-11-15</td>
+            <td class="actions">
+                <button class="btn view">View</button>
+                <button class="btn remove">Remove</button>
+                <button class="btn disable">Disable</button>
+            </td>
+        </tr>
+        <!-- Add more rows as needed -->
+    </tbody>
+</table>
+
+</body>
+</html>

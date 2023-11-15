@@ -122,6 +122,56 @@ header('location: ../index.php');
 
         <h1 style="margin-left: 4%; margin-top: -2.3%; display: flex; font-size: 48px;">ACCOUNT MANAGEMENT</h1>
         
+        <table>
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Email Address</th>
+            <th style="padding: 13px;">Status</th>
+            <th style="padding: 14px;">Created At</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>Stella Salle Cruz</td>
+            <td>johndoe@example.com</td>
+            <td>Active</td>
+            <td>2023-11-15</td>
+            <td class="actions">
+                <button class="btn view" onclick="showViewPopup()">View</button>
+                <button class="btn remove" onclick="showRemovePopup()">Remove</button>
+                <button class="btn disable" onclick="showDisablePopup()">Disable</button>
+            </td>
+        </tr>
+        <!-- Add more rows as needed -->
+    </tbody>
+</table>
+
+<div id="view_popup" class="popup">
+            <center>
+            <div class="modal">
+            <button onclick="closeViewPopup()">close</button>
+            </div>
+            </center>
+        </div>
+
+        <div id="remove_popup" class="popup">
+            <center>
+            <div class="modal">
+            <button onclick="closeRemovePopup()">close</button>
+            </div>
+            </center>
+        </div>
+
+        <div id="disable_popup" class="popup">
+            <center>
+            <div class="modal">
+            <button onclick="closeDisablePopup()">close</button>
+            </div>
+            </center>
+        </div>
+        
 
 
     </section>
@@ -142,6 +192,51 @@ header('location: ../index.php');
         searchBtn.addEventListener("click" , () =>{
             sidebar.classList.remove("close");
         })
+
+        function showViewPopup() {
+        // Get the popup element
+        var popup = document.getElementById("view_popup");
+
+        // Display the popup
+        popup.style.display = "flex";
+
+
+    }
+
+    function closeViewPopup() {
+        var popup = document.getElementById("view_popup");
+        popup.style.display = "none";
+    }
+
+    function showRemovePopup() {
+        // Get the popup element
+        var popup = document.getElementById("remove_popup");
+
+        // Display the popup
+        popup.style.display = "flex";
+
+
+    }
+
+    function closeRemovePopup() {
+        var popup = document.getElementById("remove_popup");
+        popup.style.display = "none";
+    }
+
+    function showDisablePopup() {
+        // Get the popup element
+        var popup = document.getElementById("disable_popup");
+
+        // Display the popup
+        popup.style.display = "flex";
+
+
+    }
+
+    function closeDisablePopup() {
+        var popup = document.getElementById("disable_popup");
+        popup.style.display = "none";
+    }
 
     </script>
 
@@ -321,6 +416,107 @@ header('location: ../index.php');
     border-radius: 5px;
     background: #F5BE1D;
   }
+
+  table {
+            width: 1120px;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+            margin-top: 3%;
+            margin-left: 4%;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px 12px;
+            text-align: center;
+
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        td{
+            background-color: #fff;
+        }
+
+        .actions {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+        }
+
+        .btn {
+            padding: 8px 12px;
+            cursor: pointer;
+        }
+
+        .view {
+            background-color: #4caf50;
+            color: white;
+        }
+
+        .remove {
+            background-color: #f44336;
+            color: white;
+        }
+
+        .disable {
+            background-color: #2196f3;
+            color: white;
+        }
+
+        .view:hover {
+    background-color: #388e3c; 
+    color: #fff;
+}
+
+.remove:hover {
+    background-color: #d32f2f;
+    color: #fff;
+}
+
+.disable:hover {
+    background-color: #1565c0; 
+    color: #fff;
+}
+
+.popup {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+}
+
+.modal {
+    display: flex; /* or display: none; depending on your initial state */
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 5px;
+    margin-top: 180px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    width: 500px;
+    height: 280px;
+    overflow-y: hidden;
+    margin-left: 30%;
+}
+
+.close-icon {
+      position: absolute;
+      top: 155px;
+      left: 875px;
+      cursor: pointer;
+      font-size: 50px;
+      color:#bc1823;
+      z-index: 1002;
+    }
+
 
     </style>
 

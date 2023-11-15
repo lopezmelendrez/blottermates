@@ -152,8 +152,8 @@ header('location: ../index.php');
                 <div class="lupon-online-box">
                     <div class="online" style="display: flex; margin-top: -5px;">
                     <i class='bx bx-user-circle' style="font-size: 35px; font-weight: 500; margin-top: -4px; margin-left: -5px;"></i>
-                    <p style="margin-top: 1px; margin-left: 4px;">LUPON STAFF ONLINE</p>
-                    <p style="margin-left: 26px; margin-top: -1px; font-weight: 600; font-size: 20px;">(<?php echo $activeLuponCount ?>)</p>
+                    <p style="margin-top: 1px; margin-left: -0.5px; width: 17rem;">LUPON STAFF ONLINE</p>
+                    <p style="margin-left: 22px; margin-top: -1px; font-weight: 600; font-size: 20px;">(<?php echo $activeLuponCount ?>)</p>
                     </div>
                 </div>
         </div>

@@ -196,14 +196,26 @@ while ($row = mysqli_fetch_assoc($result)) {
                     }
                 }
                 elseif ($hearing_type_status === 'mediation') {
-                    if (empty($generate_summon) || $generate_summon === 'not generated') {
-                        echo '<span class="to-notify">NEEDS KP FORM #9</span>';
-                    } elseif (empty($generate_hearing) || $generate_hearing === 'not generated') {
-                        echo '<span class="to-notify">NEEDS KP FORM #8</span>';
-                    } else {
+                    $check_query_mediation = "SELECT generate_summon, generate_hearing FROM notify_residents WHERE incident_case_number = '" . $row['incident_case_number'] . "'";
+                    $check_result_mediation = mysqli_query($conn, $check_query_mediation);
+                
+                    if ($check_result_mediation && mysqli_num_rows($check_result_mediation) > 0) {
+                        $row_notify_mediation = mysqli_fetch_assoc($check_result_mediation);
+                        $generate_summon_mediation = $row_notify_mediation['generate_summon'];
+                        $generate_hearing_mediation = $row_notify_mediation['generate_hearing'];
+                
+                        if (empty($generate_summon_mediation) || $generate_summon_mediation === 'not generated') {
+                            echo '<span class="to-notify">NEEDS KP FORM #9</span>';
+                        } elseif (empty($generate_hearing_mediation) || $generate_hearing_mediation === 'not generated') {
+                            echo '<span class="to-notify">NEEDS KP FORM #8</span>';
+                        } else {
+                            echo '-';
+                        }
+                    }
+                    else {
                         echo '<span class="to-notify">NEEDS KP FORM #8 AND #9</span>';
                     }
-                }
+                }                
             }
 
             echo '</td>';
@@ -257,18 +269,28 @@ while ($row = mysqli_fetch_assoc($result)) {
         }
     }
     elseif ($hearing_type_status === 'mediation') {
-        // Check if generate_summon or generate_hearing is empty or "not generated"
-        if (empty($generate_summon) || $generate_summon === 'not generated' || empty($generate_hearing) || $generate_hearing === 'not generated') {
-            echo '<span class="forms" style="text-decoration: none; width: 90%; margin-left: 6%; cursor: default">Create Notice Form(s)</span>';
-        } else {
-            // Check if the date is at the time of the hearing schedule
-            if (date('Y-m-d', $current_time) == date('Y-m-d', $date_of_hearing)) {
-                echo '<a href="mediation_settlement_page.php?incident_case_number=' . $row['incident_case_number'] . '" class="shownotices" style="text-decoration: none; width: 90%; margin-left: 6%;">Hearing</a>';
+        $check_query_mediation = "SELECT generate_summon, generate_hearing FROM notify_residents WHERE incident_case_number = '" . $row['incident_case_number'] . "'";
+        $check_result_mediation = mysqli_query($conn, $check_query_mediation);
+    
+        if ($check_result_mediation && mysqli_num_rows($check_result_mediation) > 0) {
+            $row_notify_mediation = mysqli_fetch_assoc($check_result_mediation);
+            $generate_summon_mediation = $row_notify_mediation['generate_summon'];
+            $generate_hearing_mediation = $row_notify_mediation['generate_hearing'];
+    
+            if (empty($generate_summon_mediation) || $generate_summon_mediation === 'not generated' || empty($generate_hearing_mediation) || $generate_hearing_mediation === 'not generated') {
+                echo '<span class="forms" style="text-decoration: none; width: 90%; margin-left: 6%; cursor: default">Create Notice Form(s)</span>';
             } else {
-                echo '<span class="forms" style="text-decoration: none; width: 90%; margin-left: 6%; cursor: default;">Upcoming Hearing</span>';
+                if (date('Y-m-d', $current_time) == date('Y-m-d', $date_of_hearing)) {
+                    echo '<a href="mediation_settlement_page.php?incident_case_number=' . $row['incident_case_number'] . '" class="shownotices" style="text-decoration: none; width: 90%; margin-left: 6%;">Hearing</a>';
+                } else {
+                    echo '<span class="forms" style="text-decoration: none; width: 90%; margin-left: 6%; cursor: default;">Upcoming Hearing</span>';
+                }
             }
+        } else {
+            echo '<span class="forms" style="text-decoration: none; width: 90%; margin-left: 6%; cursor: default">Create Notice Form(s)</span>';
         }
     }
+    
 }
 
             echo '</td>';

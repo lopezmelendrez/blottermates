@@ -128,7 +128,7 @@ if ($isEndOfMonth) {
                 <div class="date" style="font-size: 24px; width: 24rem;"></div>
             </div>
 
-            <div class="add-account" onclick="showMonthlyReportPopup()" style="display: flex; margin-top: 6%; width: 21.7%;">
+            <div class="add-account" onclick="showMonthlyReportPopup()" style="display: flex; margin-top: 7%; width: 21.7%;">
                 <i class='bx bx-download'></i>
                 <p>Generate Monthly Report</p>
             </div>
@@ -192,7 +192,7 @@ echo '</div>';
             
         </div>
 
-        <div class="incident-case-table" style="display: flex; width: 615px; height: 470px;">
+        <div class="incident-case-table" style="display: flex; width: 615px; height: 470px; margin-top: 0.5%;">
             <div class="head-text">
                 <p class="incident-case">Recent Incident Cases</p>
                 <p class="notice-records">* Needs Notice Records</p>

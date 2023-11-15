@@ -239,6 +239,10 @@ if ($result && mysqli_num_rows($result) > 0) {
         .activity-time {
             color: #777;
         }
+
+        .text-box{
+            
+        }
     </style>
 </head>
 <body>
@@ -267,6 +271,16 @@ if ($result && mysqli_num_rows($result) > 0) {
 </body>
 </html>';
 } else {
-    echo 'No recent activity found.';
+    echo '<div class="text-box" style="margin-left: 30%;
+    margin-top: 15%;
+    background: #b9bbb6;
+    border-radius: 5px;
+    color: #fff;
+    font-size: 35px;
+    width: 500px;
+    padding: 13px 13px;
+    text-align: center;
+    letter-spacing: 1;
+    text-transform: uppercase;">No Recent Activity Yet.</div>';
 }
 ?>
