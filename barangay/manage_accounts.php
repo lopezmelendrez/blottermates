@@ -80,16 +80,16 @@ header('location: ../index.php');
                     </li>
 
                     <li class="nav-link">
-                        <a href="activity_history.php">
-                            <i class='bx bx-history icon'></i>
-                            <span class="text nav-text">Activity History</span>
+                        <a href="incident_reports.php">
+                            <i class='bx bx-receipt icon' ></i>
+                            <span class="text nav-text">Incident Reports</span>
                         </a>
                     </li>
 
                     <li class="nav-link">
-                        <a href="incident_reports.php">
-                            <i class='bx bx-receipt icon' ></i>
-                            <span class="text nav-text">Incident Reports</span>
+                        <a href="activity_history.php">
+                            <i class='bx bx-history icon'></i>
+                            <span class="text nav-text">Activity History</span>
                         </a>
                     </li>
 
@@ -119,36 +119,8 @@ header('location: ../index.php');
     </nav>
 
     <section class="home" style="margin-left: -0.3%; margin-top: 3%;">
-        
-        <div class="datetime-container" style="display: flex; margin-top: -1.5%;">
-    
-            <?php
-              $activeLuponCountQuery = "SELECT pa.barangay, COUNT(*) as activeLuponStaffs
-              FROM `lupon_accounts` AS la
-              INNER JOIN `pb_accounts` AS pa ON la.pb_id = pa.pb_id
-              WHERE pa.pb_id = '$pb_id' AND la.login_status = 'active';
-              ";
 
-                $result = mysqli_query($conn, $activeLuponCountQuery);
-
-                if ($result) {
-                    $row = mysqli_fetch_assoc($result);
-                    $activeLuponCount = $row['activeLuponStaffs'];
-                } else {
-                    $activeLuponCount = "N/A";
-                }
-
-            ?>
-                <div class="lupon-online-box">
-                    <div class="online" style="display: flex; margin-top: -5px;">
-                    <i class='bx bx-user-circle' style="font-size: 32px;"></i>
-                    <p style="margin-top: 3px; margin-left: 4px;">LUPON STAFF ONLINE</p>
-                    <p style="margin-left: 15px; margin-top: 1px; font-weight: 600; font-size: 20px;">(<?php echo $activeLuponCount ?>)</p>
-                    </div>
-                </div>
-        </div>
-
-        <h1 style="margin-left: 4%; margin-top: -0.8%; display: flex; font-size: 48px;">ACCOUNT MANAGEMENT</h1>
+        <h1 style="margin-left: 4%; margin-top: -2.3%; display: flex; font-size: 48px;">ACCOUNT MANAGEMENT</h1>
         
 
 

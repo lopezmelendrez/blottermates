@@ -27,11 +27,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit'])) {
 
     $result = mysqli_query($conn, $insert_query);
     if ($result) {
-        // Data inserted successfully, redirect to a success page or perform other actions
         header("Location: incident_reports.php");
         exit;
     } else {
-        // Error occurred while inserting data, handle the error or redirect to an error page
         echo "Error: " . mysqli_error($conn);
         exit;
     }
@@ -104,16 +102,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit'])) {
                     </li>
 
                     <li class="nav-link">
-                        <a href="activity_history.php">
-                            <i class='bx bx-history icon'></i>
-                            <span class="text nav-text">Activity History</span>
+                        <a href="incident_reports.php">
+                            <i class='bx bx-receipt icon' ></i>
+                            <span class="text nav-text">Incident Reports</span>
                         </a>
                     </li>
 
                     <li class="nav-link">
-                        <a href="incident_reports.php">
-                            <i class='bx bx-receipt icon' ></i>
-                            <span class="text nav-text">Incident Reports</span>
+                        <a href="activity_history.php">
+                            <i class='bx bx-history icon'></i>
+                            <span class="text nav-text">Activity History</span>
                         </a>
                     </li>
 

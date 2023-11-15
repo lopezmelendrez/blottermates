@@ -14,6 +14,53 @@ if(!isset($pb_id)){
 header('location: ../index.php');
 }
 
+if (isset($_POST['submit_search'])) {
+    $search_case = mysqli_real_escape_string($conn, $_POST['search_case']);
+    $query = "SELECT pa.barangay,
+                     incident_report.incident_case_number AS incident_case_number,
+                     incident_report.complainant_first_name AS complainant_first_name,
+                     incident_report.complainant_last_name AS complainant_last_name,
+                     incident_report.respondent_first_name as respondent_first_name,
+                     incident_report.respondent_last_name AS respondent_last_name,
+                     incident_report.created_at AS created_at,
+                     amicable_settlement.date_agreed AS date_agreed
+              FROM `incident_report`
+              INNER JOIN `lupon_accounts` AS la ON incident_report.lupon_id = la.lupon_id
+              INNER JOIN `pb_accounts` AS pa ON la.pb_id = pa.pb_id
+              LEFT JOIN `notify_residents` AS nr ON incident_report.incident_case_number = nr.incident_case_number
+              LEFT JOIN `execution_notice` AS en ON incident_report.incident_case_number = en.incident_case_number
+              LEFT JOIN `amicable_settlement` AS amicable_settlement ON incident_report.incident_case_number = amicable_settlement.incident_case_number
+              WHERE pa.pb_id = '$pb_id'
+                    AND nr.generate_execution = 'form generated'
+                    AND incident_report.incident_case_number LIKE '%$search_case%'
+              ORDER BY incident_report.created_at DESC";
+} else {
+    $query = "SELECT pa.barangay,
+                     incident_report.incident_case_number AS incident_case_number,
+                     incident_report.complainant_first_name AS complainant_first_name,
+                     incident_report.complainant_last_name AS complainant_last_name,
+                     incident_report.respondent_first_name as respondent_first_name,
+                     incident_report.respondent_last_name AS respondent_last_name,
+                     incident_report.created_at AS created_at,
+                     amicable_settlement.date_agreed AS date_agreed
+              FROM `incident_report`
+              INNER JOIN `lupon_accounts` AS la ON incident_report.lupon_id = la.lupon_id
+              INNER JOIN `pb_accounts` AS pa ON la.pb_id = pa.pb_id
+              LEFT JOIN `notify_residents` AS nr ON incident_report.incident_case_number = nr.incident_case_number
+              LEFT JOIN `execution_notice` AS en ON incident_report.incident_case_number = en.incident_case_number
+              LEFT JOIN `amicable_settlement` AS amicable_settlement ON incident_report.incident_case_number = amicable_settlement.incident_case_number
+              WHERE pa.pb_id = '$pb_id'
+                    AND nr.generate_execution = 'form generated'
+              ORDER BY incident_report.created_at DESC";
+}
+
+$result = mysqli_query($conn, $query);
+
+if (!$result) {
+    die('Query failed: ' . mysqli_error($conn));
+}
+
+
 
 ?>
 
@@ -26,16 +73,17 @@ header('location: ../index.php');
     <link href='https://unpkg.com/boxicons@2.1.1/css/boxicons.min.css' rel='stylesheet'>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="../css/dilg.css">
-    <link rel="stylesheet" href="../css/lupon_home.css">
-    <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
-    <title>Activity History</title>
+    <link rel="stylesheet" href="../css/lupon.css">
+    <link rel="stylesheet" href="../css/incidentform.css">
+    <link rel="icon" type="image/x-icon" href="../../images/favicon.ico">
+    <title>Incident Reports</title>
 </head>
 <body>
+    
 <nav class="sidebar close">
         <header>
-            <div class="image-text">
-            <?php
+                    <div class="image-text">
+                    <?php
                     $select = mysqli_query($conn, "SELECT * FROM `pb_accounts` WHERE pb_id = '$pb_id'") or die('Query failed');
 
                     if (mysqli_num_rows($select) > 0) {
@@ -55,11 +103,11 @@ header('location: ../index.php');
                     }
                     ?>
 
-                <div class="text logo-text">
-                    <span class="name"><?php echo $barangay_captain ?></span>
-                    <span class="profession"  style="font-size: 13px;">Punong Barangay</span>
-                </div>
-            </div>
+                    <div class="text logo-text">
+                        <span class="name"><?php echo $barangay_captain ?></span>
+                        <span class="profession"  style="font-size: 13px;">Punong Barangay</span>
+                    </div>
+                    </div>
 
             <i class='bx bx-chevron-right toggle'></i>
         </header>
@@ -80,18 +128,19 @@ header('location: ../index.php');
                     </li>
 
                     <li class="nav-link">
+                        <a href="incident_reports.php">
+                            <i class='bx bx-receipt icon' ></i>
+                            <span class="text nav-text">Incident Reports</span>
+                        </a>
+                    </li>
+
+                    <li class="nav-link">
                         <a href="activity_history.php">
                             <i class='bx bx-history icon'></i>
                             <span class="text nav-text">Activity History</span>
                         </a>
                     </li>
 
-                    <li class="nav-link">
-                        <a href="incident_reports.php">
-                            <i class='bx bx-receipt icon' ></i>
-                            <span class="text nav-text">Incident Reports</span>
-                        </a>
-                    </li>
 
             </div>
 
@@ -118,41 +167,105 @@ header('location: ../index.php');
 
     </nav>
 
-    <section class="home" style="margin-left: -0.3%; margin-top: 3%;">
-        
-        <div class="datetime-container" style="display: flex; margin-top: -1.5%;">
-    
-            <?php
-              $activeLuponCountQuery = "SELECT pa.barangay, COUNT(*) as activeLuponStaffs
-              FROM `lupon_accounts` AS la
-              INNER JOIN `pb_accounts` AS pa ON la.pb_id = pa.pb_id
-              WHERE pa.pb_id = '$pb_id' AND la.login_status = 'active';
-              ";
+    <section class="home">
 
-                $result = mysqli_query($conn, $activeLuponCountQuery);
+        <h1 style="margin-left: 4%; margin-top: 1%; display: flex; font-size: 48px;">INCIDENT REPORTS</h1>
 
-                if ($result) {
-                    $row = mysqli_fetch_assoc($result);
-                    $activeLuponCount = $row['activeLuponStaffs'];
-                } else {
-                    $activeLuponCount = "N/A";
-                }
-
-            ?>
-                <div class="lupon-online-box">
-                    <div class="online" style="display: flex; margin-top: -5px;">
-                    <i class='bx bx-user-circle' style="font-size: 32px;"></i>
-                    <p style="margin-top: 3px; margin-left: 4px;">LUPON STAFF ONLINE</p>
-                    <p style="margin-left: 15px; margin-top: 1px; font-weight: 600; font-size: 20px;">(<?php echo $activeLuponCount ?>)</p>
-                    </div>
-                </div>
+        <div class="cases-container" style="margin-left: -33%; width: 100%; margin-top: -2%;">
+            <a href="incomplete_notices.php" style="text-decoration: none;">
+            <div class="validate-cases" style="height:40px; width: 460%;" >
+                <p>Validate File of Motion</p>
+            </div></a>
         </div>
 
-        <h1 style="margin-left: 4%; margin-top: -0.8%; display: flex; font-size: 48px;">INCIDENT REPORTS</h1>
+        <div class="search-container">
+            <form action="" method="post">
+                <button class="case-button" style="padding: 0px 12px;">CASE NO.</button>
+                <input type="text" class="search-input" name="search_case" placeholder="Search...">
+                <button type="submit" name="submit_search" class="search-button" style="padding: 0px 12px;">Search</button>
+            </form>
+        </div>
+
+        <?php
+if (mysqli_num_rows($result) == 0) {
+    echo '<div class="text-box">No Incident Cases found</div>';
+} else {
+    while ($row = mysqli_fetch_assoc($result)) {
+        $incident_case_number = $row['incident_case_number'];
+        $complainant_last_name = $row['complainant_last_name'];
+        $respondent_last_name = $row['respondent_last_name'];
+        $complainant_first_name = $row['complainant_first_name'];
+        $respondent_first_name = $row['respondent_last_name'];
+        $date_agreed = $row['date_agreed'];
+
+        $notifyQuery = "SELECT * FROM `notify_residents` WHERE incident_case_number = '$incident_case_number'";
+        $notifyResult = mysqli_query($conn, $notifyQuery);
+        $notifyRow = mysqli_fetch_assoc($notifyResult);
+
+        $executionQuery = "SELECT * FROM `execution_notice` WHERE incident_case_number = '$incident_case_number'";
+        $executionResult = mysqli_query($conn, $executionQuery);
+        $executionRow = mysqli_fetch_assoc($executionResult);
+
+        echo '<div class="container" style="width: 900px; margin-left: 13%;">';
+        echo '<div class="top-text" style="display: flex;">';
+        echo '<h3 class="case-no-text" style="font-size: 20px;">Case No. #' . $incident_case_number . '</h3>';
+        echo '</div>';
+
+        echo '<div class="top-text" style="display: flex;">';
+        echo '<h3 class="case-no-text" style="font-size: 15px; font-weight: 500; font-style: italic; width: 20%;">';
+        echo $complainant_last_name . ' vs. ' . $respondent_last_name;
+        echo '</h3>';
+        echo '<h3 class="hearing-text" style="font-size: 15px; font-weight: 500; margin-left: 40%;"><b>Settled Agreement Date</b>: ' . date('D, d M Y', strtotime($date_agreed)) . '</h3>';
+        echo '</h3>';
+        echo '</div>';
+
+        echo '<table>';
+        echo '<thead>';
+        echo '<tr>';
+        echo '<th>COMPLAINANT</th>';
+        echo '<th>RESPONDENT</th>';
+        echo '<th>STATUS</th>';
+        echo '<th>Action</th>';
+        echo '</tr>';
+        echo '</thead>';
+        echo '<tbody>';
+
+        echo '<tr>';
+        echo '<td>' . $complainant_first_name . ' ' . $complainant_last_name . '</td>';
+        echo '<td>' . $respondent_first_name . ' ' . $respondent_last_name . '</td>';
+        echo '<td>';
+        if ($notifyRow && $executionRow === null) {
+            echo '<p>-</p>';
+        } elseif ($notifyRow && $executionRow !== null) {
+            echo 'VALIDATED';
+        } else {
+            echo '-';
+        }
+        echo '</td>';
+        echo '<td>';
+        if ($notifyRow && $executionRow === null) {
+            echo '<a href="execution_notice.php?incident_case_number=' . $incident_case_number . '" class="generate" style="margin-left: 12%">VALIDATE</a>';
+        } elseif ($notifyRow && $executionRow !== null) {
+            echo '<a href="kpform27.php?incident_case_number=' . $incident_case_number . '" target="_blank" class="generate" style="margin-left: 12%">GENERATE KP FORM #27</a>';
+        } else {
+            echo '-';
+        }
+        echo '</td>';
+        echo '</tr>';
+
+        echo '</tbody>';
+        echo '</table>';
+        echo '</div>';
+    }
+}
+?>
+
+       
+
         
-
-
     </section>
+
+    
 
     <script>
         const body = document.querySelector('body'),
@@ -171,11 +284,46 @@ header('location: ../index.php');
             sidebar.classList.remove("close");
         })
 
+    
+
+
     </script>
 
     <style>
-        body{
-            overflow-y: scroll;
+    
+        .search-container{
+            margin-left: 9%;
+        }
+
+        .search-input{
+            width: 795px;
+            padding: 0 12px;
+        }
+
+        .case-button{
+            background: #E83422;
+            border: none;
+            color: #fff;
+            font-weight: 500;
+        }
+
+        .search-button{
+            background: #E83422;
+            color: #fff;
+            border: none;
+            font-weight: 600;
+        }
+
+        .search-button:hover{
+            background: #bc1823;
+            transition: .2s;
+        }
+
+        .container{
+            background: #f2f3f5;
+            margin-left: 9%;
+            margin-top: 3%;
+            width: 1018px;
         }
 
         .home{
@@ -183,7 +331,7 @@ header('location: ../index.php');
             top: 0;
             top: 0;
             left: 250px;
-            height: 100vh;
+            height: 200vh;
             width: calc(100% - 78px);
             background-color: var(--body-color);
             transition: var(--tran-05);
@@ -195,160 +343,90 @@ header('location: ../index.php');
             width: calc(100% - 78px);
         }
 
-        .container {
-            display: flex;
-            justify-content: space-around;
-            margin-right: 20px;
-        }
-
-        .ongoing-cases-box {
-            width: 305px;
-            height: 90px;
-            padding: 12px;
-            border: 2px solid #2E5895;
-            background: #fff;
-            border-radius: 5px;
-            text-align: center;
-            margin: 10px;
-        }
-        
-        .ongoing-cases-box p{
-            font-size: 18px;
-            color: #2E5895;
-            font-weight: 600;
-            text-transform: capitalize;            
-        }
-
-        .settled-cases-box {
-            width: 305px;
-            height: 90px;
-            padding: 12px;
-            border: 2px solid #F5BE1D;
-            background: #fff;
-            border-radius: 5px;
-            text-align: center;
-            margin: 10px;
-        }
-        
-        .settled-cases-box p{
-            font-size: 18px;
-            color: #F5BE1D;
-            font-weight: 600;
-            text-transform: capitalize;            
-        }
-
-        .incomplete-cases-box {
-            width: 305px;
-            height: 90px;
-            padding: 12px;
-            border: 2px solid #C23B21;
-            background: #fff;
-            border-radius: 5px;
-            text-align: center;
-            margin: 10px;
-        }
-        
-        .incomplete-cases-box p{
-            font-size: 18px;
-            color: #C23B21;
-            font-weight: 600;
-            text-transform: capitalize;            
-        }
-
-        .lupon-online-box {
-            width: 290px;
-            height: 45px;
-            padding: 12px 12px;
-            background: #fff;
-            border: 2px solid #5bc236;
-            border-radius: 5px;
-            text-align: center;
-            margin: 10px;
-            position: fixed;
-            right: -10px;
-            top: -10px;
-        }
-        
-        .lupon-online-box p, .lupon-online-box i{
+        .container table thead tr th{
             font-size: 17px;
-            color: #5bc236;
-            font-weight: 600;
-            text-transform: uppercase;            
+            text-align: center;
         }
 
-        .summon-record{
-            background: #fff;
-        padding: 5px 5px;
+        .to-notify{
+                font-weight: 900;
+                color: #bc1823;
+        }
+
+        table tbody tr:nth-child(even) {
+        background-color: white;
+        }
+
+        .generate{
+        background: #fff;
+        padding: 4px 4px;
         color: #2962ff;
         border: 1px solid #2962ff;
         text-transform: uppercase;
-        text-align: center;
         border-radius: 0.2rem;
         cursor: pointer;
         display: block;
         margin-bottom: 5px;
-        width: 70%; 
+        width: 10rem;
+        margin-left: 0;
+        text-decoration: none;
+        cursor: pointer;
     }
 
-    .summon-record:hover{
+    .generate:hover{
         background: #2962ff;
         color: #fff;
         transition: .5s;
     }
 
-        .container {
-            max-width: 800px;
-            margin: 20px auto;
-            display: inline-block;
-            margin-left: 3%;
-        }
+    .notified{
+        font-weight: 900;
+        color: #0b6623;
+    }
 
-        .activity-history {
-            background: #fff; /* Set the background to white */
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            padding: 20px;
-        }
+    .notify{
+        background: #fff;
+        padding: 4px 4px;
+        color: #363636;
+        border: 1px solid #363636;
+        text-transform: uppercase;
+        border-radius: 0.2rem;
+        cursor: pointer;
+        display: block;
+        margin-bottom: 5px;
+        width: 10rem;
+        text-decoration: none;
+        cursor: default;
+    }
 
-        .activity-date {
-            background-color: #f0f0f0;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            padding: 10px;
-            font-weight: bold;
-        }
+    .text-box{
+        margin-left: 30%;
+        margin-top: 15%;
+        background: #bc1823;
+        border-radius: 5px;
+        color: #fff;
+        font-size: 35px;
+        width: 500px;
+        padding: 13px 13px;
+        text-align: center;
+        letter-spacing: 1;
+        text-transform: uppercase;
+    }
 
-        .activity {
-            background: #fff;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            margin: 10px 0;
-            padding: 20px;
-        }
-
-        .activity-time {
-            color: #777;
-        }
-
-        .title{
-    font-size: 36px;
-    font-weight: 500;
-    position: relative;
-    margin-top: -8px;
-    margin-bottom: -20px;
-    margin-left: 4.5%;
-  }
-
- .title::before{
-    content: "";
-    position: absolute;
-    left: 0;
-    bottom: 0;
-    height: 3px;
-    width: 273px;
-    border-radius: 5px;
-    background: #F5BE1D;
-  }
+    .validate-cases{
+    flex: 1; /* Distribute available space evenly among child elements */
+    text-align: center; /* Center align the text */
+    padding: 5px 5px;
+    width: 10px; /* Add padding for better spacing */
+    border: 1px solid #C23B21; /* Add a border for separation */
+    border-radius: 5px; /* Add rounded corners to the divs */
+    background-color: #F2F3F5; /* Background color for the divs */
+    color: #C23B21;
+    font-size: 18px;
+    font-weight: 600;
+    margin-left: 3%;
+    cursor: default;
+}
 
     </style>
 

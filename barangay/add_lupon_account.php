@@ -68,27 +68,24 @@ if (isset($_POST['submit'])) {
         <header>
             <div class="image-text">
             <?php
-$select = mysqli_query($conn, "SELECT l.*, pb.barangay 
-                                FROM `lupon_accounts` l
-                                LEFT JOIN `pb_accounts` pb ON l.pb_id = pb.pb_id
-                                WHERE l.email_address = '$email'") or die('query failed');
+                    $select = mysqli_query($conn, "SELECT * FROM `pb_accounts` WHERE pb_id = '$pb_id'") or die('Query failed');
 
-if (mysqli_num_rows($select) > 0) {
-    $fetch = mysqli_fetch_assoc($select);
+                    if (mysqli_num_rows($select) > 0) {
+                        $fetch = mysqli_fetch_assoc($select);
+                    }
 
-    if (!empty($fetch['barangay'])) {
-        $barangay = $fetch['barangay'];
+                    if (!empty($fetch['barangay'])) {
+                        $barangay = $fetch['barangay'];
 
-        if (isset($config['barangayLogos'][$barangay])) {
-            echo '<span class="image"><img src="' . $config['barangayLogos'][$barangay] . '"></span>';
-        } else {
-            echo '<span class="image"><img src="../../images/default_logo.png"></span>';
-        }
-    } else {
-        echo '<span class="image"><img src="../../images/default_logo.png"></span>';
-    }
-}
-?>
+                        if (isset($config['barangayLogos'][$barangay])) {
+                            echo '<span class="image"><img src="' . $config['barangayLogos'][$barangay] . '"></span>';
+                        } else {
+                            echo '<span class="image"><img src="../images/default_logo.png"></span>';
+                        }
+                    } else {
+                        echo '<span class="image"><img src="../images/default_logo.png"></span>';
+                    }
+                    ?>
 
                 <div class="text logo-text">
                     <span class="name"><?php echo $barangay_captain ?></span>
@@ -115,16 +112,16 @@ if (mysqli_num_rows($select) > 0) {
                     </li>
 
                     <li class="nav-link">
-                        <a href="activity_history.php">
-                            <i class='bx bx-history icon'></i>
-                            <span class="text nav-text">Activity History</span>
+                        <a href="incident_reports.php">
+                            <i class='bx bx-receipt icon' ></i>
+                            <span class="text nav-text">Incident Reports</span>
                         </a>
                     </li>
 
                     <li class="nav-link">
-                        <a href="incident_reports.php">
-                            <i class='bx bx-receipt icon' ></i>
-                            <span class="text nav-text">Incident Reports</span>
+                        <a href="activity_history.php">
+                            <i class='bx bx-history icon'></i>
+                            <span class="text nav-text">Activity History</span>
                         </a>
                     </li>
 

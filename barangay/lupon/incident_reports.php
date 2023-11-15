@@ -17,8 +17,6 @@ if (!$selectLuponId) {
 $row = mysqli_fetch_assoc($selectLuponId);
 $pb_id = $row['pb_id'];
 
-
-
 if(isset($_POST['submit_search'])){
     $search_case = mysqli_real_escape_string($conn, $_POST['search_case']);
     $query = "SELECT i.*, h.incident_case_number AS hearing_incident_case_number,

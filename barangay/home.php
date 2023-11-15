@@ -79,19 +79,21 @@ header('location: ../index.php');
                     </li>
 
                     <li class="nav-link">
-                        <a href="activity_history.php">
-                            <i class='bx bx-history icon'></i>
-                            <span class="text nav-text">Activity History</span>
-                        </a>
-                    </li>
-
-                    <li class="nav-link">
                         <a href="incident_reports.php">
                             <i class='bx bx-receipt icon' ></i>
                             <span class="text nav-text">Incident Reports</span>
                         </a>
                     </li>
 
+
+                    <li class="nav-link">
+                        <a href="activity_history.php">
+                            <i class='bx bx-history icon'></i>
+                            <span class="text nav-text">Activity History</span>
+                        </a>
+                    </li>
+
+                    
             </div>
 
             <div class="bottom-content">
@@ -125,9 +127,9 @@ header('location: ../index.php');
                 <div class="date" style="font-size: 24px; width: 24rem;"></div>
             </div>
 
-            <a href="add_lupon_account.php" style="text-decoration: none; margin-left: 1%;"><div class="add-account" style="display: flex; margin-top: 73px;">
+            <a href="add_lupon_account.php" style="text-decoration: none; margin-left: 1%;"><div class="add-account" style="display: flex; margin-top: 95px; width: 68%;">
                 <i class='bx bx-folder-plus'></i>
-                <p>Register Lupon Account</p>
+                <p>Add Lupon Account</p>
             </div></a>
 
             <?php
@@ -149,9 +151,9 @@ header('location: ../index.php');
             ?>
                 <div class="lupon-online-box">
                     <div class="online" style="display: flex; margin-top: -5px;">
-                    <i class='bx bx-user-circle' style="font-size: 32px;"></i>
-                    <p style="margin-top: 3px; margin-left: 4px;">LUPON STAFF ONLINE</p>
-                    <p style="margin-left: 15px; margin-top: 1px; font-weight: 600; font-size: 20px;">(<?php echo $activeLuponCount ?>)</p>
+                    <i class='bx bx-user-circle' style="font-size: 35px; font-weight: 500; margin-top: -4px; margin-left: -5px;"></i>
+                    <p style="margin-top: 1px; margin-left: 4px;">LUPON STAFF ONLINE</p>
+                    <p style="margin-left: 26px; margin-top: -1px; font-weight: 600; font-size: 20px;">(<?php echo $activeLuponCount ?>)</p>
                     </div>
                 </div>
         </div>
@@ -301,7 +303,7 @@ header('location: ../index.php');
                     echo '<tr>';
                     echo '<td>' . $fetchCases['incident_case_number'] . '</td>';
                     echo '<td>' . $fetchCases['complainant_last_name'] . ' vs. ' . $fetchCases['respondent_last_name'] . '</td>';
-                    echo '<td><a href="execution_notice.php?incident_case_number=' . $fetchCases['incident_case_number'] . '" style="text-decoration: none;"><span class="summon-record" onclick="showPangkatPopup()">Validate</span><a/></td>';
+                    echo '<td><a href="execution_notice.php?incident_case_number=' . $fetchCases['incident_case_number'] . '" style="text-decoration: none;"><span class="summon-record">Validate</span><a/></td>';
                     echo '</tr>';
                 }
             }
