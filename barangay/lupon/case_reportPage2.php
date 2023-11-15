@@ -178,7 +178,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['execution_submit'])) 
                             <div class="input-field">
                                 <label class="label">Hearing Status</label>
                                 <div class="text-box">
-                                    <p style="padding: 10px 0"><?php echo $hearing_status ?></p></div>
+                                    <p style="padding: 10px 0; text-transform: uppercase;"><?php echo $hearing_status ?></p></div>
                             </div>
                             <div class="input-field">
                                 <label class="label">Date of Hearing</label>
@@ -299,7 +299,7 @@ if ($generate_execution_result && mysqli_num_rows($generate_execution_result) > 
             <hr style="border: 1px solid #ebecf0; margin: 10px 0;">
             <p style="font-size: 14px; text-align: left;">
     Amicable Settlement Form (KP #16)
-    <a href="your-link-here" class="button" style="margin-left: 17.5%;">
+    <a href="../../tcpdf/amicable_settlement_form.php?incident_case_number=<?php echo $incident_case_number; ?>" target="_blank" class="button" style="margin-left: 17.5%;">
       Generate
     </a>
     <span class="printer-icon">
@@ -573,7 +573,7 @@ if ($generate_execution_result && mysqli_num_rows($generate_execution_result) > 
     .close-icon {
       position: absolute;
       top: 155px;
-      left: 900px;
+      left: 870px;
       cursor: pointer;
       font-size: 50px;
       color:#bc1823;
@@ -592,7 +592,7 @@ if ($generate_execution_result && mysqli_num_rows($generate_execution_result) > 
 }
 
 .pending{
-    background: #FFd300;
+    background: #F5BE1D;
     width: 80%;
     text-align: center;
     border-radius: 5px;

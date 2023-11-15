@@ -225,7 +225,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['execution_submit'])) 
             <hr style="border: 1px solid #ebecf0; margin: 10px 0;">
             <p style="font-size: 14px; text-align: left;">
     Amicable Settlement Form (KP #16)
-    <a href="your-link-here" class="button" style="margin-left: 17.5%;">
+    <a href="../../tcpdf/amicable_settlement_form.php?incident_case_number=<?php echo $incident_case_number; ?>" target="_blank" class="button" style="margin-left: 17.5%;">
       Generate
     </a>
     <span class="printer-icon">
@@ -499,7 +499,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['execution_submit'])) 
     .close-icon {
       position: absolute;
       top: 155px;
-      left: 900px;
+      left: 870px;
       cursor: pointer;
       font-size: 50px;
       color:#bc1823;

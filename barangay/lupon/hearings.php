@@ -196,15 +196,11 @@ while ($row = mysqli_fetch_assoc($result)) {
                     }
                 }
                 elseif ($hearing_type_status === 'mediation') {
-                    // Check for KP forms based on generate_summon and generate_hearing status
                     if (empty($generate_summon) || $generate_summon === 'not generated') {
-                        // Display NEEDS KP FORM #9
                         echo '<span class="to-notify">NEEDS KP FORM #9</span>';
                     } elseif (empty($generate_hearing) || $generate_hearing === 'not generated') {
-                        // Display NEEDS KP FORM #8
                         echo '<span class="to-notify">NEEDS KP FORM #8</span>';
                     } else {
-                        // Display NEEDS KP FORM #8 AND #9
                         echo '<span class="to-notify">NEEDS KP FORM #8 AND #9</span>';
                     }
                 }

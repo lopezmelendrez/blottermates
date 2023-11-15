@@ -33,7 +33,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit'])) {
     }
 
     if ($result) {
-        header("Location: http://localhost/barangay%20justice%20management%20system%2001/tcpdf/generate_summonRecord.php?incident_case_number=" . $incident_case_number);
+        header("Location: http://localhost/barangay%20justice%20management%20system%2001/tcpdf/summon_for_the_respondent_form.php?incident_case_number=" . $incident_case_number);
         exit;
     } else {
         echo "Error: " . mysqli_error($conn);
@@ -59,7 +59,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['hearing_submit'])) {
 
     if ($result) {
         $incident_case_number = $_POST['incident_case_number'];
-        header("Location: " . $_SERVER['PHP_SELF'] . "?incident_case_number=" . $incident_case_number);
+        header("Location: http://localhost/barangay%20justice%20management%20system%2001/tcpdf/notice_of_hearing_form.php?incident_case_number=" . $incident_case_number);
         exit;
     } else {
         echo "Error: " . mysqli_error($conn);
