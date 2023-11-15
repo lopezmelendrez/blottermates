@@ -1,5 +1,8 @@
 <?php
 
+$configFile = file_get_contents('../barangays.json');
+$config = json_decode($configFile, true);
+
 include '../config.php';
 
 session_start();
@@ -32,19 +35,25 @@ header('location: ../index.php');
 <nav class="sidebar close">
         <header>
             <div class="image-text">
-                    <?php
-        $select = mysqli_query($conn, "SELECT * FROM `pb_accounts` WHERE pb_id = '$pb_id'") or die('Query failed');
+            <?php
+                    $select = mysqli_query($conn, "SELECT * FROM `pb_accounts` WHERE pb_id = '$pb_id'") or die('Query failed');
 
-        if(mysqli_num_rows($select) > 0){
-            $fetch = mysqli_fetch_assoc($select);
-        }
+                    if (mysqli_num_rows($select) > 0) {
+                        $fetch = mysqli_fetch_assoc($select);
+                    }
 
-        if ($fetch['barangay'] == 'Ibaba') {
-            echo '<span class="image"><img src="../images/ibaba_logo.png"></span>';
-        } else {
-            echo '<span class="image"><img src="../images/logo.png"></span>';
-        }
-        ?>
+                    if (!empty($fetch['barangay'])) {
+                        $barangay = $fetch['barangay'];
+
+                        if (isset($config['barangayLogos'][$barangay])) {
+                            echo '<span class="image"><img src="' . $config['barangayLogos'][$barangay] . '"></span>';
+                        } else {
+                            echo '<span class="image"><img src="../images/default_logo.png"></span>';
+                        }
+                    } else {
+                        echo '<span class="image"><img src="../images/default_logo.png"></span>';
+                    }
+                    ?>
 
                 <div class="text logo-text">
                     <span class="name"><?php echo $barangay_captain ?></span>

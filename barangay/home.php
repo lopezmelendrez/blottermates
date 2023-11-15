@@ -1,5 +1,8 @@
 <?php
 
+$configFile = file_get_contents('../barangays.json');
+$config = json_decode($configFile, true);
+
 include '../config.php';
 
 session_start();
@@ -30,26 +33,32 @@ header('location: ../index.php');
 <body>
     <nav class="sidebar close">
         <header>
-            <div class="image-text">
+                    <div class="image-text">
                     <?php
-        $select = mysqli_query($conn, "SELECT * FROM `pb_accounts` WHERE pb_id = '$pb_id'") or die('Query failed');
+                    $select = mysqli_query($conn, "SELECT * FROM `pb_accounts` WHERE pb_id = '$pb_id'") or die('Query failed');
 
-        if(mysqli_num_rows($select) > 0){
-            $fetch = mysqli_fetch_assoc($select);
-        }
+                    if (mysqli_num_rows($select) > 0) {
+                        $fetch = mysqli_fetch_assoc($select);
+                    }
 
-        if ($fetch['barangay'] == 'Ibaba') {
-            echo '<span class="image"><img src="../images/ibaba_logo.png"></span>';
-        } else {
-            echo '<span class="image"><img src="../images/logo.png"></span>';
-        }
-        ?>
+                    if (!empty($fetch['barangay'])) {
+                        $barangay = $fetch['barangay'];
 
-                <div class="text logo-text">
-                    <span class="name"><?php echo $barangay_captain ?></span>
-                    <span class="profession"  style="font-size: 13px;">Punong Barangay</span>
-                </div>
-            </div>
+                        if (isset($config['barangayLogos'][$barangay])) {
+                            echo '<span class="image"><img src="' . $config['barangayLogos'][$barangay] . '"></span>';
+                        } else {
+                            echo '<span class="image"><img src="../images/default_logo.png"></span>';
+                        }
+                    } else {
+                        echo '<span class="image"><img src="../images/default_logo.png"></span>';
+                    }
+                    ?>
+
+                    <div class="text logo-text">
+                        <span class="name"><?php echo $barangay_captain ?></span>
+                        <span class="profession"  style="font-size: 13px;">Punong Barangay</span>
+                    </div>
+                    </div>
 
             <i class='bx bx-chevron-right toggle'></i>
         </header>
@@ -309,7 +318,7 @@ header('location: ../index.php');
         </div>
     </div>
 
-    <div class="incident-case-table" style="display: flex; margin-top: -16px; height: 350px; margin-left: 10%; width: 600px;">
+    <div class="incident-case-table" style="display: flex; margin-top: -16px; height: 350px; margin-left: 6%; width: 600px;">
     <div class="head-text">
         <p class="incident-case">Recent Activity Log</p>
 

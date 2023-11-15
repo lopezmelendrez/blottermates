@@ -1,5 +1,8 @@
 <?php
 
+$configFile = file_get_contents('../../barangays.json');
+$config = json_decode($configFile, true);
+
 include '../../config.php';
 
 session_start();
@@ -11,7 +14,6 @@ if(!isset($email)){
 header('location: ../../index.php');
 }
 
-// Get the lupon_id for the logged-in user using their email address
 $selectLuponId = mysqli_query($conn, "SELECT pb_id FROM `lupon_accounts` WHERE email_address = '$email'");
 if (!$selectLuponId) {
     die('Failed to fetch lupon_id: ' . mysqli_error($conn));
@@ -19,7 +21,6 @@ if (!$selectLuponId) {
 $row = mysqli_fetch_assoc($selectLuponId);
 $pb_id = $row['pb_id'];
 
-// Use the obtained lupon_id to filter the hearing records based on the incident_case_number
 $selectHearing = mysqli_query($conn, "
 SELECT hearing.date_of_hearing, hearing.time_of_hearing, hearing.incident_case_number
 FROM `hearing`
