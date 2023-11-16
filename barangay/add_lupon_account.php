@@ -15,7 +15,6 @@ header('location: ../index.php');
 }
 
 if (isset($_POST['submit'])) {
-
     // Sanitize and validate user input
     $first_name = mysqli_real_escape_string($conn, $_POST["first_name"]);
     $last_name = mysqli_real_escape_string($conn, $_POST["last_name"]);
@@ -26,30 +25,38 @@ if (isset($_POST['submit'])) {
 
     // Check if passwords match
     if ($password != $confirmPassword) {
-        // Handle password mismatch error
-        echo "Passwords do not match.";
+        $error = "Passwords do not Match";
     } else {
-        // Hash the password for security
-        $hashed_password = password_hash($password, PASSWORD_DEFAULT);
-
-        // Insert data into the 'lupon_accounts' table
-        $sql = "INSERT INTO lupon_accounts (first_name, last_name, email_address, password, pb_id, signature_image) VALUES ('$first_name', '$last_name', '$email_address', '$hashed_password', '$pb_id', '$signatureData')";
-
-
-        if ($conn->query($sql) === TRUE) {
-            // Redirect to manage_accounts.php after successful account creation
-            header("Location: manage_accounts.php");
-            exit();
+        // Validate email address format
+        if (!filter_var($email_address, FILTER_VALIDATE_EMAIL)) {
+            $error = "Invalid Email Address";
         } else {
-            echo "Error: " . $sql . "<br>" . $conn->error;
+            // Check if the email address already exists in the lupon_accounts table
+            $email_check_query = "SELECT * FROM lupon_accounts WHERE email_address='$email_address' LIMIT 1";
+            $result = $conn->query($email_check_query);
+
+            if ($result->num_rows > 0) {
+                $msg_error = "Email Address already exists";
+            } else {
+                // Hash the password for security
+                $hashed_password = password_hash($password, PASSWORD_DEFAULT);
+
+                // Insert data into the 'lupon_accounts' table
+                $sql = "INSERT INTO lupon_accounts (first_name, last_name, email_address, password, pb_id, signature_image) VALUES ('$first_name', '$last_name', '$email_address', '$hashed_password', '$pb_id', '$signatureData')";
+
+                if ($conn->query($sql) === TRUE) {
+                    // Redirect to manage_accounts.php after successful account creation
+                    header("Location: manage_accounts.php");
+                    exit();
+                } else {
+                    echo "Error: " . $sql . "<br>" . $conn->error;
+                }
+            }
         }
     }
-
-    // Close the database connection
-    $conn->close();
 }
 
-?>-->
+?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -159,25 +166,26 @@ if (isset($_POST['submit'])) {
                 <form action="" method="post" style="height: 490px;">
                     <div class="fields">
                         <div class="input-field-1">
-                            <label>First Name</label>
+                            <label class="required-label">First Name</label>
                             <input type="text" name="first_name">
                         </div>
                         <div class="input-field-1">
-                            <label>Last Name</label>
+                            <label class="required-label">Last Name</label>
                             <input type="text" name="last_name">
                         </div>
                         <div class="input-field" style="width: 100%;">
-                            <label>Email Address</label>
+                            <label class="required-label">Email Address</label>
                             <input type="text" name="email_address" id="email_address" required>
                         </div>
 
                        
                             <div class="input-field-1" style="width: 100%;">
-                                <label>Password</label>
+                                <label class="required-label">Password</label>
+                                <i class="uil uil-question-circle" data-bs-toggle="tooltip" data-bs-placement="top" title="Password must contain: At least one lowercase letter (a-z), at least one uppercase letter (A-Z), at least one number, and at least one special character." style="right: 0; display: flex; margin-top: -2.3%; margin-left: 10%;"></i>
                                 <div class="pw-meter" style="margin-top: 3px;">
                                 <input type="password" name="password" id="password" placeholder="" required>
                                 <div class="pw-display-toggle-btn" style="margin-top: 178px;">
-                                    <i class='uil uil-eye-slash showHidePw' style="font-size: 22px; cursor: pointer; margin-left: -25px;"></i>
+                                    <i class='showHidePw' style="font-size: 22px; cursor: pointer; margin-left: -25px;"></i>
                                 </div>
 
                             <div class="pw-strength" id="strength-meter">
@@ -191,9 +199,25 @@ if (isset($_POST['submit'])) {
                         </div>
                     
                         <div class="input-field-1" style="width: 100%;">
-                            <label>Confirm Password</label>
+                            <label class="required-label">Confirm Password</label>
                             <input type="password" name="confirmPassword" placeholder="" required>
                         </div>
+
+                        <?php if (isset($error) && !empty($error)) { ?>
+        <div class="message d-flex" style="background: #F5E2D1; border: none; border-radius: 5px; width: 100%; margin-top: -1%; padding: 2px 2px; margin-left: 0;">
+            <i class="fa-solid fa-circle-exclamation" style="margin-left: 3%; margin-top: 0.6%; font-size: 20px; color: #D52826;"></i>
+            <span style="margin-left: 2%; font-size: 16px; color: #D52826; font-weight: 600; margin-top: 0.5%;"><?php echo $error; ?></span>
+            <i class="fas fa-times" style="margin-left: 60%; margin-top: 0.4%; color: #D52826; font-size: 24px;" onclick="this.parentElement.remove();"></i>
+        </div>
+    <?php } ?>
+
+    <?php if (isset($msg_error) && !empty($msg_error)) { ?>
+        <div class="message d-flex" style="background: #F5E2D1; border: none; border-radius: 5px; width: 100%; margin-top: -1%; padding: 2px 2px; margin-left: 0;">
+            <i class="fa-solid fa-circle-exclamation" style="margin-left: 3%; margin-top: 0.6%; font-size: 20px; color: #D52826;"></i>
+            <span style="margin-left: 2%; font-size: 16px; color: #D52826; font-weight: 600; margin-top: 0.5%;"><?php echo $msg_error; ?></span>
+            <i class="fas fa-times" style="margin-left: 55%; margin-top: 0.4%; color: #D52826; font-size: 24px;" onclick="this.parentElement.remove();"></i>
+        </div>
+    <?php } ?>
 
                     </div>
                 
@@ -493,6 +517,12 @@ document.querySelector(".pw-meter .pw-display-toggle-btn").addEventListener("cli
     z-index:1;
     transition:all 300ms ease-in-out;
   }
+
+  .required-label::after{
+    content: '*';
+    color: red;
+    margin-left: 5px;
+    }
 
 
 </style>

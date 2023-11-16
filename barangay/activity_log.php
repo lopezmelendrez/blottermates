@@ -3,6 +3,12 @@ include '../config.php'; // Include your database configuration
 
 $activityLogQuery = "
 
+(SELECT 'lupon_accounts' AS source, la.timestamp AS formatted_timestamp, CONCAT(la.first_name, ' ', la.last_name, ' has registered as Lupon.') AS activity, NULL AS incident_case_number, NULL AS submitter_first_name, NULL AS submitter_last_name
+FROM lupon_accounts la
+WHERE la.pb_Id = $pb_id)
+
+UNION
+
     (SELECT 'execution_notice' AS source, en.incident_case_number, en.timestamp AS formatted_timestamp, CONCAT('User has validated the agreement for execution for Case #', en.incident_case_number) AS activity, NULL AS submitter_first_name, NULL AS submitter_last_name
     FROM execution_notice en
     INNER JOIN hearing h ON en.incident_case_number = h.incident_case_number

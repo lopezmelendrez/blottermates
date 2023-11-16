@@ -128,53 +128,75 @@ if (!$result) {
     <section class="home" style="margin-left: -0.3%; margin-top: 3%;">
 
         <h1 style="margin-left: 4%; margin-top: -2.3%; display: flex; font-size: 48px;">ACCOUNT MANAGEMENT</h1>
-        
-        <table>
-    <thead>
-        <tr>
-            <th>Name</th>
-            <th>Email Address</th>
-            <th style="padding: 13px;">Status</th>
-            <th style="padding: 14px;">Created At</th>
-            <th>Actions</th>
-        </tr>
-    </thead>
-    <tbody>
-    <?php
+
+        <?php
+        // Check if there are no rows in the result
+        if (mysqli_num_rows($result) == 0) {
+            echo '<div class="text-box" style="margin-left: 30%;
+            margin-top: 15%;
+            background: #b9bbb6;
+            border-radius: 5px;
+            color: #fff;
+            font-size: 35px;
+            width: 500px;
+            padding: 13px 13px;
+            text-align: center;
+            letter-spacing: 1;
+            text-transform: uppercase;">No Registered Lupon Accounts Found</div>';
+        } else {
+            echo '<table>';
+            echo '<thead>';
+            echo '<tr>';
+            echo '<th>Name</th>';
+            echo '<th>Email Address</th>';
+            echo '<th style="padding: 13px;">Status</th>';
+            echo '<th style="padding: 14px;">Created At</th>';
+            echo '<th>Actions</th>';
+            echo '</tr>';
+            echo '</thead>';
+            echo '<tbody>';
+            
             // Loop through the fetched records and display them in the table
             while ($row = mysqli_fetch_assoc($result)) {
                 echo '<tr>';
                 echo '<td>' . $row['first_name'] . ' ' . $row['last_name'] . '</td>';
                 echo '<td>' . $row['email_address'] . '</td>';
-$status = $row['login_status'];
-$displayStatus = ($status == 'active') ? '<span style="color: green; font-weight: 600;">ONLINE</span>' : (($status == 'disabled') ? '<span style="color: #bc1823; font-weight: 600;">DISABLED</span>' : '<span style="color: black; font-weight: 600;">OFFLINE</span>');
-echo '<td>' . $displayStatus . '</td>';              
-                echo '<td>' . $row['verification_date'] . '</td>';
+                $status = $row['login_status'];
+                $displayStatus = ($status == 'active') ? '<span style="color: green; font-weight: 600;">ONLINE</span>' : (($status == 'disabled') ? '<span style="color: #bc1823; font-weight: 600;">DISABLED</span>' : '<span style="color: black; font-weight: 600;">OFFLINE</span>');
+                echo '<td>' . $displayStatus . '</td>';
+                echo '<td>' . date('d F Y - h:i A', strtotime($row['timestamp'])) . '</td>';
                 echo '<td class="actions">';
                 echo '<button class="btn view" onclick="showViewPopup()">View</button>';
                 echo '<form action="remove_user.php" method="post" class="remove-form" onsubmit="return confirmDelete()">';
-echo '<input type="hidden" name="luponId" value="' . $row['lupon_id'] . '">';
-echo '<button type="submit" class="btn remove">Remove</button>';
-echo '</form>';
-if ($status == 'disabled') {
-        // Display Activate button for disabled users
-        echo '<form action="activate_user.php" method="post" class="activate-form" onsubmit="return confirmActivate()">';
-        echo '<input type="hidden" name="luponId" value="' . $row['lupon_id'] . '">';
-        echo '<button type="submit" class="btn activate">Activate</button>';
-        echo '</form>';// Display Disable button for active users
-} else {
-    echo '<form action="disable_user.php" method="post" class="disable-form" onsubmit="return confirmDisable()">';
-    echo '<input type="hidden" name="luponId" value="' . $row['lupon_id'] . '">';
-    echo '<button type="submit" class="btn disable">Disable</button>';
-    echo '</form>';
-}
+                echo '<input type="hidden" name="luponId" value="' . $row['lupon_id'] . '">';
+                echo '<button type="submit" class="btn remove">Remove</button>';
+                echo '</form>';
+                
+                if ($status == 'disabled') {
+                    // Display Activate button for disabled users
+                    echo '<form action="activate_user.php" method="post" class="activate-form" onsubmit="return confirmActivate()">';
+                    echo '<input type="hidden" name="luponId" value="' . $row['lupon_id'] . '">';
+                    echo '<button type="submit" class="btn activate">Activate</button>';
+                    echo '</form>';
+                } else {
+                    // Display Disable button for active users
+                    echo '<form action="disable_user.php" method="post" class="disable-form" onsubmit="return confirmDisable()">';
+                    echo '<input type="hidden" name="luponId" value="' . $row['lupon_id'] . '">';
+                    echo '<button type="submit" class="btn disable">Disable</button>';
+                    echo '</form>';
+                }
 
                 echo '</td>';
                 echo '</tr>';
             }
-            ?>
-    </tbody>
-</table>
+
+            echo '</tbody>';
+            echo '</table>';
+        }
+        ?>
+
+        
+        
 
 <div id="view_popup" class="popup">
             <center>
