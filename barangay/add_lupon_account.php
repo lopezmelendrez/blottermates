@@ -251,17 +251,7 @@ if (isset($_POST['submit'])) {
             sidebar.classList.remove("close");
         })
 
-        modeSwitch.addEventListener("click" , () =>{
-            body.classList.toggle("dark");
-            
-            if(body.classList.contains("dark")){
-                modeText.innerText = "Light mode";
-            }else{
-                modeText.innerText = "Dark mode";
-                
-            }
-        });
-
+       
 // Get the modal and button elements
 const modal = document.getElementById("signatureModal");
 const openModalBtn = document.getElementById("openModalBtn");

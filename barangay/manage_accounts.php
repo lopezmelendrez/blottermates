@@ -14,6 +14,13 @@ if(!isset($pb_id)){
 header('location: ../index.php');
 }
 
+$query = "SELECT * FROM lupon_accounts WHERE pb_id = '$pb_id'";
+$result = mysqli_query($conn, $query);
+
+if (!$result) {
+    die('Query failed: ' . mysqli_error($conn));
+}
+
 
 ?>
 
@@ -133,41 +140,82 @@ header('location: ../index.php');
         </tr>
     </thead>
     <tbody>
-        <tr>
-            <td>Stella Salle Cruz</td>
-            <td>johndoe@example.com</td>
-            <td>Active</td>
-            <td>2023-11-15</td>
-            <td class="actions">
-                <button class="btn view" onclick="showViewPopup()">View</button>
-                <button class="btn remove" onclick="showRemovePopup()">Remove</button>
-                <button class="btn disable" onclick="showDisablePopup()">Disable</button>
-            </td>
-        </tr>
-        <!-- Add more rows as needed -->
+    <?php
+            // Loop through the fetched records and display them in the table
+            while ($row = mysqli_fetch_assoc($result)) {
+                echo '<tr>';
+                echo '<td>' . $row['first_name'] . ' ' . $row['last_name'] . '</td>';
+                echo '<td>' . $row['email_address'] . '</td>';
+$status = $row['login_status'];
+$displayStatus = ($status == 'active') ? '<span style="color: green; font-weight: 600;">ONLINE</span>' : (($status == 'disabled') ? '<span style="color: #bc1823; font-weight: 600;">DISABLED</span>' : '<span style="color: black; font-weight: 600;">OFFLINE</span>');
+echo '<td>' . $displayStatus . '</td>';              
+                echo '<td>' . $row['verification_date'] . '</td>';
+                echo '<td class="actions">';
+                echo '<button class="btn view" onclick="showViewPopup()">View</button>';
+                echo '<form action="remove_user.php" method="post" class="remove-form" onsubmit="return confirmDelete()">';
+echo '<input type="hidden" name="luponId" value="' . $row['lupon_id'] . '">';
+echo '<button type="submit" class="btn remove">Remove</button>';
+echo '</form>';
+if ($status == 'disabled') {
+        // Display Activate button for disabled users
+        echo '<form action="activate_user.php" method="post" class="activate-form" onsubmit="return confirmActivate()">';
+        echo '<input type="hidden" name="luponId" value="' . $row['lupon_id'] . '">';
+        echo '<button type="submit" class="btn activate">Activate</button>';
+        echo '</form>';// Display Disable button for active users
+} else {
+    echo '<form action="disable_user.php" method="post" class="disable-form" onsubmit="return confirmDisable()">';
+    echo '<input type="hidden" name="luponId" value="' . $row['lupon_id'] . '">';
+    echo '<button type="submit" class="btn disable">Disable</button>';
+    echo '</form>';
+}
+
+                echo '</td>';
+                echo '</tr>';
+            }
+            ?>
     </tbody>
 </table>
 
 <div id="view_popup" class="popup">
             <center>
-            <div class="modal">
-            <button onclick="closeViewPopup()">close</button>
+            <div class="modal" style="display: block;">
+            <div class="modal-title" style="font-size: 28px; font-weight: 500;">VIEW</div>
+            <hr style="border: 1px solid #ccc; margin: 10px 0;">
+            <label style="font-size: 20px; margin-top: 9%;">Number Of Incident Cases Processed By: </label>
+            <p style="font-size: 50px; margin-top: 3%; font-weight: 500;">4</p>
+            <button class="backBtn" onclick="closeViewPopup()" style="margin-top: 6%; width: 150px; padding: 6px 6px; font-weight: 600; background: #fff; border: 1px solid #bc1823; border-radius: 5px; color: #bc1823; margin-left: 325px;">CLOSE</button>
             </div>
             </center>
         </div>
 
         <div id="remove_popup" class="popup">
-            <center>
-            <div class="modal">
-            <button onclick="closeRemovePopup()">close</button>
-            </div>
-            </center>
+    <center>
+        <div class="modal" style="display: block;">
+            <div class="modal-title" style="font-size: 28px; font-weight: 500;">REMOVE</div>
+            <hr style="border: 1px solid #ccc; margin: 10px 0;">
+            <form action="remove_user.php" method="post" class="remove-form">
+                <label style="font-size: 20px; margin-top: 9%;">Proceed with the deletion of this user account?</label>
+                <p style="font-size: 15px; margin-top: 3%; font-weight: 400;">Incident Cases that are processed by this user will not be deleted.</p>
+                <div class="remove-buttons" style="display: flex;">
+                    <button class="backBtn" onclick="closeRemovePopup()" style="margin-top: 8%; width: 120px; padding: 6px 6px; font-weight: 600; background: #fff; border: 1px solid #bc1823; border-radius: 5px; color: #bc1823; margin-left: 210px;">CANCEL</button>
+                    <button type="submit" class="backBtn" id="confirmRemoveBtn" style="margin-top: 8%; width: 180px; padding: 6px 6px; font-weight: 600; background: #bc1823; border: none; border-radius: 5px; color: #fff; margin-left: 5px;">CONFIRM</button>
+                </div>
+            </form>
         </div>
+    </center>
+</div>
 
         <div id="disable_popup" class="popup">
             <center>
-            <div class="modal">
-            <button onclick="closeDisablePopup()">close</button>
+            <div class="modal" style="display: block;">
+            <div class="modal-title" style="font-size: 28px; font-weight: 500;">DISABLE</div>
+            <hr style="border: 1px solid #ccc; margin: 10px 0;">
+            <label style="font-size: 20px; margin-top: 9%;">Temporarily disable user account?</label>
+            <p style="font-size: 15px; margin-top: 3%; font-weight: 400;">Incident Cases that are processed by this user will not be deleted.</p>
+            <div class="remove-buttons" style="display: flex;">
+            <button class="backBtn" onclick="closeDisablePopup()" style="margin-top: 8%; width: 120px; padding: 6px 6px; font-weight: 600; background: #fff; border: 1px solid #bc1823; border-radius: 5px; color: #bc1823; margin-left: 210px;">CANCEL</button>
+            <button class="backBtn" style="margin-top: 8%; width: 180px; padding: 6px 6px; font-weight: 600; background: #bc1823; border: none; border-radius: 5px; color: #fff; margin-left: 5px;">CONFIRM</button>
+            </div>
             </div>
             </center>
         </div>
@@ -208,36 +256,17 @@ header('location: ../index.php');
         popup.style.display = "none";
     }
 
-    function showRemovePopup() {
-        // Get the popup element
-        var popup = document.getElementById("remove_popup");
-
-        // Display the popup
-        popup.style.display = "flex";
-
-
+    function confirmDelete() {
+        return confirm("Are you sure you want to delete this user account?");
     }
 
-    function closeRemovePopup() {
-        var popup = document.getElementById("remove_popup");
-        popup.style.display = "none";
+    function confirmDisable() {
+    return confirm("Are you sure you want to temporarily disable this user account?");
     }
 
-    function showDisablePopup() {
-        // Get the popup element
-        var popup = document.getElementById("disable_popup");
-
-        // Display the popup
-        popup.style.display = "flex";
-
-
+    function confirmActivate() {
+    return confirm("The user will now be authorized to use the account.");
     }
-
-    function closeDisablePopup() {
-        var popup = document.getElementById("disable_popup");
-        popup.style.display = "none";
-    }
-
     </script>
 
     <style>
@@ -423,6 +452,7 @@ header('location: ../index.php');
             margin-bottom: 20px;
             margin-top: 3%;
             margin-left: 4%;
+            border-radius: 5px;
         }
 
         th, td {
@@ -466,6 +496,16 @@ header('location: ../index.php');
             color: white;
         }
 
+        .activate {
+            background-color: #fee12b;
+            color: white;
+        }
+
+        .activate:hover {
+        background-color: #fcd12a; 
+        color: white;/* Adjust the color to a darker shade */
+    }
+
         .view:hover {
     background-color: #388e3c; 
     color: #fff;
@@ -495,14 +535,14 @@ header('location: ../index.php');
 }
 
 .modal {
-    display: flex; /* or display: none; depending on your initial state */
+    display: flex;
     background-color: #fff;
     padding: 20px;
     border-radius: 5px;
     margin-top: 180px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    width: 500px;
-    height: 280px;
+    width: 520px;
+    height: 350px;
     overflow-y: hidden;
     margin-left: 30%;
 }
@@ -516,6 +556,7 @@ header('location: ../index.php');
       color:#bc1823;
       z-index: 1002;
     }
+
 
 
     </style>

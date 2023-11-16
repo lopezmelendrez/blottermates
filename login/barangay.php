@@ -32,7 +32,10 @@ if (isset($_POST['submit'])) {
         if (mysqli_num_rows($result) == 1) {
             $row = mysqli_fetch_assoc($result);
 
-            if (password_verify($password, $row['password'])) {
+            if ($row['login_status'] == 'disabled') {
+                // Display message if the account is disabled
+                echo 'The Account is temporarily disabled. Contact the Punong Barangay for assistance.';
+            } elseif (password_verify($password, $row['password'])) {
                 $updateQuery = "UPDATE lupon_accounts SET login_status = 'active' WHERE email_address = '$email'";
                 mysqli_query($conn, $updateQuery);
 

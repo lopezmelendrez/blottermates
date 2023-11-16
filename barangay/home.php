@@ -127,7 +127,7 @@ header('location: ../index.php');
                 <div class="date" style="font-size: 24px; width: 24rem;"></div>
             </div>
 
-            <a href="add_lupon_account.php" style="text-decoration: none; margin-left: 1%;"><div class="add-account" style="display: flex; margin-top: 95px; width: 68%;">
+            <a href="add_lupon_account.php" style="text-decoration: none; margin-left: 1%;"><div class="add-account" style="display: flex; margin-top: 75px; width: 68%;">
                 <i class='bx bx-folder-plus'></i>
                 <p>Add Lupon Account</p>
             </div></a>
