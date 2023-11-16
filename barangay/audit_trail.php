@@ -217,7 +217,8 @@ if ($result && mysqli_num_rows($result) > 0) {
         .activity-history{
             margin-top: 3%;
             width: 1190px;
-            font-size: 16px;
+            font-size: 14px;
+            margin-left: 16%;
         }
 
         .activity-date {
@@ -226,6 +227,7 @@ if ($result && mysqli_num_rows($result) > 0) {
             border-radius: 4px;
             padding: 10px;
             font-weight: bold;
+            font-size: 15px;
         }
 
         .activity {
