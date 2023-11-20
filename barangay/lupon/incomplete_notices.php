@@ -83,11 +83,9 @@ FROM `incident_report`
 LEFT JOIN `notify_residents` ON incident_report.incident_case_number = notify_residents.incident_case_number
 LEFT JOIN `amicable_settlement` ON incident_report.incident_case_number = amicable_settlement.incident_case_number
 WHERE (generate_summon = 'not generated' OR generate_hearing = 'not generated' OR generate_pangkat = 'not generated' OR generate_summon IS NULL OR generate_hearing IS NULL OR generate_pangkat IS NULL)
-AND amicable_settlement.incident_case_number IS NULL
 AND incident_report.pb_id = $pb_id
 AND NOT EXISTS (
     SELECT 1 FROM `hearing` AS h
-    INNER JOIN `amicable_settlement` AS amicable_settlement ON h.hearing_id = amicable_settlement.hearing_id
     WHERE incident_report.incident_case_number = h.incident_case_number
 )
 ORDER BY incident_report.created_at DESC
@@ -96,7 +94,7 @@ ORDER BY incident_report.created_at DESC
 $num_rows = mysqli_num_rows($select);
 
 if ($num_rows === 0) {
-    echo '<tr><td colspan="6" style="font-size: 25px; font-weight: 600; text-transform: uppercase;">no ongoing incident cases yet</td></tr>';
+    echo '<tr><td colspan="6" style="font-size: 25px; font-weight: 600; text-transform: uppercase;">no cases with incomplete notice</td></tr>';
 } else {
     while ($fetch_cases = mysqli_fetch_assoc($select)) {
         $submitter_first_name = $fetch_cases['submitter_first_name'];

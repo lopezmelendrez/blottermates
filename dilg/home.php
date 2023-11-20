@@ -26,7 +26,7 @@ header('location: ../index.php');
     <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="../css/dilg.css">
     <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
-    <title>DILG Dashboard</title>
+    <title>DILG Santa Rosa Dashboard</title>
 </head>
 <body>
     <nav class="sidebar close">
