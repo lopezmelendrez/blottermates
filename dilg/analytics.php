@@ -102,66 +102,9 @@ $result = mysqli_query($conn, $query);
     </nav>
     <section class="home">
 
-    <h1 style="margin-left: 1%; margin-top: -2.3%; display: flex; font-size: 48px;">ACCOUNT MANAGEMENT</h1>
+    <h1 style="margin-left: 1%; margin-top: -2.3%; display: flex; font-size: 48px;">ANALYTICS</h1>
 
-        <div class="container" style="margin-left: -1%; display: flex;">
-
-            <a href="add-barangay-account.php" style="text-decoration: none; margin-left: 1%;"><div class="add-account" style="margin-top: -65px; margin-left: 240%; margin-bottom: 30px; width: 255px;">
-                <i class='bx bx-folder-plus'></i>
-                <p>Add Barangay Account</p>
-            </div></a>
-            </div>
-
-
-        <?php
-                // Check if there are no rows in the result
-                if (mysqli_num_rows($result) == 0) {
-                    echo '<div class="text-box" style="margin-left: 30%;
-                    margin-top: 15%;
-                    background: #b9bbb6;
-                    border-radius: 5px;
-                    color: #fff;
-                    font-size: 35px;
-                    width: 500px;
-                    padding: 13px 13px;
-                    text-align: center;
-                    letter-spacing: 1;
-                    text-transform: uppercase;">No Registered Barangay Accounts Found</div>';
-                } else {
-                    echo '<table>';
-                    echo '<thead>';
-                    echo '<tr>';
-                    echo '<th>Barangay Captain</th>';
-                    echo '<th>Email Address</th>';
-                    echo '<th style="padding: 13px;">Status</th>';
-                    echo '<th style="padding: 14px;">Created At</th>';
-                    echo '<th>Actions</th>';
-                    echo '</tr>';
-                    echo '</thead>';
-                    echo '<tbody>';
-
-                    // Loop through the fetched records and display them in the table
-                    while ($row = mysqli_fetch_assoc($result)) {
-                        echo '<tr>';
-                        echo '<td>' . $row['barangay_captain'] . '</td>';
-                        echo '<td>' . $row['email_address'] . '</td>';
-                        echo '<td></td>';
-                        echo '<td></td>';
-                        echo '<td class="actions">';
-                        echo '<button type="submit" class="btn disable">Disable</button>';
-                        echo '</td>';
-                        echo '</tr>';
-                    }
-
-                    echo '</tbody>';
-                    echo '</table>';
-                }
-                ?>
-
-
-
-
-        </div>
+        
 
     </section>
 

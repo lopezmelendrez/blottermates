@@ -37,8 +37,8 @@ header('location: ../index.php');
                 </span>
 
                 <div class="text logo-text">
-                    <span class="name"><?php echo $first_name ?> <?php echo $last_name ?></span>
-                    <span class="profession"><?php echo $account_role ?></span>
+                    <span class="name"><?php echo $first_name ?> </span>
+                    <span class="profession"><?php echo $last_name ?></span>
                 </div>
             </div>
 
@@ -54,21 +54,21 @@ header('location: ../index.php');
                 </li>
 
                     <li class="nav-link">
-                        <a href="#">
+                        <a href="home.php">
                             <i class='bx bx-home-alt icon' ></i>
                             <span class="text nav-text">Dashboard</span>
                         </a>
                     </li>
 
                     <li class="nav-link">
-                        <a href="#">
-                            <i class='bx bx-bell icon'></i>
-                            <span class="text nav-text">Notifications</span>
+                        <a href="transmittal_reports.php">
+                        <i class="fa-solid fa-receipt icon"></i>
+                            <span class="text nav-text" style="font-size: 16px;">Transmittal Reports</span>
                         </a>
                     </li>
 
                     <li class="nav-link">
-                        <a href="#">
+                        <a href="analytics.php">
                             <i class='bx bx-pie-chart-alt icon' ></i>
                             <span class="text nav-text">Analytics</span>
                         </a>
@@ -80,9 +80,9 @@ header('location: ../index.php');
 
             <div class="bottom-content">
             <li class="">
-                    <a href="#">
-                        <i class='bx bx-user-circle icon' ></i>
-                        <span class="text nav-text">My Account</span>
+                <a href="manage_accounts.php">
+                <i class="fa-solid fa-users-line icon"></i>
+                        <span class="text nav-text">Manage Accounts</span>
                     </a>
                 </li>
 
@@ -93,17 +93,6 @@ header('location: ../index.php');
                     </a>
                 </li>
 
-                <li class="mode">
-                    <div class="sun-moon">
-                        <i class='bx bx-moon icon moon'></i>
-                        <i class='bx bx-sun icon sun'></i>
-                    </div>
-                    <span class="mode-text text">Dark mode</span>
-
-                    <div class="toggle-switch">
-                        <span class="switch"></span>
-                    </div>
-                </li>
                 
             </div>
         </div>
@@ -113,12 +102,12 @@ header('location: ../index.php');
     <section class="home" style="margin-top: -1%;">
         
         <div class="datetime-container" style="display: flex;">
-            <div class="datetime mb-3" style="margin-top: 2%">
+        <div class="datetime mb-3" style="width: 26rem;">
                 <div class="time" id="time"></div>
-                <div class="date" style="font-size: 23px;"></div>
+                <div class="date" style="font-size: 24px; width: 24rem;"></div>
             </div>
 
-            <a href="add-barangay-account.php" style="text-decoration: none; margin-left: 1%;"><div class="add-account" style="display: flex;">
+            <a href="add-barangay-account.php" style="text-decoration: none; margin-left: 1%;"><div class="add-account" style="display: flex; margin-top: 25%;">
                 <i class='bx bx-folder-plus'></i>
                 <p>Add Barangay Account</p>
             </div></a>
@@ -142,20 +131,22 @@ header('location: ../index.php');
 
         ?>
 
-        <div class="ongoing-cases-container" style="margin-left: 866.5px; position: fixed; width: 380px; height: 105px; margin-top: 14px;">
-            <div class="text-box">
-                <p style="padding-top: 8px; font-weight: 400; text-transform: uppercase; text-align: center;">Total Ongoing Incident Cases</p>
-                <p style="padding-bottom: -6px; font-weight: 600; font-size: 50px; margin-top: -30px; text-align: center;"><?php echo $totalOngoingCases; ?></p>
-            </div>
-        </div>
+<div class="lupon-online-box">
+                    <div class="online" style="display: flex; margin-top: -5px;">
+                    <i class='bx bx-notepad' style="font-size: 35px; font-weight: 500; margin-top: -4px; margin-left: -5px;"></i>
+                    <p style="margin-top: 1.5px; margin-left: -30px; width: 17rem;">ONGOING CASES</p>
+                    <p style="margin-left: 22px; margin-top: -1px; font-weight: 600; font-size: 20px;">(<?php echo $totalOngoingCases ?>)</p>
+                    </div>
+                </div>
         </div>
 
 
         <div class="incident-case-table" style="display: flex; height: 350px; width: 535px;">
     <div class="head-text">
-        <p class="incident-case" style="font-size: 22px;">Top Barangays with Ongoing Incident Cases</p>
+        <p class="incident-case" style="font-size: 22px;">Incident Cases</p>
+        <p class="notice-records">* Barangays with the Most Number of Ongoing Incident Cases</p>
         <div class="table-container" style="max-height: 283px; overflow-y: hidden; margin-top: -6%;">
-            <hr style="border: 1px solid #ebecf0; margin: 3px 0; width: 100%; margin-top: 3%">
+            <hr style="border: 1px solid #3d3d3d; margin: 3px 0; width: 90%; margin-top: 5%">
             <table class="incident-table" style="width: 530px; margin-top: 3%;">
             <?php
         $select = mysqli_query($conn, "SELECT pb.barangay AS barangay, COUNT(ir.incident_case_number) AS total_cases
@@ -176,28 +167,82 @@ header('location: ../index.php');
         
         while ($row = mysqli_fetch_assoc($select)) {
             echo "<tr>";
-            echo "<td>" . $row['barangay'] . "</td>";
-            
-            echo "<td>" . $row['total_cases'] . "</td>";
+            echo "<td style='font-size: 18px; font-weight: 500; border-bottom: 2px solid #ebecf0; padding-bottom: 15px; width: 90%;'>" . $row['barangay'] . "</td>";
+            echo "<td style='position: fixed; margin-left: -4%; font-size: 22px; font-weight: 600;'>" . $row['total_cases'] . "</td>";
             echo "</tr>";
         }
         ?>
             </table>
+            <a href="activity_history.php" style="text-decoration: none;">
+        <span class="seeall" style="margin-left: 66%;">See All</span></a>
+        </div>
         </div>
     </div>
 </div>
 
-<div class="incident-case-table" style="display: flex; height: 350px; width: 650px; margin-top: -27.1%; margin-left: 44%;">
+<?php
+$queryMonthlyReports = "SELECT pb.barangay AS barangay, 
+                                mr.timestamp AS date_submitted, 
+                                mr.generate_report AS report
+                        FROM `monthly_reports` AS mr
+                        INNER JOIN `pb_accounts` AS pb ON mr.pb_id = pb.pb_id
+                        WHERE MONTH(mr.timestamp) = MONTH(CURRENT_DATE())
+                        AND YEAR(mr.timestamp) = YEAR(CURRENT_DATE())";
+
+$resultMonthlyReports = mysqli_query($conn, $queryMonthlyReports);
+
+?>
+
+<div class="incident-case-table" style="display: flex; height: 350px; width: 625px; margin-top: -28.2%; margin-left: 44%;">
     <div class="head-text">
         <p class="incident-case" style="font-size: 22px;">Monthly Transmittal Reports</p>
-        <div class="table-container" style="max-height: 283px; overflow-y: hidden; margin-top: -6%;">
-            <hr style="border: 1px solid #ebecf0; margin: 3px 0; width: 100%; margin-top: 3%">
-            <table class="incident-table" style="width: 530px; margin-top: 3%;">
-            <p>habol ko 'to wait lang po babygirl mode</p>
+        <p class="notice-records">* For the Month of <em>November</em></p>
+        <div class="table-container" style="max-height: 283px; overflow-y: hidden; margin-top: -6%; width: 570px;">
+            <hr style="border: 1px solid #3d3d3d; margin: 10px 0; width: 100%; margin-top: 5%">
+            <table class="incident-table" style="width: 570px; margin-top: 3%;">
+                <tr>
+                    <th style="font-weight: 400;">Barangay</th>
+                    <th style="font-weight: 400;">Date Submitted</th>
+                    <th style="font-weight: 400;">Report</th>
+                </tr>
+
+                <?php
+                // Check if there are any reports
+                if (mysqli_num_rows($resultMonthlyReports) > 0) {
+                    // Loop through the results and display each row
+                    while ($row = mysqli_fetch_assoc($resultMonthlyReports)) {
+                        echo "<tr>";
+                        echo "<td style='font-size: 14px;'>" . $row['barangay'] . "</td>";
+                        echo "<td style='font-size: 14px;'>" . date('M d, Y', strtotime($row['date_submitted'])) . "</td>";
+                        echo '<td style="font-size: 14px;"><a href="" style="text-decoration: none;"><span class="summon-record">View</span><a/></td>';
+                        echo "</tr>";
+                        
+                    }
+                } else {
+                    // If there are no reports, display a message
+                    echo "<tr>";
+                    echo "<td colspan='3' style='margin-left: 30%;
+                    background: #b9bbb6;
+                    border-radius: 5px;
+                    color: #fff;
+                    font-size: 20px;
+                    width: 300px;
+                    padding: 5px 5px;
+                    text-align: center;
+                    letter-spacing: 1;
+                    text-transform: uppercase;'>No Submitted Transmittal Reports Yet</td>";
+                    echo "</tr>";
+                }
+                ?>
+
             </table>
+
+            <a href="transmittal_reports.php" style="text-decoration: none;">
+        <span class="seeall">See All</span></a>
         </div>
     </div>
 </div>
+
 
     
 
@@ -220,17 +265,6 @@ header('location: ../index.php');
         searchBtn.addEventListener("click" , () =>{
             sidebar.classList.remove("close");
         })
-
-        modeSwitch.addEventListener("click" , () =>{
-            body.classList.toggle("dark");
-            
-            if(body.classList.contains("dark")){
-                modeText.innerText = "Light mode";
-            }else{
-                modeText.innerText = "Dark mode";
-                
-            }
-        });
 
         const timeElement = document.querySelector(".time");
 const dateElement = document.querySelector(".date");
@@ -301,6 +335,23 @@ dateElement.textContent = formatDate(now);
 </html>
 
 <style>
+            .home{
+            position: absolute;
+            top: 0;
+            top: 0;
+            left: 250px;
+            height: 100vh;
+            width: calc(100% - 78px);
+            background-color: var(--body-color);
+            transition: var(--tran-05);
+        }
+
+        .sidebar.close ~ .home{
+            left: 78px;
+            height: 100vh;
+            width: calc(100% - 78px);
+        }
+        
     .ongoing-cases-container{
         background: white;
         border-radius: 5px;
@@ -321,6 +372,81 @@ dateElement.textContent = formatDate(now);
         font-size: 25px;
         font-weight: 500;
         display: flex;
+    }
+
+    .lupon-online-box {
+            width: 290px;
+            height: 45px;
+            padding: 12px 12px;
+            background: #fff;
+            border: 2px solid #051094;
+            border-radius: 5px;
+            text-align: center;
+            margin: 10px;
+            position: fixed;
+            right: -10px;
+            top: -10px;
+        }
+        
+        .lupon-online-box p, .lupon-online-box i{
+            font-size: 17px;
+            color: #051094;
+            font-weight: 600;
+            text-transform: uppercase;            
+        }
+
+        .head-text .notice-records{
+    margin-top: -3%;
+    font-style: italic;
+    font-weight: 400;
+    font-size: 14px;
+    color: #c82333;
+
+}
+
+.seeall{
+        font-size: 16px;
+        background: #fff;
+        padding: 4px 4px;
+        color: #363636;
+        border: 1px solid #363636;
+        text-transform: uppercase;
+        border-radius: 0.2rem;
+        cursor: pointer;
+        display: block;
+        width: 8rem;
+        margin-left: 77%;
+        text-align: center;
+        text-decoration: none;
+        margin-top: 2%;
+    }
+
+    .seeall:hover{
+        background: #363636;
+        color: #fff;
+        border: 1px solid #fff;
+        transition: .5s;
+    }
+
+    .summon-record{
+            background: #fff;
+        padding: 2px 2px;
+        color: #2962ff;
+        border: 1px solid #2962ff;
+        text-transform: uppercase;
+        text-align: center;
+        border-radius: 0.2rem;
+        cursor: pointer;
+        display: block;
+        margin-left: -10%;
+        margin-bottom: 5px;
+        width: 65%; 
+    }
+
+    .summon-record:hover{
+        background: #2962ff;
+        color: #fff;
+        transition: .5s;
     }
 
     
