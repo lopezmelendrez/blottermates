@@ -23,7 +23,7 @@ if (isset($_POST['submit_search'])) {
     INNER JOIN `pb_accounts` AS pb ON mr.pb_id = pb.pb_id
     WHERE (MONTH(mr.timestamp) = MONTH(CURRENT_DATE()) AND YEAR(mr.timestamp) = YEAR(CURRENT_DATE()))
     AND pb.barangay LIKE '%$search_case%'
-    ORDER BY mr.timestamp DESC";  // Added ORDER BY clause
+    ORDER BY mr.timestamp ASC";  // Added ORDER BY clause
 } else {
     $query = "SELECT pb.barangay AS barangay, 
         mr.timestamp AS date_submitted, 
@@ -33,7 +33,7 @@ if (isset($_POST['submit_search'])) {
     INNER JOIN `pb_accounts` AS pb ON mr.pb_id = pb.pb_id
     WHERE MONTH(mr.timestamp) = MONTH(CURRENT_DATE())
     AND YEAR(mr.timestamp) = YEAR(CURRENT_DATE())
-    ORDER BY mr.timestamp DESC";  // Added ORDER BY clause
+    ORDER BY mr.timestamp ASC";  // Added ORDER BY clause
 }
 
 $result = mysqli_query($conn, $query);

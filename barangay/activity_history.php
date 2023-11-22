@@ -334,9 +334,6 @@ $result = mysqli_query($conn, $activityLogQuery);
 
         <?php include 'audit_trail.php'; ?>
 
-        
-
-
     </section>
 
     <script>
