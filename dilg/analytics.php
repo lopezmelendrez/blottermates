@@ -104,7 +104,26 @@ $result = mysqli_query($conn, $query);
 
     <h1 style="margin-left: 1%; margin-top: -2.3%; display: flex; font-size: 48px;">ANALYTICS</h1>
 
-        
+    <div class="analytics-box" style="display: flex; justify-content: space-evenly; margin-left: -3%;">
+    <div class="ongoing" style="background:#1565c0; padding: 12px 12px;">
+        Total Ongoing Cases
+    </div>
+    <div class="reports" style="background:#1565c0; padding: 12px 12px;">
+        Monthly Transmittal Reports
+    </div>
+    <div class="barangays" style="background:#1565c0; padding: 12px 12px;">
+        Total Barangays Registered
+    </div>
+    </div>
+
+    <div class="analytics-container" style="display: flex;justify-content: space-evenly; margin-top: 5%;">
+    <div class="cases-box" style="background: #fff; margin-left: -10%; width: 680px; height: 400px;">
+        hello
+    </div>
+    <div class="case-type-box" style="background: #fff; width: 320px; height: 400px;">
+        case type
+    </div>
+    </div>
 
     </section>
 
