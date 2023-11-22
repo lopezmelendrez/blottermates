@@ -267,7 +267,7 @@ table {
             margin-top: 3%;
             margin-left: 1%;
             border-radius: 5px;
-            margin-top: 0%;
+            margin-top: 0.5%;
         }
 
         th, td {
