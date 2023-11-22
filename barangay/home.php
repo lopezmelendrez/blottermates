@@ -326,7 +326,7 @@ header('location: ../index.php');
 
         <div class="table-container" style="max-height: 240px; overflow-y: hidden; margin-top: -6%;">
             <hr style="border: 1px solid #949494; margin: 5px 0; width: 100%; margin-top: 3%;">
-            <table class="incident-table" style="width: 530px;">
+            <table class="incident-table" style="width: 560px;">
                 <tbody>
                                     <?php
                     include 'activity_log.php';

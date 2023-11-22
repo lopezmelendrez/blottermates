@@ -3,6 +3,12 @@ include '../config.php'; // Include your database configuration
 
 $activityLogQuery = "
 
+(SELECT 'lupon_accounts' AS source, la.timestamp AS formatted_timestamp, CONCAT(la.first_name, ' ', la.last_name, ' has registered as Lupon.') AS activity, NULL AS incident_case_number, NULL AS submitter_first_name, NULL AS submitter_last_name
+FROM lupon_accounts la
+WHERE la.pb_Id = $pb_id)
+
+UNION
+
     (SELECT 'execution_notice' AS source, en.incident_case_number, en.timestamp AS formatted_timestamp, CONCAT('User has validated the agreement for execution for Case #', en.incident_case_number) AS activity, NULL AS submitter_first_name, NULL AS submitter_last_name
     FROM execution_notice en
     INNER JOIN hearing h ON en.incident_case_number = h.incident_case_number
@@ -142,7 +148,7 @@ $activityLogQuery = "
                 WHERE pb_id = $pb_id
             )
         ) subquery ON nr.incident_case_number = subquery.incident_case_number
-        WHERE nr.generated_pangkat_timestamp IS NOT NULL
+        WHERE nr.generated_summon_timestamp IS NOT NULL
     )
 
     UNION
@@ -203,35 +209,86 @@ $activityLogQuery = "
     FROM incident_report ir
     INNER JOIN lupon_accounts la ON ir.lupon_id = la.lupon_id
     WHERE la.pb_id = $pb_id)
-
-    UNION
-
-    (
-        SELECT 'lupon_accounts' AS source, la.lupon_id, la.timestamp AS formatted_timestamp, CONCAT('Lupon Account created: ', la.first_name, ' ', la.last_name) AS activity, NULL AS submitter_first_name, NULL AS submitter_last_name
-        FROM lupon_accounts la
-        WHERE la.pb_id = $pb_id
-    )
-
-    
     ORDER BY formatted_timestamp DESC
-    LIMIT 4
 ";
-
-
 
 $result = mysqli_query($conn, $activityLogQuery);
 
 if ($result && mysqli_num_rows($result) > 0) {
-    while ($row = mysqli_fetch_assoc($result)) {
-        echo '<div style="display: flex; justify-content: space-between; margin-bottom: 5px;">';
-        echo '<div style="font-size: 13.5px; positiion: fixed; width: 17rem;">' . $row['activity'] . '</div>';       
-        $formattedTimestamp = date('d M Y - h:i A', strtotime($row['formatted_timestamp']));
-        echo '<div style="color: gray; font-style: italic; font-size: 11px;">• ' . $formattedTimestamp . '</div>';
-        echo '</div>';
-        echo '<hr style="border: 1px solid #bfbfbf; margin: 5px 0; width: 100%; margin-top: 2%;">';
-    }
-} else {
-    echo 'No recent activity found.';
-}
+    $currentDate = null;
 
+    echo '
+    <style>
+        
+        .activity-history{
+            margin-top: 3%;
+            width: 1190px;
+            font-size: 14px;
+            margin-left: 16%;
+        }
+
+        .activity-date {
+            background-color: #f0f0f0;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 10px;
+            font-weight: bold;
+            font-size: 15px;
+        }
+
+        .activity {
+            background: #fff;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin: 10px 0;
+            padding: 20px;
+        }
+
+        .activity-time {
+            color: #777;
+        }
+
+        .text-box{
+            
+        }
+    </style>
+</head>
+<body>
+    <div class="container" style="margin-top: 0.5%;">
+
+    <div class="activity-history" style="width: 880px;">';
+
+    while ($row = mysqli_fetch_assoc($result)) {
+        $formattedTimestamp = date('d M Y', strtotime($row['formatted_timestamp']));
+
+        // Check if the date has changed
+        if ($formattedTimestamp != $currentDate) {
+            // Display the date as a header
+            echo '<div class="activity-date">' . $formattedTimestamp . '</div>';
+            $currentDate = $formattedTimestamp;
+        }
+
+        echo '<div class="activity">';
+        echo '<div class="activity-time">' . date('h:i A', strtotime($row['formatted_timestamp'])) . '</div>';
+        echo $row['activity'];
+        echo '</div>';
+    }
+
+    echo '</div>
+    </div>
+</body>
+</html>';
+} else {
+    echo '<div class="text-box" style="margin-left: 30%;
+    margin-top: 15%;
+    background: #b9bbb6;
+    border-radius: 5px;
+    color: #fff;
+    font-size: 35px;
+    width: 500px;
+    padding: 13px 13px;
+    text-align: center;
+    letter-spacing: 1;
+    text-transform: uppercase;">No Recent Activity Yet.</div>';
+}
 ?>

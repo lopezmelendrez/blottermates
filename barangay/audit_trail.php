@@ -3,12 +3,6 @@ include '../config.php'; // Include your database configuration
 
 $activityLogQuery = "
 
-(SELECT 'lupon_accounts' AS source, la.timestamp AS formatted_timestamp, CONCAT(la.first_name, ' ', la.last_name, ' has registered as Lupon.') AS activity, NULL AS incident_case_number, NULL AS submitter_first_name, NULL AS submitter_last_name
-FROM lupon_accounts la
-WHERE la.pb_Id = $pb_id)
-
-UNION
-
     (SELECT 'execution_notice' AS source, en.incident_case_number, en.timestamp AS formatted_timestamp, CONCAT('User has validated the agreement for execution for Case #', en.incident_case_number) AS activity, NULL AS submitter_first_name, NULL AS submitter_last_name
     FROM execution_notice en
     INNER JOIN hearing h ON en.incident_case_number = h.incident_case_number
@@ -148,7 +142,7 @@ UNION
                 WHERE pb_id = $pb_id
             )
         ) subquery ON nr.incident_case_number = subquery.incident_case_number
-        WHERE nr.generated_summon_timestamp IS NOT NULL
+        WHERE nr.generated_pangkat_timestamp IS NOT NULL
     )
 
     UNION
@@ -209,6 +203,17 @@ UNION
     FROM incident_report ir
     INNER JOIN lupon_accounts la ON ir.lupon_id = la.lupon_id
     WHERE la.pb_id = $pb_id)
+
+    UNION
+
+    (
+        SELECT 'lupon_accounts' AS source, la.lupon_id, la.timestamp AS formatted_timestamp, CONCAT(la.first_name, ' ', la.last_name, ' has been registered as Lupon') AS activity, NULL AS submitter_first_name, NULL AS submitter_last_name
+        FROM lupon_accounts la
+        WHERE la.pb_id = $pb_id
+    )
+
+
+
     ORDER BY formatted_timestamp DESC
 ";
 
@@ -254,7 +259,15 @@ if ($result && mysqli_num_rows($result) > 0) {
     </style>
 </head>
 <body>
-    <div class="container" style="margin-top: 0.5%;">
+    
+<div class="sort-container" style="margin-left: 69.6%; margin-top: 20px;">
+<select id="sort" style="height: 30px;" onchange="loadContent()">
+<option disabled selected>Sort By...</option>
+<option value="latest">From Latest to Oldest</option>
+<option value="oldest">From Oldest to Latest</option>
+</select>
+</div>
+    <div class="container" style="margin-top: -1%;">
 
     <div class="activity-history" style="width: 880px;">';
 
@@ -267,7 +280,7 @@ if ($result && mysqli_num_rows($result) > 0) {
             echo '<div class="activity-date">' . $formattedTimestamp . '</div>';
             $currentDate = $formattedTimestamp;
         }
-
+        
         echo '<div class="activity">';
         echo '<div class="activity-time">' . date('h:i A', strtotime($row['formatted_timestamp'])) . '</div>';
         echo $row['activity'];

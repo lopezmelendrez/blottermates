@@ -13,25 +13,31 @@ if(!isset($account_id)){
 header('location: ../index.php');
 }
 
+if (isset($_GET['pb_id'])) {
+    $pb_id = $_GET['pb_id'];
+
+}
+
+
 if (isset($_POST['submit_search'])) {
     $search_case = mysqli_real_escape_string($conn, $_POST['search_case']);
     $query = "SELECT pb.barangay AS barangay, 
     mr.timestamp AS date_submitted, 
-    mr.generate_report AS report,
-    mr.pb_id as pbId
-FROM `monthly_reports` AS mr
-INNER JOIN `pb_accounts` AS pb ON mr.pb_id = pb.pb_id
-WHERE (MONTH(mr.timestamp) = MONTH(CURRENT_DATE()) AND YEAR(mr.timestamp) = YEAR(CURRENT_DATE()))
-AND pb.barangay LIKE '%$search_case%'";
+    mr.generate_report AS report
+    FROM `monthly_reports` AS mr
+    INNER JOIN `pb_accounts` AS pb ON mr.pb_id = pb.pb_id
+    WHERE (MONTH(mr.timestamp) = MONTH(CURRENT_DATE()) AND YEAR(mr.timestamp) = YEAR(CURRENT_DATE()))
+    AND pb.pb_id = '$pb_id' 
+    AND pb.barangay LIKE '%$search_case%'";
 } else {
     $query = "SELECT pb.barangay AS barangay, 
     mr.timestamp AS date_submitted, 
-    mr.generate_report AS report,
-    mr.pb_id as pbId
-FROM `monthly_reports` AS mr
-INNER JOIN `pb_accounts` AS pb ON mr.pb_id = pb.pb_id
-WHERE MONTH(mr.timestamp) = MONTH(CURRENT_DATE())
-AND YEAR(mr.timestamp) = YEAR(CURRENT_DATE())";
+    mr.generate_report AS report
+    FROM `monthly_reports` AS mr
+    INNER JOIN `pb_accounts` AS pb ON mr.pb_id = pb.pb_id
+    WHERE MONTH(mr.timestamp) = MONTH(CURRENT_DATE())
+    AND YEAR(mr.timestamp) = YEAR(CURRENT_DATE())
+    AND pb.pb_id = '$pb_id'";
 }
 
 
@@ -131,9 +137,16 @@ if (!$result) {
 
     <h1 style="margin-left: 1%; margin-top: -2.3%; display: flex; font-size: 48px;">MONTHLY TRANSMITTAL REPORTS</h1>
 
-    <div class="search-container">
+    <div class="cases-container" style="margin-left: -31%; width: 100%; margin-top: -2%;">
+            <a href="incomplete_notices.php" style="text-decoration: none;">
+            <div class="validate-cases" style="height:40px; width: 470%;" >
+                <p>BARANGAY IBABA</p>
+            </div></a>
+        </div>
+
+    <div class="search-container" style="margin-top: -0.5%;">
             <form action="" method="post">
-                <button class="case-button" style="padding: 0px 12px;">BARANGAY</button>
+                <button class="case-button" style="padding: 0px 12px;">MONTH</button>
                 <input type="text" class="search-input" name="search_case" placeholder="Search...">
                 <button type="submit" name="submit_search" class="search-button" style="padding: 0px 12px;">Search</button>
             </form>
@@ -149,7 +162,6 @@ if (mysqli_num_rows($result) == 0) {
             $barangay = $row['barangay'];
             $dateSubmitted = date('M d, Y', strtotime($row['date_submitted']));
             $transmittalReport = $row['report'];
-            $pbId = $row['pbId'];
 
             echo '<div class="sort-container" style="margin-left: 65.5%; margin-top: 20px;">';
             echo '<select id="sort" style="height: 30px;">';
@@ -162,14 +174,12 @@ if (mysqli_num_rows($result) == 0) {
             echo '<table>';
             echo '<thead>';
             echo '<tr>';
-            echo '<th>BARANGAY</th>';
             echo '<th>DATE SUBMITTED</th>';
             echo '<th>TRANSMITTAL REPORT</th>';
             echo '</tr>';
             echo '</thead>';
             echo '<tbody>';
             echo '<tr>';
-            echo '<td>' . $barangay . '</td>';
             echo '<td>' . $dateSubmitted . '</td>';
     if (!empty($transmittalReport)) {
         echo '<td><span class="generate">VIEW</span></td>';
@@ -179,9 +189,6 @@ if (mysqli_num_rows($result) == 0) {
             echo '</tr>';
             echo '</tbody>';
             echo '</table>';
-            echo '<a href="monthly_reports.php?pb_id=' . urlencode($pbId) . '" style="text-decoration: none;">';
-            echo '<button class="schedule" style="width: 18%; font-size: 14px; margin-left: 82%; margin-top: 10px;">SEE ALL</button>';
-            echo '</a>';
             echo '</div>';
         }
     }
@@ -351,7 +358,7 @@ dateElement.textContent = formatDate(now);
         display: block;
         margin-bottom: 5px;
         width: 10rem;
-        margin-left: 20%;
+        margin-left: 30%;
         text-decoration: none;
         cursor: pointer;
     }

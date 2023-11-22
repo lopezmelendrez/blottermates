@@ -332,7 +332,7 @@ $result = mysqli_query($conn, $activityLogQuery);
         
         <h1 style="margin-left: 4%; margin-top: -2.3%; display: flex; font-size: 48px;">ACTIVITY HISTORY</h1>
 
-        <?php include 'audit_trail.php'; ?>
+        <?php include 'audittrail.php'; ?>
 
         
 
