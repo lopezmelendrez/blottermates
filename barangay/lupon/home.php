@@ -75,17 +75,6 @@ $isEndOfMonth = date('Y-m-t', strtotime($currentDate)) === $currentDate;
 if ($isEndOfMonth) {
     // Default content if it's the end of the month
     $modalContent = '
-    <h3 class="modal-title" style="font-size: 18px; text-align:center;">GENERATE MONTHLY TRANSMITTAL REPORT</h3>
-    <hr style="border: 1px solid #ccc; margin: 10px 0;">
-    <p style="font-size: 15px; text-align: justify; font-weight: 600;">Report generation is only available at the end of the month. Please try again later.</p>
-    <p style="font-size: 14px; text-align: center;">To obtain the report for the previous month, kindly click the button below:</p>
-    <div class="button-container" style="margin-top: 3%;">
-    <a href="download_last_month_report.php" download="Last_Month_Report.pdf" class="backBtn" style="width: 310px; padding: 12px 12px; font-weight: 600; margin-left: 15px; background: #bc1823; color: #fff; text-decoration: none;" target="_blank">DOWNLOAD LAST MONTH REPORT</a>
-    </div>';
-    
-} else {
-    // Alternative content if it's not the end of the month
-    $modalContent = '
     <h3 class="modal-title" style="font-size: 18px; text-align:center;">GENERATE MONTHLY TRANSMITTAL REPORTS</h3>
     <hr style="border: 1px solid #ccc; margin: 10px 0;">
     <p style="font-size: 15px; text-align: justify; font-weight: 600;">By clicking the generate button, the report will be automatically submitted to the DILG.</p>
@@ -95,7 +84,22 @@ if ($isEndOfMonth) {
         <input type="submit" name="submit" value="GENERATE REPORT" class="backBtn" style="width: 310px; padding: 12px 12px; font-weight: 600; margin-left: -5px; background: #bc1823; color: #fff; border: none;"></button>
         </form>
     </div>';
+    
+    
+} else {
+    // Alternative content if it's not the end of the month
+    $modalContent = '
+    <h3 class="modal-title" style="font-size: 18px; text-align:center;">GENERATE MONTHLY TRANSMITTAL REPORT</h3>
+    <hr style="border: 1px solid #ccc; margin: 10px 0;">
+    <p style="font-size: 15px; text-align: justify; font-weight: 600;">Report generation is only available at the end of the month. Please try again later.</p>
+    <p style="font-size: 14px; text-align: center;">To obtain the report for the previous month, kindly click the button below:</p>
+    <div class="button-container" style="margin-top: 3%;">
+    <a href="download_last_month_report.php" download="Last_Month_Report.pdf" class="backBtn" style="width: 310px; padding: 12px 12px; font-weight: 600; margin-left: 15px; background: #bc1823; color: #fff; text-decoration: none;" target="_blank">DOWNLOAD LAST MONTH REPORT</a>
+    </div>';
+    
 }
+
+
 
 
 
