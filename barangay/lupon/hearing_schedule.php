@@ -160,17 +160,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit'])) {
                 }
             });
 
-            // Set time_of_hearing field as readonly
             $('select[name="time_of_hearing"]').prop('disabled', true);
 
-            // Enable time_of_hearing field only when a date is selected
             $('input[name="date_of_hearing"]').change(function () {
                 if ($(this).val() !== "") {
                     $('select[name="time_of_hearing"]').prop('disabled', false);
 
-                    // Disable time options for existing dates
-                    var selectedDate = $(this).val();
-                    disableExistingTimes(selectedDate);
                 } else {
                     $('select[name="time_of_hearing"]').prop('disabled', true);
                 }
