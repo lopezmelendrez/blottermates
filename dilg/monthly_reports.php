@@ -18,6 +18,17 @@ if (isset($_GET['pb_id'])) {
 
 }
 
+$barangayQuery = "SELECT barangay FROM pb_accounts WHERE pb_id = '$pb_id'";
+$barangayResult = mysqli_query($conn, $barangayQuery);
+
+if ($barangayResult) {
+    $barangayRow = mysqli_fetch_assoc($barangayResult);
+    $barangayName = $barangayRow['barangay'];
+} else {
+    // Handle the error or set a default value
+    $barangayName = "Unknown Barangay";
+}
+
 
 if (isset($_POST['submit_search'])) {
     $search_case = mysqli_real_escape_string($conn, $_POST['search_case']);
@@ -137,10 +148,10 @@ if (!$result) {
 
     <h1 style="margin-left: 1%; margin-top: -2.3%; display: flex; font-size: 48px;">MONTHLY TRANSMITTAL REPORTS</h1>
 
-    <div class="cases-container" style="margin-left: -31%; width: 100%; margin-top: -2%;">
+    <div class="cases-container" style="margin-left: -31%; width: 100%; margin-top: -2%; ">
             <a href="incomplete_notices.php" style="text-decoration: none;">
-            <div class="validate-cases" style="height:40px; width: 470%;" >
-                <p>BARANGAY IBABA</p>
+            <div class="validate-cases" style="height:40px; width: 965px; margin-left: 33.5%;" >
+                <p style="text-transform: uppercase;">BRGY. <?php echo $barangayName ?></p>
             </div></a>
         </div>
 
@@ -157,19 +168,21 @@ if (!$result) {
 if (mysqli_num_rows($result) == 0) {
     echo '<div class="text-box">No Monthly Transmittal Reports Found</div>';
 } else {
+
+    echo '<div class="sort-container" style="margin-left: 65.5%; margin-top: 20px;">';
+    echo '<select id="sort" style="height: 30px;">';
+    echo '<option disabled selected>Sort By...</option>';
+    echo '<option value="latest">From Latest to Oldest</option>';
+    echo '<option value="oldest">From Oldest to Latest</option>';
+    echo '</select>';
+    echo '</div>';
+
         while ($row = mysqli_fetch_assoc($result)) {
             // Extract data from the query result
             $barangay = $row['barangay'];
             $dateSubmitted = date('M d, Y', strtotime($row['date_submitted']));
             $transmittalReport = $row['report'];
 
-            echo '<div class="sort-container" style="margin-left: 65.5%; margin-top: 20px;">';
-            echo '<select id="sort" style="height: 30px;">';
-            echo '<option disabled selected>Sort By...</option>';
-            echo '<option value="latest">From Latest to Oldest</option>';
-            echo '<option value="oldest">From Oldest to Latest</option>';
-            echo '</select>';
-            echo '</div>';
             echo '<div class="container" style="margin-top: 1%;">';
             echo '<table>';
             echo '<thead>';
