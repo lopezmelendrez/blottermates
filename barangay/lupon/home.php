@@ -135,7 +135,7 @@ if ($isEndOfMonth) {
                 <div class="date" style="font-size: 24px; width: 24rem;"></div>
             </div>
 
-            <div class="add-account" onclick="showMonthlyReportPopup()" style="display: flex; margin-top: 7%; width: 21.7%;">
+            <div class="add-account" onclick="showMonthlyReportPopup()" style="display: flex; margin-top: 6%; width: 21.7%;">
                 <i class='bx bx-download'></i>
                 <p>Generate Monthly Report</p>
             </div>
