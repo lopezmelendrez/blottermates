@@ -141,7 +141,7 @@ header('location: ../index.php');
         </div>
 
 
-        <div class="incident-case-table" style="display: flex; height: 350px; width: 535px;">
+        <div class="incident-case-table" style="display: flex; height: 450px; width: 535px;">
     <div class="head-text">
         <p class="incident-case" style="font-size: 22px;">Incident Cases</p>
         <p class="notice-records">* Barangays with the Most Number of Ongoing Incident Cases</p>
@@ -193,7 +193,7 @@ $resultMonthlyReports = mysqli_query($conn, $queryMonthlyReports);
 
 ?>
 
-<div class="incident-case-table" style="display: flex; height: 350px; width: 625px; margin-top: -28.2%; margin-left: 44%;">
+<div class="incident-case-table" style="display: flex; height: 450px; width: 625px; margin-top: -36.2%; margin-left: 44%;">
     <div class="head-text">
         <p class="incident-case" style="font-size: 22px;">Monthly Transmittal Reports</p>
         <p class="notice-records">* For the Month of <em>November</em></p>
