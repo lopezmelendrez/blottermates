@@ -4,6 +4,9 @@ include '../config.php';
 
 session_start();
 
+$configFile = file_get_contents('incident_case_types.json'); // Adjust the file path accordingly
+$incidentTypeMap = json_decode($configFile, true);
+
 $account_id = $_SESSION['account_id'];
 $first_name = $_SESSION['first_name'];
 $last_name = $_SESSION['last_name'];
@@ -15,6 +18,9 @@ header('location: ../index.php');
 
 $query = "SELECT * FROM pb_accounts";
 $result = mysqli_query($conn, $query);
+
+date_default_timezone_set('Asia/Manila');
+
 
 ?>
 
@@ -76,8 +82,6 @@ $result = mysqli_query($conn, $query);
                         </a>
                     </li>
 
-
-
             </div>
 
             <div class="bottom-content">
@@ -100,30 +104,146 @@ $result = mysqli_query($conn, $query);
         </div>
 
     </nav>
-    <section class="home">
+    <section class="home" style="margin-left: 1%;">
 
-    <h1 style="margin-left: 1%; margin-top: -2.3%; display: flex; font-size: 48px;">ANALYTICS</h1>
+    <h1 style="margin-left: 3.5%; margin-top: -2%; display: flex; font-size: 48px;">ANALYTICS</h1>
+    <p class="notice-records" style="margin-left: 25%; margin-top: -3.5%; font-size: 16px;">* As of <b><?php echo date('l, d F Y - h:i A'); ?></b></p>
 
-    <div class="analytics-box" style="display: flex; justify-content: space-evenly; margin-left: -3%;">
-    <div class="ongoing" style="background:#1565c0; padding: 12px 12px;">
-        Total Ongoing Cases
-    </div>
-    <div class="reports" style="background:#1565c0; padding: 12px 12px;">
-        Monthly Transmittal Reports
-    </div>
-    <div class="barangays" style="background:#1565c0; padding: 12px 12px;">
-        Total Barangays Registered
-    </div>
-    </div>
+    <center>
+        <div class="container" style="margin-left: -2%;">
+        <div class="row">
+            <div class="col-md-4">
+            <?php
 
-    <div class="analytics-container" style="display: flex;justify-content: space-evenly; margin-top: 5%;">
-    <div class="cases-box" style="background: #fff; margin-left: -10%; width: 680px; height: 400px;">
-        hello
+        $query = "SELECT COUNT(*) AS total_ongoing_cases
+                FROM `incident_report` AS ir
+                INNER JOIN `hearing` AS h ON ir.incident_case_number = h.incident_case_number
+                WHERE h.date_of_hearing IS NOT NULL AND h.time_of_hearing IS NOT NULL
+                AND NOT EXISTS (SELECT 1 FROM `amicable_settlement` AS amicable WHERE h.hearing_id = amicable.hearing_id)";
+
+        $result = mysqli_query($conn, $query);
+
+        if ($result) {
+            $row = mysqli_fetch_assoc($result);
+            $totalOngoingCases = $row['total_ongoing_cases'];
+        } else {
+            $totalOngoingCases = 0; // Handle the case where the query fails.
+        }
+
+        ?>
+
+                <div class="ongoing-cases-box">
+                    <p>Ongoing Cases</p>
+                    <p style="font-size: 30px; margin-top: -8%; font-weight: 600;"><?php echo $totalOngoingCases ?></p>
+                </div>
+            </div>
+            
+            <div class="col-md-4">
+    <?php
+        $queryMonthlyReports = "SELECT COUNT(*) AS total_reports FROM monthly_reports";
+        $resultMonthlyReports = mysqli_query($conn, $queryMonthlyReports);
+
+        if ($resultMonthlyReports) {
+            $rowMonthlyReports = mysqli_fetch_assoc($resultMonthlyReports);
+            $totalMonthlyReports = $rowMonthlyReports['total_reports'];
+        } else {
+            $totalMonthlyReports = 0; // Handle the case where the query fails.
+        }
+    ?>
+    <div class="settled-cases-box">
+        <p>Monthly Transmittal Reports</p>
+        <p style="font-size: 30px; margin-top: -8%; font-weight: 600;"><?php echo $totalMonthlyReports; ?></p>
     </div>
-    <div class="case-type-box" style="background: #fff; width: 320px; height: 400px;">
-        case type
+</div>
+
+
+<div class="col-md-3">
+    <?php
+        $queryRegisteredBarangays = "SELECT COUNT(*) AS total_accounts FROM pb_accounts";
+        $resultRegisteredBarangays = mysqli_query($conn, $queryRegisteredBarangays);
+
+        if ($resultRegisteredBarangays) {
+            $rowRegisteredBarangays = mysqli_fetch_assoc($resultRegisteredBarangays);
+            $totalRegisteredBarangays = $rowRegisteredBarangays['total_accounts'];
+        } else {
+            $totalRegisteredBarangays = 0; // Handle the case where the query fails.
+        }
+    ?>
+    <div class="incomplete-cases-box">
+        <p>Registered Barangays</p>
+        <p style="font-size: 30px; margin-top: -8%; font-weight: 600;"><?php echo $totalRegisteredBarangays; ?></p>
     </div>
+</div>
+
+
+            </center>
+
+            <div class="incident-case-table" style="display: flex; height: 440px; width: 600px;">
+    <div class="head-text">
+        <p class="incident-case" style="font-size: 22px;">Ongoing Incident Cases</p>
+        <div class="table-container" style="max-height: 283px; overflow-y: hidden; margin-top: -6%;">
+            <hr style="border: 1px solid #3d3d3d; margin: 3px 0; width: 100%; margin-top: 5%">
+            <table class="incident-table" style="width: 548px; margin-top: 3%;">
+            <?php
+        $select = mysqli_query($conn, "SELECT pb.barangay AS barangay, COUNT(ir.incident_case_number) AS total_cases
+            FROM `incident_report` AS ir
+            INNER JOIN `hearing` AS h ON ir.incident_case_number = h.incident_case_number
+            INNER JOIN `lupon_accounts` AS la ON ir.lupon_id = la.lupon_id
+            INNER JOIN `pb_accounts` AS pb ON la.pb_id = pb.pb_id
+            WHERE h.date_of_hearing IS NOT NULL
+                AND h.time_of_hearing IS NOT NULL
+                AND NOT EXISTS (
+                    SELECT 1
+                    FROM `amicable_settlement` AS amicable
+                    WHERE h.hearing_id = amicable.hearing_id
+                )
+            GROUP BY pb.barangay
+        ")
+        or die('query failed');
+        
+        while ($row = mysqli_fetch_assoc($select)) {
+            echo "<tr>";
+            echo "<td style='font-size: 14px; font-weight: 500; border-bottom: 2px solid #ebecf0; padding-bottom: 15px; width: 100%;'>Barangay " . $row['barangay'] . "</td>";
+            echo "<td style='position: fixed; margin-left: -4%; font-size: 18px; font-weight: 600;'>" . $row['total_cases'] . "</td>";
+            echo "</tr>";
+        }
+        ?>
+            </table>
+        </div>
+        </div>
     </div>
+</div>
+
+<div class="incident-case-table" style="background-color: #fff; margin-top: -35.5%; width: 480px; margin-left: 55%; height: 440px; border-radius: 5px;">
+<div class="head-text">
+        <p class="incident-case" style="font-size: 22px;">Top Incident Case Type</p>
+        <div class="table-container" style="max-height: 283px; overflow-y: hidden; margin-top: -6%;">
+            <hr style="border: 1px solid #3d3d3d; margin: 3px 0; width: 90%; margin-top: 5%">
+            <table class="incident-table" style="width: 300px; margin-top: 3%;">
+            <?php
+    $select = mysqli_query($conn, "SELECT incident_case_type, COUNT(*) AS total_cases
+        FROM `incident_report`
+        GROUP BY incident_case_type
+        ORDER BY total_cases DESC
+        LIMIT 1")
+    or die('query failed');
+    
+    $row = mysqli_fetch_assoc($select);
+    $rank = 1;
+
+    $description = isset($incidentTypeMap[$row['incident_case_type']]) ? $incidentTypeMap[$row['incident_case_type']] : $row['incident_case_type'];
+
+    echo "<tr>";
+    echo "<td style='position: fixed; margin-left: 0.4%; font-size: 17px; font-weight: 600;'>" . $rank . ".</td>";
+    echo "<td style='position: fixed; margin-left: 1.9%; font-size: 22px; margin-top: -0.3%; font-weight: 600;'>" . $description . "</td>";
+    echo "</tr>";
+?>
+
+            </table>
+        </div>
+        </div>
+    </div>
+</div>
 
     </section>
 
@@ -143,17 +263,6 @@ $result = mysqli_query($conn, $query);
         searchBtn.addEventListener("click" , () =>{
             sidebar.classList.remove("close");
         })
-
-        modeSwitch.addEventListener("click" , () =>{
-            body.classList.toggle("dark");
-            
-            if(body.classList.contains("dark")){
-                modeText.innerText = "Light mode";
-            }else{
-                modeText.innerText = "Dark mode";
-                
-            }
-        });
 
         const timeElement = document.querySelector(".time");
 const dateElement = document.querySelector(".date");
@@ -222,81 +331,78 @@ dateElement.textContent = formatDate(now);
 
 </body>
 <style>
-table {
-            width: 1120px;
-            border-collapse: collapse;
-            margin-bottom: 20px;
-            margin-top: 3%;
-            margin-left: 1%;
-            border-radius: 5px;
-            margin-top: 0%;
-        }
 
-        th, td {
-            border: 1px solid #ddd;
-            padding: 12px 12px;
-            text-align: center;
-
-        }
-
-        th {
-            background-color: #f2f2f2;
-        }
-
-        td{
-            background-color: #fff;
-        }
-
-        .actions {
+.container {
             display: flex;
-            gap: 10px;
-            justify-content: center;
+            justify-content: space-around;
+            margin-right: 20px;
         }
 
-        .btn {
-            padding: 8px 12px;
-            cursor: pointer;
+        .ongoing-cases-box {
+            width: 305px;
+            height: 90px;
+            padding: 12px;
+            border: 2px solid #2E5895;
+            background: #fff;
+            border-radius: 5px;
+            text-align: center;
+            margin: 10px;
+        }
+        
+        .ongoing-cases-box p{
+            font-size: 18px;
+            color: #2E5895;
+            font-weight: 600;
+            text-transform: capitalize;            
         }
 
-        .view {
-            background-color: #4caf50;
-            color: white;
+        .settled-cases-box {
+            width: 305px;
+            height: 90px;
+            padding: 12px;
+            border: 2px solid #F5BE1D;
+            background: #fff;
+            border-radius: 5px;
+            text-align: center;
+            margin: 10px;
+        }
+        
+        .settled-cases-box p{
+            font-size: 18px;
+            color: #F5BE1D;
+            font-weight: 600;
+            text-transform: capitalize;            
         }
 
-        .remove {
-            background-color: #f44336;
-            color: white;
+        .incomplete-cases-box {
+            width: 305px;
+            height: 90px;
+            padding: 12px;
+            border: 2px solid #388e3c;
+            background: #fff;
+            border-radius: 5px;
+            text-align: center;
+            margin: 10px;
+        }
+        
+        .incomplete-cases-box p{
+            font-size: 18px;
+            color: #388e3c;
+            font-weight: 600;
+            text-transform: capitalize;            
         }
 
-        .disable {
-            background-color: #2196f3;
-            color: white;
+        .cases-box{
+            border-radius: 5px;
         }
 
-        .activate {
-            background-color: #fee12b;
-            color: white;
+        .notice-records{
+            margin-top: -1%;
+            font-style: italic;
+            font-weight: 400;
+            font-size: 13px;
+            color: #c82333;
         }
-
-        .activate:hover {
-        background-color: #fcd12a; 
-        color: white;/* Adjust the color to a darker shade */
-    }
-
-        .view:hover {
-    background-color: #388e3c; 
-    color: #fff;
-}
-
-.remove:hover {
-    background-color: #d32f2f;
-    color: #fff;
-}
-
-.disable:hover {
-    background-color: #1565c0; 
-    color: #fff;
-}
 
 </style>
 </html>
