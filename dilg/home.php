@@ -147,7 +147,7 @@ header('location: ../index.php');
         <p class="notice-records">* Barangays with the Most Number of Ongoing Incident Cases</p>
         <div class="table-container" style="max-height: 283px; overflow-y: hidden; margin-top: -6%;">
             <hr style="border: 1px solid #3d3d3d; margin: 3px 0; width: 90%; margin-top: 5%">
-            <table class="incident-table" style="width: 530px; margin-top: 3%;">
+            <table class="incident-table" style="width: 530px; margin-top: 0.5%;">
             <?php
         $select = mysqli_query($conn, "SELECT pb.barangay AS barangay, COUNT(ir.incident_case_number) AS total_cases
             FROM `incident_report` AS ir
@@ -167,13 +167,13 @@ header('location: ../index.php');
         
         while ($row = mysqli_fetch_assoc($select)) {
             echo "<tr>";
-            echo "<td style='font-size: 18px; font-weight: 500; border-bottom: 2px solid #ebecf0; padding-bottom: 15px; width: 90%;'>" . $row['barangay'] . "</td>";
-            echo "<td style='position: fixed; margin-left: -4%; font-size: 22px; font-weight: 600;'>" . $row['total_cases'] . "</td>";
+            echo "<td style='font-size: 18px; font-weight: 500; border-bottom: 2px solid #ebecf0; padding-bottom: 10px; width: 90%; padding-top: 10px;'>" . $row['barangay'] . "</td>";
+            echo "<td style='position: fixed; margin-left: -4%; font-size: 22px; font-weight: 600; padding-top: 10px;'>" . $row['total_cases'] . "</td>";
             echo "</tr>";
         }
         ?>
             </table>
-            <a href="activity_history.php" style="text-decoration: none;">
+            <a href="analytics.php" style="text-decoration: none;">
         <span class="seeall" style="margin-left: 66%;">See All</span></a>
         </div>
         </div>

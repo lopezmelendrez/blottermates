@@ -183,7 +183,7 @@ date_default_timezone_set('Asia/Manila');
         <p class="incident-case" style="font-size: 22px;">Ongoing Incident Cases</p>
         <div class="table-container" style="max-height: 283px; overflow-y: hidden; margin-top: -6%;">
             <hr style="border: 1px solid #3d3d3d; margin: 3px 0; width: 100%; margin-top: 5%">
-            <table class="incident-table" style="width: 548px; margin-top: 3%;">
+            <table class="incident-table" style="width: 548px; margin-top: 0.5%;">
             <?php
         $select = mysqli_query($conn, "SELECT pb.barangay AS barangay, COUNT(ir.incident_case_number) AS total_cases
             FROM `incident_report` AS ir
@@ -203,8 +203,8 @@ date_default_timezone_set('Asia/Manila');
         
         while ($row = mysqli_fetch_assoc($select)) {
             echo "<tr>";
-            echo "<td style='font-size: 14px; font-weight: 500; border-bottom: 2px solid #ebecf0; padding-bottom: 15px; width: 100%;'>Barangay " . $row['barangay'] . "</td>";
-            echo "<td style='position: fixed; margin-left: -4%; font-size: 18px; font-weight: 600;'>" . $row['total_cases'] . "</td>";
+            echo "<td style='font-size: 14px; font-weight: 500; border-bottom: 2px solid #ebecf0; padding-bottom: 10px; width: 100%; padding-top: 10px;'>Barangay " . $row['barangay'] . "</td>";
+            echo "<td style='position: fixed; margin-left: -4%; font-size: 18px; font-weight: 600; padding-top: 10px;'>" . $row['total_cases'] . "</td>";
             echo "</tr>";
         }
         ?>
@@ -214,32 +214,37 @@ date_default_timezone_set('Asia/Manila');
     </div>
 </div>
 
-<div class="incident-case-table" style="background-color: #fff; margin-top: -35.5%; width: 480px; margin-left: 55%; height: 440px; border-radius: 5px;">
+<div class="incident-case-table" style="background-color: #fff; margin-top: -35.5%; width: 450px; margin-left: 55%; height: 440px; border-radius: 5px;">
 <div class="head-text">
         <p class="incident-case" style="font-size: 22px;">Top Incident Case Type</p>
         <div class="table-container" style="max-height: 283px; overflow-y: hidden; margin-top: -6%;">
-            <hr style="border: 1px solid #3d3d3d; margin: 3px 0; width: 90%; margin-top: 5%">
-            <table class="incident-table" style="width: 300px; margin-top: 3%;">
+            <hr style="border: 1px solid #3d3d3d; margin: 3px 0; width: 98%; margin-top: 5%">
             <?php
     $select = mysqli_query($conn, "SELECT incident_case_type, COUNT(*) AS total_cases
         FROM `incident_report`
         GROUP BY incident_case_type
-        ORDER BY total_cases DESC
-        LIMIT 1")
+        ORDER BY total_cases DESC")
     or die('query failed');
-    
-    $row = mysqli_fetch_assoc($select);
+
     $rank = 1;
 
-    $description = isset($incidentTypeMap[$row['incident_case_type']]) ? $incidentTypeMap[$row['incident_case_type']] : $row['incident_case_type'];
+    echo "<table>";  // Start the table here
 
-    echo "<tr>";
-    echo "<td style='position: fixed; margin-left: 0.4%; font-size: 17px; font-weight: 600;'>" . $rank . ".</td>";
-    echo "<td style='position: fixed; margin-left: 1.9%; font-size: 22px; margin-top: -0.3%; font-weight: 600;'>" . $description . "</td>";
-    echo "</tr>";
+    while ($row = mysqli_fetch_assoc($select)) {
+        $description = isset($incidentTypeMap[$row['incident_case_type']]) ? $incidentTypeMap[$row['incident_case_type']] : $row['incident_case_type'];
+
+        echo "<tr>";
+        echo "<td style='font-size: 15px; font-weight: 500; padding-right: 10px;'>" . $rank . ".</td>";
+        echo "<td style='font-size: 18px; font-weight: 600;'>" . $description . "</td>";
+        echo "</tr>";
+
+        $rank++;
+    }
+
+    echo "</table>";  // End the table here
 ?>
 
-            </table>
+
         </div>
         </div>
     </div>
