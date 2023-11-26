@@ -15,7 +15,9 @@ $current_year = date('Y');
 // Fetch the pb_id
 $pb_id_result = mysqli_query($conn, "SELECT pb_id FROM lupon_accounts WHERE email_address = '$email'");
 $pb_id_row = mysqli_fetch_assoc($pb_id_result);
-$pb_id = $pb_id_row['pb_id'];
+
+// Adding leading zero if $pb_id is a single-digit number
+$pb_id = str_pad($pb_id_row['pb_id'], 2, '0', STR_PAD_LEFT);
 
 // Fetch the maximum incident_case_number for the given pb_id and year
 $result = mysqli_query($conn, "SELECT MAX(incident_case_number) AS max_case_number FROM incident_report WHERE pb_id = $pb_id AND incident_case_number LIKE '$current_year%'");
@@ -29,6 +31,7 @@ $next_id_padded = str_pad($next_id, $pad_length, '0', STR_PAD_LEFT);
 
 // Construct the incident_case_number
 $incident_case_number = $current_year . '-' . $next_id_padded . '-' . $pb_id;
+
 
 
 if (isset($_POST['submit'])) {
