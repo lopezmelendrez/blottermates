@@ -243,28 +243,37 @@ LEFT JOIN `notify_residents` ON incident_report.incident_case_number = notify_re
 LEFT JOIN `amicable_settlement` ON incident_report.incident_case_number = amicable_settlement.incident_case_number
 WHERE (generate_summon = 'not generated' OR generate_hearing = 'not generated' OR generate_pangkat = 'not generated' OR generate_summon IS NULL OR generate_hearing IS NULL OR generate_pangkat IS NULL)
 AND incident_report.pb_id = $pb_id
-AND NOT EXISTS (
-    SELECT 1 FROM `hearing` AS h
-    WHERE incident_report.incident_case_number = h.incident_case_number
-)
 ORDER BY incident_report.created_at DESC
 ") or die('query failed');
-
-
 
 if (mysqli_num_rows($select) === 0) {
     echo '<tr><td colspan="3" style="font-size: 22px; font-weight: 600; text-transform: capitalize;">No Incident Cases with Incomplete Notice</td></tr>';
 } else {
     while ($fetchCases = mysqli_fetch_assoc($select)) {
-        echo '<tr>';
-        echo '<td><a href="notice_forms.php?incident_case_number=' . $fetchCases['incident_case_number'] . '" target="_blank">' . $fetchCases['incident_case_number'] . '</a></td>';
-        echo '<td>' . $fetchCases['complainant_last_name'] . ' vs. ' . $fetchCases['respondent_last_name'] . '</td>';
-        echo '<td>' . date("M d, Y", strtotime($fetchCases['created_at'])) . '</td>';
-        echo '</tr>';
+        $incident_case_number = $fetchCases['incident_case_number'];
+        
+        // Check if incident_case_number is found in the hearing table
+        $checkHearingTable = mysqli_query($conn, "SELECT * FROM `hearing` WHERE incident_case_number = '$incident_case_number'");
+        
+        if (mysqli_num_rows($checkHearingTable) === 0) {
+            // If not found, do not display the <a> tag
+            echo '<tr>';
+            echo '<td>' . $incident_case_number . '</td>';
+            echo '<td>' . $fetchCases['complainant_last_name'] . ' vs. ' . $fetchCases['respondent_last_name'] . '</td>';
+            echo '<td>' . date("M d, Y", strtotime($fetchCases['created_at'])) . '</td>';
+            echo '</tr>';
+        } else {
+            // If found, display the <a> tag
+            echo '<tr>';
+            echo '<td><a href="notice_forms.php?incident_case_number=' . $incident_case_number . '" target="_blank">' . $incident_case_number . '</a></td>';
+            echo '<td>' . $fetchCases['complainant_last_name'] . ' vs. ' . $fetchCases['respondent_last_name'] . '</td>';
+            echo '<td>' . date("M d, Y", strtotime($fetchCases['created_at'])) . '</td>';
+            echo '</tr>';
+        }
     }
 }
-
 ?>
+
 
 
             <tbody id="noResults" style="display: none;">
