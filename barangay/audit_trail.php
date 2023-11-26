@@ -256,16 +256,39 @@ if ($result && mysqli_num_rows($result) > 0) {
         .text-box{
             
         }
+
+        .sort-filter-box {
+            background-color: #ccc;
+            padding: 4px;
+            font-size: 15px;
+            border-radius: 4px;
+            margin-right: 10px;
+            width: 100px;
+            font-weight: 600;
+            text-transform: uppercase;
+            text-align: center;
+        }
+
+        .sort-container {
+            margin-left: 60.6%;
+            margin-top: 20px;
+            display: flex;
+            align-items: center;
+        }
+
+        #sort {
+            height: 33px;
+        }
     </style>
 </head>
 <body>
     
-<div class="sort-container" style="margin-left: 69.6%; margin-top: 20px;">
-<select id="sort" style="height: 30px;" onchange="loadContent()">
-<option disabled selected>Sort By...</option>
-<option value="latest">From Latest to Oldest</option>
-<option value="oldest">From Oldest to Latest</option>
-</select>
+<div class="sort-container">
+    <div class="sort-filter-box">Sort By:</div>
+    <select id="sort" onchange="loadContent()">
+        <option value="latest">From Latest to Oldest</option>
+        <option value="oldest">From Oldest to Latest</option>
+    </select>
 </div>
     <div class="container" style="margin-top: -1%;">
 

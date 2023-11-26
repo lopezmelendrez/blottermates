@@ -207,10 +207,17 @@ $activityLogQuery = "
     UNION
 
     (
-        SELECT 'lupon_accounts' AS source, la.lupon_id, la.timestamp AS formatted_timestamp, CONCAT('Lupon Account created: ', la.first_name, ' ', la.last_name) AS activity, NULL AS submitter_first_name, NULL AS submitter_last_name
+        SELECT 
+            'lupon_accounts' AS source, 
+            la.lupon_id, 
+            la.timestamp AS formatted_timestamp, 
+            CONCAT(la.first_name, ' ', la.last_name, ' has been registered as Lupon') AS activity, 
+            NULL AS submitter_first_name, 
+            NULL AS submitter_last_name
         FROM lupon_accounts la
         WHERE la.pb_id = $pb_id
     )
+    
 
     
     ORDER BY formatted_timestamp DESC
