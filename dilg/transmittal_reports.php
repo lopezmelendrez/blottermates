@@ -57,6 +57,8 @@ if (!$result) {
     <link rel="stylesheet" href="../css/lupon_home.css">
     <link rel="stylesheet" href="../css/incidentform.css">
     <link rel="stylesheet" href="../css/lupon.css">
+    <title>Monthly Transmittal Reports</title>
+    <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
 </head>
 <body>
 
@@ -148,9 +150,9 @@ if (!$result) {
         echo '<div class="text-box">No Monthly Transmittal Reports Found</div>';
     } else {
 
-        echo '<div class="sort-container" style="margin-left: 65.5%; margin-top: 20px;">';
-        echo '<select id="sort" style="height: 30px;" onchange="loadContent()">';
-        echo '<option disabled selected>Sort By...</option>';
+        echo '<div class="sort-container">';
+        echo '<div class="sort-filter-box">Sort By:</div>';
+        echo '<select id="sort" onchange="loadContent()">';
         echo '<option value="latest">From Latest to Oldest</option>';
         echo '<option value="oldest">From Oldest to Latest</option>';
         echo '</select>';
@@ -415,6 +417,29 @@ function loadContent() {
     margin-left: 3%;
     cursor: default;
 }
+
+.sort-filter-box {
+            background-color: #ccc;
+            padding: 4px;
+            font-size: 15px;
+            border-radius: 4px;
+            margin-right: 10px;
+            width: 100px;
+            font-weight: 600;
+            text-transform: uppercase;
+            text-align: center;
+        }
+
+        .sort-container {
+            margin-left: 57.2%;
+            margin-top: 20px;
+            display: flex;
+            align-items: center;
+        }
+
+        #sort {
+            height: 33px;
+        }
 
 </style>
 </html>

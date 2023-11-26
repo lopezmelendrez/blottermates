@@ -33,22 +33,24 @@ if ($barangayResult) {
 if (isset($_POST['submit_search'])) {
     $search_case = mysqli_real_escape_string($conn, $_POST['search_case']);
     $query = "SELECT pb.barangay AS barangay, 
-    mr.timestamp AS date_submitted, 
-    mr.generate_report AS report
-    FROM `monthly_reports` AS mr
-    INNER JOIN `pb_accounts` AS pb ON mr.pb_id = pb.pb_id
-    WHERE (MONTH(mr.timestamp) = MONTH(CURRENT_DATE()) AND YEAR(mr.timestamp) = YEAR(CURRENT_DATE()))
-    AND pb.pb_id = '$pb_id' 
-    AND pb.barangay LIKE '%$search_case%'";
+        mr.timestamp AS date_submitted, 
+        mr.generate_report AS report
+        FROM `monthly_reports` AS mr
+        INNER JOIN `pb_accounts` AS pb ON mr.pb_id = pb.pb_id
+        WHERE (MONTH(mr.timestamp) = MONTH(CURRENT_DATE()) AND YEAR(mr.timestamp) = YEAR(CURRENT_DATE()))
+        AND pb.pb_id = '$pb_id' 
+        AND pb.barangay LIKE '%$search_case%'
+        ORDER BY mr.timestamp DESC"; // Order by TIMESTAMP in ascending order
 } else {
     $query = "SELECT pb.barangay AS barangay, 
-    mr.timestamp AS date_submitted, 
-    mr.generate_report AS report
-    FROM `monthly_reports` AS mr
-    INNER JOIN `pb_accounts` AS pb ON mr.pb_id = pb.pb_id
-    WHERE MONTH(mr.timestamp) = MONTH(CURRENT_DATE())
-    AND YEAR(mr.timestamp) = YEAR(CURRENT_DATE())
-    AND pb.pb_id = '$pb_id'";
+        mr.timestamp AS date_submitted, 
+        mr.generate_report AS report
+        FROM `monthly_reports` AS mr
+        INNER JOIN `pb_accounts` AS pb ON mr.pb_id = pb.pb_id
+        WHERE MONTH(mr.timestamp) = MONTH(CURRENT_DATE())
+        AND YEAR(mr.timestamp) = YEAR(CURRENT_DATE())
+        AND pb.pb_id = '$pb_id'
+        ORDER BY mr.timestamp DESC"; // Order by TIMESTAMP in ascending order
 }
 
 
@@ -73,6 +75,8 @@ if (!$result) {
     <link rel="stylesheet" href="../css/lupon_home.css">
     <link rel="stylesheet" href="../css/incidentform.css">
     <link rel="stylesheet" href="../css/lupon.css">
+    <title>BRGY. <?php echo strtoupper($barangayName); ?>: Monthly Transmittal Report</title>
+    <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
 </head>
 <body>
 <nav class="sidebar close">
@@ -169,9 +173,9 @@ if (mysqli_num_rows($result) == 0) {
     echo '<div class="text-box">No Monthly Transmittal Reports Found</div>';
 } else {
 
-    echo '<div class="sort-container" style="margin-left: 65.5%; margin-top: 20px;">';
-    echo '<select id="sort" style="height: 30px;">';
-    echo '<option disabled selected>Sort By...</option>';
+    echo '<div class="sort-container">';
+    echo '<div class="sort-filter-box">Sort By:</div>';
+    echo '<select id="sort" onchange="loadContent()">';
     echo '<option value="latest">From Latest to Oldest</option>';
     echo '<option value="oldest">From Oldest to Latest</option>';
     echo '</select>';
@@ -303,6 +307,16 @@ timeElement.textContent = formatTime(now);
 dateElement.textContent = formatDate(now);
 }, 200);
 
+//function loadContent() {
+    //const selectedOption = document.getElementById("sort").value;
+
+    //if (selectedOption === "oldest") {
+        //window.location.href = "monthlyreports.php#oldest";
+    //} else if (selectedOption === "latest") {
+       // window.location.href = "monthly_reports.php#latest";
+    //}
+//}
+
     </script>
 
 </body>
@@ -430,6 +444,29 @@ dateElement.textContent = formatDate(now);
     margin-left: 3%;
     cursor: default;
 }
+
+.sort-filter-box {
+            background-color: #ccc;
+            padding: 4px;
+            font-size: 15px;
+            border-radius: 4px;
+            margin-right: 10px;
+            width: 100px;
+            font-weight: 600;
+            text-transform: uppercase;
+            text-align: center;
+        }
+
+        .sort-container {
+            margin-left: 57.2%;
+            margin-top: 20px;
+            display: flex;
+            align-items: center;
+        }
+
+        #sort {
+            height: 33px;
+        }
 
 </style>
 </html>

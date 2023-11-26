@@ -35,6 +35,8 @@ date_default_timezone_set('Asia/Manila');
     <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="../css/dilg.css">
     <link rel="stylesheet" href="../css/lupon_home.css">
+    <title>Analytics</title>
+    <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
 </head>
 <body>
 <nav class="sidebar close">

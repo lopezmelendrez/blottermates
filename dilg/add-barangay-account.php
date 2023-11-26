@@ -75,88 +75,79 @@ if (isset($_POST['submit'])) {
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="../css/dilg.css">
+    <title>Add Barangay Account</title>
+    <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
 </head>
 <body>
 <nav class="sidebar close">
-        <header>
-            <div class="image-text">
-                <span class="image">
-                    <img src="../images/logo.png">
-                </span>
+            <header>
+                <div class="image-text">
+                    <span class="image">
+                        <img src="../images/logo.png">
+                    </span>
 
-                <div class="text logo-text">
-                    <span class="name"><?php echo $first_name ?> <?php echo $last_name ?></span>
-                    <span class="profession"><?php echo $account_role ?></span>
+                    <div class="text logo-text">
+                        <span class="name"><?php echo $first_name ?> </span>
+                        <span class="profession"><?php echo $last_name ?></span>
+                    </div>
                 </div>
-            </div>
 
-            <i class='bx bx-chevron-right toggle'></i>
-        </header>
+                <i class='bx bx-chevron-right toggle'></i>
+            
+            </header>
 
-        <div class="menu-bar">
-            <div class="menu">
+            <div class="menu-bar">
 
-                <li class="search-box">
-                    <i class='bx bx-search icon'></i>
-                    <input type="text" placeholder="Search...">
-                </li>
+                    <div class="menu">
 
-                    <li class="nav-link">
-                        <a href="#">
-                            <i class='bx bx-home-alt icon' ></i>
-                            <span class="text nav-text">Dashboard</span>
-                        </a>
+                        <li class="search-box">
+                            <i class='bx bx-search icon'></i>
+                            <input type="text" placeholder="Search...">
+                        </li>
+
+                        <li class="nav-link">
+                            <a href="home.php">
+                                <i class='bx bx-home-alt icon' ></i>
+                                <span class="text nav-text">Dashboard</span>
+                            </a>
+                        </li>
+
+                        <li class="nav-link">
+                            <a href="transmittal_reports.php">
+                            <i class="fa-solid fa-receipt icon"></i>
+                                <span class="text nav-text" style="font-size: 16px;">Transmittal Reports</span>
+                            </a>
+                        </li>
+
+                        <li class="nav-link">
+                            <a href="analytics.php">
+                                <i class='bx bx-pie-chart-alt icon' ></i>
+                                <span class="text nav-text">Analytics</span>
+                            </a>
+                        </li>
+
+                </div>
+
+                <div class="bottom-content">
+
+                    <li class="">
+                        <a href="manage_accounts.php">
+                        <i class="fa-solid fa-users-line icon"></i>
+                                <span class="text nav-text">Manage Accounts</span>
+                            </a>
                     </li>
 
-                    <li class="nav-link">
-                        <a href="#">
-                            <i class='bx bx-bell icon'></i>
-                            <span class="text nav-text">Notifications</span>
+                    <li class="">
+                        <a href="../logout.php">
+                            <i class='bx bx-log-out icon' ></i>
+                            <span class="text nav-text">Logout</span>
                         </a>
                     </li>
-
-                    <li class="nav-link">
-                        <a href="#">
-                            <i class='bx bx-pie-chart-alt icon' ></i>
-                            <span class="text nav-text">Analytics</span>
-                        </a>
-                    </li>
-
-
+                    
+                </div>
 
             </div>
-
-            <div class="bottom-content">
-            <li class="">
-                    <a href="#">
-                        <i class='bx bx-user-circle icon' ></i>
-                        <span class="text nav-text">My Account</span>
-                    </a>
-                </li>
-
-                <li class="">
-                    <a href="../logout.php">
-                        <i class='bx bx-log-out icon' ></i>
-                        <span class="text nav-text">Logout</span>
-                    </a>
-                </li>
-
-                <li class="mode">
-                    <div class="sun-moon">
-                        <i class='bx bx-moon icon moon'></i>
-                        <i class='bx bx-sun icon sun'></i>
-                    </div>
-                    <span class="mode-text text">Dark mode</span>
-
-                    <div class="toggle-switch">
-                        <span class="switch"></span>
-                    </div>
-                </li>
-                
-            </div>
-        </div>
-
-    </nav>
+        </nav>
 
     <section class="home">
 

@@ -13,28 +13,46 @@ if(!isset($account_id)){
 header('location: ../index.php');
 }
 
+if (isset($_GET['pb_id'])) {
+    $pb_id = $_GET['pb_id'];
+
+}
+
+$barangayQuery = "SELECT barangay FROM pb_accounts WHERE pb_id = '$pb_id'";
+$barangayResult = mysqli_query($conn, $barangayQuery);
+
+if ($barangayResult) {
+    $barangayRow = mysqli_fetch_assoc($barangayResult);
+    $barangayName = $barangayRow['barangay'];
+} else {
+    // Handle the error or set a default value
+    $barangayName = "Unknown Barangay";
+}
+
+
 if (isset($_POST['submit_search'])) {
     $search_case = mysqli_real_escape_string($conn, $_POST['search_case']);
     $query = "SELECT pb.barangay AS barangay, 
-    mr.timestamp AS date_submitted, 
-    mr.generate_report AS report,
-    mr.pb_id as pbId
-    FROM `monthly_reports` AS mr
-    INNER JOIN `pb_accounts` AS pb ON mr.pb_id = pb.pb_id
-    WHERE (MONTH(mr.timestamp) = MONTH(CURRENT_DATE()) AND YEAR(mr.timestamp) = YEAR(CURRENT_DATE()))
-    AND pb.barangay LIKE '%$search_case%'
-    ORDER BY mr.timestamp ASC";  // Added ORDER BY clause
+        mr.timestamp AS date_submitted, 
+        mr.generate_report AS report
+        FROM `monthly_reports` AS mr
+        INNER JOIN `pb_accounts` AS pb ON mr.pb_id = pb.pb_id
+        WHERE (MONTH(mr.timestamp) = MONTH(CURRENT_DATE()) AND YEAR(mr.timestamp) = YEAR(CURRENT_DATE()))
+        AND pb.pb_id = '$pb_id' 
+        AND pb.barangay LIKE '%$search_case%'
+        ORDER BY mr.timestamp DESC"; // Order by TIMESTAMP in ascending order
 } else {
     $query = "SELECT pb.barangay AS barangay, 
         mr.timestamp AS date_submitted, 
-        mr.generate_report AS report,
-        mr.pb_id as pbId
-    FROM `monthly_reports` AS mr
-    INNER JOIN `pb_accounts` AS pb ON mr.pb_id = pb.pb_id
-    WHERE MONTH(mr.timestamp) = MONTH(CURRENT_DATE())
-    AND YEAR(mr.timestamp) = YEAR(CURRENT_DATE())
-    ORDER BY mr.timestamp ASC";  // Added ORDER BY clause
+        mr.generate_report AS report
+        FROM `monthly_reports` AS mr
+        INNER JOIN `pb_accounts` AS pb ON mr.pb_id = pb.pb_id
+        WHERE MONTH(mr.timestamp) = MONTH(CURRENT_DATE())
+        AND YEAR(mr.timestamp) = YEAR(CURRENT_DATE())
+        AND pb.pb_id = '$pb_id'
+        ORDER BY mr.timestamp DESC"; // Order by TIMESTAMP in ascending order
 }
+
 
 $result = mysqli_query($conn, $query);
 
@@ -57,142 +75,141 @@ if (!$result) {
     <link rel="stylesheet" href="../css/lupon_home.css">
     <link rel="stylesheet" href="../css/incidentform.css">
     <link rel="stylesheet" href="../css/lupon.css">
-    <title>Monthly Transmittal Reports</title>
+    <title>BRGY. <?php echo strtoupper($barangayName); ?>: Monthly Transmittal Report</title>
     <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
 </head>
 <body>
+<nav class="sidebar close">
+        <header>
+            <div class="image-text">
+                <span class="image">
+                    <img src="../images/logo.png">
+                </span>
 
-    <nav class="sidebar close">
-            <header>
-                <div class="image-text">
-                    <span class="image">
-                        <img src="../images/logo.png">
-                    </span>
-
-                    <div class="text logo-text">
-                        <span class="name"><?php echo $first_name ?> </span>
-                        <span class="profession"><?php echo $last_name ?></span>
-                    </div>
+                <div class="text logo-text">
+                    <span class="name"><?php echo $first_name ?> </span>
+                    <span class="profession"><?php echo $last_name ?></span>
                 </div>
+            </div>
 
-                <i class='bx bx-chevron-right toggle'></i>
-            
-            </header>
+            <i class='bx bx-chevron-right toggle'></i>
+        </header>
 
-            <div class="menu-bar">
+        <div class="menu-bar">
+            <div class="menu">
 
-                    <div class="menu">
+                <li class="search-box">
+                    <i class='bx bx-search icon'></i>
+                    <input type="text" placeholder="Search...">
+                </li>
 
-                        <li class="search-box">
-                            <i class='bx bx-search icon'></i>
-                            <input type="text" placeholder="Search...">
-                        </li>
-
-                        <li class="nav-link">
-                            <a href="home.php">
-                                <i class='bx bx-home-alt icon' ></i>
-                                <span class="text nav-text">Dashboard</span>
-                            </a>
-                        </li>
-
-                        <li class="nav-link">
-                            <a href="transmittal_reports.php">
-                            <i class="fa-solid fa-receipt icon"></i>
-                                <span class="text nav-text" style="font-size: 16px;">Transmittal Reports</span>
-                            </a>
-                        </li>
-
-                        <li class="nav-link">
-                            <a href="analytics.php">
-                                <i class='bx bx-pie-chart-alt icon' ></i>
-                                <span class="text nav-text">Analytics</span>
-                            </a>
-                        </li>
-
-                </div>
-
-                <div class="bottom-content">
-
-                    <li class="">
-                        <a href="manage_accounts.php">
-                        <i class="fa-solid fa-users-line icon"></i>
-                                <span class="text nav-text">Manage Accounts</span>
-                            </a>
-                    </li>
-
-                    <li class="">
-                        <a href="../logout.php">
-                            <i class='bx bx-log-out icon' ></i>
-                            <span class="text nav-text">Logout</span>
+                    <li class="nav-link">
+                        <a href="home.php">
+                            <i class='bx bx-home-alt icon' ></i>
+                            <span class="text nav-text">Dashboard</span>
                         </a>
                     </li>
-                    
-                </div>
+
+                    <li class="nav-link">
+                        <a href="transmittal_reports.php">
+                        <i class="fa-solid fa-receipt icon"></i>
+                            <span class="text nav-text" style="font-size: 16px;">Transmittal Reports</span>
+                        </a>
+                    </li>
+
+                    <li class="nav-link">
+                        <a href="analytics.php">
+                            <i class='bx bx-pie-chart-alt icon' ></i>
+                            <span class="text nav-text">Analytics</span>
+                        </a>
+                    </li>
+
+
 
             </div>
-        </nav>
 
+            <div class="bottom-content">
+            <li class="">
+                <a href="manage_accounts.php">
+                <i class="fa-solid fa-users-line icon"></i>
+                        <span class="text nav-text">Manage Accounts</span>
+                    </a>
+                </li>
+
+                <li class="">
+                    <a href="../logout.php">
+                        <i class='bx bx-log-out icon' ></i>
+                        <span class="text nav-text">Logout</span>
+                    </a>
+                </li>
+
+                
+            </div>
+        </div>
+
+    </nav>
     <section class="home">
 
     <h1 style="margin-left: 1%; margin-top: -2.3%; display: flex; font-size: 48px;">MONTHLY TRANSMITTAL REPORTS</h1>
 
-    <div class="search-container">
+    <div class="cases-container" style="margin-left: -31%; width: 100%; margin-top: -2%; ">
+            <a href="incomplete_notices.php" style="text-decoration: none;">
+            <div class="validate-cases" style="height:40px; width: 965px; margin-left: 33.5%;" >
+                <p style="text-transform: uppercase;">BRGY. <?php echo $barangayName ?></p>
+            </div></a>
+        </div>
+
+    <div class="search-container" style="margin-top: -0.5%;">
             <form action="" method="post">
-                <button class="case-button" style="padding: 0px 12px;">BARANGAY</button>
+                <button class="case-button" style="padding: 0px 12px;">MONTH</button>
                 <input type="text" class="search-input" name="search_case" placeholder="Search...">
                 <button type="submit" name="submit_search" class="search-button" style="padding: 0px 12px;">Search</button>
             </form>
-    </div>
+        </div>
 
 
-    <?php
-    if (mysqli_num_rows($result) == 0) {
-        echo '<div class="text-box">No Monthly Transmittal Reports Found</div>';
+<?php
+if (mysqli_num_rows($result) == 0) {
+    echo '<div class="text-box">No Monthly Transmittal Reports Found</div>';
+} else {
+
+    echo '<div class="sort-container">';
+    echo '<div class="sort-filter-box">Sort By:</div>';
+    echo '<select id="sort" onchange="loadContent()">';
+    echo '<option value="latest">From Latest to Oldest</option>';
+    echo '<option value="oldest">From Oldest to Latest</option>';
+    echo '</select>';
+    echo '</div>';
+
+        while ($row = mysqli_fetch_assoc($result)) {
+            // Extract data from the query result
+            $barangay = $row['barangay'];
+            $dateSubmitted = date('M d, Y', strtotime($row['date_submitted']));
+            $transmittalReport = $row['report'];
+
+            echo '<div class="container" style="margin-top: 1%;">';
+            echo '<table>';
+            echo '<thead>';
+            echo '<tr>';
+            echo '<th>DATE SUBMITTED</th>';
+            echo '<th>TRANSMITTAL REPORT</th>';
+            echo '</tr>';
+            echo '</thead>';
+            echo '<tbody>';
+            echo '<tr>';
+            echo '<td>' . $dateSubmitted . '</td>';
+    if (!empty($transmittalReport)) {
+        echo '<td><span class="generate">VIEW</span></td>';
     } else {
-
-        echo '<div class="sort-container">';
-        echo '<div class="sort-filter-box">Sort By:</div>';
-        echo '<select id="sort" onchange="loadContent()">';
-        echo '<option value="oldest">From Oldest to Latest</option>';
-        echo '<option value="latest">From Latest to Oldest</option>';
-        echo '</select>';
-        echo '</div>';
-        
-
-            while ($row = mysqli_fetch_assoc($result)) {
-                $barangay = $row['barangay'];
-                $dateSubmitted = date('M d, Y', strtotime($row['date_submitted']));
-                $transmittalReport = $row['report'];
-                $pbId = $row['pbId'];
-
-                echo '<div class="container" style="margin-top: 1%;">';
-                echo '<table>';
-                echo '<thead>';
-                echo '<tr>';
-                echo '<th>BARANGAY</th>';
-                echo '<th>DATE SUBMITTED</th>';
-                echo '<th>TRANSMITTAL REPORT</th>';
-                echo '</tr>';
-                echo '</thead>';
-                echo '<tbody>';
-                echo '<tr>';
-                echo '<td>' . $barangay . '</td>';
-                echo '<td>' . $dateSubmitted . '</td>';
-        if (!empty($transmittalReport)) {
-            echo '<td><span class="generate">VIEW</span></td>';
-        } else {
-            echo '<td></td>';
+        echo '<td></td>';
+    }
+            echo '</tr>';
+            echo '</tbody>';
+            echo '</table>';
+            echo '</div>';
         }
-                echo '</tr>';
-                echo '</tbody>';
-                echo '</table>';
-                echo '<a href="monthly_reports.php?pb_id=' . urlencode($pbId) . '" style="text-decoration: none;">';
-                echo '<button class="schedule" style="width: 18%; font-size: 14px; margin-left: 82%; margin-top: 10px;">SEE ALL</button>';
-                echo '</a>';
-                echo '</div>';
-            }
-        }
-            ?>
+    }
+        ?>
 
 
         
@@ -216,6 +233,16 @@ if (!$result) {
             sidebar.classList.remove("close");
         })
 
+        modeSwitch.addEventListener("click" , () =>{
+            body.classList.toggle("dark");
+            
+            if(body.classList.contains("dark")){
+                modeText.innerText = "Light mode";
+            }else{
+                modeText.innerText = "Dark mode";
+                
+            }
+        });
 
         const timeElement = document.querySelector(".time");
 const dateElement = document.querySelector(".date");
@@ -284,9 +311,9 @@ function loadContent() {
     const selectedOption = document.getElementById("sort").value;
 
     if (selectedOption === "oldest") {
-        window.location.href = "transmittalreports.php#oldest";
+        window.location.href = "monthlyreports.php#oldest";
     } else if (selectedOption === "latest") {
-        window.location.href = "transmittal_reports.php#latest";
+        window.location.href = "monthly_reports.php#latest";
     }
 }
 
@@ -358,7 +385,7 @@ function loadContent() {
         display: block;
         margin-bottom: 5px;
         width: 10rem;
-        margin-left: 20%;
+        margin-left: 30%;
         text-decoration: none;
         cursor: pointer;
     }

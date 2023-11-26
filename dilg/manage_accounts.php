@@ -29,6 +29,8 @@ $result = mysqli_query($conn, $query);
     <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="../css/dilg.css">
     <link rel="stylesheet" href="../css/lupon_home.css">
+    <title>Barangay Accounts</title>
+    <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
 </head>
 <body>
 <nav class="sidebar close">
