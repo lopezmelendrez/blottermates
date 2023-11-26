@@ -11,12 +11,25 @@ if (!isset($email)) {
 }
 
 $current_year = date('Y');
-$result = mysqli_query($conn, "SELECT MAX(incident_id) AS max_id FROM incident_report");
+
+// Fetch the pb_id
+$pb_id_result = mysqli_query($conn, "SELECT pb_id FROM lupon_accounts WHERE email_address = '$email'");
+$pb_id_row = mysqli_fetch_assoc($pb_id_result);
+$pb_id = $pb_id_row['pb_id'];
+
+// Fetch the maximum incident_case_number for the given pb_id and year
+$result = mysqli_query($conn, "SELECT MAX(incident_case_number) AS max_case_number FROM incident_report WHERE pb_id = $pb_id AND incident_case_number LIKE '$current_year%'");
 $row = mysqli_fetch_assoc($result);
-$next_id = $row['max_id'] + 1;
-$pad_length = 4;
+
+// If there are no existing records for the current pb_id and year, start the counter from 1
+$next_id = ($row['max_case_number'] !== null) ? intval(substr($row['max_case_number'], 5, 4)) + 1 : 1;
+
+$pad_length = 4; // Assuming you want a four-digit counter
 $next_id_padded = str_pad($next_id, $pad_length, '0', STR_PAD_LEFT);
-$incident_case_number = $current_year . '-' . $next_id_padded;
+
+// Construct the incident_case_number
+$incident_case_number = $current_year . '-' . $next_id_padded . '-' . $pb_id;
+
 
 if (isset($_POST['submit'])) {
     $complainant_last_name = $_POST['complainant_last_name'];
