@@ -91,13 +91,32 @@ if (isset($_POST['submit'])) {
                         $fetch = mysqli_fetch_assoc($select);
                     }
                 ?>
-                <?php
-    if ($fetch['barangay'] == 'Ibaba') {
-        echo '<span class="image"><img src="../../images/ibaba_logo.png"></span>';
-    } else {
-        echo '<span class="image"><img src="../../images/logo.png"></span>';
-    }
-    ?>
+                               <?php
+if ($fetch['barangay'] == 'Ibaba') {
+    echo '<span class="image"><img src="../../images/ibaba_logo.png"></span>';
+} elseif ($fetch['barangay'] == 'Other') {
+    echo '<span class="image"><img src="../../images/logo.png"></span>';
+} elseif ($fetch['barangay'] == 'Labas') {
+    echo '<span class="image"><img src="../../images/labas.png"></span>';
+} elseif ($fetch['barangay'] == 'Tagapo') {
+    echo '<span class="image"><img src="../../images/tagapo.png"></span>';
+} elseif ($fetch['barangay'] == 'Malusak') {
+    echo '<span class="image"><img src="../../images/malusak.png"></span>';
+} elseif ($fetch['barangay'] == 'Balibago') {
+    echo '<span class="image"><img src="../../images/balibago.png"></span>';
+} elseif ($fetch['barangay'] == 'Caingin') {
+    echo '<span class="image"><img src="../../images/caingin.png"></span>';
+} elseif ($fetch['barangay'] == 'Pook') {
+    echo '<span class="image"><img src="../../images/pooc.png"></span>';
+} elseif ($fetch['barangay'] == 'Aplaya') {
+    echo '<span class="image"><img src="../../images/aplaya.png"></span>';
+} elseif ($fetch['barangay'] == 'Kanluran') {
+    echo '<span class="image"><img src="../../images/kanluran.png"></span>';
+} else {
+    // Default image if the barangay is not matched
+    echo '<span class="image"><img src="../../images/logo.png"></span>';
+}
+?>
                 <div class="text logo-text">
                 
                     <span class="name"><?php echo $fetch['first_name'] . ' ' . $fetch['last_name']; ?></span>

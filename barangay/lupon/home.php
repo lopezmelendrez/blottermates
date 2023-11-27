@@ -1,8 +1,5 @@
 <?php
 
-$configFile = file_get_contents('../../barangays.json');
-$config = json_decode($configFile, true);
-
 include '../../config.php';
 
 session_start();
