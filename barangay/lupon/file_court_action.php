@@ -161,7 +161,7 @@ $fetch_cases = mysqli_fetch_assoc($select);
 $select_hearing = mysqli_query($conn, "SELECT * FROM `hearing` WHERE incident_case_number = '$incident_case_number'") or die('query failed');
 $fetch_hearing = mysqli_fetch_assoc($select_hearing);
 ?>
-                <div class="header-text">File Court Action for Case <?php echo $fetch_cases['incident_case_number']; ?></div>
+                <div class="header-text">File Court Action for Case <?php echo htmlspecialchars(substr($fetch_cases['incident_case_number'], 0, 9)); ?></div>
                 
                 <form action="" method="post" style="height: 425px;">
                 <input type="hidden" name="incident_case_number" value="<?php echo $incident_case_number; ?>">

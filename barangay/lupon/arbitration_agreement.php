@@ -155,7 +155,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit'])) {
         $select = mysqli_query($conn, "SELECT * FROM `incident_report` WHERE incident_case_number = '$incident_case_number'") or die('query failed');
         $fetch_cases = mysqli_fetch_assoc($select);
         ?>
-                <div class="header-text">Arbitration Agreement for Case <?php echo $fetch_cases['incident_case_number']; ?></div>
+                <div class="header-text">Arbitration Agreement for Case <?php echo htmlspecialchars(substr($fetch_cases['incident_case_number'], 0, 9)); ?></div>
                 
                 <form action="" method="post" style="height: 425px;">
                 <input type="hidden" name="incident_case_number" value="<?php echo $incident_case_number; ?>">

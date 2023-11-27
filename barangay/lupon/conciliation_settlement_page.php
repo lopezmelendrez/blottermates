@@ -200,7 +200,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $select = mysqli_query($conn, "SELECT * FROM `incident_report` WHERE incident_case_number = '$incident_case_number'") or die('query failed');
         $fetch_cases = mysqli_fetch_assoc($select);
         ?>
-            <header>Conciliation Hearing Record for Case <?php echo $fetch_cases['incident_case_number']; ?></header>
+            <header>Conciliation Hearing Record for Case <?php echo htmlspecialchars(substr($fetch_cases['incident_case_number'], 0, 9)); ?></header>
             <form action="#" method="post">
             <input type="hidden" name="incident_case_number" value="<?php echo $incident_case_number; ?>">
             <span class="title" style="font-style: italic; font-size: 23px; text-align: center;"><?php echo $fetch_cases['complainant_last_name']; ?> vs. <?php echo $fetch_cases['respondent_last_name']; ?> </span>

@@ -25,7 +25,6 @@ if ($barangayResult) {
     $barangayRow = mysqli_fetch_assoc($barangayResult);
     $barangayName = $barangayRow['barangay'];
 } else {
-    // Handle the error or set a default value
     $barangayName = "Unknown Barangay";
 }
 
@@ -40,7 +39,7 @@ if (isset($_POST['submit_search'])) {
         WHERE (MONTH(mr.timestamp) = MONTH(CURRENT_DATE()) AND YEAR(mr.timestamp) = YEAR(CURRENT_DATE()))
         AND pb.pb_id = '$pb_id' 
         AND pb.barangay LIKE '%$search_case%'
-        ORDER BY mr.timestamp DESC"; // Order by TIMESTAMP in ascending order
+        ORDER BY mr.timestamp DESC"; 
 } else {
     $query = "SELECT pb.barangay AS barangay, 
         mr.timestamp AS date_submitted, 
@@ -50,7 +49,7 @@ if (isset($_POST['submit_search'])) {
         WHERE MONTH(mr.timestamp) = MONTH(CURRENT_DATE())
         AND YEAR(mr.timestamp) = YEAR(CURRENT_DATE())
         AND pb.pb_id = '$pb_id'
-        ORDER BY mr.timestamp DESC"; // Order by TIMESTAMP in ascending order
+        ORDER BY mr.timestamp DESC"; 
 }
 
 
@@ -307,15 +306,15 @@ timeElement.textContent = formatTime(now);
 dateElement.textContent = formatDate(now);
 }, 200);
 
-function loadContent() {
-    const selectedOption = document.getElementById("sort").value;
+//function loadContent() {
+    //const selectedOption = document.getElementById("sort").value;
 
-    if (selectedOption === "oldest") {
-        window.location.href = "monthlyreports.php#oldest";
-    } else if (selectedOption === "latest") {
-        window.location.href = "monthly_reports.php#latest";
-    }
-}
+    //if (selectedOption === "oldest") {
+        //window.location.href = "monthlyreports.php#oldest";
+    //} else if (selectedOption === "latest") {
+       // window.location.href = "monthly_reports.php#latest";
+    //}
+//}
 
     </script>
 

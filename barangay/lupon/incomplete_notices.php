@@ -84,10 +84,6 @@ LEFT JOIN `notify_residents` ON incident_report.incident_case_number = notify_re
 LEFT JOIN `amicable_settlement` ON incident_report.incident_case_number = amicable_settlement.incident_case_number
 WHERE (generate_summon = 'not generated' OR generate_hearing = 'not generated' OR generate_pangkat = 'not generated' OR generate_summon IS NULL OR generate_hearing IS NULL OR generate_pangkat IS NULL)
 AND incident_report.pb_id = $pb_id
-AND NOT EXISTS (
-    SELECT 1 FROM `hearing` AS h
-    WHERE incident_report.incident_case_number = h.incident_case_number
-)
 ORDER BY incident_report.created_at DESC
 ") or die('query failed');
 
@@ -102,7 +98,7 @@ if ($num_rows === 0) {
         $submitter_full_name = $submitter_first_name . ' ' . $submitter_last_name;
         ?>
         <tr>
-            <td style="width: 9rem;"><?php echo $fetch_cases['incident_case_number']; ?></td>
+            <td style="width: 9rem;"><?php echo htmlspecialchars(substr($fetch_cases['incident_case_number'], 0, 9)); ?></td>
             <td><?php echo $fetch_cases['complainant_last_name']; ?> vs. <?php echo $fetch_cases['respondent_last_name']; ?></td>
             <td><?php echo date("F j, Y", strtotime($fetch_cases['created_at'])); ?></td>
             <td><?php echo $submitter_full_name; ?></td>

@@ -123,7 +123,7 @@ while ($row = mysqli_fetch_assoc($result)) {
 
         echo '<div class="container">';
         echo '<div class="top-text" style="display: flex;">';
-        echo '<h3 class="case-no-text" style="font-size: 20px;">Case No. #' . $row['incident_case_number'] . '</h3>';
+        echo '<h3 class="case-no-text" style="font-size: 20px;">Case No. #' . htmlspecialchars(substr($row['incident_case_number'], 0, 9)) . '</h3>';
         echo '</div>';
         if ($schedule_status !== "NO SCHEDULE YET") {
             echo '<div class="top-text" style="display: flex;">';

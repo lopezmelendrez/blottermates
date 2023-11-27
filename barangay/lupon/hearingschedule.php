@@ -82,7 +82,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit'])) {
         $fetch_cases = mysqli_fetch_assoc($select);
         ?>
 
-        <header style="font-size: 22px;">SCHEDULE FOR CASE #<?php echo $fetch_cases['incident_case_number']; ?></header>
+<header style="font-size: 22px;">SCHEDULE FOR CASE #<?php echo htmlspecialchars(substr($fetch_cases['incident_case_number'], 0, 9)); ?></header>
         <form action="" method="post">
             <div class="form first">
                 <div class="details personal">

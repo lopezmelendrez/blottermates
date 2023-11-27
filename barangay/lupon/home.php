@@ -40,7 +40,7 @@ while ($fetchHearing = mysqli_fetch_assoc($selectHearing)) {
     $startDatetime = $dateOfHearing . ' ' . $timeOfHearing;
     
     $event = [
-        'title' => 'CASE NO. #' . $fetchHearing['incident_case_number'],
+        'title' => 'CASE NO. #' . htmlspecialchars(substr($fetchHearing['incident_case_number'], 0, 9)),
         'start' => $startDatetime, 
     ];
 
@@ -258,14 +258,14 @@ if (mysqli_num_rows($select) === 0) {
         if (mysqli_num_rows($checkHearingTable) === 0) {
             // If not found, do not display the <a> tag
             echo '<tr>';
-            echo '<td>' . $incident_case_number . '</td>';
+            echo '<td>' . htmlspecialchars(substr($incident_case_number, 0, 9)) . '</td>';
             echo '<td>' . $fetchCases['complainant_last_name'] . ' vs. ' . $fetchCases['respondent_last_name'] . '</td>';
             echo '<td>' . date("M d, Y", strtotime($fetchCases['created_at'])) . '</td>';
             echo '</tr>';
         } else {
             // If found, display the <a> tag
             echo '<tr>';
-            echo '<td><a href="notice_forms.php?incident_case_number=' . $incident_case_number . '" target="_blank">' . $incident_case_number . '</a></td>';
+            echo '<td><a href="notice_forms.php?incident_case_number=' . $incident_case_number . '" target="_blank">' . htmlspecialchars(substr($incident_case_number, 0, 9)) . '</a></td>';
             echo '<td>' . $fetchCases['complainant_last_name'] . ' vs. ' . $fetchCases['respondent_last_name'] . '</td>';
             echo '<td>' . date("M d, Y", strtotime($fetchCases['created_at'])) . '</td>';
             echo '</tr>';

@@ -113,7 +113,7 @@ while ($fetch_cases = mysqli_fetch_assoc($select)) {
     $incident_case_number = $fetch_cases['incident_case_number'];
         ?>
     <tr>    
-            <td><?php echo $incident_case_number; ?></td>
+    <td><?php echo htmlspecialchars(substr($incident_case_number, 0, 9)); ?></td>
             <td><?php echo $fetch_cases['complainant_last_name']; ?> vs. <?php echo $fetch_cases['respondent_last_name']; ?></td>
             <td><?php echo $fetch_cases['incident_case_type']; ?></td>
             <td>

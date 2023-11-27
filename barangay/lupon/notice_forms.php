@@ -292,7 +292,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['notify_pangkat_submit
         $select = mysqli_query($conn, "SELECT * FROM `incident_report` WHERE incident_case_number = '$incident_case_number'") or die('query failed');
         $fetch_cases = mysqli_fetch_assoc($select);
         ?>
-            <header>NOTICE OF CASE #<?php echo $incident_case_number; ?></header>
+            <header>NOTICE OF CASE #<?php echo htmlspecialchars(substr($incident_case_number, 0, 9)); ?></header>
             <form action="#">
                 <div class="form first">
                     <div class="details personal">

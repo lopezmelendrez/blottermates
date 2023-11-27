@@ -186,7 +186,7 @@ if (isset($_POST['submit'])) {
                     <header class="card-title" style="font-size: 22px;">Create Incident Report Form</header>
                     <hr style="border: 1px solid #ccc; margin: 20px 0;">
                     <div class="case-number-box" style="text-align: center; font-size: 28px;">
-                        <span>INCIDENT CASE #<?php echo $incident_case_number; ?></span>
+                    <span>INCIDENT CASE #<?php echo htmlspecialchars(substr($incident_case_number, 0, 9)); ?></span>
                     </div>
                 </div>
             <form action="#" method="post">
@@ -336,7 +336,7 @@ if (isset($_POST['submit'])) {
 
                 <div class="modal-overlay" id="confirmationModal">
                     <div class="modal">
-                    <h3 class="title-text" style="font-size: 23px; text-align: center;">CONFIRM INCIDENT CASE #<?php echo $incident_case_number; ?> DETAILS</h3>
+                    <h3 class="title-text" style="font-size: 23px; text-align: center;">CONFIRM INCIDENT CASE #<?php echo htmlspecialchars(substr($incident_case_number, 0, 9)); ?> DETAILS</h3>
                 <hr style="border: 1px solid #ccc; margin: 10px 0;">
                 <p style="font-weight: 600; text-align: left; margin-top: 5px; margin-bottom: 15px;">COMPLAINANT DETAILS</p>
                 <div class="details-container" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;">
