@@ -96,13 +96,21 @@ if (!$result) {
             </form>
         </div>
 
+        <!--<div class="sort-container">
+    <div class="sort-filter-box">Sort By:</div>
+    <select id="sort" onchange="loadContent()">
+        <option value="latest">From Latest to Oldest</option>
+        <option value="oldest">From Oldest to Latest</option>
+    </select>
+</div>-->
+
     <?php
 
 if (mysqli_num_rows($result) == 0) {
     echo '<div class="text-box">No Incident Cases found</div>';
 } else {
 
-while ($row = mysqli_fetch_assoc($result)) {
+    while ($row = mysqli_fetch_assoc($result)) {
     $incident_case_number = $row['incident_case_number'];
     
     $check_query = "SELECT COUNT(*) as count FROM amicable_settlement WHERE incident_case_number = '$incident_case_number'";
@@ -133,7 +141,7 @@ while ($row = mysqli_fetch_assoc($result)) {
         if ($schedule_status === "NO SCHEDULE YET") {
             echo '';
         } else {
-            echo '<h3 class="hearing-text" style="font-size: 15px; font-weight: 500; margin-left: 38%;"><b>Hearing Schedule: </b>' . $schedule_status . '</h3>';
+            echo '<h3 class="hearing-text" style="font-size: 15px; font-weight: 500; margin-left: 38%;"><b>Schedule: </b>' . $schedule_status . '</h3>';
         }
         echo '</div>';
 
@@ -278,31 +286,18 @@ while ($row = mysqli_fetch_assoc($result)) {
             sidebar.classList.remove("close");
         })
 
-        modeSwitch.addEventListener("click" , () =>{
-            body.classList.toggle("dark");
-            
-            if(body.classList.contains("dark")){
-                modeText.innerText = "Light mode";
-            }else{
-                modeText.innerText = "Dark mode";
-                
-            }
-        });
-    
         function loadContent() {
-            // Get the value of the selected option
-            const selectedOption = document.getElementById('transactionTableSelect').value;
+    const selectedOption = document.getElementById("sort").value;
 
-            // Perform redirection or load content based on the selected option
-            if (selectedOption === 'ongoing') {
-                window.location.href = 'ongoingcases.php#ongoing';
-            } else if (selectedOption === 'settled') {
-                window.location.href = 'settledcases.php#settled';
-            }
-            else if (selectedOption === 'incomplete') {
-                window.location.href = 'incompletenotices.php#incomplete';
-            }
-        }
+    if (selectedOption === "oldest") {
+        window.location.href = "incident_reports.php?sort=oldest";
+    } else if (selectedOption === "latest") {
+        window.location.href = "incident_reports.php?sort=latest";
+    }
+}
+
+    
+        
 
 
 
@@ -315,7 +310,7 @@ while ($row = mysqli_fetch_assoc($result)) {
         }
 
         .search-input{
-            width: 795px;
+            width: 790px;
             padding: 0 12px;
         }
 
@@ -341,8 +336,9 @@ while ($row = mysqli_fetch_assoc($result)) {
         .container{
             background: #f2f3f5;
             margin-left: 9%;
-            margin-top: 3%;
-            width: 1018px;
+            margin-top: 2%;
+            width: 980px;
+            padding: 20px;
         }
 
         .home{
@@ -425,6 +421,29 @@ while ($row = mysqli_fetch_assoc($result)) {
         letter-spacing: 1;
         text-transform: uppercase;
     }
+
+    .sort-filter-box {
+            background-color: #ccc;
+            padding: 4px;
+            font-size: 15px;
+            border-radius: 4px;
+            margin-right: 10px;
+            width: 100px;
+            font-weight: 600;
+            text-transform: uppercase;
+            text-align: center;
+        }
+
+        .sort-container {
+            margin-left: 63.6%;
+            margin-top: 20px;
+            display: flex;
+            align-items: center;
+        }
+
+        #sort {
+            height: 33px;
+        }
 
     </style>
 
