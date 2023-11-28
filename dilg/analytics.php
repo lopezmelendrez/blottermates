@@ -117,11 +117,13 @@ date_default_timezone_set('Asia/Manila');
             <div class="col-md-4">
             <?php
 
-        $query = "SELECT COUNT(*) AS total_ongoing_cases
-                FROM `incident_report` AS ir
-                INNER JOIN `hearing` AS h ON ir.incident_case_number = h.incident_case_number
-                WHERE h.date_of_hearing IS NOT NULL AND h.time_of_hearing IS NOT NULL
-                AND NOT EXISTS (SELECT 1 FROM `amicable_settlement` AS amicable WHERE h.hearing_id = amicable.hearing_id)";
+$query = "SELECT COUNT(*) AS total_ongoing_cases
+FROM `incident_report` AS ir
+WHERE NOT EXISTS (
+    SELECT 1
+    FROM `amicable_settlement` AS amicable
+    WHERE ir.incident_case_number = amicable.incident_case_number
+)";
 
         $result = mysqli_query($conn, $query);
 
@@ -187,21 +189,15 @@ date_default_timezone_set('Asia/Manila');
             <hr style="border: 1px solid #3d3d3d; margin: 3px 0; width: 100%; margin-top: 5%">
             <table class="incident-table" style="width: 548px; margin-top: 0.5%;">
             <?php
-        $select = mysqli_query($conn, "SELECT pb.barangay AS barangay, COUNT(ir.incident_case_number) AS total_cases
-            FROM `incident_report` AS ir
-            INNER JOIN `hearing` AS h ON ir.incident_case_number = h.incident_case_number
-            INNER JOIN `lupon_accounts` AS la ON ir.lupon_id = la.lupon_id
-            INNER JOIN `pb_accounts` AS pb ON la.pb_id = pb.pb_id
-            WHERE h.date_of_hearing IS NOT NULL
-                AND h.time_of_hearing IS NOT NULL
-                AND NOT EXISTS (
-                    SELECT 1
-                    FROM `amicable_settlement` AS amicable
-                    WHERE h.hearing_id = amicable.hearing_id
-                )
-            GROUP BY pb.barangay
-        ")
-        or die('query failed');
+               $select = mysqli_query($conn, "SELECT pb.barangay AS barangay, COUNT(ir.incident_case_number) AS total_cases
+               FROM `incident_report` AS ir
+               INNER JOIN `lupon_accounts` AS la ON ir.lupon_id = la.lupon_id
+               INNER JOIN `pb_accounts` AS pb ON la.pb_id = pb.pb_id
+               LEFT JOIN `amicable_settlement` AS amicable ON ir.incident_case_number = amicable.incident_case_number
+               WHERE amicable.hearing_id IS NULL
+               GROUP BY pb.barangay
+           ")
+                or die('query failed');
         
         while ($row = mysqli_fetch_assoc($select)) {
             echo "<tr>";

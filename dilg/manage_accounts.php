@@ -147,10 +147,26 @@ $result = mysqli_query($conn, $query);
                         echo '<tr>';
                         echo '<td>' . $row['barangay_captain'] . '</td>';
                         echo '<td>' . $row['email_address'] . '</td>';
-                        echo '<td></td>';
-                        echo '<td></td>';
+                        $status = $row['account_status'];
+                        $displayStatus = ($status == 'active') ? '<span style="color: green; font-weight: 600;">ACTIVE</span>' : (($status == 'disabled') ? '<span style="color: #bc1823; font-weight: 600;">DISABLED</span>' : '<span style="color: black; font-weight: 600;">OFFLINE</span>');
+                        echo '<td>' . $displayStatus . '</td>';
+                        echo '<td>' . (new DateTime($row['created_at']))->format('d M Y') . '</td>';
                         echo '<td class="actions">';
-                        echo '<button type="submit" class="btn disable">Disable</button>';
+                        echo '</form>';
+                
+                if ($status == 'disabled') {
+                    // Display Activate button for disabled users
+                    echo '<form action="activate_user.php" method="post" class="activate-form" onsubmit="return confirmActivate()">';
+                    echo '<input type="hidden" name="pbId" value="' . $row['pb_id'] . '">';
+                    echo '<button type="submit" class="btn activate">Activate</button>';
+                    echo '</form>';
+                } else {
+                    // Display Disable button for active users
+                    echo '<form action="disable_user.php" method="post" class="disable-form" onsubmit="return confirmDisable()">';
+                    echo '<input type="hidden" name="pbId" value="' . $row['pb_id'] . '">';
+                    echo '<button type="submit" class="btn disable">Disable</button>';
+                    echo '</form>';
+                }
                         echo '</td>';
                         echo '</tr>';
                     }
@@ -183,17 +199,6 @@ $result = mysqli_query($conn, $query);
         searchBtn.addEventListener("click" , () =>{
             sidebar.classList.remove("close");
         })
-
-        modeSwitch.addEventListener("click" , () =>{
-            body.classList.toggle("dark");
-            
-            if(body.classList.contains("dark")){
-                modeText.innerText = "Light mode";
-            }else{
-                modeText.innerText = "Dark mode";
-                
-            }
-        });
 
         const timeElement = document.querySelector(".time");
 const dateElement = document.querySelector(".date");
@@ -257,6 +262,15 @@ const now = new Date();
 timeElement.textContent = formatTime(now);
 dateElement.textContent = formatDate(now);
 }, 200);
+
+
+function confirmDisable() {
+    return confirm("Are you sure you want to temporarily disable this user account?");
+    }
+
+    function confirmActivate() {
+    return confirm("The user will now be authorized to use the account.");
+    }
 
     </script>
 
