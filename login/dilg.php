@@ -25,10 +25,10 @@ if(isset($_POST['submit'])){
             header('location: ../dilg/home.php');
             exit();
         } else {
-            echo 'Invalid password. Please try again.';
+            $error = "Invalid Password";
         }
     } else {
-        echo 'Invalid email address or account role. Please try again.';
+        $msgerror = "Email Address not Found";
     }
 }
 ?>
@@ -62,6 +62,22 @@ if(isset($_POST['submit'])){
                 <div class="col-md-6 right-box">
                             <span class="header-text-1" style="font-size: 37.5px; margin-left: -100px;">Login to start session</span>
                             <hr style="border: 1px solid #949494; margin: 20px 0;">
+
+                            <?php if (isset($error) && !empty($error)) { ?>
+        <div class="message d-flex" style="background: #F5E2D1; border: none; border-radius: 5px; width: 100%; margin-top: -1%; padding: 2px 2px; margin-left: 0;">
+            <i class="fa-solid fa-circle-exclamation" style="margin-left: 3%; margin-top: 0.6%; font-size: 20px; color: #D52826;"></i>
+            <span style="margin-left: 2%; font-size: 16px; color: #D52826; font-weight: 600; margin-top: 0.5%;"><?php echo $error; ?></span>
+            <i class="fas fa-times" style="margin-left: 60%; margin-top: 0.4%; color: #D52826; font-size: 24px;" onclick="this.parentElement.remove();"></i>
+        </div>
+    <?php } ?>
+
+    <?php if (isset($msgerror) && !empty($msgerror)) { ?>
+        <div class="message d-flex" style="background: #F5E2D1; border: none; border-radius: 5px; width: 100%; margin-top: -1%; padding: 2px 2px; margin-left: 0;">
+            <i class="fa-solid fa-circle-exclamation" style="margin-left: 3%; margin-top: 0.6%; font-size: 20px; color: #D52826;"></i>
+            <span style="margin-left: 2%; font-size: 16px; color: #D52826; font-weight: 600; margin-top: 0.3%;"><?php echo $msgerror; ?></span>
+            <i class="fas fa-times" style="margin-left: 47%; margin-top: 0.4%; color: #D52826; font-size: 24px;" onclick="this.parentElement.remove();"></i>
+        </div>
+    <?php } ?>
                                
                             <form action="" method="post">
                                 <div class="input-field" style="margin-top: 8%;">
