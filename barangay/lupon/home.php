@@ -62,15 +62,11 @@ if (isset($_POST['submit'])) {
         }
     }
 
-// Get the current date
 $currentDate = date('Y-m-d');
 
-// Check if it's the end of the month
-$isEndOfMonth = date('Y-m-t', strtotime($currentDate)) === $currentDate;
+$isEndOfMonth = (date('d', strtotime($currentDate)) >= 30 && date('m', strtotime($currentDate)) == 12) || date('d', strtotime($currentDate)) == 1;
 
-// Define the content based on the condition
 if ($isEndOfMonth) {
-    // Default content if it's the end of the month
     $modalContent = '
     <h3 class="modal-title" style="font-size: 18px; text-align:center;">GENERATE MONTHLY TRANSMITTAL REPORTS</h3>
     <hr style="border: 1px solid #ccc; margin: 10px 0;">
@@ -84,7 +80,6 @@ if ($isEndOfMonth) {
     
     
 } else {
-    // Alternative content if it's not the end of the month
     $modalContent = '
     <h3 class="modal-title" style="font-size: 18px; text-align:center;">GENERATE MONTHLY TRANSMITTAL REPORT</h3>
     <hr style="border: 1px solid #ccc; margin: 10px 0;">

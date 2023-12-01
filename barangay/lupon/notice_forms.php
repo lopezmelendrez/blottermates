@@ -521,13 +521,14 @@ if ($check_result && mysqli_num_rows($check_result) > 0) {
             <div class="modal">
             <h3 class="modal-title" style="font-size: 18px; text-align:center;">GENERATE SUMMON RECORD CONFIRMATION</h3>
             <hr style="border: 1px solid #ccc; margin: 10px 0;">
-            <p style="font-size: 14px; text-align: justify;">Are you sure you want to generate the form?</p>
+            <p style="font-size: 16px; letter-spacing: 1px; text-align: center; margin-top: 10%; margin-bottom: 10%;">Are you sure you want to generate the form?</p>
+            <hr style="border: 1px solid #ccc; margin: 10px 0;">
             
             <div class="button-container" style="display: flex;">
                 <button class="backBtn" onclick="closeSummonPopup()" style="width: 150px; padding: 12px 12px; font-weight: 600; background: #fff; border: 1px solid #bc1823; color: #bc1823; margin-left: 180px;">NO</button>
                 <form action="" method="post">
                 <input type="hidden" name="incident_case_number" value="<?php echo $incident_case_number; ?>">
-                <input type="submit" name="submit" value="YES" class="backBtn" style="width: 310px; padding: 12px 12px; font-weight: 600; margin-left: -5px;"></button>
+                <input type="submit" name="submit" value="YES" class="backBtn" style="width: 310px; padding: 8px 8px; font-size: 20px; font-weight: 600; margin-left: -5px;"></button>
                 </form>
             </div>
             </div>
@@ -539,13 +540,13 @@ if ($check_result && mysqli_num_rows($check_result) > 0) {
             <div class="modal">
             <h3 class="modal-title" style="font-size: 18px; text-align:center;">GENERATE HEARING NOTICE CONFIRMATION</h3>
             <hr style="border: 1px solid #ccc; margin: 10px 0;">
-            <p style="font-size: 14px; text-align: justify;">Are you sure you want to generate the form?</p>
-            
+            <p style="font-size: 16px; letter-spacing: 1px; text-align: center; margin-top: 10%; margin-bottom: 10%;">Are you sure you want to generate the form?</p>
+            <hr style="border: 1px solid #ccc; margin: 10px 0;">
             <div class="button-container" style="display: flex;">
                 <button class="backBtn" onclick="closeHearingPopup()" style="width: 150px; padding: 12px 12px; font-weight: 600; background: #fff; border: 1px solid #bc1823; color: #bc1823; margin-left: 180px;">NO</button>
                 <form action="" method="post">
                 <input type="hidden" name="incident_case_number" value="<?php echo $incident_case_number; ?>">
-                <input type="submit" name="hearing_submit" value="YES" class="backBtn" style="width: 310px; padding: 12px 12px; font-weight: 600; margin-left: -5px;"></button>
+                <input type="submit" name="hearing_submit" value="YES" class="backBtn" style="width: 310px; padding: 8px 8px; font-weight: 600; margin-left: -5px; font-size: 20px;"></button>
                 </form>
             </div>
             </div>
@@ -557,13 +558,14 @@ if ($check_result && mysqli_num_rows($check_result) > 0) {
             <div class="modal">
             <h3 class="modal-title" style="font-size: 18px; text-align:center;">GENERATE PANGKAT RECORD CONFIRMATION</h3>
             <hr style="border: 1px solid #ccc; margin: 10px 0;">
-            <p style="font-size: 14px; text-align: justify;">Are you sure you want to generate the form?</p>
+            <p style="font-size: 16px; letter-spacing: 1px; text-align: center; margin-top: 10%; margin-bottom: 10%;">Are you sure you want to generate the form?</p>
+            <hr style="border: 1px solid #ccc; margin: 10px 0;">
             
             <div class="button-container" style="display: flex;">
                 <button class="backBtn" onclick="closePangkatPopup()" style="width: 150px; padding: 12px 12px; font-weight: 600; background: #fff; border: 1px solid #bc1823; color: #bc1823; margin-left: 180px;">NO</button>
                 <form action="" method="post">
                 <input type="hidden" name="incident_case_number" value="<?php echo $incident_case_number; ?>">
-                <input type="submit" name="pangkat_submit" value="YES" class="backBtn" style="width: 310px; padding: 12px 12px; font-weight: 600; margin-left: -5px;"></button>
+                <input type="submit" name="pangkat_submit" value="YES" class="backBtn" style="width: 310px; padding: 8px 8px; font-size: 20px; font-weight: 600; margin-left: -5px;"></button>
                 </form>
             </div>
             </div>
@@ -575,13 +577,13 @@ if ($check_result && mysqli_num_rows($check_result) > 0) {
             <div class="modal">
             <h3 class="modal-title" style="font-size: 18px; text-align:center;">NOTIFY COMPLAINANT</h3>
             <hr style="border: 1px solid #ccc; margin: 10px 0;">
-            <p style="font-size: 14px; text-align: justify;">The complainant's contact number will promptly receive their hearing notice details via message.</p>
-            
+            <p style="font-size: 15px; letter-spacing: 1px; text-align: center; margin-top: 8%; margin-bottom: 8%;">The complainant's contact number will promptly receive their hearing notice details via message.</p>
+            <hr style="border: 1px solid #ccc; margin: 10px 0;">
             <div class="button-container" style="display: flex;">
                 <button class="backBtn" onclick="closeNotifyComplainantPopup()" style="width: 150px; padding: 12px 12px; font-weight: 600; background: #fff; border: 1px solid #bc1823; color: #bc1823; margin-left: 180px;">NO</button>
                 <form action="" method="post">
                 <input type="hidden" name="incident_case_number" value="<?php echo $incident_case_number; ?>">
-                <input type="submit" name="notify_complainant_submit" value="YES" class="backBtn" style="width: 310px; padding: 12px 12px; font-weight: 600; margin-left: -5px;"></button>
+                <input type="submit" name="notify_complainant_submit" value="YES" class="backBtn" style="width: 310px; padding: 8px 8px; font-size: 20px; font-weight: 600; margin-left: -5px;"></button>
                 </form>
             </div>
             </div>
@@ -593,13 +595,13 @@ if ($check_result && mysqli_num_rows($check_result) > 0) {
             <div class="modal">
             <h3 class="modal-title" style="font-size: 18px; text-align:center;">NOTIFY RESPONDENT</h3>
             <hr style="border: 1px solid #ccc; margin: 10px 0;">
-            <p style="font-size: 14px; text-align: justify;">The respondent's contact number will promptly receive their hearing notice details via message.</p>
-            
+            <p style="font-size: 15px; letter-spacing: 1px; text-align: center; margin-top: 8%; margin-bottom: 8%;">The respondent's contact number will promptly receive their hearing notice details via message.</p>
+            <hr style="border: 1px solid #ccc; margin: 10px 0;">
             <div class="button-container" style="display: flex;">
                 <button class="backBtn" onclick="closeNotifyRespondentPopup()" style="width: 150px; padding: 12px 12px; font-weight: 600; background: #fff; border: 1px solid #bc1823; color: #bc1823; margin-left: 180px;">NO</button>
                 <form action="" method="post">
                 <input type="hidden" name="incident_case_number" value="<?php echo $incident_case_number; ?>">
-                <input type="submit" name="notify_respondent_submit" value="YES" class="backBtn" style="width: 310px; padding: 12px 12px; font-weight: 600; margin-left: -5px;"></button>
+                <input type="submit" name="notify_respondent_submit" value="YES" class="backBtn" style="width: 310px; padding: 8px 8px; font-size: 20px; font-weight: 600; margin-left: -5px;"></button>
                 </form>
             </div>
             </div>
@@ -611,13 +613,13 @@ if ($check_result && mysqli_num_rows($check_result) > 0) {
             <div class="modal">
             <h3 class="modal-title" style="font-size: 18px; text-align:center;">NOTIFY RESPONDENT FOR PANGKAT</h3>
             <hr style="border: 1px solid #ccc; margin: 10px 0;">
-            <p style="font-size: 14px; text-align: justify;">The respondent's contact number will promptly receive their hearing notice details via message.</p>
-            
+            <p style="font-size: 15px; letter-spacing: 1px; text-align: center; margin-top: 8%; margin-bottom: 8%;">The respondent's contact number will promptly receive their hearing notice details via message.</p>
+            <hr style="border: 1px solid #ccc; margin: 10px 0;">
             <div class="button-container" style="display: flex;">
                 <button class="backBtn" onclick="closeNotifyPangkatPopup()" style="width: 150px; padding: 12px 12px; font-weight: 600; background: #fff; border: 1px solid #bc1823; color: #bc1823; margin-left: 180px;">NO</button>
                 <form action="" method="post">
                 <input type="hidden" name="incident_case_number" value="<?php echo $incident_case_number; ?>">
-                <input type="submit" name="notify_pangkat_submit" value="YES" class="backBtn" style="width: 310px; padding: 12px 12px; font-weight: 600; margin-left: -5px;"></button>
+                <input type="submit" name="notify_pangkat_submit" value="YES" class="backBtn" style="width: 310px; padding: 8px 8px; font-size: 20px; font-weight: 600; margin-left: -5px;"></button>
                 </form>
             </div>
             </div>
