@@ -77,7 +77,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css"/>
     <link rel="icon" type="image/x-icon" href="../../images/favicon.ico">
-    <title>Conciliation Hearing Record</title>
+    <title>Arbitration Hearing Record</title>
 </head>
 <body>
     
@@ -249,10 +249,11 @@ if ($fetch['barangay'] == 'Ibaba') {
             <div class="modal" style="width: 600px; height: 270px;">
             <h3 class="modal-title" style="font-size: 18px; text-align:center;">ARBITRATION HEARING</h3>
             <hr style="border: 1px solid #ccc; margin: 10px 0;">
-            <p style="font-size: 17px; text-align: center; margin-top: 8%; letter-spacing: 1; text-transform: uppercase;">Would you like to proceed with the creation of the Settlement record, or reschedule the hearing?</p>
+            <p style="font-size: 17px; text-align: center; margin-top: 4%; margin-bottom: 4%; letter-spacing: 1; text-transform: uppercase;">Would you like to proceed with the creation of the Settlement record, or reschedule the hearing?</p>
+            <hr style="border: 1px solid #ccc; margin: 10px 0;">
             <div class="button-container" style="display: flex;">
             <a href="change_schedule.php?incident_case_number=<?php echo $incident_case_number; ?>" style="text-decoration: none;">
-            <button class="backBtn" style="width: 150px; padding: 12px 12px; font-weight: 600; background: #fff; border: 1px solid #bc1823; color: #bc1823; margin-left: 190px; font-size: 19px;">RESCHEDULE</button>
+            <button class="backBtn" style="width: 150px; padding: 12px 12px; font-weight: 600; background: #fff; border: 1px solid #bc1823; color: #bc1823; margin-left: 120px; font-size: 19px;">RESCHEDULE</button>
             </a>    
             <input type="submit" onclick="closeAutoPopup()" value="PROCEED" class="backBtn" style="width: 310px; padding: 5px 5px; font-weight: 600; margin-left: -5px; font-size: 19px;"></button>
             </div>
