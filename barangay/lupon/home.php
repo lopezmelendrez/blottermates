@@ -297,12 +297,6 @@ if (mysqli_num_rows($select) === 0) {
 
     </section>
 
-    <footer>
-            <p>Department of the Interior and Local Government</p>
-            <p>F. Gomez St., Brgy.Kanluran, Old Municipal Hall (Gusaling Museo) 4026, Santa Rosa, 4026 Laguna</p>
-            <p>&copy; 2023 DILG All Rights Reserved.</p>
-        </footer>
-
   
     <script>
 
@@ -509,7 +503,7 @@ table th{
 .close-icon {
       position: absolute;
       top: 155px;
-      left: 875px;
+      left: 895px;
       cursor: pointer;
       font-size: 50px;
       color:#bc1823;
@@ -577,7 +571,18 @@ table th{
             top: 28px;
 }
 
-    
+footer{
+    background: #292929;
+    color: white;
+    padding: 5px;
+    text-align: left;
+    font-size: 12px;
+}
+
+footer p{
+    margin: 0;
+    margin-left: 6%;
+}
 
 
     </style>

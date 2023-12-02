@@ -519,7 +519,7 @@ if ($fetch['barangay'] == 'Ibaba') {
     .close-icon {
       position: absolute;
       top: 155px;
-      left: 870px;
+      left: 895px;
       cursor: pointer;
       font-size: 50px;
       color:#bc1823;

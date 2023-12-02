@@ -593,7 +593,7 @@ if ($generate_execution_result && mysqli_num_rows($generate_execution_result) > 
     .close-icon {
       position: absolute;
       top: 155px;
-      left: 870px;
+      left: 895px;
       cursor: pointer;
       font-size: 50px;
       color:#bc1823;
