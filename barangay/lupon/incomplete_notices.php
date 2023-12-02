@@ -82,7 +82,7 @@ incident_report.submitter_last_name as submitter_last_name
 FROM `incident_report`
 LEFT JOIN `notify_residents` ON incident_report.incident_case_number = notify_residents.incident_case_number
 LEFT JOIN `amicable_settlement` ON incident_report.incident_case_number = amicable_settlement.incident_case_number
-WHERE (generate_summon = 'not generated' OR generate_hearing = 'not generated' OR generate_pangkat = 'not generated' OR generate_summon IS NULL OR generate_hearing IS NULL OR generate_pangkat IS NULL)
+WHERE (generate_summon = 'not generated' OR generate_hearing = 'not generated' OR generate_summon IS NULL OR generate_hearing IS NULL)
 AND incident_report.pb_id = $pb_id
 ORDER BY incident_report.created_at DESC
 ") or die('query failed');
