@@ -215,14 +215,15 @@ WHERE NOT EXISTS (
 <div class="incident-case-table" style="background-color: #fff; margin-top: -35.5%; width: 450px; margin-left: 55%; height: 440px; border-radius: 5px;">
 <div class="head-text">
         <p class="incident-case" style="font-size: 22px;">Top Incident Case Type</p>
-        <div class="table-container" style="max-height: 283px; overflow-y: hidden; margin-top: -6%;">
-            <hr style="border: 1px solid #3d3d3d; margin: 3px 0; width: 98%; margin-top: 5%">
+        <div class="table-container" style="max-height: 380px; overflow-y: hidden; margin-top: -6%;">
+            <hr style="border: 1px solid #3d3d3d; margin: 3px 0; width: 98%; margin-top: 5%; margin-bottom: 5%;">
             <?php
     $select = mysqli_query($conn, "SELECT incident_case_type, COUNT(*) AS total_cases
-        FROM `incident_report`
-        GROUP BY incident_case_type
-        ORDER BY total_cases DESC")
-    or die('query failed');
+    FROM `incident_report`
+    GROUP BY incident_case_type
+    ORDER BY total_cases DESC
+    LIMIT 10")
+or die('query failed');
 
     $rank = 1;
 

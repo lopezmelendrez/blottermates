@@ -31,7 +31,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['execution_submit'])) 
     }
 
     if ($result) {
-        header("Location: incident_reports.php");
+                // Redirect to the specific incident case number page
+                header("Location: case_reportPage2.php?incident_case_number=$incident_case_number");
         exit;
     } else {
         echo "Error: " . mysqli_error($conn);
