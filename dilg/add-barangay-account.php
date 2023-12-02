@@ -262,16 +262,6 @@ if (isset($_POST['submit'])) {
             sidebar.classList.remove("close");
         })
 
-        modeSwitch.addEventListener("click" , () =>{
-            body.classList.toggle("dark");
-            
-            if(body.classList.contains("dark")){
-                modeText.innerText = "Light mode";
-            }else{
-                modeText.innerText = "Dark mode";
-                
-            }
-        });
 
 // Get the modal and button elements
 const modal = document.getElementById("signatureModal");
@@ -436,19 +426,19 @@ function generatePassword(selectedBarangay) {
     });
 
     const confirmPasswordInput = document.querySelector('input[name="confirmPassword"]');
-const showHidePwIcon = document.querySelector('.showHidePw');
+    const showHidePwIcon = document.querySelector('.showHidePw');
 
-showHidePwIcon.addEventListener('click', () => {
-    if (confirmPasswordInput.type === 'password') {
-        confirmPasswordInput.type = 'text';
-        showHidePwIcon.classList.remove('uil-eye-slash');
-        showHidePwIcon.classList.add('uil-eye');
-    } else {
-        confirmPasswordInput.type = 'password';
-        showHidePwIcon.classList.remove('uil-eye');
-        showHidePwIcon.classList.add('uil-eye-slash');
-    }
-});
+    showHidePwIcon.addEventListener('click', () => {
+        if (confirmPasswordInput.type === 'password') {
+            confirmPasswordInput.type = 'text';
+            showHidePwIcon.classList.remove('uil-eye-slash');
+            showHidePwIcon.classList.add('uil-eye');
+        } else {
+            confirmPasswordInput.type = 'password';
+            showHidePwIcon.classList.remove('uil-eye');
+            showHidePwIcon.classList.add('uil-eye-slash');
+        }
+    });
 
 
 
