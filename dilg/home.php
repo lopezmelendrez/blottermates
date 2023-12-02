@@ -13,6 +13,8 @@ if(!isset($account_id)){
 header('location: ../index.php');
 }
 
+$currentMonth = date("F");
+
 ?>
 
 <!DOCTYPE html>
@@ -193,21 +195,21 @@ $resultMonthlyReports = mysqli_query($conn, $queryMonthlyReports);
 <div class="incident-case-table" style="display: flex; height: 450px; width: 625px; margin-top: -36.2%; margin-left: 44%;">
     <div class="head-text">
         <p class="incident-case" style="font-size: 22px;">Monthly Transmittal Reports</p>
-        <p class="notice-records">* For the Month of <em>November</em></p>
+        <p class="notice-records">* For the Month of <em><?php echo $currentMonth; ?></em></p>
         <div class="table-container" style="max-height: 283px; overflow-y: hidden; margin-top: -6%; width: 570px;">
             <hr style="border: 1px solid #3d3d3d; margin: 10px 0; width: 100%; margin-top: 5%">
             <table class="incident-table" style="width: 570px; margin-top: 3%;">
-                <tr>
-                    <th style="font-weight: 400;">Barangay</th>
-                    <th style="font-weight: 400;">Date Submitted</th>
-                    <th style="font-weight: 400;">Report</th>
-                </tr>
-
+                
                 <?php
                 // Check if there are any reports
                 if (mysqli_num_rows($resultMonthlyReports) > 0) {
                     // Loop through the results and display each row
                     while ($row = mysqli_fetch_assoc($resultMonthlyReports)) {
+                        echo "<tr>";
+                        echo "<th style='font-weight: 400;'>Barangay</th>";
+                        echo "<th style='font-weight: 400;'>Date Submitted</th>";
+                        echo "<th style='font-weight: 400;'>Report</th>";
+                        echo "</tr>";
                         echo "<tr>";
                         echo "<td style='font-size: 14px;'>" . $row['barangay'] . "</td>";
                         echo "<td style='font-size: 14px;'>" . date('M d, Y', strtotime($row['date_submitted'])) . "</td>";
@@ -216,9 +218,8 @@ $resultMonthlyReports = mysqli_query($conn, $queryMonthlyReports);
                         
                     }
                 } else {
-                    // If there are no reports, display a message
                     echo "<tr>";
-                    echo "<td colspan='3' style='margin-left: 30%;
+                    echo "<td style='margin-left: 30%;
                     background: #b9bbb6;
                     border-radius: 5px;
                     color: #fff;
@@ -227,6 +228,7 @@ $resultMonthlyReports = mysqli_query($conn, $queryMonthlyReports);
                     padding: 5px 5px;
                     text-align: center;
                     letter-spacing: 1;
+                    margin-top: 20%;
                     text-transform: uppercase;'>No Submitted Transmittal Reports Yet</td>";
                     echo "</tr>";
                 }
@@ -235,7 +237,7 @@ $resultMonthlyReports = mysqli_query($conn, $queryMonthlyReports);
             </table>
 
             <a href="transmittal_reports.php" style="text-decoration: none;">
-        <span class="seeall">See All</span></a>
+            <span class="seeall">See All</span></a>
         </div>
     </div>
 </div>

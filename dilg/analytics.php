@@ -232,8 +232,8 @@ WHERE NOT EXISTS (
         $description = isset($incidentTypeMap[$row['incident_case_type']]) ? $incidentTypeMap[$row['incident_case_type']] : $row['incident_case_type'];
 
         echo "<tr>";
-        echo "<td style='font-size: 15px; font-weight: 500; padding-right: 10px;'>" . $rank . ".</td>";
-        echo "<td style='font-size: 18px; font-weight: 600;'>" . $description . "</td>";
+        echo "<td style='font-size: 12px; font-weight: 500; padding-right: 10px;'>" . $rank . ".</td>";
+        echo "<td style='font-size: 15px; font-weight: 600;'>" . $description . "</td>";
         echo "</tr>";
 
         $rank++;

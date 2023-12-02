@@ -37,9 +37,8 @@ if (isset($_POST['submit_search'])) {
         mr.generate_report AS report
         FROM `monthly_reports` AS mr
         INNER JOIN `pb_accounts` AS pb ON mr.pb_id = pb.pb_id
-        WHERE (MONTH(mr.timestamp) = MONTH(CURRENT_DATE()) AND YEAR(mr.timestamp) = YEAR(CURRENT_DATE()))
-        AND pb.pb_id = '$pb_id' 
-        AND pb.barangay LIKE '%$search_case%'
+        WHERE pb.pb_id = '$pb_id' 
+        AND mr.generate_report LIKE '%$search_case%'
         ORDER BY mr.timestamp DESC"; // Order by TIMESTAMP in ascending order
 } else {
     $query = "SELECT pb.barangay AS barangay, 
@@ -47,11 +46,10 @@ if (isset($_POST['submit_search'])) {
         mr.generate_report AS report
         FROM `monthly_reports` AS mr
         INNER JOIN `pb_accounts` AS pb ON mr.pb_id = pb.pb_id
-        WHERE MONTH(mr.timestamp) = MONTH(CURRENT_DATE())
-        AND YEAR(mr.timestamp) = YEAR(CURRENT_DATE())
-        AND pb.pb_id = '$pb_id'
-        ORDER BY mr.timestamp DESC"; // Order by TIMESTAMP in ascending order
+        WHERE pb.pb_id = '$pb_id'
+        ORDER BY mr.timestamp DESC"; // Order by TIMESTAMP in descending order
 }
+
 
 
 $result = mysqli_query($conn, $query);
