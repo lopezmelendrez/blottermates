@@ -167,10 +167,10 @@ if (!$result) {
                 echo '<td>' . date('d F Y - h:i A', strtotime($row['timestamp'])) . '</td>';
                 echo '<td class="actions">';
                 echo '<button class="btn view" onclick="showViewPopup()">View</button>';
-                echo '<form action="remove_user.php" method="post" class="remove-form" onsubmit="return confirmDelete()">';
-                echo '<input type="hidden" name="luponId" value="' . $row['lupon_id'] . '">';
-                echo '<button type="submit" class="btn remove">Remove</button>';
-                echo '</form>';
+                //echo '<form action="remove_user.php" method="post" class="remove-form" onsubmit="return confirmDelete()">';
+                //echo '<input type="hidden" name="luponId" value="' . $row['lupon_id'] . '">';
+                //echo '<button type="submit" class="btn remove">Remove</button>';
+                //echo '</form>';
                 
                 if ($status == 'disabled') {
                     // Display Activate button for disabled users
