@@ -150,7 +150,7 @@ WHERE NOT EXISTS (
     <div class="head-text">
         <p class="incident-case" style="font-size: 22px;">Incident Cases</p>
         <p class="notice-records">* Barangays with the Most Number of Ongoing Incident Cases</p>
-        <div class="table-container" style="max-height: 350px; overflow-y: hidden; margin-top: -6%;">
+        <div class="table-container" style="max-height: 370px; overflow-y: hidden; margin-top: -6%;">
             <hr style="border: 1px solid #3d3d3d; margin: 3px 0; width: 90%; margin-top: 5%">
             <table class="incident-table" style="width: 530px; margin-top: 0.5%;">
             <?php
