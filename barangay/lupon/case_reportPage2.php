@@ -637,6 +637,12 @@ if ($generate_execution_result && mysqli_num_rows($generate_execution_result) > 
     font-size: 22px;
 }
 
+@media screen and (min-width: 1310px){
+            .close-icon{
+                left: 875px;
+            }
+        }
+
 
 </style>
 </body>

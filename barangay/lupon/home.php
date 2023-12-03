@@ -584,6 +584,18 @@ footer p{
     margin-left: 6%;
 }
 
+@media screen and (min-width: 1310px){
+            .close-icon{
+                left: 875px;
+            }
+        }
+
+        @media screen and (min-width: 1331px){
+            .close-icon{
+                left: 895px;
+            }
+        }
+
 
     </style>
 

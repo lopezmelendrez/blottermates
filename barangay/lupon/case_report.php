@@ -537,7 +537,6 @@ if ($fetch['barangay'] == 'Ibaba') {
     margin: 8px 0;
 }
 
-
 </style>
 </body>
 </html>
