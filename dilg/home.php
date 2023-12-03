@@ -145,24 +145,25 @@ WHERE NOT EXISTS (
                 </div>
         </div>
 
-
+        <div class="home-container" style="display: flex;">
         <div class="incident-case-table" style="display: flex; height: 450px; width: 535px;">
     <div class="head-text">
         <p class="incident-case" style="font-size: 22px;">Incident Cases</p>
         <p class="notice-records">* Barangays with the Most Number of Ongoing Incident Cases</p>
-        <div class="table-container" style="max-height: 283px; overflow-y: hidden; margin-top: -6%;">
+        <div class="table-container" style="max-height: 350px; overflow-y: hidden; margin-top: -6%;">
             <hr style="border: 1px solid #3d3d3d; margin: 3px 0; width: 90%; margin-top: 5%">
             <table class="incident-table" style="width: 530px; margin-top: 0.5%;">
             <?php
-       $select = mysqli_query($conn, "SELECT pb.barangay AS barangay, COUNT(ir.incident_case_number) AS total_cases
+       $select = mysqli_query($conn, "
+       SELECT pb.barangay AS barangay, COUNT(ir.incident_case_number) AS total_cases
        FROM `incident_report` AS ir
        INNER JOIN `lupon_accounts` AS la ON ir.lupon_id = la.lupon_id
        INNER JOIN `pb_accounts` AS pb ON la.pb_id = pb.pb_id
        LEFT JOIN `amicable_settlement` AS amicable ON ir.incident_case_number = amicable.incident_case_number
        WHERE amicable.hearing_id IS NULL
        GROUP BY pb.barangay
-   ")
-        or die('query failed');
+       ORDER BY total_cases DESC
+   ") or die('query failed');
         
         while ($row = mysqli_fetch_assoc($select)) {
             echo "<tr>";
@@ -192,25 +193,24 @@ $resultMonthlyReports = mysqli_query($conn, $queryMonthlyReports);
 
 ?>
 
-<div class="incident-case-table" style="display: flex; height: 450px; width: 625px; margin-top: -36.2%; margin-left: 44%;">
+<div class="incident-case-table-1">
     <div class="head-text">
         <p class="incident-case" style="font-size: 22px;">Monthly Transmittal Reports</p>
         <p class="notice-records">* For the Month of <em><?php echo $currentMonth; ?></em></p>
-        <div class="table-container" style="max-height: 283px; overflow-y: hidden; margin-top: -6%; width: 570px;">
+        <div class="table-container">
             <hr style="border: 1px solid #3d3d3d; margin: 10px 0; width: 100%; margin-top: 5%">
             <table class="incident-table" style="width: 570px; margin-top: 3%;">
                 
                 <?php
                 // Check if there are any reports
                 if (mysqli_num_rows($resultMonthlyReports) > 0) {
-                    // Loop through the results and display each row
-                    while ($row = mysqli_fetch_assoc($resultMonthlyReports)) {
-                        echo "<tr>";
-                        echo "<th style='font-weight: 400;'>Barangay</th>";
-                        echo "<th style='font-weight: 400;'>Date Submitted</th>";
-                        echo "<th style='font-weight: 400;'>Report</th>";
+                    echo "<tr>";
+                        echo "<th style='font-weight: 500;'>Barangay</th>";
+                        echo "<th style='font-weight: 500;'>Date Submitted</th>";
+                        echo "<th style='font-weight: 500;'>Report</th>";
                         echo "</tr>";
                         echo "<tr>";
+                    while ($row = mysqli_fetch_assoc($resultMonthlyReports)) {
                         echo "<td style='font-size: 14px;'>" . $row['barangay'] . "</td>";
                         echo "<td style='font-size: 14px;'>" . date('M d, Y', strtotime($row['date_submitted'])) . "</td>";
                         echo '<td style="font-size: 14px;"><a href="" style="text-decoration: none;"><span class="summon-record">View</span><a/></td>';
@@ -241,6 +241,8 @@ $resultMonthlyReports = mysqli_query($conn, $queryMonthlyReports);
         </div>
     </div>
 </div>
+
+
 
 
     
@@ -367,6 +369,16 @@ dateElement.textContent = formatDate(now);
     padding: 16px 24px;
     }
 
+    .incident-case-table-1{
+        height: 450px; 
+        width: 625px; 
+        margin-left: 44%;
+        background: white;
+        margin-top: -35%;
+        border-radius: 8px;
+        padding: 16px 24px;
+    }
+
     .head-text .incident-case{
         font-size: 25px;
         font-weight: 500;
@@ -401,6 +413,13 @@ dateElement.textContent = formatDate(now);
     font-size: 14px;
     color: #c82333;
 
+}
+
+.incident-case-table-1 .table-container{
+    max-height: 283px; 
+    overflow-y: hidden; 
+    margin-top: -6%; 
+    width: 570px;
 }
 
 .seeall{
@@ -448,5 +467,37 @@ dateElement.textContent = formatDate(now);
         transition: .5s;
     }
 
+    @media screen and (min-width: 1288px){
+            .incident-case-table-1{
+                width: 635px;
+                margin-top: -30%;
+            }
+
+        .incident-case-table-1 .table-container{
+            width: 600px;
+        }
+
+        .incident-case-table-1 .seeall{
+            margin-left: 71%;
+        }
+    }
+
+    @media screen and (min-width: 1331px){
+            .incident-case-table-1{
+                margin-top: -35.8%;
+            }
+        }
+
+        @media screen and (min-width: 1310px){
+            .incident-case-table-1{
+                margin-top: -36.1%;
+            }
+        }
+
+        @media screen and (min-width: 1347px){
+            .incident-case-table-1{
+                margin-top: -35.8%;
+            }
+        }
     
 </style>
