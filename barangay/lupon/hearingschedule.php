@@ -111,15 +111,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit'])) {
                         <label class="required-label">Hearing Time</label>
                         <select name="time_of_hearing" readonly>
                             <option disabled selected>Select Hearing Schedule...</option>
-                            <option value="08:00">8:00 AM</option>
-                            <option value="09:00">9:00 AM</option>
-                            <option value="10:00">10:00 AM</option>
-                            <option value="11:00">11:00 AM</option>
-                            <option value="13:00">1:00 PM</option>
-                            <option value="14:00">2:00 PM</option>
-                            <option value="15:00">3:00 PM</option>
-                            <option value="16:00">4:00 PM</option>
-                            <option value="17:00">5:00 PM</option>
                         </select>
                     </div>
                     </div>
@@ -170,34 +161,84 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit'])) {
 
     <script>
 
-        $(function () {
-            $("#datepicker").datepicker({
-                dateFormat: 'yy-mm-dd',
-                minDate: 0,
-                maxDate: '+3w', // Set maximum date to 2 weeks from today
-                beforeShowDay: function (date) {
-                    var day = date.getDay();
-                    return [day !== 0 && day !== 6, ''];
+$(function () {
+    $("#datepicker").datepicker({
+        dateFormat: 'yy-mm-dd',
+        minDate: 0,
+        maxDate: '+3w',
+        beforeShowDay: function (date) {
+            var day = date.getDay();
+            return [day !== 0 && day !== 6, ''];
+        }
+    });
+
+    $('select[name="time_of_hearing"]').prop('disabled', true);
+
+    $('input[name="date_of_hearing"]').change(function () {
+        var selectedDate = $(this).val();
+
+        if (selectedDate !== "") {
+            // Fetch available times from the server
+            $.ajax({
+                type: 'POST',
+                url: 'fetch_available_times.php',
+                data: { selectedDate: selectedDate },
+                success: function (response) {
+                    // Enable the dropdown
+                    var timeSelect = $('select[name="time_of_hearing"]');
+                    timeSelect.prop('disabled', false);
+
+                    // Parse the response as JSON
+                    var availableTimes = JSON.parse(response);
+
+                    // Clear existing options
+                    timeSelect.empty();
+
+                    // Populate the dropdown with options
+                    if (availableTimes.length > 0) {
+                        timeSelect.append('<option disabled selected>Available Timeslots</option>');
+
+                        availableTimes.forEach(function (time) {
+                            // Format the time as '3:00 PM' using JavaScript
+    var formattedTime = formatTime(time);
+
+// Append the formatted time to the dropdown
+timeSelect.append('<option value="' + time + '">' + formattedTime + '</option>');
+                        });
+                    } else {
+                        timeSelect.append('<option disabled selected>No available times</option>');
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.error('AJAX Error:', error);
                 }
             });
-
-            // Set time_of_hearing field as readonly
+        } else {
+            // Disable the dropdown if no date is selected
             $('select[name="time_of_hearing"]').prop('disabled', true);
+        }
+    });
+});
 
-            // Enable time_of_hearing field only when a date is selected
-            $('input[name="date_of_hearing"]').change(function () {
-                if ($(this).val() !== "") {
-                    $('select[name="time_of_hearing"]').prop('disabled', false);
+function formatTime(rawTime) {
+    var timeParts = rawTime.split(':');
+    var hours = parseInt(timeParts[0], 10);
+    var minutes = timeParts[1];
 
-                    // Disable time options for existing dates
-                    var selectedDate = $(this).val();
-                    disableExistingTimes(selectedDate);
-                } else {
-                    $('select[name="time_of_hearing"]').prop('disabled', true);
-                }
-            });
+    // Use the modulo operator to convert 24-hour time to 12-hour time
+    var amPm = hours >= 12 ? 'PM' : 'AM';
+    hours = hours % 12 || 12;
 
-        });
+    // Pad single-digit minutes with a leading zero
+    minutes = minutes.padStart(2, '0');
+
+    // Construct the formatted time
+    var formattedTime = hours + ':' + minutes + ' ' + amPm;
+    
+    return formattedTime;
+}
+
+
 
         document.addEventListener("DOMContentLoaded", function() {
         const form = document.querySelector("form");
