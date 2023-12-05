@@ -12,23 +12,33 @@ header('location: ../../index.php');
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit'])) {
-    $date_of_hearing = $_POST['date_of_hearing'];
-    $time_of_hearing = $_POST['time_of_hearing'];
-    $incident_case_number = $_POST['incident_case_number'];
-    $hearing_type_status = 'mediation'; 
 
-    $insert_query = "INSERT INTO `hearing` (`incident_case_number`, `date_of_hearing`, `time_of_hearing`, `hearing_type_status`, `timestamp`)
-                     VALUES ('$incident_case_number', '$date_of_hearing', '$time_of_hearing', '$hearing_type_status', NOW())";
+    $select_submitter = mysqli_query($conn, "SELECT * FROM lupon_accounts WHERE email_address = '$email'");
+    
+    if (mysqli_num_rows($select_submitter) > 0) {
+        $submitter_data = mysqli_fetch_assoc($select_submitter);
+        $pb_id = $submitter_data['pb_id'];
 
-    $result = mysqli_query($conn, $insert_query);
-    if ($result) {
-        header("Location: notice_forms.php?incident_case_number=" . $incident_case_number);
-        exit;
-    } else {
-        echo "Error: " . mysqli_error($conn);
-        exit;
+        $date_of_hearing = $_POST['date_of_hearing'];
+        $time_of_hearing = $_POST['time_of_hearing'];
+        $incident_case_number = $_POST['incident_case_number'];
+        $hearing_type_status = 'mediation'; 
+
+        $insert_query = "INSERT INTO `hearing` (`incident_case_number`, `date_of_hearing`, `time_of_hearing`, `hearing_type_status`, `timestamp`, `pb_id`)
+                         VALUES ('$incident_case_number', '$date_of_hearing', '$time_of_hearing', '$hearing_type_status', NOW(), '$pb_id')";
+
+        $result = mysqli_query($conn, $insert_query);
+        
+        if ($result) {
+            header("Location: notice_forms.php?incident_case_number=" . $incident_case_number);
+            exit;
+        } else {
+            echo "Error: " . mysqli_error($conn);
+            exit;
+        }
     }
 }
+
 
 ?>
 

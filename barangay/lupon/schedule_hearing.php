@@ -12,44 +12,54 @@ if (!isset($email)) {
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit'])) {
-    $date_of_hearing = $_POST['date_of_hearing'];
-    $time_of_hearing = $_POST['time_of_hearing'];
-    $incident_case_number = $_POST['incident_case_number'];
-    $hearing_type_status = 'mediation';
 
-    $check_query = "SELECT * FROM `hearing` WHERE incident_case_number = '$incident_case_number'";
-    $check_result = mysqli_query($conn, $check_query);
+    $select_submitter = mysqli_query($conn, "SELECT * FROM lupon_accounts WHERE email_address = '$email'");
+    
+    if (mysqli_num_rows($select_submitter) > 0) {
+        $submitter_data = mysqli_fetch_assoc($select_submitter);
+        $pb_id = $submitter_data['pb_id'];
+        // Add the user information you need for the hearing here
 
-    if ($check_result) {
-        if (mysqli_num_rows($check_result) > 0) {
-            $update_query = "UPDATE `hearing` SET `date_of_hearing` = '$date_of_hearing', `time_of_hearing` = '$time_of_hearing', `timestamp` = NOW() WHERE incident_case_number = '$incident_case_number'";
-            $result = mysqli_query($conn, $update_query);
+        $date_of_hearing = $_POST['date_of_hearing'];
+        $time_of_hearing = $_POST['time_of_hearing'];
+        $incident_case_number = $_POST['incident_case_number'];
+        $hearing_type_status = 'mediation';
 
-            if ($result) {
-                header("Location: incident_reports.php");
-                exit;
+        $check_query = "SELECT * FROM `hearing` WHERE incident_case_number = '$incident_case_number'";
+        $check_result = mysqli_query($conn, $check_query);
+
+        if ($check_result) {
+            if (mysqli_num_rows($check_result) > 0) {
+                $update_query = "UPDATE `hearing` SET `date_of_hearing` = '$date_of_hearing', `time_of_hearing` = '$time_of_hearing', `timestamp` = NOW(), `pb_id` = '$pb_id' WHERE incident_case_number = '$incident_case_number'";
+                $result = mysqli_query($conn, $update_query);
+
+                if ($result) {
+                    header("Location: incident_reports.php");
+                    exit;
+                } else {
+                    echo "Error: " . mysqli_error($conn);
+                    exit;
+                }
             } else {
-                echo "Error: " . mysqli_error($conn);
-                exit;
+                $insert_query = "INSERT INTO `hearing` (`date_of_hearing`, `time_of_hearing`, `incident_case_number`, `hearing_type_status`, `timestamp`, `pb_id`) 
+                                VALUES ('$date_of_hearing', '$time_of_hearing', '$incident_case_number', '$hearing_type_status', NOW(), '$pb_id')";
+                $result = mysqli_query($conn, $insert_query);
+
+                if ($result) {
+                    header("Location: notice_forms.php?incident_case_number=" . $incident_case_number);
+                    exit;
+                } else {
+                    echo "Error: " . mysqli_error($conn);
+                    exit;
+                }
             }
         } else {
-            $insert_query = "INSERT INTO `hearing` (`date_of_hearing`, `time_of_hearing`, `incident_case_number`, `hearing_type_status`, `timestamp`) 
-                            VALUES ('$date_of_hearing', '$time_of_hearing', '$incident_case_number', '$hearing_type_status', NOW())";
-            $result = mysqli_query($conn, $insert_query);
-
-            if ($result) {
-                header("Location: notice_forms.php?incident_case_number=" . $incident_case_number);
-                exit;
-            } else {
-                echo "Error: " . mysqli_error($conn);
-                exit;
-            }
+            echo "Error: " . mysqli_error($conn);
+            exit;
         }
-    } else {
-        echo "Error: " . mysqli_error($conn);
-        exit;
     }
 }
+
 
 ?>
 
