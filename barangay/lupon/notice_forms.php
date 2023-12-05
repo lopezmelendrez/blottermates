@@ -356,7 +356,7 @@ if ($fetch['barangay'] == 'Ibaba') {
                                 <tbody>
                                     <tr>
                                         <td>Hearing Notice</td>
-                                        <td><?php echo $fetch_cases['complainant_last_name'] ?>, <?php echo $fetch_cases['complainant_first_name'] ?> <?php echo $fetch_cases['complainant_middle_name'] ?></td>
+                                        <td><?php echo $fetch_cases['complainant_last_name'] ?>, <?php echo $fetch_cases['complainant_first_name'] ?> <?php echo substr($fetch_cases['complainant_middle_name'], 0, 1) ?>.</td>
                                         <td><?php
                                         $check_query = "SELECT generate_hearing, notify_hearing FROM notify_residents WHERE incident_case_number = '$incident_case_number'";
                                         $check_result = mysqli_query($conn, $check_query);
@@ -392,7 +392,7 @@ if ($fetch['barangay'] == 'Ibaba') {
                                                                             </tr>
                                                                             <tr>
                                             <td>Summon Notice</td>
-                                            <td><?php echo $fetch_cases['respondent_last_name'] ?>, <?php echo $fetch_cases['respondent_first_name'] ?> <?php echo $fetch_cases['respondent_middle_name'] ?>.</td>
+                                            <td><?php echo $fetch_cases['respondent_last_name'] ?>, <?php echo $fetch_cases['respondent_first_name'] ?> <?php echo substr($fetch_cases['respondent_middle_name'], 0, 1) ?>.</td>
                                             <td>
                                             <?php
                                         $check_query = "SELECT generate_summon, notify_summon FROM notify_residents WHERE incident_case_number = '$incident_case_number'";

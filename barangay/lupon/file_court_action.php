@@ -196,11 +196,11 @@ $fetch_hearing = mysqli_fetch_assoc($select_hearing);
             <div class="fields">
                         <div class="input-field-1">
                             <label>Complainant</label>
-                            <input type="text"  onkeypress="return validateName(event)" placeholder="" value="<?php echo $fetch_cases['complainant_last_name']; ?>, <?php echo $fetch_cases['complainant_first_name']; ?> <?php echo $fetch_cases['complainant_middle_name']; ?>" disabled readonly>
+                            <input type="text"  onkeypress="return validateName(event)" placeholder="" value="<?php echo $fetch_cases['complainant_last_name']; ?>, <?php echo $fetch_cases['complainant_first_name']; ?> <?php echo substr($fetch_cases['complainant_middle_name'], 0, 1); ?>." disabled readonly>
                         </div>
                         <div class="input-field-1">
                             <label>Respondent</label>
-                            <input type="text"  onkeypress="return validateName(event)" placeholder="" value="<?php echo $fetch_cases['respondent_last_name']; ?>, <?php echo $fetch_cases['respondent_first_name']; ?> <?php echo $fetch_cases['respondent_middle_name']; ?>" disabled readonly>
+                            <input type="text"  onkeypress="return validateName(event)" placeholder="" value="<?php echo $fetch_cases['respondent_last_name']; ?>, <?php echo $fetch_cases['respondent_first_name']; ?> <?php echo substr($fetch_cases['respondent_middle_name'], 0, 1); ?>." disabled readonly>
                         </div>
                         <div class="input-field" style="width: 100%;">
                         <small style="font-size: 19px; font-weight: 500; text-align: justify;">THIS IS TO CERTIFY THAT:</small>

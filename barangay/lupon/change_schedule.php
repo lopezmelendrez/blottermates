@@ -68,11 +68,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit'])) {
 
                         <div class="input-field-1" style="width: 49%;">
                             <label class="">Complainant</label>
-                            <input type="text" value="<?php echo $fetch_cases['complainant_last_name']; ?>, <?php echo $fetch_cases['complainant_first_name']; ?> <?php echo $fetch_cases['complainant_middle_name']; ?>." disabled>
+                            <input type="text" value="<?php echo $fetch_cases['complainant_last_name']; ?>, <?php echo $fetch_cases['complainant_first_name']; ?> <?php echo substr($fetch_cases['complainant_middle_name'], 0, 1); ?>." disabled>
                         </div>
                         <div class="input-field-1" style="width: 49%;">
                             <label class="">Respondent</label>
-                            <input type="text" placeholder="<?php echo $fetch_cases['respondent_last_name']; ?>, <?php echo $fetch_cases['respondent_first_name']; ?> <?php echo $fetch_cases['respondent_middle_name']; ?>." disabled>
+                            <input type="text" placeholder="<?php echo $fetch_cases['respondent_last_name']; ?>, <?php echo $fetch_cases['respondent_first_name']; ?> <?php echo substr($fetch_cases['respondent_middle_name'], 0, 1); ?>." disabled>
                         </div>
                     </div>
                 </div>
@@ -214,35 +214,51 @@ function formatTime(rawTime) {
     return formattedTime;
 }
 
+document.addEventListener("DOMContentLoaded", function() {
+    const form = document.querySelector("form");
+    const popUpButton = form.querySelector(".pop-up");
+    const submitInput = form.querySelector("input[type='submit']");
+    const modalOverlay = document.getElementById("confirmationModal");
+    const modalCancelBtn = document.getElementById("modalCancelBtn");
+    const modalConfirmBtn = document.getElementById("modalConfirmBtn");
 
+    // Open modal when the pop-up button is clicked
+    popUpButton.addEventListener("click", function(event) {
+        event.preventDefault();
 
-        document.addEventListener("DOMContentLoaded", function() {
-        const form = document.querySelector("form");
-        const popUpButton = form.querySelector(".pop-up");
-        const submitInput = form.querySelector("input[type='submit']");
-        const modalOverlay = document.getElementById("confirmationModal");
-        const modalCancelBtn = document.getElementById("modalCancelBtn");
-        const modalConfirmBtn = document.getElementById("modalConfirmBtn");
-
-        // Open modal when the pop-up button is clicked
-        popUpButton.addEventListener("click", function(event) {
-            event.preventDefault();
-            document.getElementById("dateOfHearing").textContent = document.querySelector('input[name="date_of_hearing"]').value;
+        // Check if date_of_hearing has a value
+        const dateOfHearingInput = document.querySelector('input[name="date_of_hearing"]');
+        if (dateOfHearingInput && dateOfHearingInput.value.trim() !== "") {
+            var rawDate = dateOfHearingInput.value;
+            var formattedDate = formatDate(rawDate);
+            document.getElementById("dateOfHearing").textContent = formattedDate;
             document.getElementById("timeOfHearing").textContent = document.querySelector('select[name="time_of_hearing"] option:checked').text;
 
             modalOverlay.style.display = "flex";
-        });
+        } else {
+            // Do nothing if date_of_hearing has no value
+        }
+    });
 
-        // Close modal when cancel button is clicked
-        modalCancelBtn.addEventListener("click", function() {
-            modalOverlay.style.display = "none";
-        });
+    // Close modal when cancel button is clicked
+    modalCancelBtn.addEventListener("click", function() {
+        modalOverlay.style.display = "none";
+    });
 
-        // Submit the form when confirm button is clicked
-        modalConfirmBtn.addEventListener("click", function() {
-            submitInput.click(); // Trigger the submit input element's click event
-        });
-        });
+    // Submit the form when confirm button is clicked
+    modalConfirmBtn.addEventListener("click", function() {
+        submitInput.click(); // Trigger the submit input element's click event
+    });
+});
+
+
+
+        function formatDate(rawDate) {
+        var options = { year: 'numeric', month: 'long', day: 'numeric' };
+        var formattedDate = new Date(rawDate).toLocaleDateString(undefined, options);
+        return formattedDate;
+    }
+
 
 
 

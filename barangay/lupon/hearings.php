@@ -156,8 +156,8 @@ while ($row = mysqli_fetch_assoc($result)) {
             echo '</tr>';
         } else {
             echo '<tr>';
-            echo '<td>' . $row['complainant_last_name'] . ' ' . $row['complainant_first_name'] . ' ' . $row['complainant_middle_name'] . '</td>';
-            echo '<td>' . $row['respondent_last_name'] . ' ' . $row['respondent_first_name'] . ' ' . $row['respondent_middle_name'] . '</td>';
+            echo '<td>' . $row['complainant_last_name'] . ' ' . $row['complainant_first_name'] . ' ' . substr($row['complainant_middle_name'], 0, 1) . '.</td>';
+            echo '<td>' . $row['respondent_last_name'] . ' ' . $row['respondent_first_name'] . ' ' . substr($row['respondent_middle_name'], 0, 1) . '.</td>';
             echo '<td>';
             $check_query = "SELECT nr.generate_pangkat, nr.generate_summon, nr.generate_hearing, h.hearing_type_status, aa.incident_case_number
                 FROM notify_residents nr

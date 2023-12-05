@@ -164,7 +164,7 @@ if (mysqli_num_rows($result) == 0) {
         } else {
             echo '<tr>';
             echo '<td>Hearing Notice</td>';
-            echo '<td>' . $row['complainant_last_name'] . ' ' . $row['complainant_first_name'] . ' ' . $row['complainant_middle_name'] . '</td>';
+            echo '<td>' . $row['complainant_last_name'] . ' ' . $row['complainant_first_name'] . ' ' . substr($row['complainant_middle_name'], 0, 1) . '.</td>';
             echo '<td>';
             $check_query = "SELECT generate_hearing, notify_hearing, hearing_notified FROM notify_residents WHERE incident_case_number = '" . $row['incident_case_number'] . "'";
             $check_result = mysqli_query($conn, $check_query);
@@ -206,7 +206,7 @@ if (mysqli_num_rows($result) == 0) {
             echo '</tr>';
             echo '<tr>';
             echo '<td>Summon Notice</td>';
-            echo '<td>' . $row['respondent_last_name'] . ' ' . $row['respondent_first_name'] . ' ' . $row['respondent_middle_name'] . '</td>';
+            echo '<td>' . $row['respondent_last_name'] . ' ' . $row['respondent_first_name'] . ' ' . substr($row['respondent_middle_name'], 0, 1) . '.' . '</td>';
             echo '<td>';
             $check_query = "SELECT generate_summon, notify_summon, summon_notified FROM notify_residents WHERE incident_case_number = '" . $row['incident_case_number'] . "'";
             $check_result = mysqli_query($conn, $check_query);

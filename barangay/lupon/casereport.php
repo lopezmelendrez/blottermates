@@ -187,23 +187,23 @@ if ($fetch['barangay'] == 'Ibaba') {
                             <div class="input-field-1">
                                 <label class="label">Complainant</label>
                                 <div class="text-box">
-                                    <p style="padding: 10px 0"><?php echo $fetch_cases['complainant_last_name'] ?>, <?php echo $fetch_cases['complainant_first_name'] ?> <?php echo $fetch_cases['complainant_middle_name'] ?>.</p></div>
+                                    <p style="padding: 10px 0"><?php echo $fetch_cases['complainant_last_name'] ?>, <?php echo $fetch_cases['complainant_first_name'] ?> <?php echo substr($fetch_cases['complainant_middle_name'], 0, 1) ?>.</p></div>
                             </div>
                             <div class="input-field-1">
                                 <label class="label">Respondent</label>
                                 <div class="text-box">
-                                    <p style="padding: 10px 0"><?php echo $fetch_cases['respondent_last_name'] ?>, <?php echo $fetch_cases['respondent_first_name'] ?> <?php echo $fetch_cases['respondent_middle_name'] ?>.</p></div>
+                                    <p style="padding: 10px 0"><?php echo $fetch_cases['respondent_last_name'] ?>, <?php echo $fetch_cases['respondent_first_name'] ?> <?php echo substr($fetch_cases['respondent_middle_name'], 0, 1) ?>.</p></div>
                             </div>
                             <span class="title" style="width: 100%;">Incident Description</span>
                             <div class="input-field-1">
                                 <label class="label">Date Of Incident</label>
                                 <div class="text-box">
-                                    <p style="padding: 10px 0"><?php echo $fetch_cases['incident_date'] ?></p></div>
+                                    <p style="padding: 10px 0"><?php echo date('F d, Y', strtotime($fetch_cases['incident_date'])); ?></p></div>
                             </div>
                             <div class="input-field-1"">
                                 <label class="label">Date Reported</label>
                                 <div class="text-box">
-                                    <p style="padding: 10px 0"><?php echo $fetch_cases['created_at'] ?></p></div>
+                                    <p style="padding: 10px 0"><?php echo date('F d, Y \— g:i A', strtotime($fetch_cases['created_at'])); ?></p></div>
                             </div>
                         </div>
                     </div>

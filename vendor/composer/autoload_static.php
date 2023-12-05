@@ -7,16 +7,16 @@ namespace Composer\Autoload;
 class ComposerStaticInit72ec067f7289913448e073d5d18d1bc1
 {
     public static $prefixLengthsPsr4 = array (
-        'P' => 
+        't' => 
         array (
-            'PHPMailer\\PHPMailer\\' => 20,
+            'thiagoalessio\\TesseractOCR\\' => 27,
         ),
     );
 
     public static $prefixDirsPsr4 = array (
-        'PHPMailer\\PHPMailer\\' => 
+        'thiagoalessio\\TesseractOCR\\' => 
         array (
-            0 => __DIR__ . '/..' . '/phpmailer/phpmailer/src',
+            0 => __DIR__ . '/..' . '/thiagoalessio/tesseract_ocr/src',
         ),
     );
 
