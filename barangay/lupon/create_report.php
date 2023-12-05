@@ -232,7 +232,7 @@ if ($fetch['barangay'] == 'Ibaba') {
                             </div>
                             <div class="input-field-1" style="width: 35rem;">
                                 <label class="required-label">House Address</label>
-                                <input type="text" name="complainant_house_address" placeholder="" required>
+                                <input type="text" name="complainant_house_address" onkeypress="return validateAddress(event)" placeholder="" required>
                             </div>
                         </div>
                     </div>
@@ -257,7 +257,7 @@ if ($fetch['barangay'] == 'Ibaba') {
                             </div>
                             <div class="input-field-1" style="width: 35rem;">
                                 <label class="required-label">House Address</label>
-                                <input type="text" name="respondent_house_address" placeholder="" required>
+                                <input type="text" name="respondent_house_address" onkeypress="return validateAddress(event)" placeholder="" required>
                             </div>
                         </div>
                         <button class="nextBtn" style="margin-top: 5px; margin-left: -20px;">
@@ -488,19 +488,56 @@ if ($fetch['barangay'] == 'Ibaba') {
     <script>
 
 function validateName(event) {
-    var keyCode = event.keyCode;
-
-    if ((keyCode >= 65 && keyCode <= 90) || (keyCode >= 97 && keyCode <= 122)) {
-        return true;
+  var keyCode = event.keyCode;
+  
+  // Check if the pressed key is a space
+  if (keyCode === 32) {
+    // Check if it's the first character
+    if (event.target.selectionStart === 0) {
+      // Prevent the space from being added to the input
+      event.preventDefault();
+      return false;
     }
+  }
 
-    if (keyCode === 32 || keyCode === 46 || keyCode === 45 || keyCode === 9) {
-        return true;
-    }
+  // Your existing validation logic
+  if ((keyCode >= 65 && keyCode <= 90) || (keyCode >= 97 && keyCode <= 122)) {
+    return true;
+  }
 
+  if (keyCode === 32 || keyCode === 46 || keyCode === 45 || keyCode === 9) {
+    return true;
+  }
+
+  // Prevent other characters if not allowed
+  event.preventDefault();
+  return false;
+}
+
+function validateAddress(event) {
+  // Allow alphanumeric characters, spaces, commas, periods, hyphens, and some other common symbols
+  var allowedCharacters = /^[a-zA-Z0-9\s.,#-]*$/;
+
+  var inputChar = String.fromCharCode(event.charCode);
+
+  // Check if the pressed key is a space and if it's the first character
+  if (event.charCode === 32 && event.target.selectionStart === 0) {
+    // Prevent the space from being added to the input
     event.preventDefault();
     return false;
+  }
+
+  // Check if the pressed key is allowed
+  if (allowedCharacters.test(inputChar)) {
+    return true;
+  } else {
+    // Prevent the input if the character is not allowed
+    event.preventDefault();
+    return false;
+  }
 }
+
+
 
 $(function() {
             $("#datepicker").datepicker({
