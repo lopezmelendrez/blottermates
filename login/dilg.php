@@ -95,7 +95,7 @@ if(isset($_POST['submit'])){
                                 </div>
     
                                 <div class="input-group1" style="margin-bottom: 8%;">
-                                        <small><a href="forgot_password.php" class="forgot-pass" style="margin-left: 75%;">Forgot Password?</a></small>
+                                       <!-- <small><a href="forgot_password.php" class="forgot-pass" style="margin-left: 75%;">Forgot Password?</a></small>-->
                                 </div>
     
                                 <div class="input-group1 d-flex">
