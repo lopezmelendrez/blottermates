@@ -203,11 +203,11 @@ if ($fetch['barangay'] == 'Ibaba') {
                     <div class="fields">
                         <div class="input-field-1">
                             <label>First Name</label>
-                            <input type="text" name="first_name" value="<?php echo $fetch['first_name']; ?>">
+                            <input type="text" name="first_name" onkeypress="return validateName(event)" value="<?php echo $fetch['first_name']; ?>">
                         </div>
                         <div class="input-field-1">
                             <label>Last Name</label>
-                            <input type="text" name="last_name" value="<?php echo $fetch['last_name']; ?>">
+                            <input type="text" name="last_name" onkeypress="return validateName(event)" value="<?php echo $fetch['last_name']; ?>">
                         </div>
                         <div class="input-field-1">
                             <label>Email Address</label>
@@ -215,7 +215,7 @@ if ($fetch['barangay'] == 'Ibaba') {
                         </div>
                         <div class="input-field-1">
                             <label class="required-label">Old Password</label>
-                            <input type="password" name="old_password" placeholder="" required>
+                            <input type="password" name="old_password" onkeydown="return preventSpace(event)" placeholder="" required>
                         </div>
 
                         <?php if (isset($msg_error) && !empty($msg_error)) { ?>
@@ -231,7 +231,7 @@ if ($fetch['barangay'] == 'Ibaba') {
                                 <label>New Password</label>
                                 <i class="uil uil-question-circle" data-bs-toggle="tooltip" data-bs-placement="top" title="Password must contain: At least one lowercase letter (a-z), at least one uppercase letter (A-Z), at least one number, and at least one special character." style="right: 0; display: flex; margin-top: -2.3%; margin-left: 13%;"></i>
                                 <div class="pw-meter" style="margin-top: 3px;">
-                                <input type="password" name="password" id="password" placeholder="">
+                                <input type="password" name="password" onkeydown="return preventSpace(event)" id="password" placeholder="">
                                 <div class="pw-display-toggle-btn" style="margin-top: 178px;">
                                 </div>
 
@@ -247,7 +247,7 @@ if ($fetch['barangay'] == 'Ibaba') {
                     
                         <div class="input-field-1" style="width: 100%;">
                             <label>Confirm Password</label>
-                            <input type="password" name="confirmPassword" placeholder="">
+                            <input type="password" onkeydown="return preventSpace(event)" name="confirmPassword" placeholder="">
                         </div>
 
                         <?php if (isset($error) && !empty($error)) { ?>
@@ -295,6 +295,45 @@ if ($fetch['barangay'] == 'Ibaba') {
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/signature_pad/1.5.3/signature_pad.min.js"></script>
     <script>
+
+function preventSpace(event) {
+  // Check if the pressed key is a space and if it's the first character
+  if (event.key === ' ' && event.target.selectionStart === 0) {
+    // Prevent the space from being added to the input
+    event.preventDefault();
+    return false;
+  }
+  // Allow other keypress events
+  return true;
+}
+
+function validateName(event) {
+  var keyCode = event.keyCode;
+  
+  // Check if the pressed key is a space
+  if (keyCode === 32) {
+    // Check if it's the first character
+    if (event.target.selectionStart === 0) {
+      // Prevent the space from being added to the input
+      event.preventDefault();
+      return false;
+    }
+  }
+
+  // Your existing validation logic
+  if ((keyCode >= 65 && keyCode <= 90) || (keyCode >= 97 && keyCode <= 122)) {
+    return true;
+  }
+
+  if (keyCode === 32 || keyCode === 46 || keyCode === 45 || keyCode === 9) {
+    return true;
+  }
+
+  // Prevent other characters if not allowed
+  event.preventDefault();
+  return false;
+}
+
         const body = document.querySelector('body'),
         sidebar = body.querySelector('nav'),
         toggle = body.querySelector(".toggle"),
