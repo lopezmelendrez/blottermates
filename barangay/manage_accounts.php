@@ -166,7 +166,7 @@ if (!$result) {
                 echo '<td>' . $displayStatus . '</td>';
                 echo '<td>' . date('d F Y - h:i A', strtotime($row['timestamp'])) . '</td>';
                 echo '<td class="actions">';
-                echo '<button class="btn view" onclick="showViewPopup()">View</button>';
+                echo '<button class="btn view" onclick="showViewPopup(' . $row['lupon_id'] . ')">View</button>';
                 //echo '<form action="remove_user.php" method="post" class="remove-form" onsubmit="return confirmDelete()">';
                 //echo '<input type="hidden" name="luponId" value="' . $row['lupon_id'] . '">';
                 //echo '<button type="submit" class="btn remove">Remove</button>';
@@ -194,21 +194,20 @@ if (!$result) {
             echo '</table>';
         }
         ?>
-
-        
-        
+ 
 
 <div id="view_popup" class="popup">
-            <center>
-            <div class="modal" style="display: block;">
+    <center>
+        <div class="modal" style="display: block;">
             <div class="modal-title" style="font-size: 28px; font-weight: 500;">VIEW</div>
             <hr style="border: 1px solid #ccc; margin: 10px 0;">
             <label style="font-size: 20px; margin-top: 9%;">Number Of Incident Cases Processed By: </label>
-            <p style="font-size: 50px; margin-top: 3%; font-weight: 500;">4</p>
+            <p id="numberOfIncidentCases" style="font-size: 50px; margin-top: 3%; font-weight: 500;"></p>
             <button class="backBtn" onclick="closeViewPopup()" style="margin-top: 6%; width: 150px; padding: 6px 6px; font-weight: 600; background: #fff; border: 1px solid #bc1823; border-radius: 5px; color: #bc1823; margin-left: 325px;">CLOSE</button>
-            </div>
-            </center>
         </div>
+    </center>
+</div>
+
 
         <div id="remove_popup" class="popup">
     <center>
@@ -289,6 +288,37 @@ if (!$result) {
     function confirmActivate() {
     return confirm("The user will now be authorized to use the account.");
     }
+
+    function showViewPopup(luponId) {
+    // Get the popup element
+    var popup = document.getElementById("view_popup");
+
+    // AJAX request
+    var xhr = new XMLHttpRequest();
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState == 4 && xhr.status == 200) {
+            // Assuming your server returns JSON data
+            var responseData = JSON.parse(xhr.responseText);
+
+            // Update the content in the view popup with the received data
+            updateViewPopupContent(responseData);
+
+            // Display the popup
+            popup.style.display = "flex";
+        }
+    };
+
+    // Send a GET request to fetch_lupon_data.php with the lupon_id as a parameter
+    xhr.open("GET", "fetch_lupon_data.php?lupon_id=" + luponId, true);
+    xhr.send();
+}
+
+function updateViewPopupContent(data) {
+    // Update the content of the view popup based on the received data
+    document.getElementById("numberOfIncidentCases").innerHTML = data.num_incident_cases;
+    // You can update other elements based on your data structure
+}
+
     </script>
 
     <style>
