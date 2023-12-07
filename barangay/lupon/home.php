@@ -434,6 +434,49 @@ searchInput.addEventListener("input", function() {
         popup.style.display = "none";
     }
 
+    const searchIcon = document.querySelector('.search-box .icon');
+const searchInput1 = document.getElementById('searchInput1');
+
+searchIcon.addEventListener('click', function () {
+    const searchTerm = searchInput1.value.trim().toLowerCase();
+
+    if (searchTerm !== '') {
+        handleSearch(searchTerm);
+    }
+});
+
+searchInput1.addEventListener('keyup', function (e) {
+    if (e.key === 'Enter') {
+        const searchTerm = searchInput1.value.trim().toLowerCase();
+
+        if (searchTerm !== '') {
+            handleSearch(searchTerm);
+        }
+    }
+});
+
+function handleSearch(searchTerm) {
+    const lowerCaseSearchTerm = searchTerm.trim().toLowerCase();
+
+    if (lowerCaseSearchTerm.startsWith('mediation') || lowerCaseSearchTerm.endsWith('mediation')) {
+        window.location.href = 'mediation_hearings.php';
+    } else if (lowerCaseSearchTerm === 'hearing' || lowerCaseSearchTerm === 'hearings') {
+        window.location.href = 'hearings.php';
+    } else if (lowerCaseSearchTerm.startsWith('incident')) {
+        window.location.href = 'incident_reports.php';
+    } else {
+        window.location.href = 'search_results.php?q=' + encodeURIComponent(searchTerm);
+    }
+}
+
+
+
+
+
+
+
+
+
     </script>
 
     <style>

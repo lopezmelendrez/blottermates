@@ -72,9 +72,9 @@ if ($fetch['barangay'] == 'Ibaba') {
             <div class="menu">
 
             <li class="search-box">
-                    <i class='bx bx-search icon'></i>
-                    <input type="text" placeholder="Search...">
-                </li>
+    <i class='bx bx-search icon'></i>
+    <input type="text" id="searchInput1" placeholder="Search..." oninput="restrictInput(this)">
+</li>
 
                     <li class="nav-link">
                         <a href="home.php">
@@ -148,6 +148,17 @@ if ($fetch['barangay'] == 'Ibaba') {
                 
             }
         });
+
+        function restrictInput(input) {
+
+      // Remove special characters and numbers
+      input.value = input.value.replace(/[^a-zA-Z\s]/g, '');
+
+      // Restrict spacebar only if it's the first character
+      if (input.value.length > 0 && input.value[0] === ' ') {
+        input.value = input.value.substring(1); // Remove the leading space
+      }
+    }
 
 </script>
 </body>
