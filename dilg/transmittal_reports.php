@@ -81,15 +81,15 @@ if (!$result) {
 
                     <div class="menu">
 
-                        <li class="search-box">
-                            <i class='bx bx-search icon'></i>
-                            <input type="text" placeholder="Search...">
-                        </li>
+                    <li class="search-box">
+                <i class='bx bx-search icon'></i>
+                <input type="text" id="searchInput1" placeholder="Search..." oninput="restrictInput(this)">
+            </li>
 
                         <li class="nav-link">
                             <a href="home.php">
                                 <i class='bx bx-home-alt icon' ></i>
-                                <span class="text nav-text">Dashboard</span>
+                                <span class="text nav-text">Home</span>
                             </a>
                         </li>
 
@@ -193,10 +193,9 @@ if (!$result) {
             ?>
 
 
-        
-
     </section>
 
+    <script src="search_bar.js"></script>
     <script>
         const body = document.querySelector('body'),
         sidebar = body.querySelector('nav'),

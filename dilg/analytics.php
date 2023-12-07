@@ -58,15 +58,15 @@ date_default_timezone_set('Asia/Manila');
         <div class="menu-bar">
             <div class="menu">
 
-                <li class="search-box">
-                    <i class='bx bx-search icon'></i>
-                    <input type="text" placeholder="Search...">
-                </li>
+            <li class="search-box">
+                <i class='bx bx-search icon'></i>
+                <input type="text" id="searchInput1" placeholder="Search..." oninput="restrictInput(this)">
+            </li>
 
                     <li class="nav-link">
                         <a href="home.php">
                             <i class='bx bx-home-alt icon' ></i>
-                            <span class="text nav-text">Dashboard</span>
+                            <span class="text nav-text">Home</span>
                         </a>
                     </li>
 
@@ -253,6 +253,7 @@ or die('query failed');
 
     </section>
 
+    <script src="search_bar.js"></script>
     <script>
         const body = document.querySelector('body'),
         sidebar = body.querySelector('nav'),
@@ -337,6 +338,22 @@ dateElement.textContent = formatDate(now);
 
 </body>
 <style>
+            .home{
+            position: absolute;
+            top: 0;
+            top: 0;
+            left: 250px;
+            height: 100vh;
+            width: calc(100% - 78px);
+            background-color: var(--body-color);
+            transition: var(--tran-05);
+        }
+
+        .sidebar.close ~ .home{
+            left: 78px;
+            height: 100vh;
+            width: calc(100% - 78px);
+        }
 
 .container {
             display: flex;
