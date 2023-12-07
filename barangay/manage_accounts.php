@@ -173,17 +173,9 @@ if (!$result) {
                 //echo '</form>';
                 
                 if ($status == 'disabled') {
-                    // Display Activate button for disabled users
-                    echo '<form action="activate_user.php" method="post" class="activate-form" onsubmit="return confirmActivate()">';
-                    echo '<input type="hidden" name="luponId" value="' . $row['lupon_id'] . '">';
-                    echo '<button type="submit" class="btn activate">Activate</button>';
-                    echo '</form>';
+                    echo '<button class="btn activate" onclick="showActivatePopup(' . $row['lupon_id'] . ')">Activate</button>';
                 } else {
-                    // Display Disable button for active users
-                    echo '<form action="disable_user.php" method="post" class="disable-form" onsubmit="return confirmDisable()">';
-                    echo '<input type="hidden" name="luponId" value="' . $row['lupon_id'] . '">';
-                    echo '<button type="submit" class="btn disable">Disable</button>';
-                    echo '</form>';
+                    echo '<button class="btn disable" onclick="showDisablePopup(' . $row['lupon_id'] . ')">Disable</button>';
                 }
 
                 echo '</td>';
@@ -200,46 +192,53 @@ if (!$result) {
     <center>
         <div class="modal" style="display: block;">
             <div class="modal-title" style="font-size: 28px; font-weight: 500;">VIEW</div>
-            <hr style="border: 1px solid #ccc; margin: 10px 0;">
-            <label style="font-size: 20px; margin-top: 9%;">Number Of Incident Cases Processed By: </label>
-            <p id="numberOfIncidentCases" style="font-size: 50px; margin-top: 3%; font-weight: 500;"></p>
+            <hr style="border: 1px solid #828282; margin: 10px 0; margin-bottom: 3%;">
+            <label style="font-size: 15px; letter-spacing: 1; margin-top: 2%; margin-bottom: 2%; text-transform: uppercase;">Number Of Incident Cases Processed By: <span id="luponStaffName" style="font-weight: 500;"></span></label>
+            <p id="numberOfIncidentCases" style="font-size: 50px; font-weight: 500;"></p>
+            <hr style="border: 1px solid #828282; margin: 10px 0; margin-bottom: 3%;">
             <button class="backBtn" onclick="closeViewPopup()" style="margin-top: 6%; width: 150px; padding: 6px 6px; font-weight: 600; background: #fff; border: 1px solid #bc1823; border-radius: 5px; color: #bc1823; margin-left: 325px;">CLOSE</button>
         </div>
     </center>
 </div>
 
 
-        <div id="remove_popup" class="popup">
+<div id="disable_popup" class="popup">
     <center>
         <div class="modal" style="display: block;">
-            <div class="modal-title" style="font-size: 28px; font-weight: 500;">REMOVE</div>
-            <hr style="border: 1px solid #ccc; margin: 10px 0;">
-            <form action="remove_user.php" method="post" class="remove-form">
-                <label style="font-size: 20px; margin-top: 9%;">Proceed with the deletion of this user account?</label>
-                <p style="font-size: 15px; margin-top: 3%; font-weight: 400;">Incident Cases that are processed by this user will not be deleted.</p>
-                <div class="remove-buttons" style="display: flex;">
-                    <button class="backBtn" onclick="closeRemovePopup()" style="margin-top: 8%; width: 120px; padding: 6px 6px; font-weight: 600; background: #fff; border: 1px solid #bc1823; border-radius: 5px; color: #bc1823; margin-left: 210px;">CANCEL</button>
-                    <button type="submit" class="backBtn" id="confirmRemoveBtn" style="margin-top: 8%; width: 180px; padding: 6px 6px; font-weight: 600; background: #bc1823; border: none; border-radius: 5px; color: #fff; margin-left: 5px;">CONFIRM</button>
+            <div class="modal-title" style="font-size: 28px; font-weight: 500;">DISABLE</div>
+            <hr style="border: 1px solid #828282; margin: 10px 0; margin-bottom: 3%;">
+            <form action="disable_user.php" method="post" class="disable-form">
+                <label style="font-size: 20px; margin-top: 6%; margin-bottom: 6%;">Are you sure you want to disable this user account?</label>
+                <hr style="border: 1px solid #828282; margin: 10px 0; margin-bottom: 3%;">
+                <div class="disable-buttons" style="display: flex;">
+                    <input type="hidden" id="disable_luponId" name="luponId" value="">
+                    <button type="button" class="backBtn" onclick="closeDisablePopup()" style="margin-top: 8%; width: 120px; padding: 6px 6px; font-weight: 600; background: #fff; border: 1px solid #bc1823; border-radius: 5px; color: #bc1823; margin-left: 210px;">CANCEL</button>
+                    <button type="submit" class="backBtn" style="margin-top: 8%; width: 180px; padding: 6px 6px; font-weight: 600; background: #bc1823; border: none; border-radius: 5px; color: #fff; margin-left: 5px;">CONFIRM</button>
                 </div>
             </form>
         </div>
     </center>
 </div>
 
-        <div id="disable_popup" class="popup">
-            <center>
-            <div class="modal" style="display: block;">
-            <div class="modal-title" style="font-size: 28px; font-weight: 500;">DISABLE</div>
-            <hr style="border: 1px solid #ccc; margin: 10px 0;">
-            <label style="font-size: 20px; margin-top: 9%;">Temporarily disable user account?</label>
-            <p style="font-size: 15px; margin-top: 3%; font-weight: 400;">Incident Cases that are processed by this user will not be deleted.</p>
-            <div class="remove-buttons" style="display: flex;">
-            <button class="backBtn" onclick="closeDisablePopup()" style="margin-top: 8%; width: 120px; padding: 6px 6px; font-weight: 600; background: #fff; border: 1px solid #bc1823; border-radius: 5px; color: #bc1823; margin-left: 210px;">CANCEL</button>
-            <button class="backBtn" style="margin-top: 8%; width: 180px; padding: 6px 6px; font-weight: 600; background: #bc1823; border: none; border-radius: 5px; color: #fff; margin-left: 5px;">CONFIRM</button>
-            </div>
-            </div>
-            </center>
+
+        <div id="activate_popup" class="popup">
+    <center>
+        <div class="modal" style="display: block;">
+            <div class="modal-title" style="font-size: 28px; font-weight: 500;">ACTIVATE</div>
+            <hr style="border: 1px solid #828282; margin: 10px 0; margin-bottom: 3%;">
+            <form action="activate_user.php" method="post" class="activate-form">
+                <label style="font-size: 20px; margin-top: 6%; margin-bottom: 6%;">Are you sure you want to activate this user account?</label>
+                <hr style="border: 1px solid #828282; margin: 10px 0; margin-bottom: 3%;">
+                <div class="activate-buttons" style="display: flex;">
+                    <button type="button" class="backBtn" onclick="closeActivatePopup()" style="margin-top: 8%; width: 120px; padding: 6px 6px; font-weight: 600; background: #fff; border: 1px solid #bc1823; border-radius: 5px; color: #bc1823; margin-left: 210px;">CANCEL</button>
+                    <input type="hidden" id="activate_luponId" name="luponId" value="">
+                    <button type="submit" class="backBtn" style="margin-top: 8%; width: 180px; padding: 6px 6px; font-weight: 600; background: #bc1823; border: none; border-radius: 5px; color: #fff; margin-left: 5px;">CONFIRM</button>
+                </div>
+            </form>
         </div>
+    </center>
+</div>
+
         
 
 
@@ -277,18 +276,6 @@ if (!$result) {
         popup.style.display = "none";
     }
 
-    function confirmDelete() {
-        return confirm("Are you sure you want to delete this user account?");
-    }
-
-    function confirmDisable() {
-    return confirm("Are you sure you want to temporarily disable this user account?");
-    }
-
-    function confirmActivate() {
-    return confirm("The user will now be authorized to use the account.");
-    }
-
     function showViewPopup(luponId) {
     // Get the popup element
     var popup = document.getElementById("view_popup");
@@ -316,8 +303,39 @@ if (!$result) {
 function updateViewPopupContent(data) {
     // Update the content of the view popup based on the received data
     document.getElementById("numberOfIncidentCases").innerHTML = data.num_incident_cases;
+    document.getElementById("luponStaffName").innerHTML = data.luponStaffName;
     // You can update other elements based on your data structure
 }
+
+function showActivatePopup(luponId) {
+        // Display the activation popup
+        var popup = document.getElementById("activate_popup");
+        popup.style.display = "flex";
+
+        // Set the luponId in the hidden input field of the popup form
+        document.getElementById("activate_luponId").value = luponId;
+    }
+
+    function closeActivatePopup() {
+        // Close the activation popup
+        var popup = document.getElementById("activate_popup");
+        popup.style.display = "none";
+}
+
+function showDisablePopup(luponId) {
+        // Display the disable popup
+        var popup = document.getElementById("disable_popup");
+        popup.style.display = "flex";
+
+        // Set the luponId in the hidden input field of the popup form
+        document.getElementById("disable_luponId").value = luponId;
+    }
+
+    function closeDisablePopup() {
+        // Close the disable popup
+        var popup = document.getElementById("disable_popup");
+        popup.style.display = "none";
+    }
 
     </script>
 

@@ -32,6 +32,24 @@ $numIncidentCases = $incidentCasesData['num_cases'];
 // Add the incident cases count to the data
 $data['num_incident_cases'] = $numIncidentCases;
 
+// Fetch first_name and last_name from the lupon_accounts table
+$luponStaffQuery = "SELECT first_name, last_name FROM lupon_accounts WHERE lupon_id = $luponId";
+$luponStaffResult = mysqli_query($conn, $luponStaffQuery);
+
+if (!$luponStaffResult) {
+    die('Lupon Staff Query failed: ' . mysqli_error($conn));
+}
+
+$luponStaffData = mysqli_fetch_assoc($luponStaffResult);
+$firstName = $luponStaffData['first_name'];
+$lastName = $luponStaffData['last_name'];
+
+// Combine first_name and last_name into a single string
+$luponStaffName = $firstName . ' ' . $lastName;
+
+// Add Lupon Staff Name to the data
+$data['luponStaffName'] = $luponStaffName;
+
 // Return data as JSON
 header('Content-Type: application/json');
 echo json_encode($data);
