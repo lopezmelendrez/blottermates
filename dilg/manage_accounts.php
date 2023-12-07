@@ -155,17 +155,9 @@ $result = mysqli_query($conn, $query);
                         echo '</form>';
                 
                 if ($status == 'disabled') {
-                    // Display Activate button for disabled users
-                    echo '<form action="activate_user.php" method="post" class="activate-form" onsubmit="return confirmActivate()">';
-                    echo '<input type="hidden" name="pbId" value="' . $row['pb_id'] . '">';
-                    echo '<button type="submit" class="btn activate">Activate</button>';
-                    echo '</form>';
+                    echo '<button class="btn activate" onclick="showActivatePopup(' . $row['pb_id'] . ')">Activate</button>';
                 } else {
-                    // Display Disable button for active users
-                    echo '<form action="disable_user.php" method="post" class="disable-form" onsubmit="return confirmDisable()">';
-                    echo '<input type="hidden" name="pbId" value="' . $row['pb_id'] . '">';
-                    echo '<button type="submit" class="btn disable">Disable</button>';
-                    echo '</form>';
+                    echo '<button class="btn disable" onclick="showDisablePopup(' . $row['pb_id'] . ')">Disable</button>';
                 }
                         echo '</td>';
                         echo '</tr>';
@@ -180,6 +172,44 @@ $result = mysqli_query($conn, $query);
 
 
         </div>
+
+        <div id="disable_popup" class="popup">
+    <center>
+        <div class="modal" style="display: block;">
+            <div class="modal-title" style="font-size: 28px; font-weight: 500; text-align: center;">DISABLE ACCOUNT</div>
+            <hr style="border: 1px solid #828282; margin: 10px 0; margin-bottom: 3%;">
+            <form action="disable_user.php" method="post" class="disable-form">
+                <label style="font-size: 20px; margin-top: 6%; margin-bottom: 6%; letter-spacing: 1; text-transform: uppercase;">Are you sure you want to disable this user account?</label>
+                <hr style="border: 1px solid #828282; margin: 10px 0; margin-bottom: 3%;">
+                <div class="disable-buttons" style="display: flex;">
+                    <input type="hidden" id="disable_pbId" name="pbId">
+                    <button type="button" class="backBtn" onclick="closeDisablePopup()" style="margin-top: 8%; width: 120px; padding: 6px 6px; font-weight: 600; background: #fff; border: 1px solid #bc1823; border-radius: 5px; color: #bc1823; margin-left: 210px;">CANCEL</button>
+                    <button type="submit" class="backBtn" style="margin-top: 8%; width: 180px; padding: 6px 6px; font-weight: 600; background: #bc1823; border: none; border-radius: 5px; color: #fff; margin-left: 5px;">CONFIRM</button>
+                </div>
+            </form>
+        </div>
+    </center>
+</div>
+
+
+<div id="activate_popup" class="popup">
+    <center>
+        <div class="modal" style="display: block;">
+            <div class="modal-title" style="font-size: 28px; font-weight: 500;">ACTIVATE ACCOUNT</div>
+            <hr style="border: 1px solid #828282; margin: 10px 0; margin-bottom: 3%;">
+            <form action="activate_user.php" method="post" class="activate-form">
+                <label style="font-size: 20px; margin-top: 6%; margin-bottom: 6%; letter-spacing: 1; text-transform: uppercase;">Are you sure you want to activate this user account?</label>
+                <hr style="border: 1px solid #828282; margin: 10px 0; margin-bottom: 3%;">
+                <div class="activate-buttons" style="display: flex;">
+                    <button type="button" class="backBtn" onclick="closeActivatePopup()" style="margin-top: 8%; width: 120px; padding: 6px 6px; font-weight: 600; background: #fff; border: 1px solid #bc1823; border-radius: 5px; color: #bc1823; margin-left: 210px;">CANCEL</button>
+                    <input type="hidden" id="activate_pbId" name="pbId" value="">
+                    <button type="submit" class="backBtn" style="margin-top: 8%; width: 180px; padding: 6px 6px; font-weight: 600; background: #bc1823; border: none; border-radius: 5px; color: #fff; margin-left: 5px;">CONFIRM</button>
+                </div>
+            </form>
+        </div>
+    </center>
+</div>
+
 
     </section>
 
@@ -272,6 +302,36 @@ function confirmDisable() {
     return confirm("The user will now be authorized to use the account.");
     }
 
+    function showDisablePopup(pbId) {
+        // Display the disable popup
+        var popup = document.getElementById("disable_popup");
+        popup.style.display = "flex";
+
+        // Set the luponId in the hidden input field of the popup form
+        document.getElementById("disable_pbId").value = pbId;
+    }
+
+    function closeDisablePopup() {
+        // Close the disable popup
+        var popup = document.getElementById("disable_popup");
+        popup.style.display = "none";
+    }
+
+    function showActivatePopup(pbId) {
+        // Display the activation popup
+        var popup = document.getElementById("activate_popup");
+        popup.style.display = "flex";
+
+        // Set the luponId in the hidden input field of the popup form
+        document.getElementById("activate_pbId").value = pbId;
+    }
+
+    function closeActivatePopup() {
+        // Close the activation popup
+        var popup = document.getElementById("activate_popup");
+        popup.style.display = "none";
+}
+
     </script>
 
 </body>
@@ -350,6 +410,32 @@ table {
 .disable:hover {
     background-color: #1565c0; 
     color: #fff;
+}
+
+.popup {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+}
+
+.modal {
+    display: flex;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 5px;
+    margin-top: 180px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    width: 520px;
+    height: 350px;
+    overflow-y: hidden;
+    margin-left: 30%;
 }
 
 </style>

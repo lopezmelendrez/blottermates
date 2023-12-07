@@ -205,10 +205,10 @@ if (!$result) {
 <div id="disable_popup" class="popup">
     <center>
         <div class="modal" style="display: block;">
-            <div class="modal-title" style="font-size: 28px; font-weight: 500;">DISABLE</div>
+            <div class="modal-title" style="font-size: 28px; font-weight: 500;">DISABLE ACCOUNT</div>
             <hr style="border: 1px solid #828282; margin: 10px 0; margin-bottom: 3%;">
             <form action="disable_user.php" method="post" class="disable-form">
-                <label style="font-size: 20px; margin-top: 6%; margin-bottom: 6%;">Are you sure you want to disable this user account?</label>
+                <label style="font-size: 20px; margin-top: 6%; margin-bottom: 6%; letter-spacing: 1; text-transform: uppercase;">Are you sure you want to disable this user account?</label>
                 <hr style="border: 1px solid #828282; margin: 10px 0; margin-bottom: 3%;">
                 <div class="disable-buttons" style="display: flex;">
                     <input type="hidden" id="disable_luponId" name="luponId" value="">
@@ -224,10 +224,10 @@ if (!$result) {
         <div id="activate_popup" class="popup">
     <center>
         <div class="modal" style="display: block;">
-            <div class="modal-title" style="font-size: 28px; font-weight: 500;">ACTIVATE</div>
+            <div class="modal-title" style="font-size: 28px; font-weight: 500;">ACTIVATE ACCOUNT</div>
             <hr style="border: 1px solid #828282; margin: 10px 0; margin-bottom: 3%;">
             <form action="activate_user.php" method="post" class="activate-form">
-                <label style="font-size: 20px; margin-top: 6%; margin-bottom: 6%;">Are you sure you want to activate this user account?</label>
+                <label style="font-size: 20px; margin-top: 6%; margin-bottom: 6%; letter-spacing: 1; text-transform: uppercase;">Are you sure you want to activate this user account?</label>
                 <hr style="border: 1px solid #828282; margin: 10px 0; margin-bottom: 3%;">
                 <div class="activate-buttons" style="display: flex;">
                     <button type="button" class="backBtn" onclick="closeActivatePopup()" style="margin-top: 8%; width: 120px; padding: 6px 6px; font-weight: 600; background: #fff; border: 1px solid #bc1823; border-radius: 5px; color: #bc1823; margin-left: 210px;">CANCEL</button>
