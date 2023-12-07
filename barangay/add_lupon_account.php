@@ -106,10 +106,10 @@ if (isset($_POST['submit'])) {
         <div class="menu-bar">
             <div class="menu">
 
-                <li class="search-box">
-                    <i class='bx bx-search icon'></i>
-                    <input type="text" placeholder="Search...">
-                </li>
+            <li class="search-box">
+                <i class='bx bx-search icon'></i>
+                <input type="text" id="searchInput1" placeholder="Search..." oninput="restrictInput(this)">
+            </li>
 
                     <li class="nav-link">
                         <a href="home.php">
@@ -257,6 +257,7 @@ if (isset($_POST['submit'])) {
 
     </section>
 
+    <script src="search_bar.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/signature_pad/1.5.3/signature_pad.min.js"></script>
     <script>
         const body = document.querySelector('body'),

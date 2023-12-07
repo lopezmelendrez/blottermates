@@ -339,6 +339,7 @@ $result = mysqli_query($conn, $activityLogQuery);
 
     </section>
 
+    <script src="search_bar.js"></script>
     <script>
         const body = document.querySelector('body'),
         sidebar = body.querySelector('nav'),
