@@ -64,7 +64,7 @@ if (!$result) {
 </head>
 <body>
     
-<?php include 'navbar.php';?>
+<?php include 'nav_bar.php';?>
 
     <section class="home">
 
@@ -270,6 +270,7 @@ if (mysqli_num_rows($result) == 0) {
     
 
     <script>
+
         const body = document.querySelector('body'),
         sidebar = body.querySelector('nav'),
         toggle = body.querySelector(".toggle"),
@@ -287,19 +288,16 @@ if (mysqli_num_rows($result) == 0) {
         })
 
         function loadContent() {
-    const selectedOption = document.getElementById("sort").value;
+        const selectedOption = document.getElementById("sort").value;
 
-    if (selectedOption === "oldest") {
-        window.location.href = "incident_reports.php?sort=oldest";
-    } else if (selectedOption === "latest") {
-        window.location.href = "incident_reports.php?sort=latest";
+        if (selectedOption === "oldest") {
+            window.location.href = "incident_reports.php?sort=oldest";
+        } else if (selectedOption === "latest") {
+            window.location.href = "incident_reports.php?sort=latest";
+        }
     }
-}
 
     
-        
-
-
 
     </script>
 

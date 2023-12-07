@@ -29,7 +29,7 @@ header('location: ../../index.php');
 </head>
 <body>
 
-<?php include 'navbar.php'; ?>
+<?php include 'nav_bar.php'; ?>
 
     <section class="home">
 
@@ -167,6 +167,7 @@ if (mysqli_num_rows($select_hearing) > 0) {
         
     </section>
 
+    <script src="search_bar.js"></script>
     <script>
         const body = document.querySelector('body'),
         sidebar = body.querySelector('nav'),

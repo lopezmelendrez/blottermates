@@ -193,7 +193,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['notify_pangkat_submit
     <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css"/>
     <link rel="icon" type="image/x-icon" href="../../images/favicon.ico">
-    <title>Notice Management Page</title>
+    <title>Notice Management</title>
 </head>
 <body>
 
@@ -209,7 +209,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['notify_pangkat_submit
                         $fetch = mysqli_fetch_assoc($select);
                     }
                 ?>
-                               <?php
+                              <?php
 if ($fetch['barangay'] == 'Ibaba') {
     echo '<span class="image"><img src="../../images/ibaba_logo.png"></span>';
 } elseif ($fetch['barangay'] == 'Other') {
@@ -255,9 +255,10 @@ if ($fetch['barangay'] == 'Ibaba') {
             <div class="menu">
 
             <li class="search-box">
-                    <i class='bx bx-search icon'></i>
-                    <input type="text" placeholder="Search...">
-            </li>
+    <i class='bx bx-search icon'></i>
+    <input type="text" id="searchInput1" placeholder="Search..." oninput="restrictInput(this)">
+</li>
+
 
                     <li class="nav-link">
                         <a href="home.php">
@@ -280,6 +281,7 @@ if ($fetch['barangay'] == 'Ibaba') {
                         </a>
                     </li>
 
+
             </div>
 
             <div class="bottom-content">
@@ -296,7 +298,6 @@ if ($fetch['barangay'] == 'Ibaba') {
                         <span class="text nav-text">Logout</span>
                     </a>
                 </li>
-
                 
             </div>
         </div>
@@ -647,10 +648,8 @@ if ($check_result && mysqli_num_rows($check_result) > 0) {
 
 
     </section>
-
-
     
-
+    <script src="search_bar.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
       const body = document.querySelector('body'),

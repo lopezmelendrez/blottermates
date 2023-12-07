@@ -29,7 +29,112 @@ header('location: ../../index.php');
 </head>
 <body>
 
-<?php include 'navbar.php'; ?>
+<nav class="sidebar close">
+        <header>
+            <div class="image-text">
+            <?php
+                    $select = mysqli_query($conn, "SELECT l.*, pb.barangay 
+                                                FROM `lupon_accounts` l
+                                                LEFT JOIN `pb_accounts` pb ON l.pb_id = pb.pb_id
+                                                WHERE l.email_address = '$email'") or die('query failed');
+                    if(mysqli_num_rows($select) > 0){
+                        $fetch = mysqli_fetch_assoc($select);
+                    }
+                ?>
+                              <?php
+if ($fetch['barangay'] == 'Ibaba') {
+    echo '<span class="image"><img src="../../images/ibaba_logo.png"></span>';
+} elseif ($fetch['barangay'] == 'Other') {
+    echo '<span class="image"><img src="../../images/logo.png"></span>';
+} elseif ($fetch['barangay'] == 'Labas') {
+    echo '<span class="image"><img src="../../images/labas.png"></span>';
+} elseif ($fetch['barangay'] == 'Tagapo') {
+    echo '<span class="image"><img src="../../images/tagapo.png"></span>';
+} elseif ($fetch['barangay'] == 'Malusak') {
+    echo '<span class="image"><img src="../../images/malusak.png"></span>';
+} elseif ($fetch['barangay'] == 'Balibago') {
+    echo '<span class="image"><img src="../../images/balibago.png"></span>';
+} elseif ($fetch['barangay'] == 'Caingin') {
+    echo '<span class="image"><img src="../../images/caingin.png"></span>';
+} elseif ($fetch['barangay'] == 'Pook') {
+    echo '<span class="image"><img src="../../images/pooc.png"></span>';
+} elseif ($fetch['barangay'] == 'Aplaya') {
+    echo '<span class="image"><img src="../../images/aplaya.png"></span>';
+} elseif ($fetch['barangay'] == 'Kanluran') {
+    echo '<span class="image"><img src="../../images/kanluran.png"></span>';
+} else {
+    // Default image if the barangay is not matched
+    echo '<span class="image"><img src="../../images/logo.png"></span>';
+}
+?>
+                <div class="text logo-text">
+                
+                    <span class="name"><?php echo $fetch['first_name'] . ' ' . $fetch['last_name']; ?></span>
+                    <?php
+    if ($fetch['barangay']) {
+        echo '<span class="profession">Barangay ' . $fetch['barangay'] . '</span>';
+    } else {
+        echo '<span class="profession">Not specified</span>'; 
+    }
+    ?>
+                </div>
+            </div>
+
+            <i class='bx bx-chevron-right toggle'></i>
+        </header>
+
+        <div class="menu-bar">
+            <div class="menu">
+
+            <li class="search-box">
+            <i class='bx bx-search icon'></i>
+            <input type="text" id="searchInput1" placeholder="Search..." oninput="restrictInput(this)">
+            </li>
+
+
+                    <li class="nav-link">
+                        <a href="home.php">
+                            <i class='bx bx-home-alt icon' ></i>
+                            <span class="text nav-text">Home</span>
+                        </a>
+                    </li>
+
+                    <li class="nav-link">
+                        <a href="incident_reports.php">
+                            <i class='bx bx-file icon' ></i>
+                            <span class="text nav-text">Incident Reports</span>
+                        </a>
+                    </li>
+
+                    <li class="nav-link">
+                        <a href="hearings.php">
+                            <i class='bx bx-calendar-event icon' ></i>
+                            <span class="text nav-text">Hearings</span>
+                        </a>
+                    </li>
+
+
+            </div>
+
+            <div class="bottom-content">
+                <li class="">
+                <a href="my_account.php">
+                        <i class='bx bx-user-circle icon' ></i>
+                        <span class="text nav-text">My Account</span>
+                    </a>
+                </li>
+
+                <li class="">
+                    <a href="../../logout.php">
+                        <i class='bx bx-log-out icon' ></i>
+                        <span class="text nav-text">Logout</span>
+                    </a>
+                </li>
+                
+            </div>
+        </div>
+
+    </nav>
 
     <section class="home">
 
@@ -185,31 +290,69 @@ if (mysqli_num_rows($select_arbitration_agreement) > 0) {
             sidebar.classList.remove("close");
         })
 
-        modeSwitch.addEventListener("click" , () =>{
-            body.classList.toggle("dark");
-            
-            if(body.classList.contains("dark")){
-                modeText.innerText = "Light mode";
-            }else{
-                modeText.innerText = "Dark mode";
-                
-            }
-        });
-    
-        function loadContent() {
-            // Get the value of the selected option
-            const selectedOption = document.getElementById('transactionTableSelect').value;
+        const searchIcon = document.querySelector('.search-box .icon');
+        const searchInput1 = document.getElementById('searchInput1');
 
-            // Perform redirection or load content based on the selected option
-            if (selectedOption === 'ongoing') {
-                window.location.href = 'ongoingcases.php#ongoing';
-            } else if (selectedOption === 'settled') {
-                window.location.href = 'settledcases.php#settled';
-            }
-            else if (selectedOption === 'incomplete') {
-                window.location.href = 'incompletenotices.php#incomplete';
-            }
+        searchIcon.addEventListener('click', function () {
+        const searchTerm = searchInput1.value.trim().toLowerCase();
+
+    if (searchTerm !== '') {
+        handleSearch(searchTerm);
+    }
+    });
+
+searchInput1.addEventListener('keyup', function (e) {
+    if (e.key === 'Enter') {
+        const searchTerm = searchInput1.value.trim().toLowerCase();
+
+        if (searchTerm !== '') {
+            handleSearch(searchTerm);
         }
+    }
+});
+
+function handleSearch(searchTerm) {
+    const lowerCaseSearchTerm = searchTerm.trim().toLowerCase();
+
+    if (lowerCaseSearchTerm.startsWith('mediation') || lowerCaseSearchTerm.endsWith('mediation')) {
+        window.location.href = 'mediation_hearings.php';
+    } else if (lowerCaseSearchTerm === 'hearing' || lowerCaseSearchTerm === 'hearings') {
+        window.location.href = 'hearings.php';
+    } else if (lowerCaseSearchTerm.startsWith('incident')) {
+        window.location.href = 'incident_reports.php';
+    } else if (lowerCaseSearchTerm.startsWith('conciliation') || lowerCaseSearchTerm.endsWith('conciliation')) {
+        window.location.href = 'conciliation_hearings.php';
+    } else if (lowerCaseSearchTerm.startsWith('arbitration') || lowerCaseSearchTerm.endsWith('arbitration')) {
+        window.location.href = 'arbitration_hearings.php';
+    } else if (lowerCaseSearchTerm.startsWith('create') || lowerCaseSearchTerm.endsWith('create')) {
+        window.location.href = 'create_report.php';
+    } else if (lowerCaseSearchTerm.startsWith('ongoing') || lowerCaseSearchTerm.endsWith('ongoing')) {
+        window.location.href = 'ongoing_cases.php';
+    } else if (lowerCaseSearchTerm.startsWith('settled') || lowerCaseSearchTerm.endsWith('settled')) {
+        window.location.href = 'settled_cases.php';
+    } else if (lowerCaseSearchTerm.startsWith('incomplete') || lowerCaseSearchTerm.endsWith('incomplete')) {
+        window.location.href = 'incomplete_notices.php';
+    } else if (lowerCaseSearchTerm.startsWith('home') || lowerCaseSearchTerm.endsWith('home')) {
+        window.location.href = 'home.php';
+    } else if (lowerCaseSearchTerm.startsWith('account') || lowerCaseSearchTerm.endsWith('account')) {
+        window.location.href = 'my_account.php';
+    } else if (lowerCaseSearchTerm.startsWith('profile') || lowerCaseSearchTerm.endsWith('profile')) {
+        window.location.href = 'my_account.php';
+    }  else {
+    searchInput1.value = `'${searchTerm.charAt(0).toUpperCase() + searchTerm.slice(1)}' was not found`;
+    }
+}
+
+function restrictInput(input) {
+
+// Remove special characters and numbers
+input.value = input.value.replace(/[^a-zA-Z\s]/g, '');
+
+// Restrict spacebar only if it's the first character
+if (input.value.length > 0 && input.value[0] === ' ') {
+  input.value = input.value.substring(1); // Remove the leading space
+}
+}
 
     </script>
 

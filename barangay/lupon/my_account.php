@@ -62,9 +62,6 @@ if (isset($_POST['submit'])) {
 
 ?>
 
-<!-- ... (rest of your HTML code remains unchanged) ... -->
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -91,7 +88,7 @@ if (isset($_POST['submit'])) {
                         $fetch = mysqli_fetch_assoc($select);
                     }
                 ?>
-                               <?php
+                              <?php
 if ($fetch['barangay'] == 'Ibaba') {
     echo '<span class="image"><img src="../../images/ibaba_logo.png"></span>';
 } elseif ($fetch['barangay'] == 'Other') {
@@ -137,9 +134,10 @@ if ($fetch['barangay'] == 'Ibaba') {
             <div class="menu">
 
             <li class="search-box">
-                    <i class='bx bx-search icon'></i>
-                    <input type="text" placeholder="Search...">
-            </li>
+    <i class='bx bx-search icon'></i>
+    <input type="text" id="searchInput1" placeholder="Search..." oninput="restrictInput(this)">
+</li>
+
 
                     <li class="nav-link">
                         <a href="home.php">
@@ -156,17 +154,18 @@ if ($fetch['barangay'] == 'Ibaba') {
                     </li>
 
                     <li class="nav-link">
-                        <a href="#">
+                        <a href="hearings.php">
                             <i class='bx bx-calendar-event icon' ></i>
                             <span class="text nav-text">Hearings</span>
                         </a>
                     </li>
 
+
             </div>
 
             <div class="bottom-content">
                 <li class="">
-                    <a href="#">
+                <a href="my_account.php">
                         <i class='bx bx-user-circle icon' ></i>
                         <span class="text nav-text">My Account</span>
                     </a>
@@ -178,7 +177,6 @@ if ($fetch['barangay'] == 'Ibaba') {
                         <span class="text nav-text">Logout</span>
                     </a>
                 </li>
-
                 
             </div>
         </div>
@@ -293,6 +291,7 @@ if ($fetch['barangay'] == 'Ibaba') {
 
     </section>
 
+    <script src="search_bar.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/signature_pad/1.5.3/signature_pad.min.js"></script>
     <script>
 

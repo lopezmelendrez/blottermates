@@ -29,7 +29,7 @@ header('location: ../../index.php');
 </head>
 <body>
 
-<?php include 'navbar.php'; ?>
+<?php include 'nav_bar.php'; ?>
 
     <section class="home">
 
@@ -144,6 +144,7 @@ header('location: ../../index.php');
         
     </section>
 
+    <script src="search_bar.js"></script>
     <script>
         const body = document.querySelector('body'),
         sidebar = body.querySelector('nav'),

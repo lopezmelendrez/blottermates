@@ -28,7 +28,7 @@ header('location: ../../index.php');
 </head>
 <body>
 
-<?php include 'navbar.php'; ?>
+<?php include 'nav_bar.php'; ?>
 
     <section class="home">
 
@@ -155,6 +155,7 @@ if ($num_rows === 0) {
         
     </section>
 
+    <script src="search_bar.js"></script>
     <script>
         const body = document.querySelector('body'),
         sidebar = body.querySelector('nav'),

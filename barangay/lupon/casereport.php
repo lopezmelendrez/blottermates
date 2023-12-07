@@ -70,7 +70,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['execution_submit'])) 
                         $fetch = mysqli_fetch_assoc($select);
                     }
                 ?>
-                               <?php
+                              <?php
 if ($fetch['barangay'] == 'Ibaba') {
     echo '<span class="image"><img src="../../images/ibaba_logo.png"></span>';
 } elseif ($fetch['barangay'] == 'Other') {
@@ -116,9 +116,10 @@ if ($fetch['barangay'] == 'Ibaba') {
             <div class="menu">
 
             <li class="search-box">
-                    <i class='bx bx-search icon'></i>
-                    <input type="text" placeholder="Search...">
-            </li>
+    <i class='bx bx-search icon'></i>
+    <input type="text" id="searchInput1" placeholder="Search..." oninput="restrictInput(this)">
+</li>
+
 
                     <li class="nav-link">
                         <a href="home.php">
@@ -135,11 +136,12 @@ if ($fetch['barangay'] == 'Ibaba') {
                     </li>
 
                     <li class="nav-link">
-                        <a href="#">
+                        <a href="hearings.php">
                             <i class='bx bx-calendar-event icon' ></i>
                             <span class="text nav-text">Hearings</span>
                         </a>
                     </li>
+
 
             </div>
 
@@ -157,13 +159,11 @@ if ($fetch['barangay'] == 'Ibaba') {
                         <span class="text nav-text">Logout</span>
                     </a>
                 </li>
-
                 
             </div>
         </div>
 
     </nav>
-
 
     <section class="home">
         <div class="container" style="margin-left: 15%; margin-top: 22px;">
@@ -281,6 +281,7 @@ if ($fetch['barangay'] == 'Ibaba') {
     
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="search_bar.js"></script>
     <script>
         const body = document.querySelector('body'),
         sidebar = body.querySelector('nav'),

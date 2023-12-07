@@ -121,7 +121,7 @@ if ($fetch['barangay'] == 'Ibaba') {
 
     </nav>
 
-    
+    <script src="search_bar.js"></script>
     <script>
         const body = document.querySelector('body'),
         sidebar = body.querySelector('nav'),

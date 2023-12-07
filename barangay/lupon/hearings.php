@@ -65,7 +65,7 @@ if (!$result) {
 </head>
 <body>
     
-<?php include 'navbar.php';?>
+<?php include 'nav_bar.php';?>
 
     <section class="home">
 
@@ -316,6 +316,7 @@ while ($row = mysqli_fetch_assoc($result)) {
    
     </section>
 
+    <script src="search_bar.js"></script>
     <script>
         const body = document.querySelector('body'),
         sidebar = body.querySelector('nav'),

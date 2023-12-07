@@ -81,7 +81,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit'])) {
 </head>
 <body>
     
-<?php include 'navbar.php'; ?>
+<?php include 'nav_bar.php'; ?>
 
     <section class="home">
         <div class="container" style="margin-left: 15%; margin-top: 80px; width: 950px; height: 475px;">
@@ -169,6 +169,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit'])) {
 
     </section>
 
+    <script src="search_bar.js"></script>
     <script>
 
 $(function () {

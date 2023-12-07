@@ -71,7 +71,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit'])) {
                         $fetch = mysqli_fetch_assoc($select);
                     }
                 ?>
-                               <?php
+                              <?php
 if ($fetch['barangay'] == 'Ibaba') {
     echo '<span class="image"><img src="../../images/ibaba_logo.png"></span>';
 } elseif ($fetch['barangay'] == 'Other') {
@@ -117,9 +117,10 @@ if ($fetch['barangay'] == 'Ibaba') {
             <div class="menu">
 
             <li class="search-box">
-                    <i class='bx bx-search icon'></i>
-                    <input type="text" placeholder="Search...">
-            </li>
+    <i class='bx bx-search icon'></i>
+    <input type="text" id="searchInput1" placeholder="Search..." oninput="restrictInput(this)">
+</li>
+
 
                     <li class="nav-link">
                         <a href="home.php">
@@ -136,17 +137,18 @@ if ($fetch['barangay'] == 'Ibaba') {
                     </li>
 
                     <li class="nav-link">
-                        <a href="#">
+                        <a href="hearings.php">
                             <i class='bx bx-calendar-event icon' ></i>
                             <span class="text nav-text">Hearings</span>
                         </a>
                     </li>
 
+
             </div>
 
             <div class="bottom-content">
                 <li class="">
-                    <a href="my_account.php">
+                <a href="my_account.php">
                         <i class='bx bx-user-circle icon' ></i>
                         <span class="text nav-text">My Account</span>
                     </a>
@@ -158,7 +160,6 @@ if ($fetch['barangay'] == 'Ibaba') {
                         <span class="text nav-text">Logout</span>
                     </a>
                 </li>
-
                 
             </div>
         </div>
@@ -299,102 +300,69 @@ window.addEventListener("click", (event) => {
     }
 });
 
+const searchIcon = document.querySelector('.search-box .icon');
+    const searchInput1 = document.getElementById('searchInput1');
 
+    searchIcon.addEventListener('click', function () {
+    const searchTerm = searchInput1.value.trim().toLowerCase();
 
-    const confirmPasswordInput = document.querySelector('input[name="confirmPassword"]');
-const showHidePwIcon = document.querySelector('.showHidePw');
-
-showHidePwIcon.addEventListener('click', () => {
-    if (confirmPasswordInput.type === 'password') {
-        confirmPasswordInput.type = 'text';
-        showHidePwIcon.classList.remove('uil-eye-slash');
-        showHidePwIcon.classList.add('uil-eye');
-    } else {
-        confirmPasswordInput.type = 'password';
-        showHidePwIcon.classList.remove('uil-eye');
-        showHidePwIcon.classList.add('uil-eye-slash');
+    if (searchTerm !== '') {
+        handleSearch(searchTerm);
     }
-});
-
-function getPasswordStrength(password){
-    let s = 0;
-        if(password.length > 6){
-          s++;
-        }
-
-        if(password.length > 10){
-          s++;
-        }
-
-        if(/[A-Z]/.test(password)){
-          s++;
-        }
-
-        if(/[0-9]/.test(password)){
-          s++;
-        }
-
-        if(/[^A-Za-z0-9]/.test(password)){
-          s++;
-        }
-
-        return s;
-}
-      
-const passwordInput = document.querySelector(".pw-meter #password");
-const passwordStrengthMeter = document.querySelector(".pw-meter .pw-strength");
-
-passwordInput.addEventListener("input", function () {
-    // Check if there is input in the password field
-    if (this.value.trim().length > 0) {
-        passwordStrengthMeter.style.display = "block";
-    } else {
-        passwordStrengthMeter.style.display = "none";
-    }
-});
-
-passwordInput.addEventListener("blur", function () {
-    // Hide the meter when the field loses focus
-    passwordStrengthMeter.style.display = "none";
-});
-
-
-      
-document.querySelector(".pw-meter .pw-display-toggle-btn").addEventListener("click",function(){
-    let el = document.querySelector(".pw-meter .pw-display-toggle-btn");
-        
-        if(el.classList.contains("active")){
-            document.querySelector(".pw-meter #password").setAttribute("type","password");
-            el.classList.remove("active");
-        } else{
-            document.querySelector(".pw-meter #password").setAttribute("type","text");
-            el.classList.add("active");
-        }
-});
-      
-    document.querySelector(".pw-meter #password").addEventListener("keyup",function(e){
-        let password = e.target.value;
-        let strength = getPasswordStrength(password);
-        let passwordStrengthSpans = document.querySelectorAll(".pw-meter .pw-strength span");
-        strength = Math.max(strength,1);
-        passwordStrengthSpans[1].style.width = strength*20 + "%";
-        
-        if(strength < 2){
-          passwordStrengthSpans[0].innerText = "Weak";
-          passwordStrengthSpans[0].style.color = "#111";
-          passwordStrengthSpans[1].style.background = "#d13636";
-        } else if(strength >= 2 && strength <= 4){
-          passwordStrengthSpans[0].innerText = "Medium";
-          passwordStrengthSpans[0].style.color = "#111";
-          passwordStrengthSpans[1].style.background = "#e6da44";
-        } else {
-          passwordStrengthSpans[0].innerText = "Strong";
-          passwordStrengthSpans[0].style.color = "#fff";
-          passwordStrengthSpans[1].style.background = "#20a820";
-        }
     });
 
+searchInput1.addEventListener('keyup', function (e) {
+    if (e.key === 'Enter') {
+        const searchTerm = searchInput1.value.trim().toLowerCase();
 
+        if (searchTerm !== '') {
+            handleSearch(searchTerm);
+        }
+    }
+});
+
+function handleSearch(searchTerm) {
+    const lowerCaseSearchTerm = searchTerm.trim().toLowerCase();
+
+    if (lowerCaseSearchTerm.startsWith('mediation') || lowerCaseSearchTerm.endsWith('mediation')) {
+        window.location.href = 'mediation_hearings.php';
+    } else if (lowerCaseSearchTerm === 'hearing' || lowerCaseSearchTerm === 'hearings') {
+        window.location.href = 'hearings.php';
+    } else if (lowerCaseSearchTerm.startsWith('incident')) {
+        window.location.href = 'incident_reports.php';
+    } else if (lowerCaseSearchTerm.startsWith('conciliation') || lowerCaseSearchTerm.endsWith('conciliation')) {
+        window.location.href = 'conciliation_hearings.php';
+    } else if (lowerCaseSearchTerm.startsWith('arbitration') || lowerCaseSearchTerm.endsWith('arbitration')) {
+        window.location.href = 'arbitration_hearings.php';
+    } else if (lowerCaseSearchTerm.startsWith('create') || lowerCaseSearchTerm.endsWith('create')) {
+        window.location.href = 'create_report.php';
+    } else if (lowerCaseSearchTerm.startsWith('ongoing') || lowerCaseSearchTerm.endsWith('ongoing')) {
+        window.location.href = 'ongoing_cases.php';
+    } else if (lowerCaseSearchTerm.startsWith('settled') || lowerCaseSearchTerm.endsWith('settled')) {
+        window.location.href = 'settled_cases.php';
+    } else if (lowerCaseSearchTerm.startsWith('incomplete') || lowerCaseSearchTerm.endsWith('incomplete')) {
+        window.location.href = 'incomplete_notices.php';
+    } else if (lowerCaseSearchTerm.startsWith('home') || lowerCaseSearchTerm.endsWith('home')) {
+        window.location.href = 'home.php';
+    } else if (lowerCaseSearchTerm.startsWith('account') || lowerCaseSearchTerm.endsWith('account')) {
+        window.location.href = 'my_account.php';
+    } else if (lowerCaseSearchTerm.startsWith('profile') || lowerCaseSearchTerm.endsWith('profile')) {
+        window.location.href = 'my_account.php';
+    }  else {
+    searchInput1.value = `'${searchTerm.charAt(0).toUpperCase() + searchTerm.slice(1)}' was not found`;
+    }
+}
+
+function restrictInput(input) {
+
+// Remove special characters and numbers
+input.value = input.value.replace(/[^a-zA-Z\s]/g, '');
+
+// Restrict spacebar only if it's the first character
+if (input.value.length > 0 && input.value[0] === ' ') {
+  input.value = input.value.substring(1); // Remove the leading space
+}
+}
 
 </script>
 
