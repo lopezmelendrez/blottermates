@@ -3,9 +3,80 @@ session_start();
 
 include '../config.php'; 
 
+$max_attempts = 3; 
+$lockout_duration = 900; 
+
+function getLoginAttempts($conn, $email) {
+    $query = "SELECT login_attempts FROM account WHERE email_address = '" . $email . "'";
+    $result = mysqli_query($conn, $query);
+    $row = mysqli_fetch_assoc($result);
+
+    if ($row) {
+        return (int) $row['login_attempts'];
+    }
+    return $row ? (int) $row['login_attempts'] : 0;
+}
+
+function updateLoginAttempts($conn, $email, $attempts) {
+    $query = "UPDATE account SET login_attempts = " . $attempts . " WHERE email_address = '" . $email . "'";
+    mysqli_query($conn, $query);
+
+}
+
+function getLastFailedAttemptTimestamp($conn, $email) {
+    $query = "SELECT last_failed_attempt FROM account WHERE email_address = '" . $email . "'";
+    $result = mysqli_query($conn, $query);
+    $row = mysqli_fetch_assoc($result);
+
+    if ($row) {
+        return strtotime($row['last_failed_attempt']);
+    }
+
+    return $row ? strtotime($row['last_failed_attempt']) : 0;
+}
+
+function updateLastFailedAttemptTimestamp($conn, $email, $timestamp) {
+    $formattedTimestamp = date('Y-m-d H:i:s', $timestamp);
+    $query = "UPDATE account SET last_failed_attempt = '" . $formattedTimestamp . "' WHERE email_address = '" . $email . "'";
+    mysqli_query($conn, $query);
+
+}
+
+function resetLoginAttemptsIfNeeded($conn, $email, $lockout_duration) {
+    $lastFailedAttemptTimestamp = getLastFailedAttemptTimestamp($conn, $email);
+    $currentTimestamp = time();
+    $timeElapsed = $currentTimestamp - $lastFailedAttemptTimestamp;
+
+    if ($timeElapsed >= $lockout_duration) {
+        updateLoginAttempts($conn, $email, 0);
+    }
+
+    $lastFailedAttemptTimestampPB = getLastFailedAttemptTimestamp($conn, $email);
+    $timeElapsedPB = $currentTimestamp - $lastFailedAttemptTimestampPB;
+
+    if ($timeElapsedPB >= $lockout_duration) {
+        updateLoginAttempts($conn, $email, 0);
+    }
+}
+
 if(isset($_POST['submit'])){
     $email = mysqli_real_escape_string($conn, $_POST['email_address']);
     $password = mysqli_real_escape_string($conn, $_POST['password']);
+
+    resetLoginAttemptsIfNeeded($conn, $email, $lockout_duration);
+
+    $attempts = getLoginAttempts($conn, $email);
+
+    if ($attempts >= $max_attempts) {
+        $lastFailedAttemptTimestamp = getLastFailedAttemptTimestamp($conn, $email);
+        $currentTimestamp = time();
+        $timeElapsed = $currentTimestamp - $lastFailedAttemptTimestamp;
+        $remainingTimeMinutes = ceil(($lockout_duration - $timeElapsed) / 60);
+
+        if ($remainingTimeMinutes > 0) {
+            $msg_error = "Maximum Attempts Reached. Retry in " . $remainingTimeMinutes . " minutes.";
+        }
+    } else {
     
     
     $query = "SELECT * FROM account WHERE email_address = '$email' AND account_role = 'DILG'";
@@ -26,10 +97,13 @@ if(isset($_POST['submit'])){
             exit();
         } else {
             $error = "Invalid Password";
+            updateLoginAttempts($conn, $email, $attempts + 1);
+            updateLastFailedAttemptTimestamp($conn, $email, time());
         }
     } else {
         $msgerror = "Email Address not Found";
     }
+}
 }
 ?>
 <!DOCTYPE html>
@@ -76,6 +150,14 @@ if(isset($_POST['submit'])){
             <i class="fa-solid fa-circle-exclamation" style="margin-left: 3%; margin-top: 0.6%; font-size: 20px; color: #D52826;"></i>
             <span style="margin-left: 2%; font-size: 16px; color: #D52826; font-weight: 600; margin-top: 0.3%;"><?php echo $msgerror; ?></span>
             <i class="fas fa-times" style="margin-left: 47%; margin-top: 0.4%; color: #D52826; font-size: 24px;" onclick="this.parentElement.remove();"></i>
+        </div>
+    <?php } ?>
+
+    <?php if (isset($msg_error) && !empty($msg_error)) { ?>
+        <div class="message d-flex" style="background: #F5E2D1; border: none; border-radius: 5px; width: 100%; margin-top: -1%; padding: 2px 2px; margin-left: 0;">
+            <i class="fa-solid fa-circle-exclamation" style="margin-left: 3%; margin-top: 0.6%; font-size: 20px; color: #D52826;"></i>
+            <span style="margin-left: 2%; font-size: 16px; color: #D52826; font-weight: 600; margin-top: 0.3%;"><?php echo $msgerror; ?></span>
+            <i class="fas fa-times" style="margin-left: 7%; margin-top: 0.4%; color: #D52826; font-size: 24px;" onclick="this.parentElement.remove();"></i>
         </div>
     <?php } ?>
                                
