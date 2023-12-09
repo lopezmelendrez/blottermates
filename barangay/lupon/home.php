@@ -176,12 +176,16 @@ echo '<div class="dropdown">';
 echo '<p id="notificationCount" style="margin-left: 35px; margin-top: -1px; font-weight: 600; font-size: 20px; cursor: pointer;">(' . count($notifications) . ')</p>';
 // Check if there are notifications before displaying the dropdown content
 if (!empty($notifications)) {
-    echo '<div class="dropdown-content" style="max-height: 500px; overflow-y: auto">';
+    echo '<div class="dropdown-content">';
     foreach ($notifications as $notification) {
+        // Each notification wrapped in its own container
+        echo '<div class="notification-container">';
         echo '<p style="font-size: 12.5px; color: #3d3d3d;">' . $notification . '</p>';
+        echo '</div>';
     }
     echo '</div>';
 }
+
 echo '</div>';
 
 echo '</div>';
@@ -600,27 +604,26 @@ table th{
 /* Dropdown content (hidden by default) */
 .dropdown-content {
   display: none;
-  position: absolute;
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-  z-index: 1;
+  position: relative;
+  z-index: 2;
 }
 
-/* Show the dropdown content when hovering over the dropdown container */
 .dropdown:hover .dropdown-content {
   display: block;
   width: 290px;
-            height: 115px;
             padding: 12px 12px;
-            background: #fff;
-            border: 2px solid #Fada5f;
-            border-top: 2px solid white;
-            border-radius: 5px;
             text-align: center;
             margin: 10px;
             position: fixed;
             right: -10px;
             top: 28px;
 }
+
+.notification-container {
+        border-bottom: 1px solid #F5be1d; /* Add a border between notifications */
+        padding: 8px; /* Add some padding to each notification container */
+        background: white;
+    }
 
 footer{
     background: #292929;
