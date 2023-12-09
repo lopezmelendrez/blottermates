@@ -15,16 +15,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['conciliation_submit']
     $incident_case_number = $_POST['incident_case_number'];
     $hearing_type_status = 'conciliation';
 
-    // Update the `hearing` table and set `conciliation_timestamp` to the current timestamp
     $update_query = "UPDATE `hearing` SET `hearing_type_status` = '$hearing_type_status', `date_of_hearing` = NULL, `time_of_hearing` = NULL, `conciliation_timestamp` = NOW() WHERE incident_case_number = '$incident_case_number'";
     $result = mysqli_query($conn, $update_query);
 
     if ($result) {
         if (mysqli_affected_rows($conn) > 0) {
-            header("Location: incident_reports.php");
+            header("Location: conciliation_hearings.php");
             exit;
         } else {
-            // The row did not exist, you might want to handle this case or ignore it
             echo "Row not found.";
             exit;
         }
@@ -40,16 +38,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['arbitration_submit'])
     $incident_case_number = $_POST['incident_case_number'];
     $hearing_type_status = 'arbitration';
 
-    // Update the `hearing` table and set `arbitration_timestamp` to the current timestamp
     $update_query = "UPDATE `hearing` SET `hearing_type_status` = '$hearing_type_status', `date_of_hearing` = NULL, `time_of_hearing` = NULL, `arbitration_timestamp` = NOW() WHERE incident_case_number = '$incident_case_number'";
     $result = mysqli_query($conn, $update_query);
 
     if ($result) {
         if (mysqli_affected_rows($conn) > 0) {
-            header("Location: incident_reports.php");
+            header("Location: arbitration_hearings.php");
             exit;
         } else {
-            // The row did not exist; you might want to handle this case or ignore it
             echo "Row not found.";
             exit;
         }
@@ -72,7 +68,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['court_action_submit']
             header("Location: file_court_action.php?incident_case_number=$incident_case_number");
             exit;
         } else {
-            // The row did not exist, you might want to handle this case or ignore it
             echo "Row not found.";
             exit;
         }
@@ -288,9 +283,10 @@ if ($fetch['barangay'] == 'Ibaba') {
             <div class="modal">
             <h3 class="modal-title" style="font-size: 18px; text-align:center;">ARE YOU SURE?</h3>
             <hr style="border: 1px solid #ccc; margin: 10px 0;">
-            <p style="font-size: 18px; text-align: center; margin-top: 10%;">By clicking the "Confirm" button, you will initiate the progression of the mediation record into the conciliation process.</p>
+            <p style="font-size: 18px; text-align: center; margin-top: 5%;">By clicking the "Confirm" button, you will initiate the progression of the MEDIATION record into the CONCILIATION process.</p>
+            <hr style="border: 1px solid #ccc; margin: 10px 0;">
             <div class="button-container" style="display: flex;">
-            <button class="backBtn" onclick="closePopup()" style="width: 150px; padding: 12px 12px; font-weight: 600; background: #fff; border: 1px solid #bc1823; color: #bc1823; margin-left: 180px;">NO</button>
+            <button class="backBtn" onclick="closePopup()" style="width: 150px; padding: 12px 12px; font-weight: 600; background: #fff; border: 1px solid #bc1823; color: #bc1823; margin-left: 170px;">CANCEL</button>
                 <form action="" method="post">
                 <input type="hidden" name="incident_case_number" value="<?php echo $incident_case_number; ?>">
                 <input type="submit" name="conciliation_submit" value="CONFIRM" class="backBtn" style="width: 310px; padding: 12px 12px; font-weight: 600; margin-left: -5px;"></button>
@@ -322,9 +318,10 @@ if ($fetch['barangay'] == 'Ibaba') {
             <div class="modal">
             <h3 class="modal-title" style="font-size: 18px; text-align:center;">ARE YOU SURE?</h3>
             <hr style="border: 1px solid #ccc; margin: 10px 0;">
-            <p style="font-size: 18px; text-align: center; margin-top: 10%;">By clicking the "Confirm" button, you will initiate the progression of the mediation record into the arbitration process.</p>
+            <p style="font-size: 18px; text-align: center; margin-top: 5%;">By clicking the "Confirm" button, you will initiate the progression of the MEDIATION record into the ARBITRATION process.</p>
+            <hr style="border: 1px solid #ccc; margin: 10px 0;">
             <div class="button-container" style="display: flex;">
-            <button class="backBtn" onclick="closeArbitrationPopup()" style="width: 150px; padding: 12px 12px; font-weight: 600; background: #fff; border: 1px solid #bc1823; color: #bc1823; margin-left: 180px;">NO</button>
+            <button class="backBtn" onclick="closeArbitrationPopup()" style="width: 150px; padding: 12px 12px; font-weight: 600; background: #fff; border: 1px solid #bc1823; color: #bc1823; margin-left: 170px;">CANCEL</button>
                 <form action="" method="post">
                 <input type="hidden" name="incident_case_number" value="<?php echo $incident_case_number; ?>">
                 <input type="submit" name="arbitration_submit" value="CONFIRM" class="backBtn" style="width: 310px; padding: 12px 12px; font-weight: 600; margin-left: -5px;"></button>
@@ -339,9 +336,10 @@ if ($fetch['barangay'] == 'Ibaba') {
             <div class="modal">
             <h3 class="modal-title" style="font-size: 18px; text-align:center;">ARE YOU SURE?</h3>
             <hr style="border: 1px solid #ccc; margin: 10px 0;">
-            <p style="font-size: 18px; text-align: center; margin-top: 10%;">By clicking the "Confirm" button, you will initiate the progression of the mediation record to "File Court Action".</p>
+            <p style="font-size: 18px; text-align: center; margin-top: 5%;">By clicking the "Confirm" button, you will initiate the progression of the MEDIATION record to "File Court Action".</p>
+            <hr style="border: 1px solid #ccc; margin: 10px 0;">
             <div class="button-container" style="display: flex;">
-            <button class="backBtn" onclick="closeCourtActionPopup()" style="width: 150px; padding: 12px 12px; font-weight: 600; background: #fff; border: 1px solid #bc1823; color: #bc1823; margin-left: 180px;">NO</button>
+            <button class="backBtn" onclick="closeCourtActionPopup()" style="width: 150px; padding: 12px 12px; font-weight: 600; background: #fff; border: 1px solid #bc1823; color: #bc1823; margin-left: 170px;">CANCEL</button>
                 <form action="" method="post">
                 <input type="hidden" name="incident_case_number" value="<?php echo $incident_case_number; ?>">
                 <input type="submit" name="court_action_submit" value="CONFIRM" class="backBtn" style="width: 310px; padding: 12px 12px; font-weight: 600; margin-left: -5px;"></button>

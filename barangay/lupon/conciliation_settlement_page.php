@@ -260,8 +260,9 @@ if ($fetch['barangay'] == 'Ibaba') {
             <h3 class="modal-title" style="font-size: 18px; text-align:center;">ARE YOU SURE?</h3>
             <hr style="border: 1px solid #ccc; margin: 10px 0;">
             <p style="font-size: 18px; text-align: center; margin-top: 10%;">By clicking the "Confirm" button, you will initiate the progression of the CONCILIATION record into the ARBITRATION process.</p>
+            <hr style="border: 1px solid #ccc; margin: 10px 0;">
             <div class="button-container" style="display: flex;">
-            <button class="backBtn" onclick="closeArbitrationPopup()" style="width: 150px; padding: 12px 12px; font-weight: 600; background: #fff; border: 1px solid #bc1823; color: #bc1823; margin-left: 180px;">NO</button>
+            <button class="backBtn" onclick="closeArbitrationPopup()" style="width: 150px; padding: 12px 12px; font-weight: 600; background: #fff; border: 1px solid #bc1823; color: #bc1823; margin-left: 170px;">CANCEL</button>
                 <form action="" method="post">
                 <input type="hidden" name="incident_case_number" value="<?php echo $incident_case_number; ?>">
                 <input type="submit" name="arbitration_submit" value="CONFIRM" class="backBtn" style="width: 310px; padding: 12px 12px; font-weight: 600; margin-left: -5px;"></button>
