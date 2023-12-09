@@ -208,7 +208,7 @@ if (mysqli_num_rows($result) == 0) {
 
         echo '<div class="container" style="width: 900px; margin-left: 13%;">';
         echo '<div class="top-text" style="display: flex;">';
-        echo '<h3 class="case-no-text" style="font-size: 20px;">Case No. #' . $incident_case_number . '</h3>';
+        echo '<h3 class="case-no-text" style="font-size: 20px;">Case No. #' . substr($incident_case_number, 0, 9) . '</h3>';
         echo '</div>';
 
         echo '<div class="top-text" style="display: flex;">';

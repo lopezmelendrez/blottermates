@@ -297,11 +297,11 @@ header('location: ../index.php');
 
 
             if (mysqli_num_rows($select) === 0) {
-                echo '<tr><td colspan="3" style="font-size: 16px; font-weight: 600; text-transform: capitalize; text-align: center; padding-top: 8%;">No Incident cases require motion filing yet</td></tr>';
+                echo '<tr><td colspan="3" style="font-size: 16px; font-weight: 600; text-transform: uppercase; text-align: center; padding-top: 8%;">No incident cases require motion filing at this time</td></tr>';
             } else {
                 while ($fetchCases = mysqli_fetch_assoc($select)) {
                     echo '<tr>';
-                    echo '<td>' . $fetchCases['incident_case_number'] . '</td>';
+                    echo '<td>' . substr($fetchCases['incident_case_number'], 0, 9) . '</td>';
                     echo '<td>' . $fetchCases['complainant_last_name'] . ' vs. ' . $fetchCases['respondent_last_name'] . '</td>';
                     echo '<td><a href="execution_notice.php?incident_case_number=' . $fetchCases['incident_case_number'] . '" style="text-decoration: none;"><span class="summon-record">Validate</span><a/></td>';
                     echo '</tr>';

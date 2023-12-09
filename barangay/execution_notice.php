@@ -149,7 +149,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit'])) {
             $select = mysqli_query($conn, "SELECT * FROM `incident_report` WHERE incident_case_number = '$incident_case_number'") or die('query failed');
             $fetch_cases = mysqli_fetch_assoc($select);
             ?>
-                <div class="header-text" style="font-size: 25px;">AGREEMENT OF EXECUTION FOR CASE #<?php echo $incident_case_number ?></div>
+                <div class="header-text" style="font-size: 25px;">AGREEMENT OF EXECUTION FOR CASE #<?php echo substr($incident_case_number, 0, 9); ?></div>
                 
                 <form action="" method="post" style="height: 380px; width: 750px;">
                     <div class="fields">
@@ -188,15 +188,31 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit'])) {
     <script>
     
     $(function () {
-            $("#datepicker").datepicker({
-                dateFormat: 'yy-mm-dd',
-                minDate: 0,
-                beforeShowDay: function (date) {
-                    var day = date.getDay();
-                    return [day != 0 && day != 6, ''];
+    $("#datepicker").datepicker({
+        dateFormat: 'yy-mm-dd',
+        minDate: 0,
+        beforeShowDay: function (date) {
+            var day = date.getDay();
+            return [day != 0 && day != 6, ''];
+        },
+        beforeShow: function (input, inst) {
+            var currentDate = new Date();
+            var weekdaysToAdd = 5;
+            var endDate = new Date(currentDate);
+
+            while (weekdaysToAdd > 0) {
+                endDate.setDate(endDate.getDate() + 1);
+                if (endDate.getDay() !== 0 && endDate.getDay() !== 6) {
+                    weekdaysToAdd--;
                 }
-            });
-        });
+            }
+
+            $("#datepicker").datepicker("option", "maxDate", endDate);
+        }
+    });
+});
+
+
         const body = document.querySelector('body'),
         sidebar = body.querySelector('nav'),
         toggle = body.querySelector(".toggle"),

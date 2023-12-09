@@ -6,7 +6,7 @@ $activityLogQuery = "
         SELECT 'execution_notice' AS source,
         SUBSTRING(en.incident_case_number, 1, 9) AS incident_case_number,
         en.timestamp AS formatted_timestamp,
-        CONCAT('User has validated the agreement for execution for Case #', SUBSTRING(en.incident_case_number, 1, 9)) AS activity,
+        CONCAT('User has validated the Agreement for Execution for Case #', SUBSTRING(en.incident_case_number, 1, 9)) AS activity,
         NULL AS submitter_first_name,
         NULL AS submitter_last_name
         FROM execution_notice en
