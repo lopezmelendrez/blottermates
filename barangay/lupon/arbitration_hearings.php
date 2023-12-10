@@ -255,10 +255,20 @@ if (mysqli_num_rows($select_arbitration_agreement) > 0) {
         // Handle the case where hearing data is not found
     }
 } else {
-    echo '<a href="arbitration_agreement.php?incident_case_number=' . $incident_case_number . '" class="hearing-1" style="text-decoration: none; margin-left: 0%;">Create Arbitration Agreement</a>';
+    // Check if there is a scheduled hearing
+    $select_hearing = mysqli_query($conn, "SELECT date_of_hearing FROM hearing WHERE incident_case_number = '$incident_case_number'") or die('hearing query failed');
+    
+    if (mysqli_num_rows($select_hearing) > 0) {
+        // There is a scheduled hearing
+        $hearing_data = mysqli_fetch_assoc($select_hearing);
+        $hearing_date = date("F j, Y", strtotime($hearing_data['date_of_hearing']));
+        echo '<a href="hearingschedule.php?incident_case_number=' . $incident_case_number . '" class="schedule">SET HEARING SCHEDULE</a>';
+    } else {
+        echo '<a href="hearingschedule.php?incident_case_number=' . $incident_case_number . '" class="schedule">SET HEARING SCHEDULE</a>';
+    }
 }
-
 ?>
+
 
             </td>
             </tr>

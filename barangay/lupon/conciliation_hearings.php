@@ -77,9 +77,7 @@ $generate_pangkat = '';
             $select = mysqli_query($conn, "SELECT ir.incident_case_number, ir.complainant_last_name, ir.complainant_first_name, ir.complainant_middle_name, ir.respondent_last_name, ir.respondent_first_name, ir.respondent_middle_name, ir.description_of_violation, ir.incident_date, ir.submitter_first_name, ir.submitter_last_name, ir.created_at 
                 FROM `incident_report` AS ir
                 INNER JOIN `hearing` AS h ON ir.incident_case_number = h.incident_case_number
-                WHERE h.date_of_hearing IS NOT NULL 
-                AND h.time_of_hearing IS NOT NULL 
-                AND ir.pb_id = $pb_id
+                WHERE ir.pb_id = $pb_id
                 AND NOT EXISTS (SELECT 1 FROM `amicable_settlement` AS amicable WHERE h.hearing_id = amicable.hearing_id)
                 AND h.hearing_type_status = 'conciliation'
                 ORDER BY ir.created_at DESC")
@@ -101,14 +99,21 @@ $generate_pangkat = '';
             <td><?php echo $fetch_cases['complainant_first_name']; ?> <?php echo $fetch_cases['complainant_last_name'] ; ?></td>
             <td><?php echo $fetch_cases['respondent_first_name']; ?> <?php echo $fetch_cases['respondent_last_name'] ; ?></td>
             <td>
-    <?php
+            <?php
     $incident_case_number = $fetch_cases['incident_case_number'];
     $select_hearing = mysqli_query($conn, "SELECT date_of_hearing FROM hearing WHERE incident_case_number = '$incident_case_number'") or die('hearing query failed');
 
     if (mysqli_num_rows($select_hearing) > 0) {
         $hearing_data = mysqli_fetch_assoc($select_hearing);
-        $hearing_date = date("F j, Y", strtotime($hearing_data['date_of_hearing']));
-        echo $hearing_date;
+        
+        if ($hearing_data['date_of_hearing'] !== null) {
+            $hearing_date = date("F j, Y", strtotime($hearing_data['date_of_hearing']));
+            echo $hearing_date;
+        } else {
+            echo '<span style="font-weight: 600;">NO HEARING SCHEDULE YET</span>';
+        }
+    } else {
+        echo '<span style="font-weight: 600;">NO HEARING SCHEDULE YET</span>';
     }
     ?>
 </td>
@@ -131,25 +136,30 @@ $generate_pangkat = '';
 </td>
             <td>
             <?php
-            $incident_case_number = $fetch_cases['incident_case_number'];
-            $select_hearing = mysqli_query($conn, "SELECT hearing_type_status, date_of_hearing FROM hearing WHERE incident_case_number = '$incident_case_number'") or die('hearing query failed');
+    $incident_case_number = $fetch_cases['incident_case_number'];
+    $select_hearing = mysqli_query($conn, "SELECT hearing_type_status, date_of_hearing, time_of_hearing FROM hearing WHERE incident_case_number = '$incident_case_number'") or die('hearing query failed');
 
-            if (mysqli_num_rows($select_hearing) > 0) {
-                $hearing_data = mysqli_fetch_assoc($select_hearing);
-                $hearing_type_status = $hearing_data['hearing_type_status'];
-                $date_of_hearing = strtotime($hearing_data['date_of_hearing']);
-                $current_time = time();
+    if (mysqli_num_rows($select_hearing) > 0) {
+        $hearing_data = mysqli_fetch_assoc($select_hearing);
+        $hearing_type_status = $hearing_data['hearing_type_status'];
+        $date_of_hearing = strtotime($hearing_data['date_of_hearing']);
+        $time_of_hearing = strtotime($hearing_data['time_of_hearing']);
+        $current_time = time();
 
-                if ($current_time >= $date_of_hearing && $hearing_type_status == "conciliation") {
-                    // Display the "Go to Hearing" link for mediation cases
-                    echo '<a href="conciliation_settlement_page.php?incident_case_number=' . $incident_case_number . '" class="hearing-1" style="text-decoration: none; margin-left: 0%;">Hearing</a>';
-                    echo '<a href="file_court_action.php?incident_case_number=' . $incident_case_number . '" class="filecourt-action" style="text-decoration: none; margin-left: 0%;">File Court Action</a>';
-                } else {
-                    // Display an appropriate text for upcoming mediation hearings
-                    echo '<div class="upcoming-hearing">Upcoming Hearing</div>';
-                }
+        // Check if both date_of_hearing and time_of_hearing are set
+        if ($date_of_hearing && $time_of_hearing) {
+            if ($current_time >= $date_of_hearing && $hearing_type_status == "conciliation") {
+                echo '<a href="conciliation_settlement_page.php?incident_case_number=' . $incident_case_number . '" class="hearing-1" style="text-decoration: none; margin-left: 0%;">Hearing</a>';
+                echo '<a href="file_court_action.php?incident_case_number=' . $incident_case_number . '" class="filecourt-action" style="text-decoration: none; margin-left: 0%;">File Court Action</a>';
+            } else {
+                echo '<div class="upcoming-hearing">Upcoming Hearing</div>';
             }
-            ?>
+        } else {
+            echo '<a href="hearingschedule.php?incident_case_number=' . $incident_case_number . '" class="schedule">SET HEARING SCHEDULE</a>';
+        }
+    }
+?>
+
             </td>
             </tr>
             <?php
