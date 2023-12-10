@@ -801,7 +801,7 @@ function showPopup() {
         display: block;
         margin-bottom: 5px;
         width: 70%;
-        margin-left: 20%;
+        margin-left: 15%;
     }
 
     .notify:hover{
@@ -825,7 +825,7 @@ function showPopup() {
         display: block;
         margin-bottom: 5px;
         width: 70%;
-        margin-left: 20%;
+        margin-left: 15%;
     }
     
 
