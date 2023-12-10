@@ -160,7 +160,7 @@ while ($row = mysqli_fetch_assoc($select)) {
     
     // Create the notification message with the link
     $notification = 
-                    'Case <a href="' . $link . '" style="font-size: 11px;">#' . $incident_case_number . '</a> Motion for Execution has been validated.';
+    'Case <a href="' . $link . '" style="font-size: 11px;">#' . substr($incident_case_number, 0, 9) . '</a> Motion for Execution has been validated.';
     
     // Add the notification to the array
     $notifications[] = $notification;
@@ -178,10 +178,10 @@ echo '<p id="notificationCount" style="margin-left: 35px; margin-top: -1px; font
 if (!empty($notifications)) {
     echo '<div class="dropdown-content">';
     foreach ($notifications as $notification) {
-        // Each notification wrapped in its own container
-        echo '<div class="notification-container">';
-        echo '<p style="font-size: 12.5px; color: #3d3d3d;">' . $notification . '</p>';
+        echo '<div class="notification-container" style="z-index: 1003;">';
+        echo '<p style="font-size: 13px; color: #3d3d3d; margin-top: 2%; margin-bottom: 3%;">' . $notification . '</p>';
         echo '</div>';
+        
     }
     echo '</div>';
 }
@@ -195,20 +195,26 @@ echo '</div>';
             
         </div>
 
-        <div class="incident-case-table" style="display: flex; width: 615px; height: 470px; margin-top: 0.5%;">
+        <div class="home-container" style="display: flex;">
+
+        <div class="calendar-container" style="display: flex; height: 470px; width: 530px; margin-left: 3%; margin-top: 0.5%;">
+        <div id="calendar" style="width: 500px;"></div>
+    </div>
+
+        <div class="incident-case-table">
             <div class="head-text">
                 <p class="incident-case">Recent Incident Cases</p>
                 <p class="notice-records">* Needs Notice Records</p>
-                <div class="box" style="margin-left: 360px; margin-top: -60px;">
+                <!--<div class="box" style="margin-left: 380px; margin-top: -60px;">
                     <input type="text" id="searchInput" placeholder="Search...">
                     <a href="#">
                         <i class="bx bx-search" style="font-size: 20px; margin-top: 5px;"></i>
                     </a>
-                </div>
+                </div>-->
 
-        <div class="table-container"  style="max-height: 310px; overflow-y: hidden">
-        <hr style="border: 1px solid #949494; margin: 20px 0; width: 80%; margin-top: 4%;">
-        <table class="incident-table" style="width: 710px;">
+        <div class="table-container"  style="max-height: 310px; overflow-y: hidden; overflow-x: hidden; margin-top: -1%;">
+        <hr style="border: 1px solid #949494; margin: 10px 0; width: 100%; margin-top: 0.2%;">
+        <table class="incident-table" style="width: 700px;">
             <thead>
                 <tr>
                     <th>Case No</th>
@@ -282,9 +288,7 @@ if (mysqli_num_rows($select) === 0) {
         </div>
     </div>
 
-    <div class="calendar-container" style="display: flex; margin-left: -17%; height: 470px;">
-        <div id="calendar" style="width: 500px;"></div>
-    </div>
+</div>
 
     <div id="monthly_report" class="popup">
     <div class="close-icon" onclick="closeMonthlyReportPopup()">
@@ -601,11 +605,9 @@ table th{
   display: inline-block;
 }
 
-/* Dropdown content (hidden by default) */
 .dropdown-content {
   display: none;
   position: relative;
-  z-index: 2;
 }
 
 .dropdown:hover .dropdown-content {
@@ -620,27 +622,24 @@ table th{
 }
 
 .notification-container {
-        border-bottom: 1px solid #F5be1d; /* Add a border between notifications */
-        padding: 8px; /* Add some padding to each notification container */
+        border: 1px solid #F5be1d;
         background: white;
+        padding-top: 8px;
+        padding-bottom: 4px;
+        margin-bottom: 10px;
     }
 
-footer{
-    background: #292929;
-    color: white;
-    padding: 5px;
-    text-align: left;
-    font-size: 12px;
-}
-
-footer p{
-    margin: 0;
-    margin-left: 6%;
+.incident-case-table{
+    width: 600px; 
+    height: 470px; 
 }
 
 @media screen and (min-width: 1310px){
             .close-icon{
                 left: 875px;
+            }
+            .incident-case-table{
+                margin-top: 0.5%;
             }
         }
 
@@ -648,7 +647,16 @@ footer p{
             .close-icon{
                 left: 895px;
             }
+            .incident-case-table{
+                margin-top: 0.5%;
+            }
         }
+        @media screen and (max-width: 1352px) and (max-height: 616px) {
+        .incident-case-table{
+            margin-top: 0.5%;
+        }
+        }
+
 
 
     </style>
