@@ -410,7 +410,7 @@ dateElement.textContent = formatDate(now);
 
         .incident-case-table-1{
             background-color: #fff; 
-            margin-top: -32.5%; 
+            margin-top: -35.5%; 
             width: 450px; 
             margin-left: 55%; 
             height: 440px; 
@@ -437,46 +437,9 @@ dateElement.textContent = formatDate(now);
             color: #c82333;
         }
 
-        @media screen and (min-width: 1700px)
-        {
+        @media screen and (min-width: 1355px) and (min-height: 616px){
             .incident-case-table-1{
-                margin-top: -27%;
-                margin-left: 54%;
-            }
-
-            .incident-case-table{
-                margin-left: 14%;
-            }
-        }
-
-        @media screen and (min-width: 1400px){
-
-            .incident-case-table-1{
-                margin-top: -32%;
-            }
-        }
-
-        @media screen and (min-width: 1300px){
-            .incident-case-table-1{
-                margin-top: -36%;
-            }
-        }
-
-        @media screen and (min-width: 1331px){
-            .incident-case-table-1{
-                margin-top: -32.3%;
-            }
-        }
-
-        @media screen and (min-width: 1288px){
-            .incident-case-table-1{
-                margin-top: -34%;
-            }
-        }
-
-        @media screen and (min-width: 1310px){
-            .incident-case-table-1{
-                margin-top: -35.3%;
+                margin-top: -34.1%;
             }
         }
 

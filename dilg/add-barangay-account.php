@@ -152,7 +152,7 @@ if (isset($_POST['submit'])) {
     <section class="home">
 
             <center>
-            <div class="add-account-container">
+            <div class="add-account-container" style="margin-left: -5%;">
                 <div class="header-text">Add Barangay Account</div>
                 
                 <form action="" method="post">
