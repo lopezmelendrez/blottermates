@@ -35,7 +35,6 @@ $fetch_cases = mysqli_fetch_assoc($select);
                 <hr style="border: 1px solid #b3b3b3; margin: 5px 0;">
                 <h2 class="status">ONGOING</h2>
                 <?php
-            // Check conditions for displaying notifications
             if ($fetch_cases['notify_summon'] == 'not notified' && $fetch_cases['notify_hearing'] == 'not notified') {
                 echo '<div class="hearing-notice" style="color: white;">
                         <div class="hearing-text">
@@ -47,13 +46,12 @@ $fetch_cases = mysqli_fetch_assoc($select);
             } elseif ($fetch_cases['notify_summon'] == 'not notified') {
                 echo '<div class="hearing-notice" style="color: white;">
                         <div class="hearing-text">
-                            <i class="fa-solid fa-circle-check" style="color: #1db954;"></i>
-                            <p>Summon Notified</p>
+                        <i class="fa-solid fa-circle-notch" style="color: #eed202;"></i>
+                            <p>In Progress</p>
                         </div>
-                        <p class="text">The Summon Notice for the Respondent is now in progress</p>
+                        <p class="text">The Summon Notice for the Respondent is now being processed.</p>
                     </div>';
             } elseif ($fetch_cases['notify_summon'] == 'notified' && $fetch_cases['notify_hearing'] == 'notified') {
-                // Display the actual date_of_hearing and time_of_hearing if available
                 $date_of_hearing = isset($fetch_cases['date_of_hearing']) ? date('jS \of F Y', strtotime($fetch_cases['date_of_hearing'])) : '2nd of December 2023';
                 $time_of_hearing = isset($fetch_cases['time_of_hearing']) ? date('h:i A', strtotime($fetch_cases['time_of_hearing'])) : '11:00 AM';
 
@@ -62,10 +60,9 @@ $fetch_cases = mysqli_fetch_assoc($select);
                             <i class="fa-solid fa-circle-check" style="color: #1db954;"></i>
                             <p>Hearing Notified</p>
                         </div>
-                        <p class="text">The Complainant and the Respondent have now been notified of their Hearing on ' . $date_of_hearing . ' - ' . $time_of_hearing . '</p>
+                        <p class="text">The Complainant and the Respondent have now been notified of their Hearing.</p>
                     </div>';
             } else {
-                // Your existing code for displaying the notification
                 echo '<div class="hearing-notice" style="color: white;">
                         <div class="hearing-text">
                             <i class="fa-solid fa-circle-check" style="color: #1db954;"></i>
@@ -75,13 +72,43 @@ $fetch_cases = mysqli_fetch_assoc($select);
                     </div>';
             }
             ?>
-                <div class="hearing-notice">
-                    <div class="hearing-text">
-                    <i class="fa-solid fa-circle-check"></i>
-                    <p>Upcoming Hearing</p>
-                    </div>
-                    <p class="text">Your Incident Case will be held on 11 Dec 2023 - 11:00 AM</p>
-                </div>
+<?php
+
+$current_date = date('jS \of F Y');
+$current_time = date('h:i A');
+
+$date_of_hearing = isset($fetch_cases['date_of_hearing']) ? date('jS \of F Y', strtotime($fetch_cases['date_of_hearing'])) : '11 Dec 2023';
+$time_of_hearing = isset($fetch_cases['time_of_hearing']) ? date('h:i A', strtotime($fetch_cases['time_of_hearing'])) : '11:00 AM';
+
+if ($fetch_cases['notify_summon'] == 'notified' && $fetch_cases['notify_hearing'] == 'notified') {
+
+    echo '<div class="hearing-notice" style="color: white;">
+            <div class="hearing-text">
+            <i class="fa-solid fa-circle-notch" style="color: #eed202;"></i>   
+                <p>Upcoming Hearing</p>
+            </div>
+            <p class="text">Your Incident Case will be held on ' . $date_of_hearing . ' - ' . $time_of_hearing . '</p>
+          </div>';
+} elseif ($date_of_hearing == $current_date) {
+    echo '<div class="hearing-notice" style="color: white;">
+            <div class="hearing-text">
+                <i class="fa-solid fa-circle-notch" style="color: #eed202;"></i>
+                <p>Hearing</p>
+            </div>
+            <p class="text">Your Incident Case is happening today at ' . $time_of_hearing . '</p>
+          </div>';
+} else {
+    echo '<div class="hearing-notice">
+            <div class="hearing-text">
+                <i class="fa-solid fa-circle-check"></i>
+                <p>Upcoming Hearing</p>
+            </div>
+            <p class="text">Your Incident Case will be held on ' . $date_of_hearing . ' - ' . $time_of_hearing . '</p>
+          </div>';
+}
+
+?>
+
                 <div class="hearing-notice">
                     <div class="hearing-text">
                     <i class="fa-solid fa-circle-check"></i>
@@ -92,8 +119,6 @@ $fetch_cases = mysqli_fetch_assoc($select);
             </div>
 
         </center>
-
-        
 
     </body>
 

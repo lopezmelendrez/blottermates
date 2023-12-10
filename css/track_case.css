@@ -58,10 +58,3 @@ body{
     margin-top: -3px;
 }
 
-@media (max-width: 447px) {
-    .back-btn{
-        width: auto;
-        padding: 5px 10px;
-    }
-}
-  
