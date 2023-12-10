@@ -139,17 +139,6 @@ if ($fetch['barangay'] == 'Ibaba') {
             sidebar.classList.remove("close");
         })
 
-        modeSwitch.addEventListener("click" , () =>{
-            body.classList.toggle("dark");
-            
-            if(body.classList.contains("dark")){
-                modeText.innerText = "Light mode";
-            }else{
-                modeText.innerText = "Dark mode";
-                
-            }
-        });
-
         function restrictInput(input) {
 
       // Remove special characters and numbers
