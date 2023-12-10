@@ -96,7 +96,7 @@ $generate_pangkat = '';
                     $submitter_full_name = $submitter_first_name . ' ' . $submitter_last_name;
                     ?>
             <tr>    
-            <td><?php echo htmlspecialchars(substr($fetch_cases['incident_case_number'], 0, 9)); ?></td>
+            <td style="width: 9rem;"><?php echo htmlspecialchars(substr($fetch_cases['incident_case_number'], 0, 9)); ?></td>
             <td><?php echo $fetch_cases['complainant_last_name']; ?> vs. <?php echo $fetch_cases['respondent_last_name']; ?></td>
             <td><?php echo $fetch_cases['complainant_first_name']; ?> <?php echo $fetch_cases['complainant_last_name'] ; ?></td>
             <td><?php echo $fetch_cases['respondent_first_name']; ?> <?php echo $fetch_cases['respondent_last_name'] ; ?></td>
