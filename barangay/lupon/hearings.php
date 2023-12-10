@@ -481,6 +481,31 @@ while ($row = mysqli_fetch_assoc($result)) {
         text-transform: uppercase;
     }
 
+    @media screen and (min-width: 1352px){
+            .search-input{
+                width: 843px;
+            }
+            .container{
+                width: 1035px;
+                padding: 16px 16px;
+            }
+        }
+
+    @media screen and (min-width: 1310px){
+            .container{
+                width: 985px;
+            }
+    }
+
+    @media screen and (min-width: 1331px){
+            .search-input{
+                width: 825px;
+            }
+            .container{
+                width: 1015px;
+            }
+        }
+
         
 
     </style>

@@ -652,6 +652,7 @@ table th{
                 margin-top: 0.5%;
             }
         }
+        
         @media screen and (max-width: 1352px) and (max-height: 616px) {
         .incident-case-table{
             margin-top: 0.5%;

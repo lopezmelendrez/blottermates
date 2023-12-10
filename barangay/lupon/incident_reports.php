@@ -267,8 +267,6 @@ if (mysqli_num_rows($result) == 0) {
         
     </section>
 
-    
-
     <script>
 
         const body = document.querySelector('body'),
@@ -441,6 +439,24 @@ if (mysqli_num_rows($result) == 0) {
 
         #sort {
             height: 33px;
+        }
+
+        @media screen and (min-width: 1331px){
+            .search-input{
+                width: 825px;
+            }
+            .container{
+                width: 1015px;
+            }
+        }
+
+        @media screen and (min-width: 1352px){
+            .search-input{
+                width: 835px;
+            }
+            .container{
+                width: 1025px;
+            }
         }
 
     </style>
