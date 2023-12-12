@@ -13,6 +13,17 @@ header('location: ../../index.php');
 
 function displayPage($conn, $incident_case_number)
 {
+    // Check if the incident case number exists in the amicable_settlement table
+    $check_query = "SELECT * FROM amicable_settlement WHERE incident_case_number = '$incident_case_number'";
+    $check_result = mysqli_query($conn, $check_query);
+
+    if ($check_result && mysqli_num_rows($check_result) > 0) {
+        // If the incident case number is found in the amicable_settlement table, redirect to settled_cases.php
+        header('location: settled_cases.php');
+        exit(); // Ensure that the script stops executing after the redirection
+    }
+
+    // Continue with the rest of your existing code for the hearing table
     // Construct a SELECT query to fetch information from the 'hearing' table
     $select_query = "SELECT hearing_type_status, date_of_hearing FROM hearing WHERE incident_case_number = '$incident_case_number'";
 

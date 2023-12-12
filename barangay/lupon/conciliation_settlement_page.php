@@ -11,11 +11,26 @@ if(!isset($email)){
 header('location: ../../index.php');
 }
 
-function displayWebpage($conn, $incident_case_number)
+function displayPage($conn, $incident_case_number)
 {
+    // Check if the incident case number exists in the amicable_settlement table
+    $check_query = "SELECT * FROM amicable_settlement WHERE incident_case_number = '$incident_case_number'";
+    $check_result = mysqli_query($conn, $check_query);
+
+    if ($check_result && mysqli_num_rows($check_result) > 0) {
+        // If the incident case number is found in the amicable_settlement table, redirect to settled_cases.php
+        header('location: settled_cases.php');
+        exit(); // Ensure that the script stops executing after the redirection
+    }
+
+    // Continue with the rest of your existing code for the hearing table
+    // Construct a SELECT query to fetch information from the 'hearing' table
     $select_query = "SELECT hearing_type_status, date_of_hearing FROM hearing WHERE incident_case_number = '$incident_case_number'";
+
+    // Execute the SELECT query using the provided database connection ($conn)
     $result = mysqli_query($conn, $select_query);
 
+    // Check if the query was successful and if there is at least one row in the result set
     if ($result && mysqli_num_rows($result) > 0) {
         // Fetch the first row from the result set as an associative array
         $row = mysqli_fetch_assoc($result);
@@ -33,12 +48,14 @@ function displayWebpage($conn, $incident_case_number)
         }
     }
 
-    return false; 
+    // If the conditions are not met or there was an issue with the query, return false
+    return false;
 }
+
 
 $incident_case_number = $_GET['incident_case_number'];
 
-if (!displayWebpage($conn, $incident_case_number)) {
+if (!displayPage($conn, $incident_case_number)) {
     header('location: ongoing_cases.php');
 }
 
