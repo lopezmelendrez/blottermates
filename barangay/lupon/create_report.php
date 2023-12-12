@@ -464,24 +464,19 @@ if (isset($_POST['submit'])) {
     <center>
 </div>
 
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
 
 function validateName(event) {
   var keyCode = event.keyCode;
-  
-  // Check if the pressed key is a space
+
   if (keyCode === 32) {
-    // Check if it's the first character
     if (event.target.selectionStart === 0) {
-      // Prevent the space from being added to the input
       event.preventDefault();
       return false;
     }
   }
 
-  // Your existing validation logic
   if ((keyCode >= 65 && keyCode <= 90) || (keyCode >= 97 && keyCode <= 122)) {
     return true;
   }
@@ -490,53 +485,45 @@ function validateName(event) {
     return true;
   }
 
-  // Prevent other characters if not allowed
   event.preventDefault();
   return false;
 }
 
 function validateAddress(event) {
-  // Allow alphanumeric characters, spaces, commas, periods, hyphens, and some other common symbols
   var allowedCharacters = /^[a-zA-Z0-9\s.,#-]*$/;
 
   var inputChar = String.fromCharCode(event.charCode);
 
-  // Check if the pressed key is a space and if it's the first character
   if (event.charCode === 32 && event.target.selectionStart === 0) {
-    // Prevent the space from being added to the input
     event.preventDefault();
     return false;
-  }
+   }
 
-  // Check if the pressed key is allowed
   if (allowedCharacters.test(inputChar)) {
     return true;
   } else {
-    // Prevent the input if the character is not allowed
     event.preventDefault();
     return false;
   }
 }
 
-
+$(function() {
+  $("#datepicker").datepicker({
+    dateFormat: 'yy-mm-dd',
+    minDate: new Date(2019, 0, 1),
+    maxDate: new Date()
+  });
+});
 
 $(function() {
-            $("#datepicker").datepicker({
-                dateFormat: 'yy-mm-dd',
-                minDate: new Date(2019, 0, 1), // January 1, 2019
-                maxDate: new Date() // Current date
-            });
-        });
-
-        $(function() {
-            $("#incident_case_type").change(function() {
-                if ($(this).val() === "Other") {
-                    $("#otherIncident").show();
-                } else {
-                    $("#otherIncident").hide();
-                }
-            });
-        });
+  $("#incident_case_type").change(function() {
+    if ($(this).val() === "Other") {
+      $("#otherIncident").show();
+    } else {
+      $("#otherIncident").hide();
+    }
+  });
+});
 
 const respondentCellphoneInput = document.getElementById('respondent_cellphone_number');
         respondentCellphoneInput.addEventListener('input', function() {
