@@ -567,6 +567,7 @@ const respondentCellphoneInput = document.getElementById('respondent_cellphone_n
 
         const form = document.querySelector("form");
 const nextBtn = form.querySelector(".nextBtn");
+const backBtn = form.querySelector(".backBtn");
 const allInput = form.querySelectorAll(".first input");
 
 nextBtn.addEventListener("click", () => {
@@ -593,6 +594,9 @@ nextBtn.addEventListener("click", () => {
         });
     }
 });
+
+        backBtn.addEventListener("click", () => form.classList.remove('secActive'));
+
 
         const maxLength = 255;
 const inputElement = document.getElementById('description_input');
