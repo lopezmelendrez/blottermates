@@ -31,7 +31,6 @@ function displayPage($conn, $incident_case_number)
         // Get the current date in 'Y-m-d' format
         $current_date = date('Y-m-d');
 
-        // Check if the hearing type is 'mediation' and the date of hearing is today or in the past
         if ($hearing_type_status === 'mediation' && strtotime($date_of_hearing) <= strtotime($current_date)) {
             // If the conditions are met, return true
             return true;
