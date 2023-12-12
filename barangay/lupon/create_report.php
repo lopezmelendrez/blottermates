@@ -11,28 +11,15 @@ if (!isset($email)) {
 }
 
 $current_year = date('Y');
-
-// Fetch the pb_id
 $pb_id_result = mysqli_query($conn, "SELECT pb_id FROM lupon_accounts WHERE email_address = '$email'");
 $pb_id_row = mysqli_fetch_assoc($pb_id_result);
-
-// Adding leading zero if $pb_id is a single-digit number
 $pb_id = str_pad($pb_id_row['pb_id'], 2, '0', STR_PAD_LEFT);
-
-// Fetch the maximum incident_case_number for the given pb_id and year
 $result = mysqli_query($conn, "SELECT MAX(incident_case_number) AS max_case_number FROM incident_report WHERE pb_id = $pb_id AND incident_case_number LIKE '$current_year%'");
 $row = mysqli_fetch_assoc($result);
-
-// If there are no existing records for the current pb_id and year, start the counter from 1
 $next_id = ($row['max_case_number'] !== null) ? intval(substr($row['max_case_number'], 5, 4)) + 1 : 1;
-
-$pad_length = 4; // Assuming you want a four-digit counter
+$pad_length = 4; 
 $next_id_padded = str_pad($next_id, $pad_length, '0', STR_PAD_LEFT);
-
-// Construct the incident_case_number
 $incident_case_number = $current_year . '-' . $next_id_padded . '-' . $pb_id;
-
-
 
 if (isset($_POST['submit'])) {
     $complainant_last_name = $_POST['complainant_last_name'];
@@ -91,111 +78,105 @@ if (isset($_POST['submit'])) {
 <body>
     
 <nav class="sidebar close">
-        <header>
-            <div class="image-text">
+    <header>
+        <div class="image-text">
             <?php
-                    $select = mysqli_query($conn, "SELECT l.*, pb.barangay 
-                                                FROM `lupon_accounts` l
-                                                LEFT JOIN `pb_accounts` pb ON l.pb_id = pb.pb_id
-                                                WHERE l.email_address = '$email'") or die('query failed');
-                    if(mysqli_num_rows($select) > 0){
-                        $fetch = mysqli_fetch_assoc($select);
-                    }
+            $select = mysqli_query($conn, "SELECT l.*, pb.barangay 
+                                        FROM `lupon_accounts` l
+                                        LEFT JOIN `pb_accounts` pb ON l.pb_id = pb.pb_id
+                                        WHERE l.email_address = '$email'") or die('query failed');
+            if(mysqli_num_rows($select) > 0){
+                $fetch = mysqli_fetch_assoc($select);
+            }
+            ?>
+            <?php
+            if ($fetch['barangay'] == 'Ibaba') {
+                echo '<span class="image"><img src="../../images/ibaba_logo.png"></span>';
+            } elseif ($fetch['barangay'] == 'Other') {
+                echo '<span class="image"><img src="../../images/logo.png"></span>';
+            } elseif ($fetch['barangay'] == 'Labas') {
+                echo '<span class="image"><img src="../../images/labas.png"></span>';
+            } elseif ($fetch['barangay'] == 'Tagapo') {
+                echo '<span class="image"><img src="../../images/tagapo.png"></span>';
+            } elseif ($fetch['barangay'] == 'Malusak') {
+                echo '<span class="image"><img src="../../images/malusak.png"></span>';
+            } elseif ($fetch['barangay'] == 'Balibago') {
+                echo '<span class="image"><img src="../../images/balibago.png"></span>';
+            } elseif ($fetch['barangay'] == 'Caingin') {
+                echo '<span class="image"><img src="../../images/caingin.png"></span>';
+            } elseif ($fetch['barangay'] == 'Pook') {
+                echo '<span class="image"><img src="../../images/pooc.png"></span>';
+            } elseif ($fetch['barangay'] == 'Aplaya') {
+                echo '<span class="image"><img src="../../images/aplaya.png"></span>';
+            } elseif ($fetch['barangay'] == 'Kanluran') {
+                echo '<span class="image"><img src="../../images/kanluran.png"></span>';
+            } else {
+                // Default image if the barangay is not matched
+                echo '<span class="image"><img src="../../images/logo.png"></span>';
+            }
+            ?>
+            <div class="text logo-text">
+                <span class="name"><?php echo $fetch['first_name'] . ' ' . $fetch['last_name']; ?></span>
+                <?php
+                if ($fetch['barangay']) {
+                    echo '<span class="profession">Barangay ' . $fetch['barangay'] . '</span>';
+                } else {
+                    echo '<span class="profession">Not specified</span>'; 
+                }
                 ?>
-                              <?php
-if ($fetch['barangay'] == 'Ibaba') {
-    echo '<span class="image"><img src="../../images/ibaba_logo.png"></span>';
-} elseif ($fetch['barangay'] == 'Other') {
-    echo '<span class="image"><img src="../../images/logo.png"></span>';
-} elseif ($fetch['barangay'] == 'Labas') {
-    echo '<span class="image"><img src="../../images/labas.png"></span>';
-} elseif ($fetch['barangay'] == 'Tagapo') {
-    echo '<span class="image"><img src="../../images/tagapo.png"></span>';
-} elseif ($fetch['barangay'] == 'Malusak') {
-    echo '<span class="image"><img src="../../images/malusak.png"></span>';
-} elseif ($fetch['barangay'] == 'Balibago') {
-    echo '<span class="image"><img src="../../images/balibago.png"></span>';
-} elseif ($fetch['barangay'] == 'Caingin') {
-    echo '<span class="image"><img src="../../images/caingin.png"></span>';
-} elseif ($fetch['barangay'] == 'Pook') {
-    echo '<span class="image"><img src="../../images/pooc.png"></span>';
-} elseif ($fetch['barangay'] == 'Aplaya') {
-    echo '<span class="image"><img src="../../images/aplaya.png"></span>';
-} elseif ($fetch['barangay'] == 'Kanluran') {
-    echo '<span class="image"><img src="../../images/kanluran.png"></span>';
-} else {
-    // Default image if the barangay is not matched
-    echo '<span class="image"><img src="../../images/logo.png"></span>';
-}
-?>
-                <div class="text logo-text">
-                
-                    <span class="name"><?php echo $fetch['first_name'] . ' ' . $fetch['last_name']; ?></span>
-                    <?php
-    if ($fetch['barangay']) {
-        echo '<span class="profession">Barangay ' . $fetch['barangay'] . '</span>';
-    } else {
-        echo '<span class="profession">Not specified</span>'; 
-    }
-    ?>
-                </div>
-            </div>
-
-            <i class='bx bx-chevron-right toggle'></i>
-        </header>
-
-        <div class="menu-bar">
-            <div class="menu">
-
-            <li class="search-box">
-    <i class='bx bx-search icon'></i>
-    <input type="text" id="searchInput1" placeholder="Search..." oninput="restrictInput(this)">
-</li>
-
-
-                    <li class="nav-link">
-                        <a href="home.php">
-                            <i class='bx bx-home-alt icon' ></i>
-                            <span class="text nav-text">Home</span>
-                        </a>
-                    </li>
-
-                    <li class="nav-link">
-                        <a href="incident_reports.php">
-                            <i class='bx bx-file icon' ></i>
-                            <span class="text nav-text">Incident Reports</span>
-                        </a>
-                    </li>
-
-                    <li class="nav-link">
-                        <a href="hearings.php">
-                            <i class='bx bx-calendar-event icon' ></i>
-                            <span class="text nav-text">Hearings</span>
-                        </a>
-                    </li>
-
-
-            </div>
-
-            <div class="bottom-content">
-                <li class="">
-                <a href="my_account.php">
-                        <i class='bx bx-user-circle icon' ></i>
-                        <span class="text nav-text">My Account</span>
-                    </a>
-                </li>
-
-                <li class="">
-                    <a href="../../logout.php">
-                        <i class='bx bx-log-out icon' ></i>
-                        <span class="text nav-text">Logout</span>
-                    </a>
-                </li>
-                
             </div>
         </div>
 
-    </nav>
+        <i class='bx bx-chevron-right toggle'></i>
+    </header>
+
+    <div class="menu-bar">
+        <div class="menu">
+            <li class="search-box">
+                <i class='bx bx-search icon'></i>
+                <input type="text" id="searchInput1" placeholder="Search..." oninput="restrictInput(this)">
+            </li>
+
+            <li class="nav-link">
+                <a href="home.php">
+                    <i class='bx bx-home-alt icon'></i>
+                    <span class="text nav-text">Home</span>
+                </a>
+            </li>
+
+            <li class="nav-link">
+                <a href="incident_reports.php">
+                    <i class='bx bx-file icon'></i>
+                    <span class="text nav-text">Incident Reports</span>
+                </a>
+            </li>
+
+            <li class="nav-link">
+                <a href="hearings.php">
+                    <i class='bx bx-calendar-event icon'></i>
+                    <span class="text nav-text">Hearings</span>
+                </a>
+            </li>
+        </div>
+
+        <div class="bottom-content">
+            <li class="">
+                <a href="my_account.php">
+                    <i class='bx bx-user-circle icon'></i>
+                    <span class="text nav-text">My Account</span>
+                </a>
+            </li>
+
+            <li class="">
+                <a href="../../logout.php">
+                    <i class='bx bx-log-out icon'></i>
+                    <span class="text nav-text">Logout</span>
+                </a>
+            </li>
+        </div>
+    </div>
+</nav>
+
 
 
     <section class="home">
@@ -483,7 +464,6 @@ if ($fetch['barangay'] == 'Ibaba') {
     <center>
 </div>
 
-    
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
@@ -585,24 +565,34 @@ const respondentCellphoneInput = document.getElementById('respondent_cellphone_n
             sidebar.classList.remove("close");
         })
 
-        const form = document.querySelector("form"),
-                nextBtn = form.querySelector(".nextBtn"),
-                backBtn = form.querySelector(".backBtn"),
-                allInput = form.querySelectorAll(".first input");
+        const form = document.querySelector("form");
+const nextBtn = form.querySelector(".nextBtn");
+const allInput = form.querySelectorAll(".first input");
 
+nextBtn.addEventListener("click", () => {
+    // Validate complainant and respondent cellphone numbers
+    const complainantPhoneNumber = document.querySelector('input[name="complainant_cellphone_number"]').value;
+    const respondentPhoneNumber = document.querySelector('input[name="respondent_cellphone_number"]').value;
 
-        nextBtn.addEventListener("click", ()=> {
-            allInput.forEach(input => {
-                if(input.value != ""){
-                    form.classList.add('secActive');
-                }else{
-                    form.classList.remove('secActive');
-                }
-            })
-        })
-
-        backBtn.addEventListener("click", () => form.classList.remove('secActive'));
-
+    if (!validatePhoneNumber(complainantPhoneNumber) || !validatePhoneNumber(respondentPhoneNumber)) {
+        if (!validatePhoneNumber(complainantPhoneNumber) && !validatePhoneNumber(respondentPhoneNumber)) {
+            openCustomAlert("COMPLAINANT and RESPONDENT");
+        } else if (!validatePhoneNumber(complainantPhoneNumber)) {
+            openCustomAlert("COMPLAINANT");
+        } else {
+            openCustomAlert("RESPONDENT");
+        }
+        event.preventDefault();
+    } else {
+        allInput.forEach(input => {
+            if (input.value !== "") {
+                form.classList.add('secActive');
+            } else {
+                form.classList.remove('secActive');
+            }
+        });
+    }
+});
 
         const maxLength = 255;
 const inputElement = document.getElementById('description_input');
@@ -663,7 +653,7 @@ function validatePhoneNumber(phoneNumber) {
   return phoneNumberPattern.test(phoneNumber);
 }
 
-// JavaScript code for the modal and form submission confirmation
+
 document.addEventListener("DOMContentLoaded", function() {
     const form = document.querySelector("form");
     const popUpButton = form.querySelector(".pop-up");
@@ -672,7 +662,6 @@ document.addEventListener("DOMContentLoaded", function() {
     const modalCancelBtn = document.getElementById("modalCancelBtn");
     const modalConfirmBtn = document.getElementById("modalConfirmBtn");
 
-    // Open modal when the pop-up button is clicked
     popUpButton.addEventListener("click", function(event) {
         event.preventDefault();
         const complainantPhoneNumber = document.querySelector('input[name="complainant_cellphone_number"]').value;
