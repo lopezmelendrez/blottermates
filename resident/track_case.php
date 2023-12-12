@@ -4,20 +4,74 @@ include '../config.php';
 
 $incident_case_number = $_GET['incident_case_number'];
 
-$select = mysqli_query($conn, "SELECT *
-                                FROM `incident_report`
-                                LEFT JOIN `notify_residents` ON `incident_report`.`incident_case_number` = `notify_residents`.`incident_case_number`
-                                LEFT JOIN `hearing` ON `incident_report`.`incident_case_number` = `hearing`.`incident_case_number`
-                                LEFT JOIN `amicable_settlement` ON `incident_report`.`incident_case_number` = `amicable_settlement`.`incident_case_number`
-                                LEFT JOIN `pb_accounts` ON `incident_report`.`pb_id` = `pb_accounts`.`pb_id`
-                                WHERE `incident_report`.`incident_case_number` = '$incident_case_number'") or die('query failed');
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['image'])) {
+    $incident_case_number = isset($_POST['incident_case_number']) ? $_POST['incident_case_number'] : '';
 
-$fetch_cases = mysqli_fetch_assoc($select);
+    $file_name = $_FILES['image']['name'];
+    $file_tmp = $_FILES['image']['tmp_name'];
 
-$barangay = $fetch_cases['barangay'];
+    $allowed_extensions = array('jpg', 'jpeg', 'png');
+    $file_extension = pathinfo($file_name, PATHINFO_EXTENSION);
 
+    if (!in_array(strtolower($file_extension), $allowed_extensions)) {
+        die('Invalid file type. Only JPG, JPEG, and PNG files are allowed.');
+    }
+
+    $upload_directory = "images/";
+    $destination_path = $upload_directory . $file_name;
+
+    if (!move_uploaded_file($file_tmp, $destination_path)) {
+        die('Failed to move the uploaded file.');
+    }
+
+    // OCR processing
+    $tesseract_path = '"C:\\Program Files\\Tesseract-OCR\\tesseract"';
+    $image_path = '"' . $destination_path . '"';
+    $output_path = '"' . $upload_directory . 'out"';
+
+    $command = $tesseract_path . ' ' . $image_path . ' ' . $output_path;
+    shell_exec($command);
+
+    $output_file = $upload_directory . 'out.txt';
+    $ocr_results = file_get_contents($output_file);
+
+
+    $query = "SELECT complainant_first_name, complainant_last_name FROM incident_report WHERE incident_case_number = '$incident_case_number'";
+    $result = mysqli_query($conn, $query);
+
+    if ($result) {
+        $row = mysqli_fetch_assoc($result);
+
+        if ($row) {
+            $first_name = $row['complainant_first_name'];
+            $last_name = $row['complainant_last_name'];
+
+            // Check if OCR results contain first_name and last_name
+            if (stripos($ocr_results, $first_name) !== false && stripos($ocr_results, $last_name) !== false) {
+                echo "<p>OCR results contain the names: $first_name $last_name</p>";
+
+    $redirect_url = "track_case_status.php?incident_case_number=$incident_case_number";
+    header("Location: $redirect_url");
+    exit(); 
+            } else {
+                $msg_error = "These credentials do not match our records.";
+            }
+        } else {
+            echo "<p>No records found for the incident_case_number: $incident_case_number</p>";
+        }
+
+        mysqli_free_result($result);
+    } else {
+        echo "<p>Error executing query: " . mysqli_error($conn) . "</p>";
+    }
+
+    //echo htmlspecialchars($ocr_results); // Escape HTML to prevent injection
+
+    echo "</pre>";
+}
 
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -27,140 +81,150 @@ $barangay = $fetch_cases['barangay'];
     <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel="stylesheet" href="../css/track_case.css">
+    <link rel="stylesheet" href="../css/style.css">
     <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
     <title>Track Your Case</title>
     </head>
     <body>
 
         <center>
-            <div class="track-case-container">
-                <div class="hearing-text">
-                <img src="../images/logo.png" class="image">
-                <h4 class="case-id" style="margin-top: 0px; font-size: 11px;">Case ID: <?php echo htmlspecialchars(substr($incident_case_number, 0, 9)); ?></h4>
+        <div class="container d-flex justify-content-center align-items-center min-vh-100">
+
+            <div class="row border rounded-4 p-3 bg-white shadow box-area" style="width: 100%;">
+
+                <div class="col-md-6 rounded-4 d-flex justify-content-center align-items-center flex-column left-box;" style="background: #F9C918; border-radius: 10px;">
+                    <div class="featured-image mb-3" style="margin-top: 20px; text-align: center;">
+                        <img src="../images/logo.png" class="img-fluid" style="width: 255px;">
+                    </div>
+                        <p style="font-size: 23px; font-weight: 700; text-align: center; color: #010203; text-transform: uppercase;">Barangay Blotter Management System</p>
                 </div>
-                <h3 class="case-id" style="margin-left: 43px; margin-top: -25px;">Brgy. <?php echo $barangay ?></h3>
-                <hr style="border: 1px solid #b3b3b3; margin: 20px 0;">
-                <h2 class="status">ONGOING</h2>
-                <?php
-            if ($fetch_cases['notify_summon'] == 'not notified' && $fetch_cases['notify_hearing'] == 'not notified') {
-                echo '<div class="hearing-notice" style="color: white;">
-                        <div class="hearing-text">
-                            <i class="fa-solid fa-circle-notch" style="color: #eed202;"></i>
-                            <p>In Progress</p>
-                        </div>
-                        <p class="text">The Hearing Notice forms for the Complainant and the Respondent are still being processed.</p>
-                    </div>';
-            } elseif ($fetch_cases['notify_summon'] == 'not notified') {
-                echo '<div class="hearing-notice" style="color: white;">
-                        <div class="hearing-text">
-                            <i class="fa-solid fa-circle-notch" style="color: #eed202;"></i>
-                            <p>Summon Notified</p>
-                        </div>
-                        <p class="text">The Summon Notice for the Respondent is now in progress</p>
-                    </div>';
-            } elseif ($fetch_cases['notify_hearing'] == 'not notified') {
-                echo '<div class="hearing-notice" style="color: white;">
-                        <div class="hearing-text">
-                            <i class="fa-solid fa-circle-notch" style="color: #eed202;"></i>
-                            <p>Summon Notified</p>
-                        </div>
-                        <p class="text">The Hearing Notice for the Complainant is now in progress.</p>
-                    </div>';
-            } elseif ($fetch_cases['notify_summon'] == 'notified' && $fetch_cases['notify_hearing'] == 'notified') {
-                $date_of_hearing = isset($fetch_cases['date_of_hearing']) ? date('jS \of F Y', strtotime($fetch_cases['date_of_hearing'])) : '2nd of December 2023';
-                $time_of_hearing = isset($fetch_cases['time_of_hearing']) ? date('h:i A', strtotime($fetch_cases['time_of_hearing'])) : '11:00 AM';
 
-                echo '<div class="hearing-notice" style="color: white;">
-                        <div class="hearing-text">
-                            <i class="fa-solid fa-circle-check" style="color: #1db954;"></i>
-                            <p>Hearing Notified</p>
-                        </div>
-                        <p class="text">The Complainant and the Respondent have now been notified of their Hearing.</p>
-                    </div>';
-            } else {
-                // Your existing code for displaying the notification
-                echo '<div class="hearing-notice" style="color: white;">
-                        <div class="hearing-text">
-                            <i class="fa-solid fa-circle-check" style="color: #1db954;"></i>
-                            <p>Hearing Notified</p>
-                        </div>
-                        <p class="text">The Complainant and the Respondent have now been notified of their Hearing on 02 Dec</p> 
-                    </div>';
-            }
-            ?>
-    
-    <?php
-    $date_of_hearing = isset($fetch_cases['date_of_hearing']) ? strtotime($fetch_cases['date_of_hearing']) : null;
-    $hearing_type_status = $fetch_cases['hearing_type_status'];
+                <div class="col-md-6 right-box">
+                            <span class="header-text-1" style="font-size: 36px; margin-left: -30px;">Track Incident Case Status</span>
+                            <hr style="border: 1px solid #949494; margin: 20px 0;">
 
-    if (!empty($fetch_cases['date_agreed'])) {
-        $date = isset($fetch_cases['date_of_hearing']) ? date('jS \of F Y', strtotime($fetch_cases['date_of_hearing'])) : '2nd of December 2023';
-        $time = isset($fetch_cases['time_of_hearing']) ? date('h:i A', strtotime($fetch_cases['time_of_hearing'])) : '11:00 AM';
+                               
+    <p style="font-size: 20px; margin-top: 8%; text-align: center; font-weight: 500;">VERIFY YOUR IDENTITY</p>
+    <p style="font-size: 15px; margin-top: -2%; text-align: justify; font-weight: 400; padding: 0px 23px;">Prior to accessing the status of your incident case, kindly upload a valid identification to confirm your identity.</p>
     
-        echo '<div class="hearing-notice" style="color: white;">
-                <div class="hearing-text">
-                    <i class="fa-solid fa-circle-check" style="color: #1db954;"></i>
-                    <p>Hearing</p>
-                </div>';
-        echo '<p class="text">Your Incident Case was held on ' . $date . ' - ' . $time . ' </p>';
-        echo '</div>';
-    } elseif (empty($fetch_cases['date_agreed']) && $date_of_hearing && ($date_of_hearing == strtotime(date('Y-m-d')) || $date_of_hearing < strtotime(date('Y-m-d')))) {
-        echo '            <div class="hearing-notice" style="color: white;">
-        <div class="hearing-text">
-            <i class="fa-solid fa-circle-notch" style="color: #eed202;"></i>
-            <p>Hearing In Progress</p>
-        </div>';
-        echo '<p class="text">' . strtoupper($hearing_type_status) . ' Hearing for this Case is currently Ongoing. Please wait for the decision.</p>';
-        echo '</div>';
-    } elseif ($fetch_cases['notify_summon'] == 'notified' && $fetch_cases['notify_hearing'] == 'notified') {
-        $date = isset($fetch_cases['date_of_hearing']) ? date('jS \of F Y', strtotime($fetch_cases['date_of_hearing'])) : '2nd of December 2023';
-        $time= isset($fetch_cases['time_of_hearing']) ? date('h:i A', strtotime($fetch_cases['time_of_hearing'])) : '11:00 AM';
-        echo '            <div class="hearing-notice" style="color: white;">
-        <div class="hearing-text">
-        <i class="fa-solid fa-circle-notch" style="color: #eed202;"></i>
-            <p>Upcoming Hearing</p>
-        </div>';
-        echo '<p class="text">Your Incident Case will be held on ' . $date . ' - ' . $time . ' </p>';
-        echo '</div>'; 
-    } else {
-        $formatted_date_of_hearing = isset($fetch_cases['date_of_hearing']) ? date('j M Y - h:i A', $date_of_hearing) : '11 Dec 2023 - 11:00 AM';
-        echo '            <div class="hearing-notice">
-        <div class="hearing-text">
-        <i class="fa-solid fa-circle-check"></i>
-            <p>Upcoming Hearing</p>
-        </div>';
-        echo '<p class="text">Your Incident Case will be held on ' . $formatted_date_of_hearing . '</p>';
-        echo '</div>';
-    }
-    ?>
-    <?php
-if (!empty($fetch_cases['date_agreed'])) {
-    $formatted_date = date('jS \of F Y \— h:i A', strtotime($fetch_cases['date_agreed']));
-    echo '<div class="hearing-notice" style="color: white;">
-            <div class="hearing-text">
-            <i class="fa-solid fa-circle-check" style="color: #1db954;"></i>
-                <p>Decision Made</p>
+    <form id="uploadForm" action="" method="POST" enctype="multipart/form-data">
+    <input type="file" name="image" id="imageInput" style="border: 1px solid #ccc;" accept="image/*" required>
+    <input type="hidden" name="incident_case_number" value="<?php echo htmlspecialchars($incident_case_number); ?>">
+    <input class="submit" type="submit" value="Authenticate">
+    </form>
+
+    <?php if (isset($msg_error) && !empty($msg_error)) { ?>
+        <div class="message d-flex" style="background: #F5E2D1; border: none; border-radius: 5px; width: 91%; margin-top: -1%; padding: 2px 2px; margin-left: 0;">
+            <i class="fa-solid fa-circle-exclamation" style="margin-left: 3%; margin-top: 0.6%; font-size: 20px; color: #D52826;"></i>
+            <span style="margin-left: 2%; font-size: 14px; color: #D52826; font-weight: 600; margin-top: 0.3%;"><?php echo $msg_error; ?></span>
+            <i class="fas fa-times" style="margin-left: 18%; margin-top: 0.4%; color: #D52826; font-size: 24px;" onclick="this.parentElement.remove();"></i>
+        </div>
+    <?php } ?>
+
             </div>
-            <p class="text">Settled through MEDIATION on ' . $formatted_date . '. Please wait for the Filing of Motion for Execution.</p>
-          </div>';
-} else {
-    echo '<div class="hearing-notice">
-    <div class="hearing-text">
-    </div>
-    <p class="text"></p>
-  </div>';
-}
-?>
 
-               
+            </div>
 
+        </div>
         </center>
+
+        <footer>
+            <p>Department of the Interior and Local Government</p>
+            <p>F. Gomez St., Brgy.Kanluran, Old Municipal Hall (Gusaling Museo) 4026, Santa Rosa, 4026 Laguna</p>
+            <p>&copy; 2023 DILG All Rights Reserved.</p>
+        </footer>
 
     </body>
 
     <script>
-        
+
+document.getElementById("uploadForm").addEventListener("submit", function (event) {
+        var fileInput = document.getElementById("imageInput");
+
+        // Check if a file is chosen
+        if (fileInput.files.length === 0) {
+            alert("Please choose a file before submitting.");
+            event.preventDefault(); // Prevent form submission
+        }
+    });
+
     </script>
 
+    <style>
+    
+    .header-text-1::after{
+    content: "";
+    display: block;
+    border-bottom: 3px solid #F9C918; /* Adjust the color and thickness as needed */
+    width: 93%;
+    border-radius: 25px;
+    margin-left: -6%;
+    }
+
+    .custom-search {
+    position: relative;
+    width: 100%;
+}
+
+.custom-search-input {
+    width: 100%;
+    border: 2px solid #adadad;
+    background: #fff;
+    font-size: 13px;
+    border-radius: 5px;
+    padding: 10px 100px 10px 20px;
+    line-height: 1;
+    box-sizing: border-box;
+    outline: none;
+}
+
+.custom-search-button {
+    position: absolute;
+    font-size: 10px;
+    right: 3px;
+    top: 3px;
+    bottom: 3px;
+    border: 0;
+    background: #e83422;
+    color: #fff;
+    outline: none;
+    margin: 0;
+    padding: 0 10px;
+    border-radius: 5px;
+}
+
+.custom-search-button:hover{
+    background: #bc1823;
+}
+
+.submit{
+    background-color: #e83422;
+    color: #fff;
+    border-radius: 5px;
+    border: none;
+    padding: 5px 10px;
+}
+
+.submit:hover{
+    background-color: #bc1823;
+}
+
+input[type="file"]::file-selector-button {
+  width: 136px;
+  color: #bc1823;
+  background-color: white;
+  font-weight: 500;
+  border: 1px solid #e83422;
+  padding: 5px 10px;
+}
+
+input[type="file"]::file-selector-button:hover{
+    border: 2px solid #bc1823;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+    </style>
+
 </html>
+
