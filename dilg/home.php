@@ -193,7 +193,7 @@ $resultMonthlyReports = mysqli_query($conn, $queryMonthlyReports);
 
 ?>
 
-<div class="incident-case-table-1" style="margin-top: -35%;">
+<div class="incident-case-table-1">
     <div class="head-text">
         <p class="incident-case" style="font-size: 22px;">Monthly Transmittal Reports</p>
         <p class="notice-records">* For the Month of <em><?php echo $currentMonth; ?></em></p>
@@ -372,6 +372,7 @@ dateElement.textContent = formatDate(now);
         background: white;
         border-radius: 8px;
         padding: 16px 24px;
+        margin-top: -35%;
     }
 
     .head-text .incident-case{
@@ -462,5 +463,10 @@ dateElement.textContent = formatDate(now);
         transition: .5s;
     }
 
-    
+    @media screen and (max-width: 1325px){
+        .incident-case-table-1{
+            margin-top: -36.3%;
+        }
+    }
+
 </style>
