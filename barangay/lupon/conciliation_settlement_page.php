@@ -11,6 +11,37 @@ if(!isset($email)){
 header('location: ../../index.php');
 }
 
+function displayWebpage($conn, $incident_case_number)
+{
+    $select_query = "SELECT hearing_type_status, date_of_hearing FROM hearing WHERE incident_case_number = '$incident_case_number'";
+    $result = mysqli_query($conn, $select_query);
+
+    if ($result && mysqli_num_rows($result) > 0) {
+        // Fetch the first row from the result set as an associative array
+        $row = mysqli_fetch_assoc($result);
+
+        // Extract values from the associative array
+        $hearing_type_status = $row['hearing_type_status'];
+        $date_of_hearing = $row['date_of_hearing'];
+
+        // Get the current date in 'Y-m-d' format
+        $current_date = date('Y-m-d');
+
+        if ($hearing_type_status === 'conciliation' && strtotime($date_of_hearing) <= strtotime($current_date)) {
+            // If the conditions are met, return true
+            return true;
+        }
+    }
+
+    return false; 
+}
+
+$incident_case_number = $_GET['incident_case_number'];
+
+if (!displayWebpage($conn, $incident_case_number)) {
+    header('location: ongoing_cases.php');
+}
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['arbitration_submit'])) {
     $incident_case_number = $_POST['incident_case_number'];
     $hearing_type_status = 'arbitration';

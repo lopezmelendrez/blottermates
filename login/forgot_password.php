@@ -85,7 +85,7 @@ if(isset($_REQUEST['reset']))
         <p style="font-size: 35px; text-align: center;"><b>PASSWORD RESET<b><p>
         <p style="font-size: 16px; margin-left: 10px; text-align: justify;">We have received a request to reset your password for your account. To proceed with the password reset, please click on the button below:<p>
          <div class="button-container">
-         <button class="btn btn-primary"><a href="http://localhost/barangay%20justice%20management%20system%2001/login/reset_password.php?secret='.base64_encode($email_address).'" style="text-decoration: none; color: #fff; font-weight: 600; text-transform: uppercase;">Verify my email</a></button>
+         <button class="btn btn-primary"><a href="http://localhost/barangay%20justice%20management%20system%2001/login/reset_password.php?secret='.base64_encode($email_address).'" style="text-decoration: none; color: #fff; font-weight: 600; text-transform: uppercase;">reset password</a></button>
          </div>
          <p style="font-size: 14px;">The password reset link expires in 15 minutes. If the link expires, request a new password reset email on our website.<p>
         <br>
