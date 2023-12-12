@@ -220,7 +220,7 @@ if ($fetch['barangay'] == 'Ibaba') {
                         <div class="buttons" style="margin-top: -2%;">
                             <a href="incident_reports.php" style="text-decoration: none;">
                             <div class="backBtn-1" style="padding: 12px 12px; width: 100px; border: 1px solid #bc1823; background: #fff; color: #bc1823; margin-left: 550%;">
-                                <span class="btnText" style="text-align: center;">See All Cases</span>
+                                <span class="btnText" style="text-align: center;">Back</span>
                             </div></a>
                             <a href="case_reportPage2.php?incident_case_number=<?php echo $incident_case_number ?>" style="text-decoration: none;">
                             <div class="backBtn-1" style="width: 600px; margin-left: 280%; padding: 12px 12px; ">
