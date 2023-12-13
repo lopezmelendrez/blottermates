@@ -51,7 +51,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['image'])) {
             $first_name = $row['complainant_first_name'];
             $last_name = $row['complainant_last_name'];
 
-            // Check if OCR results contain first_name and last_name
             if (stripos($ocr_results, $first_name) !== false && stripos($ocr_results, $last_name) !== false) {
                 echo "<p>OCR results contain the names: $first_name $last_name</p>";
 
@@ -69,8 +68,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['image'])) {
     } else {
         echo "<p>Error executing query: " . mysqli_error($conn) . "</p>";
     }
-
-    //echo htmlspecialchars($ocr_results); // Escape HTML to prevent injection
 
     echo "</pre>";
 }

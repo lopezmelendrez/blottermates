@@ -60,7 +60,13 @@ $barangay = $fetch_cases['barangay'];
             </div>
             <h3 class="case-id" style="margin-left: 43px; margin-top: -25px;">Brgy. <?php echo $barangay ?></h3>
             <hr style="border: 1px solid #b3b3b3; margin: 20px 0;">
-            <h2 class="status">ONGOING</h2>
+            <?php
+            if (!empty($fetch_cases['date_agreed'])) {
+                echo '<h2 class="status" style="margin-top: -10px;">SETTLED</h2>';
+            } else {
+                echo '<h2 class="status" style="margin-top: -10px;">ONGOING</h2>';
+            }
+            ?>
 
             <?php
             if ($fetch_cases['notify_summon'] == 'not notified' && $fetch_cases['notify_hearing'] == 'not notified') {
