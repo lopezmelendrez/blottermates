@@ -6,9 +6,8 @@ session_start();
 
 $email = $_SESSION['email_address'];
 
-
-if(!isset($email)){
-header('location: ../../index.php');
+if (!isset($email)) {
+    header('location: ../../index.php');
 }
 
 $selectLuponId = mysqli_query($conn, "SELECT pb_id FROM `lupon_accounts` WHERE email_address = '$email'");
@@ -19,26 +18,26 @@ $row = mysqli_fetch_assoc($selectLuponId);
 $pb_id = $row['pb_id'];
 
 $selectHearing = mysqli_query($conn, "
-SELECT hearing.date_of_hearing, hearing.time_of_hearing, hearing.incident_case_number
-FROM `hearing`
-LEFT JOIN `incident_report` ON hearing.incident_case_number = incident_report.incident_case_number
-LEFT JOIN `amicable_settlement` ON hearing.incident_case_number = amicable_settlement.incident_case_number
-LEFT JOIN `court_action` ON hearing.incident_case_number = court_action.incident_case_number
-WHERE incident_report.pb_id = $pb_id
-AND court_action.incident_case_number IS NULL
-AND amicable_settlement.incident_case_number IS NULL
+    SELECT hearing.date_of_hearing, hearing.time_of_hearing, hearing.incident_case_number
+    FROM `hearing`
+    LEFT JOIN `incident_report` ON hearing.incident_case_number = incident_report.incident_case_number
+    LEFT JOIN `amicable_settlement` ON hearing.incident_case_number = amicable_settlement.incident_case_number
+    LEFT JOIN `court_action` ON hearing.incident_case_number = court_action.incident_case_number
+    WHERE incident_report.pb_id = $pb_id
+    AND court_action.incident_case_number IS NULL
+    AND amicable_settlement.incident_case_number IS NULL
 ") or die('query failed');
 
 $events = [];
 
 while ($fetchHearing = mysqli_fetch_assoc($selectHearing)) {
     $dateOfHearing = $fetchHearing['date_of_hearing'];
-    $timeOfHearing = $fetchHearing['time_of_hearing']; 
+    $timeOfHearing = $fetchHearing['time_of_hearing'];
     $startDatetime = $dateOfHearing . ' ' . $timeOfHearing;
-    
+
     $event = [
         'title' => 'CASE NO. #' . htmlspecialchars(substr($fetchHearing['incident_case_number'], 0, 9)),
-        'start' => $startDatetime, 
+        'start' => $startDatetime,
     ];
 
     array_push($events, $event);
@@ -49,18 +48,18 @@ $hasEvents = !empty($events);
 if (isset($_POST['submit'])) {
     $generate_report = strtolower(date('F')) . '_report';
 
-        $select_submitter = mysqli_query($conn, "SELECT * FROM lupon_accounts WHERE email_address = '$email'");
-        if (mysqli_num_rows($select_submitter) > 0) {
-            $submitter_data = mysqli_fetch_assoc($select_submitter);
-            $lupon_id = $submitter_data['lupon_id'];
-            $submitter_first_name = $submitter_data['first_name'];
-            $submitter_last_name = $submitter_data['last_name'];
-            $pb_id = $submitter_data['pb_id'];
+    $select_submitter = mysqli_query($conn, "SELECT * FROM lupon_accounts WHERE email_address = '$email'");
+    if (mysqli_num_rows($select_submitter) > 0) {
+        $submitter_data = mysqli_fetch_assoc($select_submitter);
+        $lupon_id = $submitter_data['lupon_id'];
+        $submitter_first_name = $submitter_data['first_name'];
+        $submitter_last_name = $submitter_data['last_name'];
+        $pb_id = $submitter_data['pb_id'];
 
-            mysqli_query($conn, "INSERT INTO `monthly_reports` (generate_report, timestamp, lupon_id, submitter_first_name, submitter_last_name, pb_id) VALUES ('$generate_report', NULL, '$lupon_id', '$submitter_first_name', '$submitter_last_name', '$pb_id')") or die('query failed');
-            header("location: home.php");
-        }
+        mysqli_query($conn, "INSERT INTO `monthly_reports` (generate_report, timestamp, lupon_id, submitter_first_name, submitter_last_name, pb_id) VALUES ('$generate_report', NULL, '$lupon_id', '$submitter_first_name', '$submitter_last_name', '$pb_id')") or die('query failed');
+        header("location: home.php");
     }
+}
 
 $currentDate = date('Y-m-d');
 
@@ -74,11 +73,9 @@ if ($isEndOfMonth) {
     <p style="font-size: 14px; text-align: center;">To obtain the report for the previous month, click <a href="link.html" class="click-here">here</a>.</p>
     <div class="button-container" style="margin-top: 3%;">
         <form action="" method="post">
-        <input type="submit" name="submit" value="GENERATE REPORT" class="backBtn" style="width: 310px; padding: 12px 12px; font-weight: 600; margin-left: -5px; background: #bc1823; color: #fff; border: none;"></button>
+            <input type="submit" name="submit" value="GENERATE REPORT" class="backBtn" style="width: 310px; padding: 12px 12px; font-weight: 600; margin-left: -5px; background: #bc1823; color: #fff; border: none;">
         </form>
     </div>';
-    
-    
 } else {
     $modalContent = '
     <h3 class="modal-title" style="font-size: 18px; text-align:center;">GENERATE MONTHLY TRANSMITTAL REPORT</h3>
@@ -86,18 +83,11 @@ if ($isEndOfMonth) {
     <p style="font-size: 15px; text-align: justify; font-weight: 600;">Report generation is only available at the end of the month. Please try again later.</p>
     <p style="font-size: 14px; text-align: center;">To obtain the report for the previous month, kindly click the button below:</p>
     <div class="button-container" style="margin-top: 3%;">
-    <a href="download_last_month_report.php" download="Last_Month_Report.pdf" class="backBtn" style="width: 310px; padding: 12px 12px; font-weight: 600; margin-left: 15px; background: #bc1823; color: #fff; text-decoration: none;" target="_blank">DOWNLOAD LAST MONTH REPORT</a>
+        <a href="download_last_month_report.php" download="Last_Month_Report.pdf" class="backBtn" style="width: 310px; padding: 12px 12px; font-weight: 600; margin-left: 15px; background: #bc1823; color: #fff; text-decoration: none;" target="_blank">DOWNLOAD LAST MONTH REPORT</a>
     </div>';
-    
 }
 
-
-
-
-
 ?>
-
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -119,195 +109,185 @@ if ($isEndOfMonth) {
     
 <?php include 'navbar.php';?>
 
-    <section class="home" style="margin-top: -10px;">
-        
-        <div class="datetime-container" style="display: flex;">
-            <div class="datetime mb-3" style="width: 26rem;">
-                <div class="time" id="time"></div>
-                <div class="date" style="font-size: 24px; width: 24rem;"></div>
-            </div>
+<section class="home" style="margin-top: -10px;">
 
-            <div class="add-account" onclick="showMonthlyReportPopup()" style="display: flex; margin-top: 6%; width: 21.7%;">
-                <i class='bx bx-download'></i>
-                <p>Generate Monthly Report</p>
-            </div>
-
-            <?php
-
-$selectLuponId = mysqli_query($conn, "SELECT pb_id FROM `lupon_accounts` WHERE email_address = '$email'");
-if (!$selectLuponId) {
-    die('Failed to fetch lupon_id: ' . mysqli_error($conn));
-}
-$row = mysqli_fetch_assoc($selectLuponId);
-$pb_id = $row['pb_id'];
-
-$currentTimestamp = date('Y-m-d H:i:s'); // Get the current timestamp in the format 'YYYY-MM-DD H:i:s'
-
-$select = mysqli_query($conn, "
-SELECT execution_notice.incident_case_number AS incident_case_number
-FROM `execution_notice`
-WHERE execution_notice.pb_id = $pb_id
-  AND execution_notice.timestamp >= DATE_SUB('$currentTimestamp', INTERVAL 2 DAY)
-") or die('query failed');
-
-
-$notifications = array();
-while ($row = mysqli_fetch_assoc($select)) {
-    $incident_case_number = $row['incident_case_number'];
-    
-    // Create a link to case_reportPage2.php with the incident_case_number as a parameter
-    $link = 'case_reportPage2.php?incident_case_number=' . $incident_case_number;
-    
-    // Create the notification message with the link
-    $notification = 
-    'Case <a href="' . $link . '" style="font-size: 11px;">#' . substr($incident_case_number, 0, 9) . '</a> Motion for Execution has been validated.';
-    
-    // Add the notification to the array
-    $notifications[] = $notification;
-}
-
-
-// Display notifications in the HTML structure
-echo '<div class="notification-box" style="cursor: default;">';
-echo '<div class="online" style="display: flex; margin-top: -5px;">';
-echo '<i class="fa-solid fa-bell" style="font-size: 25px;"></i>';
-echo '<p style="margin-top: -2px; margin-left: 10px;">NOTIFICATIONS</p>';
-echo '<div class="dropdown">';
-echo '<p id="notificationCount" style="margin-left: 35px; margin-top: -1px; font-weight: 600; font-size: 20px; cursor: pointer;">(' . count($notifications) . ')</p>';
-// Check if there are notifications before displaying the dropdown content
-if (!empty($notifications)) {
-    echo '<div class="dropdown-content">';
-    foreach ($notifications as $notification) {
-        echo '<div class="notification-container" style="z-index: 1003;">';
-        echo '<p style="font-size: 13px; color: #3d3d3d; margin-top: 2%; margin-bottom: 3%;">' . $notification . '</p>';
-        echo '</div>';
-        
-    }
-    echo '</div>';
-}
-
-echo '</div>';
-
-echo '</div>';
-echo '</div>';
-?>
-
-            
+    <div class="datetime-container" style="display: flex;">
+        <div class="datetime mb-3" style="width: 26rem;">
+            <div class="time" id="time"></div>
+            <div class="date" style="font-size: 21px; width: 24rem;"></div>
         </div>
 
-        <div class="home-container" style="display: flex;">
+        <div class="add-account" onclick="showMonthlyReportPopup()" style="display: flex; margin-top: 6%; width: 21.7%;">
+            <i class='bx bx-download'></i>
+            <p>Generate Monthly Report</p>
+        </div>
+
+        <?php
+
+        $selectLuponId = mysqli_query($conn, "SELECT pb_id FROM `lupon_accounts` WHERE email_address = '$email'");
+        if (!$selectLuponId) {
+            die('Failed to fetch lupon_id: ' . mysqli_error($conn));
+        }
+        $row = mysqli_fetch_assoc($selectLuponId);
+        $pb_id = $row['pb_id'];
+
+        $currentTimestamp = date('Y-m-d H:i:s'); // Get the current timestamp in the format 'YYYY-MM-DD H:i:s'
+
+        $select = mysqli_query($conn, "
+            SELECT execution_notice.incident_case_number AS incident_case_number
+            FROM `execution_notice`
+            WHERE execution_notice.pb_id = $pb_id
+              AND execution_notice.timestamp >= DATE_SUB('$currentTimestamp', INTERVAL 2 DAY)
+        ") or die('query failed');
+
+        $notifications = array();
+        while ($row = mysqli_fetch_assoc($select)) {
+            $incident_case_number = $row['incident_case_number'];
+
+            // Create a link to case_reportPage2.php with the incident_case_number as a parameter
+            $link = 'case_reportPage2.php?incident_case_number=' . $incident_case_number;
+
+            // Create the notification message with the link
+            $notification =
+                'Case <a href="' . $link . '" style="font-size: 11px;">#' . substr($incident_case_number, 0, 9) . '</a> Motion for Execution has been validated.';
+
+            // Add the notification to the array
+            $notifications[] = $notification;
+        }
+
+        // Display notifications in the HTML structure
+        echo '<div class="notification-box" style="cursor: default;">';
+        echo '<div class="online" style="display: flex; margin-top: -5px;">';
+        echo '<i class="fa-solid fa-bell" style="font-size: 25px;"></i>';
+        echo '<p style="margin-top: -2px; margin-left: 10px;">NOTIFICATIONS</p>';
+        echo '<div class="dropdown">';
+        echo '<p id="notificationCount" style="margin-left: 35px; margin-top: -1px; font-weight: 600; font-size: 20px; cursor: pointer;">(' . count($notifications) . ')</p>';
+        // Check if there are notifications before displaying the dropdown content
+        if (!empty($notifications)) {
+            echo '<div class="dropdown-content">';
+            foreach ($notifications as $notification) {
+                echo '<div class="notification-container" style="z-index: 1003;">';
+                echo '<p style="font-size: 13px; color: #3d3d3d; margin-top: 2%; margin-bottom: 3%;">' . $notification . '</p>';
+                echo '</div>';
+
+            }
+            echo '</div>';
+        }
+
+        echo '</div>';
+
+        echo '</div>';
+        echo '</div>';
+        ?>
+
+    </div>
+
+    <div class="home-container" style="display: flex;">
 
         <div class="calendar-container" style="display: flex; height: 470px; width: 530px; margin-left: 3%; margin-top: 0.5%;">
-        <div id="calendar" style="width: 500px;"></div>
-    </div>
+            <div id="calendar" style="width: 500px;"></div>
+        </div>
 
         <div class="incident-case-table">
             <div class="head-text">
                 <p class="incident-case">Recent Incident Cases</p>
                 <p class="notice-records">* Needs Notice Records</p>
-                <!--<div class="box" style="margin-left: 380px; margin-top: -60px;">
-                    <input type="text" id="searchInput" placeholder="Search...">
-                    <a href="#">
-                        <i class="bx bx-search" style="font-size: 20px; margin-top: 5px;"></i>
-                    </a>
-                </div>-->
 
-        <div class="table-container"  style="max-height: 310px; overflow-y: hidden; overflow-x: hidden; margin-top: -1%;">
-        <hr style="border: 1px solid #949494; margin: 10px 0; width: 100%; margin-top: 0.2%;">
-        <table class="incident-table" style="width: 700px;">
-            <thead>
-                <tr>
-                    <th>Case No</th>
-                    <th>Case Title</th>
-                    <th>Date Reported</th>
-                </tr>
-            </thead>
-            <tbody id="tableBody" style="overflow-y: hidden;">
-            <?php
-$currentPage = isset($_GET['page']) ? $_GET['page'] : 1;
+                <div class="table-container" style="max-height: 310px; overflow-y: hidden; overflow-x: hidden; margin-top: -1%;">
+                    <hr style="border: 1px solid #949494; margin: 10px 0; width: 100%; margin-top: 0.2%;">
+                    <table class="incident-table" style="width: 680px;">
+                        <thead>
+                            <tr>
+                                <th>Case No</th>
+                                <th>Case Title</th>
+                                <th>Date Reported</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tableBody" style="overflow-y: hidden;">
+                            <?php
+                            $currentPage = isset($_GET['page']) ? $_GET['page'] : 1;
 
-$selectLuponId = mysqli_query($conn, "SELECT pb_id FROM `lupon_accounts` WHERE email_address = '$email'");
-if (!$selectLuponId) {
-    die('Failed to fetch lupon_id: ' . mysqli_error($conn));
-}
-$row = mysqli_fetch_assoc($selectLuponId);
-$pb_id = $row['pb_id'];
+                            $selectLuponId = mysqli_query($conn, "SELECT pb_id FROM `lupon_accounts` WHERE email_address = '$email'");
+                            if (!$selectLuponId) {
+                                die('Failed to fetch lupon_id: ' . mysqli_error($conn));
+                            }
+                            $row = mysqli_fetch_assoc($selectLuponId);
+                            $pb_id = $row['pb_id'];
 
-$select = mysqli_query($conn, "
-SELECT incident_report.incident_case_number AS incident_case_number,
-incident_report.complainant_last_name AS complainant_last_name,
-incident_report.respondent_last_name AS respondent_last_name,
-incident_report.created_at AS created_at,
-incident_report.submitter_first_name as submitter_first_name,
-incident_report.submitter_last_name as submitter_last_name
-FROM `incident_report`
-LEFT JOIN `notify_residents` ON incident_report.incident_case_number = notify_residents.incident_case_number
-LEFT JOIN `amicable_settlement` ON incident_report.incident_case_number = amicable_settlement.incident_case_number
-WHERE (generate_summon = 'not generated' OR generate_hearing = 'not generated' OR generate_summon IS NULL OR generate_hearing IS NULL)
-AND incident_report.pb_id = $pb_id
-ORDER BY incident_report.created_at DESC
-") or die('query failed');
+                            $select = mysqli_query($conn, "
+                                SELECT incident_report.incident_case_number AS incident_case_number,
+                                incident_report.complainant_last_name AS complainant_last_name,
+                                incident_report.respondent_last_name AS respondent_last_name,
+                                incident_report.created_at AS created_at,
+                                incident_report.submitter_first_name as submitter_first_name,
+                                incident_report.submitter_last_name as submitter_last_name
+                                FROM `incident_report`
+                                LEFT JOIN `notify_residents` ON incident_report.incident_case_number = notify_residents.incident_case_number
+                                LEFT JOIN `amicable_settlement` ON incident_report.incident_case_number = amicable_settlement.incident_case_number
+                                WHERE (generate_summon = 'not generated' OR generate_hearing = 'not generated' OR generate_summon IS NULL OR generate_hearing IS NULL)
+                                AND incident_report.pb_id = $pb_id
+                                ORDER BY incident_report.created_at DESC
+                            ") or die('query failed');
 
-if (mysqli_num_rows($select) === 0) {
-    echo '<tr><td colspan="3" style="font-size: 22px; font-weight: 600; text-transform: capitalize;">No Incident Cases with Incomplete Notice</td></tr>';
-} else {
-    while ($fetchCases = mysqli_fetch_assoc($select)) {
-        $incident_case_number = $fetchCases['incident_case_number'];
-        
-        // Check if incident_case_number is found in the hearing table
-        $checkHearingTable = mysqli_query($conn, "SELECT * FROM `hearing` WHERE incident_case_number = '$incident_case_number'");
-        
-        if (mysqli_num_rows($checkHearingTable) === 0) {
-            echo '<tr>';
-            echo '<td><a href="hearing_schedule.php?incident_case_number=' . $incident_case_number . '" target="_blank">' . htmlspecialchars(substr($incident_case_number, 0, 9)) . '</a></td>';
-            echo '<td>' . $fetchCases['complainant_last_name'] . ' vs. ' . $fetchCases['respondent_last_name'] . '</td>';
-            echo '<td>' . date("M d, Y", strtotime($fetchCases['created_at'])) . '</td>';
-            echo '</tr>';
-        } else {
-            // If found, display the <a> tag
-            echo '<tr>';
-            echo '<td><a href="notice_forms.php?incident_case_number=' . $incident_case_number . '" target="_blank">' . htmlspecialchars(substr($incident_case_number, 0, 9)) . '</a></td>';
-            echo '<td>' . $fetchCases['complainant_last_name'] . ' vs. ' . $fetchCases['respondent_last_name'] . '</td>';
-            echo '<td>' . date("M d, Y", strtotime($fetchCases['created_at'])) . '</td>';
-            echo '</tr>';
-        }
-    }
-}
-?>
+                            if (mysqli_num_rows($select) === 0) {
+                                echo '<tr><td colspan="3" style="font-size: 22px; font-weight: 600; text-transform: capitalize;">No Incident Cases with Incomplete Notice</td></tr>';
+                            } else {
+                                while ($fetchCases = mysqli_fetch_assoc($select)) {
+                                    $incident_case_number = $fetchCases['incident_case_number'];
 
+                                    // Check if incident_case_number is found in the hearing table
+                                    $checkHearingTable = mysqli_query($conn, "SELECT * FROM `hearing` WHERE incident_case_number = '$incident_case_number'");
 
+                                    if (mysqli_num_rows($checkHearingTable) === 0) {
+                                        echo '<tr>';
+                                        echo '<td><a href="hearing_schedule.php?incident_case_number=' . $incident_case_number . '" target="_blank">' . htmlspecialchars(substr($incident_case_number, 0, 9)) . '</a></td>';
+                                        echo '<td>' . $fetchCases['complainant_last_name'] . ' vs. ' . $fetchCases['respondent_last_name'] . '</td>';
+                                        echo '<td>' . date("M d, Y", strtotime($fetchCases['created_at'])) . '</td>';
+                                        echo '</tr>';
+                                    } else {
+                                        // If found, display the <a> tag
+                                        echo '<tr>';
+                                        echo '<td><a href="notice_forms.php?incident_case_number=' . $incident_case_number . '" target="_blank">' . htmlspecialchars(substr($incident_case_number, 0, 9)) . '</a></td>';
+                                        echo '<td>' . $fetchCases['complainant_last_name'] . ' vs. ' . $fetchCases['respondent_last_name'] . '</td>';
+                                        echo '<td>' . date("M d, Y", strtotime($fetchCases['created_at'])) . '</td>';
+                                        echo '</tr>';
+                                    }
+                                }
+                            }
+                            ?>
+                        </tbody>
 
-            <tbody id="noResults" style="display: none;">
-                <tr>
-                    <td colspan="3" style="padding-top: 13%; font-size: 23px; font-weight: 400; text-transform: uppercase; padding-left: 18%;">No Incident Cases Found</td>
-                </tr>
-            </tbody>
+                        <tbody id="noResults" style="display: none;">
+                            <tr>
+                                <td colspan="3" style="padding-top: 13%; font-size: 23px; font-weight: 400; text-transform: uppercase; padding-left: 18%;">No Incident Cases Found</td>
+                            </tr>
+                        </tbody>
 
-            </tbody>
-        </table>
-        </div>
-    </div>
-
-</div>
-
-    <div id="monthly_report" class="popup">
-    <div class="close-icon" onclick="closeMonthlyReportPopup()">
-                <i class='bx bxs-x-circle' ></i> <!-- Replace with the desired close icon -->
-    </div>
-            <center>
-            <div class="modal">
-            <?php echo $modalContent; ?>
+                    </table>
+                </div>
             </div>
+
+        </div>
+
+        <div id="monthly_report" class="popup">
+            <div class="close-icon" onclick="closeMonthlyReportPopup()">
+                <i class='bx bxs-x-circle'></i> <!-- Replace with the desired close icon -->
+            </div>
+            <center>
+                <div class="modal">
+                    <?php echo $modalContent; ?>
+                </div>
             </center>
+        </div>
+
     </div>
 
+</section>
 
-    </section>
-
-    <script>
+<script>
 
 const searchIcon = document.querySelector('.search-box .icon');
-    const searchInput1 = document.getElementById('searchInput1');
+const searchInput1 = document.getElementById('searchInput1');
 
 searchIcon.addEventListener('click', function () {
     const searchTerm = searchInput1.value.trim().toLowerCase();
@@ -354,77 +334,72 @@ function handleSearch(searchTerm) {
         window.location.href = 'my_account.php';
     } else if (lowerCaseSearchTerm.startsWith('profile') || lowerCaseSearchTerm.endsWith('profile')) {
         window.location.href = 'my_account.php';
-    }  else {
-    searchInput1.value = `'${searchTerm.charAt(0).toUpperCase() + searchTerm.slice(1)}' was not found`;
+    } else {
+        searchInput1.value = `'${searchTerm.charAt(0).toUpperCase() + searchTerm.slice(1)}' was not found`;
     }
 }
 
-
-        const timeElement = document.querySelector(".time");
+const timeElement = document.querySelector(".time");
 const dateElement = document.querySelector(".date");
 
 /**
  * @param {Date} date
  */
- function formatTime(date) {
-  const hours = date.getHours();
-  const hours12 = hours % 12 || 12;
-  const minutes = date.getMinutes();
-  const isAm = hours < 12;
+function formatTime(date) {
+    const hours = date.getHours();
+    const hours12 = hours % 12 || 12;
+    const minutes = date.getMinutes();
+    const isAm = hours < 12;
 
-  // Use conditional (ternary) operator to format hours without leading zero if it's a single digit
-  const formattedHours = hours12 < 10 ? hours12.toString() : hours12;
+    // Use conditional (ternary) operator to format hours without leading zero if it's a single digit
+    const formattedHours = hours12 < 10 ? hours12.toString() : hours12;
 
-  return `${formattedHours}:${minutes.toString().padStart(2, "0")} ${isAm ? "AM" : "PM"}`;
+    return `${formattedHours}:${minutes.toString().padStart(2, "0")} ${isAm ? "AM" : "PM"}`;
 }
 
 // Example usage:
 const now = new Date();
 console.log(formatTime(now)); // Outputs: "7:02 AM" for 07:02 and "12:15 PM" for 12:15
 
-
 /**
 * @param {Date} date
 */
 function formatDate(date) {
-const DAYS = [
-"Sunday",
-"Monday",
-"Tuesday",
-"Wednesday",
-"Thursday",
-"Friday",
-"Saturday"
-];
-const MONTHS = [
-"January",
-"February",
-"March",
-"April",
-"May",
-"June",
-"July",
-"August",
-"September",
-"October",
-"November",
-"December"
-];
+    const DAYS = [
+        "Sunday",
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday",
+        "Saturday"
+    ];
+    const MONTHS = [
+        "January",
+        "February",
+        "March",
+        "April",
+        "May",
+        "June",
+        "July",
+        "August",
+        "September",
+        "October",
+        "November",
+        "December"
+    ];
 
-return `${DAYS[date.getDay()]} - ${
-MONTHS[date.getMonth()]
-} ${date.getDate()}, ${date.getFullYear()}`;
+    return `${DAYS[date.getDay()]} - ${MONTHS[date.getMonth()]} ${date.getDate()}, ${date.getFullYear()}`;
 }
 
 setInterval(() => {
-const now = new Date();
+    const now = new Date();
 
-timeElement.textContent = formatTime(now);
-dateElement.textContent = formatDate(now);
+    timeElement.textContent = formatTime(now);
+    dateElement.textContent = formatDate(now);
 }, 200);
 
-
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     var calendarEl = document.getElementById('calendar');
 
     var calendar = new FullCalendar.Calendar(calendarEl, {
@@ -440,24 +415,19 @@ document.addEventListener('DOMContentLoaded', function() {
                 buttonText: 'SCHEDULED HEARINGS',
             }
         },
-        noEventsContent: function() {
+        noEventsContent: function () {
             return "No Scheduled Hearings Yet";
         },
-        eventClick: function(arg) {
-            // Handle the click event and navigate to hearings.php
-            window.location.href = 'hearings.php'; // Change this URL to your desired page
-        }
     });
 
     calendar.render();
 });
 
-
 const searchInput = document.getElementById("searchInput");
 const tableBody = document.getElementById("tableBody");
 const noResults = document.getElementById("noResults");
 
-searchInput.addEventListener("input", function() {
+searchInput.addEventListener("input", function () {
     const searchText = searchInput.value.toLowerCase();
     const tableRows = tableBody.getElementsByTagName("tr");
     let resultsFound = false;
@@ -474,7 +444,6 @@ searchInput.addEventListener("input", function() {
         }
     }
 
-    // Show or hide "No incident cases found" message
     if (resultsFound) {
         noResults.style.display = "none";
     } else {
@@ -482,57 +451,54 @@ searchInput.addEventListener("input", function() {
     }
 });
 
-    function showMonthlyReportPopup() {
-        var popup = document.getElementById("monthly_report");
-        popup.style.display = "block";
+function showMonthlyReportPopup() {
+    var popup = document.getElementById("monthly_report");
+    popup.style.display = "block";
+}
 
+function closeMonthlyReportPopup() {
+    var popup = document.getElementById("monthly_report");
+    popup.style.display = "none";
+}
 
+</script>
+
+<style>
+    .home .table-container table {
+        width: 100%;
+        border-collapse: collapse;
     }
 
-    function closeMonthlyReportPopup() {
-        var popup = document.getElementById("monthly_report");
-        popup.style.display = "none";
+    table th {
+        padding-bottom: 12px;
+        padding-right: 20px;
+        font-size: 15px;
+        text-align: left;
     }
 
+    .home .table-container table td {
+        padding-bottom: 20px;
+        font-size: 13px;
+    }
 
-    </script>
+    .home {
+        position: absolute;
+        top: 0;
+        top: 0;
+        left: 250px;
+        height: 100vh;
+        width: calc(100% - 78px);
+        background-color: var(--body-color);
+        transition: var(--tran-05);
+    }
 
-    <style>
-    .home .table-container table{
-    width: 100%;
-    border-collapse: collapse;
-}
+    .sidebar.close ~ .home {
+        left: 78px;
+        height: 100vh;
+        width: calc(100% - 78px);
+    }
 
-table th{
-    padding-bottom: 12px;
-    padding-right: 20px;
-    font-size: 15px;
-    text-align: left;
-}
-
-.home .table-container table td{
-    padding-bottom: 20px;
-    font-size: 13px;
-}
-
-.home{
-    position: absolute;
-    top: 0;
-    top: 0;
-    left: 250px;
-    height: 100vh;
-    width: calc(100% - 78px);
-    background-color: var(--body-color);
-    transition: var(--tran-05);
-}
-
-.sidebar.close ~ .home{
-    left: 78px;
-    height: 100vh;
-    width: calc(100% - 78px);
-}
-
-.popup {
+    .popup {
         display: none;
         position: fixed;
         top: 0;
@@ -546,83 +512,84 @@ table th{
     }
 
     .modal {
-    display: flex; /* Add this line to make the modal visible */
-    flex-direction: column; /* Adjust to your needs */
-    background-color: #fff;
-    padding: 20px;
-    border-radius: 5px;
-    margin-top: 180px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    width: 500px;
-    height: 280px;
-    overflow-y: hidden;
-    position: relative;
-    z-index: 1001; /* Make sure the modal is on top of the overlay */
-}
-
-.close-icon {
-      position: absolute;
-      top: 155px;
-      left: 895px;
-      cursor: pointer;
-      font-size: 50px;
-      color:#bc1823;
-      z-index: 1002;
+        display: flex;
+        flex-direction: column;
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 5px;
+        margin-top: 180px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        width: 500px;
+        height: 280px;
+        overflow-y: hidden;
+        position: relative;
+        z-index: 1001;
     }
 
-.click-here{
-    font-style: italic;
-}
+    .close-icon {
+        position: absolute;
+        top: 155px;
+        left: 895px;
+        cursor: pointer;
+        font-size: 50px;
+        color: #bc1823;
+        z-index: 1002;
+    }
 
-.click-here:hover{
-    font-weight: 500;
-    transition: .5s linear;
-    letter-spacing: 1;
-}
+    .click-here {
+        font-style: italic;
+    }
 
-.notification-box {
-            width: 290px;
-            height: 45px;
-            padding: 12px 12px;
-            background: #fff;
-            border: 2px solid #Fada5f;
-            border-radius: 5px;
-            text-align: center;
-            margin: 10px;
-            position: fixed;
-            right: -10px;
-            top: -10px;
-        }
-        
-        .notification-box p, .notification-box i{
-            font-size: 22px;
-            color: #F5be1d;
-            font-weight: 600;
-            text-transform: uppercase;            
-        }
+    .click-here:hover {
+        font-weight: 500;
+        transition: .5s linear;
+        letter-spacing: 1;
+    }
 
-        .dropdown {
-  position: relative;
-  display: inline-block;
-}
+    .notification-box {
+        width: 290px;
+        height: 45px;
+        padding: 12px 12px;
+        background: #fff;
+        border: 2px solid #Fada5f;
+        border-radius: 5px;
+        text-align: center;
+        margin: 10px;
+        position: fixed;
+        right: -10px;
+        top: -10px;
+    }
 
-.dropdown-content {
-  display: none;
-  position: relative;
-}
+    .notification-box p,
+    .notification-box i {
+        font-size: 22px;
+        color: #F5be1d;
+        font-weight: 600;
+        text-transform: uppercase;
+    }
 
-.dropdown:hover .dropdown-content {
-  display: block;
-  width: 290px;
-            padding: 12px 12px;
-            text-align: center;
-            margin: 10px;
-            position: fixed;
-            right: -10px;
-            top: 28px;
-}
+    .dropdown {
+        position: relative;
+        display: inline-block;
+    }
 
-.notification-container {
+    .dropdown-content {
+        display: none;
+        position: relative;
+    }
+
+    .dropdown:hover .dropdown-content {
+        display: block;
+        width: 290px;
+        padding: 12px 12px;
+        text-align: center;
+        margin: 10px;
+        position: fixed;
+        right: -10px;
+        top: 28px;
+    }
+
+    .notification-container {
         border: 1px solid #F5be1d;
         background: white;
         padding-top: 8px;
@@ -630,38 +597,37 @@ table th{
         margin-bottom: 10px;
     }
 
-.incident-case-table{
-    width: 600px; 
-    height: 470px; 
-}
+    .incident-case-table {
+        width: 600px;
+        height: 470px;
+    }
 
-@media screen and (min-width: 1310px){
-            .close-icon{
-                left: 875px;
-            }
-            .incident-case-table{
-                margin-top: 0.5%;
-            }
+    @media screen and (min-width: 1310px) {
+        .close-icon {
+            left: 875px;
         }
 
-        @media screen and (min-width: 1331px){
-            .close-icon{
-                left: 895px;
-            }
-            .incident-case-table{
-                margin-top: 0.5%;
-            }
-        }
-        
-        @media screen and (max-width: 1352px) and (max-height: 616px) {
-        .incident-case-table{
+        .incident-case-table {
             margin-top: 0.5%;
         }
+    }
+
+    @media screen and (min-width: 1331px) {
+        .close-icon {
+            left: 895px;
         }
 
+        .incident-case-table {
+            margin-top: 0.5%;
+        }
+    }
 
-
-    </style>
+    @media screen and (max-width: 1352px) and (max-height: 616px) {
+        .incident-case-table {
+            margin-top: 0.5%;
+        }
+    }
+</style>
 
 </body>
 </html>
