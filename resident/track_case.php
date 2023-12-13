@@ -4,6 +4,11 @@ include '../config.php';
 
 $incident_case_number = $_GET['incident_case_number'];
 
+if (!isset($incident_case_number) || empty($incident_case_number)) {
+    header('Location: error_page.php');
+    exit();
+}
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['image'])) {
     $incident_case_number = isset($_POST['incident_case_number']) ? $_POST['incident_case_number'] : '';
 
@@ -50,7 +55,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['image'])) {
             if (stripos($ocr_results, $first_name) !== false && stripos($ocr_results, $last_name) !== false) {
                 echo "<p>OCR results contain the names: $first_name $last_name</p>";
 
-    $redirect_url = "track_case_status.php?incident_case_number=$incident_case_number";
+                $redirect_url = "track_case_status.php?incident_case_number=" . urlencode($incident_case_number);
     header("Location: $redirect_url");
     exit(); 
             } else {
