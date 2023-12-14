@@ -23,7 +23,9 @@ $select = mysqli_query($conn, "SELECT *
                                 LEFT JOIN `hearing` ON `incident_report`.`incident_case_number` = `hearing`.`incident_case_number`
                                 LEFT JOIN `amicable_settlement` ON `incident_report`.`incident_case_number` = `amicable_settlement`.`incident_case_number`
                                 LEFT JOIN `pb_accounts` ON `incident_report`.`pb_id` = `pb_accounts`.`pb_id`
+                                LEFT JOIN `execution_notice` ON `incident_report`.`incident_case_number` = `execution_notice`.`incident_case_number`
                                 WHERE `incident_report`.`incident_case_number` = '$incident_case_number'") or die('query failed');
+
 
 $fetch_cases = mysqli_fetch_assoc($select);
 
@@ -51,7 +53,7 @@ $barangay = $fetch_cases['barangay'];
 </head>
 <body>
     <center>
-        <div class="track-case-container">
+        <div class="track-case-container" style="margin-top: 11.5%;">
             <div class="hearing-text">
                 <img src="../images/logo.png" class="image">
                 <h4 class="case-id" style="margin-top: 0px; font-size: 11px;">
@@ -178,7 +180,26 @@ $barangay = $fetch_cases['barangay'];
                     </div>';
             }
             ?>
+            <?php
+            if (!empty($fetch_cases['execution_date'])) {
+                echo '<span class="button">Notice for Execution has now been processed</span>';
+            } else {
+        
+            }
+            ?>
         </div>
     </center>
 </body>
+<style>
+
+.button{
+    background: #1db954;
+    padding: 8px 25px;
+    color: white;
+    text-transform: uppercase;
+    font-weight: 500;
+    letter-spacing: 1;
+    font-size: 14px;
+}
+</style>
 </html>
