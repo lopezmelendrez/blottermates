@@ -178,9 +178,24 @@ else
             <i class="fas fa-times" style="margin-left: 60%; margin-top: 0.4%; color: #D52826; font-size: 24px;" onclick="this.parentElement.remove();"></i>
         </div>
     <?php } ?>
-                               
+                    
+
     <p style="font-size: 15px; margin-top: 3%; text-align: justify;">Enter the email address associated with your account to change your password.</p>
             
+    <?php
+                            if(isset($success_msg)){
+                                foreach($success_msg as $success_msg){
+                                    echo '   
+                                    <div class="message d-flex" style="background: #e0f19c; border: none; border-radius: 5px; width: 100%; margin-top: 3%;">
+                                    <i class="error error-icon fas fa-circle-check" style="margin-left: 3%; margin-top: 0.6%; font-size: 20px; color: #2a4c09;"></i>
+                                    <div class="error error-txt" style="margin-left: 2%; font-size: 16px; margin-top: 0.5%; color: #2a4c09; font-weight: 600;">'.$success_msg.'</div>
+                                    <i class="fas fa-times" style="margin-left: 15%; margin-top: 0.4%; font-size: 24px; color: #2a4c09;" onclick="this.parentElement.remove();"></i>
+                                    </div>
+                                    ';
+                                }
+                            }
+                        ?>
+
     <form action="#" method="post">
                             <div class="custom-search" style="margin-top: 3%;">
                             <input type="email_address" id="email_address" class="custom-search-input" style="font-size: 15px;" name="email_address" placeholder="Email Address" required>
