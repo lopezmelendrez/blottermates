@@ -9,7 +9,7 @@ require_once('tcpdf_autoconfig.php');
 $pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
 $pdf->SetCreator(PDF_CREATOR);
 $pdf->SetAuthor('PUP Santa Rosa Branch');
-$pdf->SetTitle('KP # 27 :  NOTICE OF EXECUTION');
+$pdf->SetTitle('KP # 20 :  CERTIFICATION TO FILE ACTION');
 $pdf->SetHeaderData(PDF_HEADER_LOGO, PDF_HEADER_LOGO_WIDTH, PDF_HEADER_TITLE , PDF_HEADER_STRING, array(255,255,255), array(255,255,255));
 $pdf->setFooterData(array(255,255,255), array(255,255,255));
 $pdf->setHeaderFont(Array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
@@ -158,59 +158,31 @@ $html = <<<EOD
     <p><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;--against--</p>
     <u>$respondent_last_name, $respondent_first_name $respondent_middle_name</u>
     <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Respondent</p>
-</div>
+  </div>
 
 <br><br><br>
 <div class="content" style="text-align: center; font-weight: bold;">
-  <br>NOTICE OF EXECUTION
+  <br>CERTIFICATION TO FILE ACTION
 </div>
 
 
 
-<div class="content" style="text-align: justify">
-
-<br>WHEREAS, on <u>$formatted_date_agreed</u>, an amicable settlement was signed by
-the parties in the above-entitled case [or an arbitration award was rendered by
-the Punong Barangay/Pangkat ng Tagapagkasundo];
-WHEREAS, the terms and conditions of the settlement, the dispositive portion
-of the award. read:
-<br><u>$agreement_description</u>
-_______________________________________________________________________________________________________________________________________________________________________________________________________________________________________
-
-<br>The said settlement/award is now final and executory;
-
-<br>WHEREAS, the party obliged ________________ (name) has not complied
-voluntarily with the aforestated amicable settlement/arbitration award, within
-the period of five (5) days from the date of hearing on the motion for
-execution;
-<br>NOW, THEREFORE, in behalf of the Lupong Tagapamayapa and by virtue of
-the powers vested in me and the Lupon by the Katarungang Pambarangay Law
-and Rules, I shall cause to be realized from the goods and personal property of
-__________________ (name of party obliged) the sum of
-_________________ (state amount of settlement or award) upon in the said
-amicable settlement [or adjudged in the said arbitration award], unless
-voluntary compliance of said settlement or award shall have been made upon
-receipt hereof.
-<br><br>Signed this _________ day of ___________, 19____.
-<br><br>___________________
-<br>Punong Barangay
-
-<br><br>Copy furnished:
-
-<br>______________________&nbsp;&nbsp;&nbsp;
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-______________________
-<br>______________________&nbsp;&nbsp;&nbsp;
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-______________________
-<br>Complainant/s &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-
-Respondent/s
-</div>
-
- 
+<div class="content" style="text-align: left">
+<br>This is to certify that:
+  <br>1. There has been a personal confrontation between the parties before the
+  <br>Punong Barangay/Pangkat ng Tagapagkasundo;
+  <br>2. A settlement was reached;
+  <br>3. The settlement has been repudiated in a statement sworn to before the
+  <br>Punong Barangay by ______________ on ground of ______________; and
+  <br>4. Therefore, the corresponding complaint for the dispute may now be filed in
+  <br>court/government office.
+  <br><br>This _________ day of __________, 19____.
+  <br><br>___________________
+  <br>Lupon Secretary
+  <br><br>Attested:
+  <br><br>__________________
+  <br>Lupon Chairman
+</div>  
 </body>
 
 
@@ -228,7 +200,7 @@ $pdf->writeHTMLCell(0, 0, '', '', $html, 0, 1, 0, true, '', true);
 
 // Close and output PDF document
 // This method has several options, check the source code documentation for more information.
-$pdf->Output('KP#27.pdf', 'I');
+$pdf->Output('KP#20.pdf', 'I');
 
 
 //============================================================+

@@ -31,13 +31,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['execution_submit'])) 
     }
 
     if ($result) {
-                // Redirect to the specific incident case number page
-                header("Location: case_reportPage2.php?incident_case_number=$incident_case_number");
+        $incident_case_number = $_POST['incident_case_number'];
+        echo '<script>';
+        echo 'window.open("http://localhost/barangay%20justice%20management%20system%2001/tcpdf/motion_for_execution.php?incident_case_number=' . $incident_case_number . '", "_blank");';
+        echo 'window.location.href = window.location.href;';
+        echo '</script>';
         exit;
     } else {
         echo "Error: " . mysqli_error($conn);
         exit;
     }
+
 }
 
 
@@ -256,7 +260,7 @@ if ($fetch['barangay'] == 'Ibaba') {
   <hr style="border: 1px solid #ccc; margin: 10px 0;">
   <p style="font-size: 14px; text-align: left;">
     Certification to File Action (KP #20)
-    <a href="your-link-here" class="button" style="margin-left: 18%;">
+    <a href="../../tcpdf/certification_to_file_action_form.php?incident_case_number=<?php echo $incident_case_number; ?>" class="button" style="margin-left: 18%;">
       Generate
     </a>
     <span class="printer-icon">
@@ -602,6 +606,10 @@ if (input.value.length > 0 && input.value[0] === ' ') {
     padding: 0 15px;
     height: 42px;
     margin: 8px 0;
+}
+
+.button:hover{
+    background: #0d52bd;
 }
 
 @media screen and (min-width: 1310px){

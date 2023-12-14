@@ -2,77 +2,33 @@
 
 include '../config.php';
 
-
-// Include the main TCPDF library (search for installation path).
 require_once('tcpdf.php');
 require_once('tcpdf_autoconfig.php');
-
-// create new PDF document
 $pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
 
-
-// set document information
 $pdf->SetCreator(PDF_CREATOR);
 $pdf->SetAuthor('PUP Santa Rosa Branch');
 $pdf->SetTitle('KP # 16 : AMICABLE SETTLEMENT');
-
-
-// set default header data
 $pdf->SetHeaderData(PDF_HEADER_LOGO, PDF_HEADER_LOGO_WIDTH, PDF_HEADER_TITLE , PDF_HEADER_STRING, array(255,255,255), array(255,255,255));
 $pdf->setFooterData(array(255,255,255), array(255,255,255));
-
-
-
-// set header and footer fonts
 $pdf->setHeaderFont(Array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
 $pdf->setFooterFont(Array(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA));
-
-
-// set default monospaced font
 $pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
-
-
-// set margins
 $pdf->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
 $pdf->SetHeaderMargin(PDF_MARGIN_HEADER);
 $pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
-
-
-// set auto page breaks
 $pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
-
-
-// set image scale factor
 $pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
 
-
-// set some language-dependent strings (optional)
 if (@file_exists(dirname(__FILE__).'/lang/eng.php')) {
     require_once(dirname(__FILE__).'/lang/eng.php');
     $pdf->setLanguageArray($l);
 }
 
-
-// ---------------------------------------------------------
-
-
-// set default font subsetting mode
 $pdf->setFontSubsetting(true);
-
-
-// Set font
-// dejavusans is a UTF-8 Unicode font, if you only need to
-// print standard ASCII chars, you can use core fonts like
-// helvetica or times to reduce file size.
 $pdf->SetFont('times', '', 4, '', true);
-
-
-// Add a page
-// This method has several options, check the source code documentation for more information.
 $pdf->AddPage();
 
-    // Set default values or handle the case when the form is not submitted
-    
     $complainant = "Nagrereklamo 1<br>Nagrereklamo 2";
     $defendant = "Inerereklamo 1<br>Inerereklamo 2";
     $caseNo = "12345";
@@ -98,7 +54,6 @@ $pdf->AddPage();
       exit;
   }
   
-  // Select data from incident_report table
   $select_query = "SELECT * FROM `incident_report` WHERE `incident_case_number` = '$incident_case_number'";
   $select_incident = mysqli_query($conn, $select_query) or die('Incident query failed');
   $incident_data = mysqli_fetch_assoc($select_incident);
@@ -155,12 +110,10 @@ $pdf->AddPage();
 }
 
 $day = formatDay($dateAgreedObj->format('d'));
-$month = $dateAgreedObj->format('F'); // Month (two digits)
-$year = $dateAgreedObj->format('Y'); // Year (four digits)
-  $agreement_description = $amicable_data['agreement_description'];
+$month = $dateAgreedObj->format('F');
+$year = $dateAgreedObj->format('Y'); 
+$agreement_description = $amicable_data['agreement_description'];
   
-
-// Set some content to print
 $html = <<<EOD
 <style>
  

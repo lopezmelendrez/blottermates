@@ -28,13 +28,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit'])) {
 
         $insert_result = mysqli_query($conn, $insert_query);
 
-        if ($insert_result) {
-            header("Location: arbitration_hearings.php");
+        if ($result) {
+            $incident_case_number = $_POST['incident_case_number'];
+            echo '<script>';
+            echo 'window.open("http://localhost/barangay%20justice%20management%20system%2001/tcpdf/agreement_for_arbitration.php?incident_case_number=' . $incident_case_number . '", "_blank");';
+            echo 'window.location.href = "arbitration_hearings.php";';
+            echo '</script>';
             exit;
         } else {
-            // Insertion failed, handle the error accordingly
             echo "Error: " . mysqli_error($conn);
+            exit;
         }
+        
     } else {
         // Handle the case where the agreement is not found, you can redirect back or show an error message.
         echo "Error: Hearing record not found for the incident case number.";
