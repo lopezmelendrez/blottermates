@@ -661,6 +661,14 @@ if (input.value.length > 0 && input.value[0] === ' ') {
             }
         }
 
+        @media screen and (min-width: 1331px){
+            .close-icon{
+                left: 895px;
+            }
+        
+        }
+
+
 </style>
 </body>
 </html>
