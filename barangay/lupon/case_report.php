@@ -604,6 +604,12 @@ if (input.value.length > 0 && input.value[0] === ' ') {
     margin: 8px 0;
 }
 
+@media screen and (min-width: 1310px){
+            .close-icon{
+                left: 875px;
+            }
+        }
+
 </style>
 </body>
 </html>

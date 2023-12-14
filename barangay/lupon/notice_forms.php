@@ -93,12 +93,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['pangkat_submit'])) {
 
     if ($result) {
         $incident_case_number = $_POST['incident_case_number'];
-        header("Location: " . $_SERVER['PHP_SELF'] . "?incident_case_number=" . $incident_case_number);
+        echo '<script>';
+        echo 'window.open("http://localhost/barangay%20justice%20management%20system%2001/tcpdf/generate_kp10.php?incident_case_number=' . $incident_case_number . '", "_blank");';
+        echo 'window.location.href = window.location.href;';
+        echo '</script>';
         exit;
     } else {
         echo "Error: " . mysqli_error($conn);
         exit;
     }
+
+    
 }
 
 

@@ -127,7 +127,7 @@ $generate_pangkat = '';
         $generate_pangkat = $row['generate_pangkat'];
 
         if (empty($generate_pangkat) || $generate_pangkat === 'not generated') {
-            echo '<span class="to-notify">NEEDS PANGKAT CONSTITUTION NOTICE</span>';
+            echo '<a href="notice_forms.php?incident_case_number=' . $incident_case_number . '"><span class="to-notify">NEEDS PANGKAT CONSTITUTION NOTICE</span>';
         } else {
             echo '-';
         }
