@@ -331,7 +331,6 @@ if ($generate_execution_result && mysqli_num_rows($generate_execution_result) > 
     $check_hearing_result = mysqli_query($conn, $check_hearing_query);
 
     if ($check_hearing_result && mysqli_num_rows($check_hearing_result) > 0) {
-        // If the incident_case_number is found, display the "Generate" button
         echo '
             <a href="../../tcpdf/certification_to_file_action_form.php?incident_case_number=' . $incident_case_number . '" class="button" style="margin-left: 18%;">
                 Generate
@@ -340,8 +339,7 @@ if ($generate_execution_result && mysqli_num_rows($generate_execution_result) > 
                 <i class="bx bxs-printer"></i>
             </span>';
     } else {
-        // If the incident_case_number is not found, display "NOT APPLICABLE"
-        echo '<span style="margin-left: 18%;">NOT APPLICABLE</span>';
+        echo '<span class="button1" style="margin-left: 18%;">NOT APPLICABLE</span>';
     }
     ?>
 </p>
@@ -359,8 +357,9 @@ if ($generate_execution_result && mysqli_num_rows($generate_execution_result) > 
 
             // If generate_execution is "form generated," display "NOT APPLICABLE"
             if ($generation_data['generate_execution'] === 'form generated') {
-                echo '<span style="margin-left: 26%;">NOT APPLICABLE</span>';
+                echo '<span class="button1" style="margin-left: 26%;">NOT APPLICABLE</span>';
             } else {
+                // If generate_execution is not "form generated," display the "Generate" button
                 echo '
                     <input type="submit" name="execution_submit" class="button" value="Generate" style="border: none; cursor: pointer; margin-left: 26%;">
                     <span class="printer-icon">
@@ -368,7 +367,7 @@ if ($generate_execution_result && mysqli_num_rows($generate_execution_result) > 
                     </span>';
             }
         } else {
-            echo '<span style="margin-left: 26%;">NOT APPLICABLE</span>';
+            echo '<span class="button1" style="margin-left: 26%;">NOT APPLICABLE</span>';
         }
         ?>
     </p>
@@ -662,6 +661,21 @@ if (input.value.length > 0 && input.value[0] === ' ') {
       border-radius: 5px;
       font-weight: bold;
       font-size: 14px;
+    }
+
+    .button1 {
+      display: inline-block;
+      background-color: #fff;
+      border: 1px solid #007bff;
+      color: #007bff;
+      padding: 8px;
+      width: 120px;
+      text-decoration: none;
+      border-radius: 5px;
+      font-size: 12.5px;
+      font-weight: 500;
+      text-align: center;
+      cursor: default;
     }
 
     /* Style the printer icon with a blue border and white background */
