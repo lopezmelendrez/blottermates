@@ -195,14 +195,17 @@ $html = <<<EOD
 
 
 <div class="content-complainants">  
-  <br>TO:_______________
-  <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Complainants
+  <br>TO: <u>{$complainant_last_name}, {$complainant_first_name} {$complainant_middle_name}.</u>
+  <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Complainant
 </div>
+
 
 
 <br><br><br><br><br><br><br><br>
 <div class="content">
-You are required to appear before me on the _______ day of _____ 19 at _______ o'clock in the morning/afternoon for the hearing of your complaint.
+You are required to appear before me on
+  <u>{$month_name} {$day}, {$year}</u> 
+  at <u>{$time}</u> for the hearing of your complaint.
 
 
 This _________ day of __________, 19___.
