@@ -75,7 +75,7 @@ if (!$result) {
     <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="../css/lupon.css">
     <link rel="stylesheet" href="../css/incidentform.css">
-    <link rel="icon" type="image/x-icon" href="../../images/favicon.ico">
+    <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
     <title>Incident Reports</title>
 </head>
 <body>
@@ -195,7 +195,7 @@ if (mysqli_num_rows($result) == 0) {
         $complainant_last_name = $row['complainant_last_name'];
         $respondent_last_name = $row['respondent_last_name'];
         $complainant_first_name = $row['complainant_first_name'];
-        $respondent_first_name = $row['respondent_last_name'];
+        $respondent_first_name = $row['respondent_first_name'];
         $date_agreed = $row['date_agreed'];
 
         $notifyQuery = "SELECT * FROM `notify_residents` WHERE incident_case_number = '$incident_case_number'";
@@ -246,7 +246,7 @@ if (mysqli_num_rows($result) == 0) {
         if ($notifyRow && $executionRow === null) {
             echo '<a href="execution_notice.php?incident_case_number=' . $incident_case_number . '" class="generate" style="margin-left: 12%">VALIDATE</a>';
         } elseif ($notifyRow && $executionRow !== null) {
-            echo '<a href="kpform27.php?incident_case_number=' . $incident_case_number . '" target="_blank" class="generate" style="margin-left: 12%">GENERATE KP FORM #27</a>';
+            echo '<a href="../tcpdf/notice_of_execution.php?incident_case_number=' . $incident_case_number . '" target="_blank" class="generate" style="margin-left: 12%">GENERATE KP FORM #27</a>';
         } else {
             echo '-';
         }

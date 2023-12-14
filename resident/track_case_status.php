@@ -182,7 +182,7 @@ $barangay = $fetch_cases['barangay'];
             ?>
             <?php
             if (!empty($fetch_cases['execution_date'])) {
-                echo '<span class="button">Notice for Execution has now been processed</span>';
+                echo '<span class="button">Notice of Execution has now been processed</span>';
             } else {
         
             }

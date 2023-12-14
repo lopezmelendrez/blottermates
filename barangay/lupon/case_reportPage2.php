@@ -250,7 +250,8 @@ if ($generate_execution_result && mysqli_num_rows($generate_execution_result) > 
             // Display the fields from execution_notice
             $execution_data = mysqli_fetch_assoc($execution_result);
             ?>
-            <span class="generate" style="font-size: 14px; text-align: center; margin-top: -3%;">Generate KP Form #27</span>
+            
+            <span class="generate" style="font-size: 14px; text-align: center; margin-top: -3%;"><a href="../../tcpdf/notice_of_execution.php?incident_case_number=<?php echo $incident_case_number; ?>" target="_blank" style="text-decoration: none; cursor: pointer; color: white;">Generate KP Form #27</a></span>
             <div class="input-field-1">
                 <label class="label">Date of Agreement Execution</label>
                 <div class="text-box">
