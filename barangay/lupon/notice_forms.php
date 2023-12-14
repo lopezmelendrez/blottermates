@@ -106,7 +106,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['pangkat_submit'])) {
     
 }
 
-
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['notify_complainant_submit'])) {
     $incident_case_number = $_POST['incident_case_number'];
     $notify_hearing = 'notified';
@@ -126,7 +125,33 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['notify_complainant_su
     }
 
     if ($result) {
-        $incident_case_number = $_POST['incident_case_number'];
+        $send_data = [
+            'sender_id' => 'PhilSMS',
+'recipient' => '+639568858448',
+'message' => "Hello, this is to inform you that the Notice of Hearing for your Incident Case is now in progress. To track updates easily, use our online platform: http://localhost/barangay%20justice%20management%20system%2001/resident/track_case.php?incident_case_number=$incident_case_number
+For any questions, contact Barangay Ibaba, Santa Rosa Laguna. Thank you for your cooperation.",
+
+        ];
+
+        $token = "118|UFVfSSuQMjwNzEo7cZrk9a0H3fkuL30CowiCoOc8 ";
+
+        $parameters = json_encode($send_data);
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, "https://app.philsms.com/api/v3/sms/send");
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $parameters);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+        $headers = [
+            "Content-Type: application/json",
+            "Authorization: Bearer $token",
+        ];
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+
+        $get_sms_status = curl_exec($ch);
+
+        var_dump($get_sms_status);
+
         header("Location: " . $_SERVER['PHP_SELF'] . "?incident_case_number=" . $incident_case_number);
         exit;
     } else {
@@ -154,7 +179,33 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['notify_respondent_sub
     }
 
     if ($result) {
-        $incident_case_number = $_POST['incident_case_number'];
+        $send_data = [
+            'sender_id' => 'PhilSMS',
+'recipient' => '+639568858448',
+'message' => "Hello, this is to inform you that the Notice of Hearing for your Incident Case is now in progress. To track updates easily, use our online platform: http://localhost/barangay%20justice%20management%20system%2001/resident/track_case.php?incident_case_number=$incident_case_number
+For any questions, contact Barangay Ibaba, Santa Rosa Laguna. Thank you for your cooperation.",
+
+        ];
+
+        $token = "118|UFVfSSuQMjwNzEo7cZrk9a0H3fkuL30CowiCoOc8 ";
+
+        $parameters = json_encode($send_data);
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, "https://app.philsms.com/api/v3/sms/send");
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $parameters);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+        $headers = [
+            "Content-Type: application/json",
+            "Authorization: Bearer $token",
+        ];
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+
+        $get_sms_status = curl_exec($ch);
+
+        var_dump($get_sms_status);
+
         header("Location: " . $_SERVER['PHP_SELF'] . "?incident_case_number=" . $incident_case_number);
         exit;
     } else {
@@ -182,7 +233,33 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['notify_pangkat_submit
     }
 
     if ($result) {
-        $incident_case_number = $_POST['incident_case_number'];
+        $send_data = [
+            'sender_id' => 'PhilSMS',
+'recipient' => '+639568858448',
+'message' => "Hello, this is to inform you that the Notice of Hearing for your Incident Case is now in progress. To track updates easily, use our online platform: http://localhost/barangay%20justice%20management%20system%2001/resident/track_case.php?incident_case_number=$incident_case_number
+For any questions, contact Barangay Ibaba, Santa Rosa Laguna. Thank you for your cooperation.",
+
+        ];
+
+        $token = "118|UFVfSSuQMjwNzEo7cZrk9a0H3fkuL30CowiCoOc8 ";
+
+        $parameters = json_encode($send_data);
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, "https://app.philsms.com/api/v3/sms/send");
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $parameters);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+        $headers = [
+            "Content-Type: application/json",
+            "Authorization: Bearer $token",
+        ];
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+
+        $get_sms_status = curl_exec($ch);
+
+        var_dump($get_sms_status);
+
         header("Location: " . $_SERVER['PHP_SELF'] . "?incident_case_number=" . $incident_case_number);
         exit;
     } else {
@@ -511,23 +588,6 @@ if ($check_result && mysqli_num_rows($check_result) > 0) {
             </form>
         </div>
 
-        <div id="witness-popup" class="popup">
-            <center>
-            <div class="modal">
-            <h3 class="modal-title" style="font-size: 18px; text-align:center;">Add Witness</h3>
-            <hr style="border: 1px solid #ccc; margin: 10px 0;">
-            <p style="font-size: 14px; text-align: justify;">The complainant's contact number will promptly receive their hearing notice details via message.</p>
-            <p style="font-size: 12px; margin-left: -28%; margin-top: 5%; font-weight: 600;">Complainant's Contact Number: </p>
-            <div class="box" id="phoneNumberBox">
-                <span id="phoneNumberText"><?php echo $complainant_cellphone_number ?></span>
-            </div>
-            <div class="button-container" style="display: flex;">
-                <button class="backBtn" onclick="closePopup()" style="width: 300px; padding: 12px 12px; font-weight: 600;">BACK</button>
-                <button class="backBtn" onclick="submitForm()" style="width: 300px; margin-left: 290px; padding: 12px 12px; font-weight: 600;"">NOTIFY</button>
-            </div>
-            </div>
-            </center>
-        </div>
 
         <div id="summon_popup" class="popup">
             <center>

@@ -5,7 +5,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // Your original PHP code for sending SMS goes here
     $send_data = [
-        'sender_id' => "Barangay Blotter Management System",
+        'sender_id' => "PhilSMS",
         'recipient' => $recipient,
         'message' => $message,
     ];
