@@ -6,13 +6,11 @@ session_start();
 
 $email = $_SESSION['email_address'];
 
-
-if(!isset($email)){
-header('location: ../../index.php');
+if (!isset($email)) {
+    header('location: ../../index.php');
 }
 
 $generate_execution = '';
-
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['execution_submit'])) {
     $incident_case_number = $_POST['incident_case_number'];
@@ -31,15 +29,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['execution_submit'])) 
     }
 
     if ($result) {
-                // Redirect to the specific incident case number page
-                header("Location: case_reportPage2.php?incident_case_number=$incident_case_number");
+        header("Location: case_reportPage2.php?incident_case_number=$incident_case_number");
         exit;
     } else {
         echo "Error: " . mysqli_error($conn);
         exit;
     }
 }
-
 
 ?>
 
@@ -330,23 +326,52 @@ if ($generate_execution_result && mysqli_num_rows($generate_execution_result) > 
   <hr style="border: 1px solid #ccc; margin: 10px 0;">
   <p style="font-size: 14px; text-align: left;">
     Certification to File Action (KP #20)
-    <a href="your-link-here" class="button" style="margin-left: 18%;">
-      Generate
-    </a>
-    <span class="printer-icon">
-      <i class='bx bxs-printer'></i>
-    </span>
-  </p>
+    <?php
+    $check_hearing_query = "SELECT * FROM `court_action` WHERE incident_case_number = '$incident_case_number'";
+    $check_hearing_result = mysqli_query($conn, $check_hearing_query);
+
+    if ($check_hearing_result && mysqli_num_rows($check_hearing_result) > 0) {
+        // If the incident_case_number is found, display the "Generate" button
+        echo '
+            <a href="../../tcpdf/certification_to_file_action_form.php?incident_case_number=' . $incident_case_number . '" class="button" style="margin-left: 18%;">
+                Generate
+            </a>
+            <span class="printer-icon">
+                <i class="bx bxs-printer"></i>
+            </span>';
+    } else {
+        // If the incident_case_number is not found, display "NOT APPLICABLE"
+        echo '<span style="margin-left: 18%;">NOT APPLICABLE</span>';
+    }
+    ?>
+</p>
   <hr style="border: 1px solid #ccc; margin: 10px 0;">
   <form action="" method="post">
   <input type="hidden" name="incident_case_number" value="<?php echo $incident_case_number; ?>">
   <p style="font-size: 14px; text-align: left;">
-    Motion for Execution (KP #25)
-    <input type="submit" name="execution_submit" class="button" value="Generate" style="border: none; cursor: pointer; margin-left: 26%;">
-    <span class="printer-icon">
-      <i class='bx bxs-printer'></i>
-    </span>
-  </p>
+        Motion for Execution (KP #25)
+        <?php
+        $check_generation_query = "SELECT generate_execution FROM `notify_residents` WHERE incident_case_number = '$incident_case_number'";
+        $check_generation_result = mysqli_query($conn, $check_generation_query);
+
+        if ($check_generation_result && mysqli_num_rows($check_generation_result) > 0) {
+            $generation_data = mysqli_fetch_assoc($check_generation_result);
+
+            // If generate_execution is "form generated," display "NOT APPLICABLE"
+            if ($generation_data['generate_execution'] === 'form generated') {
+                echo '<span style="margin-left: 26%;">NOT APPLICABLE</span>';
+            } else {
+                echo '
+                    <input type="submit" name="execution_submit" class="button" value="Generate" style="border: none; cursor: pointer; margin-left: 26%;">
+                    <span class="printer-icon">
+                        <i class="bx bxs-printer"></i>
+                    </span>';
+            }
+        } else {
+            echo '<span style="margin-left: 26%;">NOT APPLICABLE</span>';
+        }
+        ?>
+    </p>
   </form>
                             
             </center>
