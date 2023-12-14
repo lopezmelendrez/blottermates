@@ -270,9 +270,32 @@ $activityLogQuery = "
         FROM lupon_accounts la
         WHERE la.pb_id = $pb_id
     )
-    
 
-    
+    UNION
+
+(
+    SELECT 'amicable_settlement' AS source,
+    SUBSTRING(ams.incident_case_number, 1, 9) AS incident_case_number,
+    ams.timestamp AS formatted_timestamp,
+    CONCAT(
+        'Incident Case #', SUBSTRING(ams.incident_case_number, 1, 9),
+        ' has been settled through <b>', UPPER(h.hearing_type_status), '</b>'
+    ) AS activity,
+    NULL AS submitter_first_name,
+    NULL AS submitter_last_name
+    FROM amicable_settlement ams
+    INNER JOIN hearing h ON ams.incident_case_number = h.incident_case_number
+    INNER JOIN (
+        SELECT DISTINCT incident_case_number, lupon_id
+        FROM incident_report
+        WHERE lupon_id IN (
+            SELECT lupon_id
+            FROM lupon_accounts
+            WHERE pb_id = $pb_id
+        )
+    ) subquery ON h.incident_case_number = subquery.incident_case_number
+)
+     
     ORDER BY formatted_timestamp DESC
     LIMIT 4
 ";
