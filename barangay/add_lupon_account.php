@@ -163,7 +163,7 @@ if (isset($_POST['submit'])) {
             <div class="add-account-container" style="height: 600px; width: 800px; margin-top: 2px;">
                 <div class="header-text">Add Lupon Account</div>
                 
-                <form action="" method="post" style="height: 490px;">
+                <form action="" method="post" style="height: 490px;" id="barangayForm">
                     <div class="fields">
                         <div class="input-field-1">
                             <label class="required-label">First Name</label>
@@ -230,7 +230,7 @@ if (isset($_POST['submit'])) {
 
                     <div class="input-group1 d-flex" style="margin-top: 8%;">
                         <input type="button" value="Back" class="btn btn-secondary back-btn" style="width: 10%; margin-left: 470px;" onclick="history.back()">
-                        <input type="button" id="openModalBtn" value="Create Account" class="btn btn-danger" style="width: 25%; margin-left: 10px;">
+                        <input type="button" id="openModalBtn" value="Create Account" class="btn btn-danger" style="width: 25%; margin-left: 10px;" disabled>
                     </div>
 
                     
@@ -260,6 +260,33 @@ if (isset($_POST['submit'])) {
     <script src="search_bar.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/signature_pad/1.5.3/signature_pad.min.js"></script>
     <script>
+        document.addEventListener('DOMContentLoaded', function () {
+    const barangayForm = document.getElementById('barangayForm');
+    const createAccountBtn = document.getElementById('openModalBtn');
+
+    // Function to check if all required fields are filled
+    function isFormValid() {
+        const requiredFields = ['first_name', 'last_name', 'email_address', 'password', 'confirmPassword'];
+        return requiredFields.every(field => {
+            const inputField = document.querySelector(`[name="${field}"]`);
+            return inputField && inputField.value.trim() !== '';
+        });
+    }
+
+    // Function to enable/disable the "Create Account" button based on form validity
+    function updateCreateAccountButtonState() {
+        createAccountBtn.disabled = !isFormValid();
+    }
+
+    // Add event listeners to form inputs to update the button state on input change
+    barangayForm.addEventListener('input', updateCreateAccountButtonState);
+
+    // Initial state check
+    updateCreateAccountButtonState();
+
+    // ... (rest of your script)
+});
+
         const body = document.querySelector('body'),
         sidebar = body.querySelector('nav'),
         toggle = body.querySelector(".toggle"),
