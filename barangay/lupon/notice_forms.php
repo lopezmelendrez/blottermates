@@ -125,39 +125,60 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['notify_complainant_su
     }
 
     if ($result) {
-        $send_data = [
-            'sender_id' => 'PhilSMS',
-'recipient' => '+639568858448',
-'message' => "Hello, this is to inform you that the Notice of Hearing for your Incident Case is now in progress. To track updates easily, use our online platform: http://localhost/barangay%20justice%20management%20system%2001/resident/track_case.php?incident_case_number=$incident_case_number
+        // Fetch complainant_cellphone_number from incident_report table
+        $complainant_query = "SELECT complainant_cellphone_number FROM `incident_report` WHERE incident_case_number = '$incident_case_number'";
+        $complainant_result = mysqli_query($conn, $complainant_query);
+
+        if ($complainant_result && mysqli_num_rows($complainant_result) > 0) {
+            $complainant_row = mysqli_fetch_assoc($complainant_result);
+            $complainant_cellphone_number = $complainant_row['complainant_cellphone_number'];
+
+            // Check if the cellphone number already has the country code
+            if (!startsWith($complainant_cellphone_number, '+63')) {
+                // If not, prepend the country code
+                $complainant_cellphone_number = '+63' . ltrim($complainant_cellphone_number, '0');
+            }
+
+            $send_data = [
+                'sender_id' => 'PhilSMS',
+                'recipient' => $complainant_cellphone_number, // Use complainant's cellphone number
+                'message' => "Hello, this is to inform you that the Notice of Hearing for your Incident Case is now in progress. To track updates easily, use our online platform: http://localhost/barangay%20justice%20management%20system%2001/resident/track_case.php?incident_case_number=$incident_case_number 
 For any questions, contact Barangay Ibaba, Santa Rosa Laguna. Thank you for your cooperation.",
+            ];
 
-        ];
+            $token = "121|ozwIOYwIR4KLkgpBNkRyRGwVuo5x5efMpIM9ArSD ";
 
-        $token = "118|UFVfSSuQMjwNzEo7cZrk9a0H3fkuL30CowiCoOc8 ";
+            $parameters = json_encode($send_data);
+            $ch = curl_init();
+            curl_setopt($ch, CURLOPT_URL, "https://app.philsms.com/api/v3/sms/send");
+            curl_setopt($ch, CURLOPT_POST, true);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $parameters);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 
-        $parameters = json_encode($send_data);
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, "https://app.philsms.com/api/v3/sms/send");
-        curl_setopt($ch, CURLOPT_POST, true);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $parameters);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            $headers = [
+                "Content-Type: application/json",
+                "Authorization: Bearer $token",
+            ];
+            curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
 
-        $headers = [
-            "Content-Type: application/json",
-            "Authorization: Bearer $token",
-        ];
-        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+            $get_sms_status = curl_exec($ch);
 
-        $get_sms_status = curl_exec($ch);
+            var_dump($get_sms_status);
 
-        var_dump($get_sms_status);
-
-        header("Location: " . $_SERVER['PHP_SELF'] . "?incident_case_number=" . $incident_case_number);
-        exit;
+            header("Location: " . $_SERVER['PHP_SELF'] . "?incident_case_number=" . $incident_case_number);
+            exit;
+        } else {
+            echo "Error fetching complainant's cellphone number: " . mysqli_error($conn);
+            exit;
+        }
     } else {
         echo "Error: " . mysqli_error($conn);
         exit;
     }
+}
+
+function startsWith($haystack, $needle) {
+    return substr($haystack, 0, strlen($needle)) === $needle;
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['notify_respondent_submit'])) {
@@ -179,35 +200,52 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['notify_respondent_sub
     }
 
     if ($result) {
-        $send_data = [
-            'sender_id' => 'PhilSMS',
-'recipient' => '+639568858448',
-'message' => "Hello, this is to inform you that the Notice of Hearing for your Incident Case is now in progress. To track updates easily, use our online platform: http://localhost/barangay%20justice%20management%20system%2001/resident/track_case.php?incident_case_number=$incident_case_number
+        // Fetch respondent_cellphone_number from incident_report table
+        $respondent_query = "SELECT respondent_cellphone_number FROM `incident_report` WHERE incident_case_number = '$incident_case_number'";
+        $respondent_result = mysqli_query($conn, $respondent_query);
+
+        if ($respondent_result && mysqli_num_rows($respondent_result) > 0) {
+            $respondent_row = mysqli_fetch_assoc($respondent_result);
+            $respondent_cellphone_number = $respondent_row['respondent_cellphone_number'];
+
+            // Check if the cellphone number already has the country code
+            if (!startsWith($respondent_cellphone_number, '+63')) {
+                // If not, prepend the country code
+                $respondent_cellphone_number = '+63' . ltrim($respondent_cellphone_number, '0');
+            }
+
+            $send_data = [
+                'sender_id' => 'PhilSMS',
+                'recipient' => $respondent_cellphone_number, // Use complainant's cellphone number
+                'message' => "Hello, this is to inform you that the Notice of Hearing for your Incident Case is now in progress. To track updates easily, use our online platform: http://localhost/barangay%20justice%20management%20system%2001/resident/track_case.php?incident_case_number=$incident_case_number 
 For any questions, contact Barangay Ibaba, Santa Rosa Laguna. Thank you for your cooperation.",
+            ];
 
-        ];
+            $token = "121|ozwIOYwIR4KLkgpBNkRyRGwVuo5x5efMpIM9ArSD ";
 
-        $token = "118|UFVfSSuQMjwNzEo7cZrk9a0H3fkuL30CowiCoOc8 ";
+            $parameters = json_encode($send_data);
+            $ch = curl_init();
+            curl_setopt($ch, CURLOPT_URL, "https://app.philsms.com/api/v3/sms/send");
+            curl_setopt($ch, CURLOPT_POST, true);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $parameters);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 
-        $parameters = json_encode($send_data);
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, "https://app.philsms.com/api/v3/sms/send");
-        curl_setopt($ch, CURLOPT_POST, true);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $parameters);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            $headers = [
+                "Content-Type: application/json",
+                "Authorization: Bearer $token",
+            ];
+            curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
 
-        $headers = [
-            "Content-Type: application/json",
-            "Authorization: Bearer $token",
-        ];
-        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+            $get_sms_status = curl_exec($ch);
 
-        $get_sms_status = curl_exec($ch);
+            var_dump($get_sms_status);
 
-        var_dump($get_sms_status);
-
-        header("Location: " . $_SERVER['PHP_SELF'] . "?incident_case_number=" . $incident_case_number);
-        exit;
+            header("Location: " . $_SERVER['PHP_SELF'] . "?incident_case_number=" . $incident_case_number);
+            exit;
+        } else {
+            echo "Error fetching respondent's cellphone number: " . mysqli_error($conn);
+            exit;
+        }
     } else {
         echo "Error: " . mysqli_error($conn);
         exit;
@@ -233,35 +271,52 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['notify_pangkat_submit
     }
 
     if ($result) {
-        $send_data = [
-            'sender_id' => 'PhilSMS',
-'recipient' => '+639568858448',
-'message' => "Hello, this is to inform you that the Notice of Hearing for your Incident Case is now in progress. To track updates easily, use our online platform: http://localhost/barangay%20justice%20management%20system%2001/resident/track_case.php?incident_case_number=$incident_case_number
+        // Fetch respondent_cellphone_number from incident_report table
+        $respondent_query = "SELECT respondent_cellphone_number FROM `incident_report` WHERE incident_case_number = '$incident_case_number'";
+        $respondent_result = mysqli_query($conn, $respondent_query);
+
+        if ($respondent_result && mysqli_num_rows($respondent_result) > 0) {
+            $respondent_row = mysqli_fetch_assoc($respondent_result);
+            $respondent_cellphone_number = $respondent_row['respondent_cellphone_number'];
+
+            // Check if the cellphone number already has the country code
+            if (!startsWith($respondent_cellphone_number, '+63')) {
+                // If not, prepend the country code
+                $respondent_cellphone_number = '+63' . ltrim($respondent_cellphone_number, '0');
+            }
+
+            $send_data = [
+                'sender_id' => 'PhilSMS',
+                'recipient' => $respondent_cellphone_number, // Use complainant's cellphone number
+                'message' => "Hello, this is to inform you that the Notice of Hearing for your Incident Case is now in progress. To track updates easily, use our online platform: http://localhost/barangay%20justice%20management%20system%2001/resident/track_case.php?incident_case_number=$incident_case_number 
 For any questions, contact Barangay Ibaba, Santa Rosa Laguna. Thank you for your cooperation.",
+            ];
 
-        ];
+            $token = "121|ozwIOYwIR4KLkgpBNkRyRGwVuo5x5efMpIM9ArSD ";
 
-        $token = "118|UFVfSSuQMjwNzEo7cZrk9a0H3fkuL30CowiCoOc8 ";
+            $parameters = json_encode($send_data);
+            $ch = curl_init();
+            curl_setopt($ch, CURLOPT_URL, "https://app.philsms.com/api/v3/sms/send");
+            curl_setopt($ch, CURLOPT_POST, true);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $parameters);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 
-        $parameters = json_encode($send_data);
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, "https://app.philsms.com/api/v3/sms/send");
-        curl_setopt($ch, CURLOPT_POST, true);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $parameters);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            $headers = [
+                "Content-Type: application/json",
+                "Authorization: Bearer $token",
+            ];
+            curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
 
-        $headers = [
-            "Content-Type: application/json",
-            "Authorization: Bearer $token",
-        ];
-        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+            $get_sms_status = curl_exec($ch);
 
-        $get_sms_status = curl_exec($ch);
+            var_dump($get_sms_status);
 
-        var_dump($get_sms_status);
-
-        header("Location: " . $_SERVER['PHP_SELF'] . "?incident_case_number=" . $incident_case_number);
-        exit;
+            header("Location: " . $_SERVER['PHP_SELF'] . "?incident_case_number=" . $incident_case_number);
+            exit;
+        } else {
+            echo "Error fetching respondent's cellphone number: " . mysqli_error($conn);
+            exit;
+        } 
     } else {
         echo "Error: " . mysqli_error($conn);
         exit;
