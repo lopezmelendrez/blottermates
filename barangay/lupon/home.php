@@ -638,6 +638,16 @@ function closeMonthlyReportPopup() {
         }
     }
 
+    @media screen and (max-width: 1310px) and (max-height: 570px) {
+        .close-icon {
+            left: 870px;
+        }
+
+        .incident-case-table {
+            margin-top: 0.5%;
+        }
+    }
+
     @media screen and (min-width: 1331px) {
         .close-icon {
             left: 895px;
@@ -646,6 +656,13 @@ function closeMonthlyReportPopup() {
         .incident-case-table {
             margin-top: 0.5%;
         }
+    }
+
+    @media screen and (min-width: 1710px) {
+        .close-icon {
+            left: 62.3%;
+        }
+
     }
 
     @media screen and (max-width: 1352px) and (max-height: 616px) {
