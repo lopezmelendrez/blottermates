@@ -187,7 +187,9 @@ mr.generate_report AS report
 FROM `monthly_reports` AS mr
 INNER JOIN `pb_accounts` AS pb ON mr.pb_id = pb.pb_id
 WHERE MONTH(mr.timestamp) = MONTH(CURRENT_DATE())
-AND YEAR(mr.timestamp) = YEAR(CURRENT_DATE())";
+AND YEAR(mr.timestamp) = YEAR(CURRENT_DATE())
+LIMIT 6";
+
 
 
 $resultMonthlyReports = mysqli_query($conn, $queryMonthlyReports);
@@ -198,22 +200,22 @@ $resultMonthlyReports = mysqli_query($conn, $queryMonthlyReports);
     <div class="head-text">
         <p class="incident-case" style="font-size: 22px;">Monthly Transmittal Reports</p>
         <p class="notice-records">* For the Month of <em><?php echo $currentMonth; ?></em></p>
-        <div class="table-container">
+        <div class="table-container" style="height: 800px;">
             <hr style="border: 1px solid #3d3d3d; margin: 10px 0; width: 100%; margin-top: 5%">
-            <table class="incident-table" style="width: 570px; margin-top: 3%;">
+            <table class="incident-table" style="width: 570px; height: 240px; margin-top: 3%;">
                 
                 <?php
                 // Check if there are any reports
                 if (mysqli_num_rows($resultMonthlyReports) > 0) {
                     echo "<tr>";
-                        echo "<th style='font-weight: 500;'>Barangay</th>";
-                        echo "<th style='font-weight: 500;'>Date Submitted</th>";
-                        echo "<th style='font-weight: 500;'>Report</th>";
+                        echo "<th style='font-weight: 500; font-size: 14px; text-transform: uppercase;'>Barangay</th>";
+                        echo "<th style='font-weight: 500; font-size: 14px; text-transform: uppercase;'>Date Submitted</th>";
+                        echo "<th style='font-weight: 500; font-size: 14px; text-transform: uppercase;'>Report</th>";
                         echo "</tr>";
                         echo "<tr>";
                         while ($row = mysqli_fetch_assoc($resultMonthlyReports)) {
-                            echo "<td style='font-size: 14px;'>" . $row['barangay'] . "</td>";
-                            echo "<td style='font-size: 14px;'>" . date('M d, Y', strtotime($row['date_submitted'])) . "</td>";
+                            echo "<td style='font-size: 18px; margin-top: 20px;'>" . $row['barangay'] . "</td>";
+                            echo "<td style='font-size: 18px;'>" . date('M d, Y', strtotime($row['date_submitted'])) . "</td>";
                         
                             // Check if 'pb_id' exists in the current row
                             $pb_id = isset($row['pb_id']) ? $row['pb_id'] : '';
@@ -241,9 +243,9 @@ $resultMonthlyReports = mysqli_query($conn, $queryMonthlyReports);
 
             </table>
 
-            <a href="transmittal_reports.php" style="text-decoration: none;">
-            <span class="seeall">See All</span></a>
         </div>
+        <a href="transmittal_reports.php" style="text-decoration: none;">
+            <span class="seeall" style="margin-top: 10%;">See All</span></a>
     </div>
 </div>
 
