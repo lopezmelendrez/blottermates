@@ -94,9 +94,6 @@ $modalContent = '
     <div class="button-container" style="margin-top: 3%;">
         <a href="' . $downloadLink . '" class="backBtn" style="width: 310px; padding: 12px 12px; font-weight: 600; margin-left: 15px; background: #bc1823; color: #fff; text-decoration: none;" target="_blank">DOWNLOAD LAST MONTH REPORT</a>
     </div>';
-
-
-
 }
 
 ?>

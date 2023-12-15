@@ -33,7 +33,8 @@ if (isset($_POST['submit_search'])) {
     $search_case = mysqli_real_escape_string($conn, $_POST['search_case']);
     $query = "SELECT pb.barangay AS barangay, 
         mr.timestamp AS date_submitted, 
-        mr.generate_report AS report
+        mr.generate_report AS report,
+        mr.lupon_id AS lupon_id  -- Add this line to include LUPON ID
         FROM `monthly_reports` AS mr
         INNER JOIN `pb_accounts` AS pb ON mr.pb_id = pb.pb_id
         WHERE pb.pb_id = '$pb_id' 
@@ -42,14 +43,13 @@ if (isset($_POST['submit_search'])) {
 } else {
     $query = "SELECT pb.barangay AS barangay, 
         mr.timestamp AS date_submitted, 
-        mr.generate_report AS report
+        mr.generate_report AS report,
+        mr.lupon_id AS lupon_id  -- Add this line to include LUPON ID
         FROM `monthly_reports` AS mr
         INNER JOIN `pb_accounts` AS pb ON mr.pb_id = pb.pb_id
         WHERE pb.pb_id = '$pb_id'
-        ORDER BY mr.timestamp ASC"; // Order by TIMESTAMP in descending order
+        ORDER BY mr.timestamp ASC"; // Order by TIMESTAMP in ascending order
 }
-
-
 
 $result = mysqli_query($conn, $query);
 

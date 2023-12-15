@@ -14,11 +14,11 @@ header('location: ../index.php');
 }
 
 if (isset($_GET['pb_id'])) {
-    $pb_id = $_GET['pb_id'];
+    $pbId = $_GET['pb_id'];
 
 }
 
-$barangayQuery = "SELECT barangay FROM pb_accounts WHERE pb_id = '$pb_id'";
+$barangayQuery = "SELECT barangay FROM pb_accounts WHERE pb_id = '$pbId'";
 $barangayResult = mysqli_query($conn, $barangayQuery);
 
 if ($barangayResult) {
@@ -29,28 +29,27 @@ if ($barangayResult) {
     $barangayName = "Unknown Barangay";
 }
 
-
 if (isset($_POST['submit_search'])) {
     $search_case = mysqli_real_escape_string($conn, $_POST['search_case']);
     $query = "SELECT pb.barangay AS barangay, 
         mr.timestamp AS date_submitted, 
-        mr.generate_report AS report
+        mr.generate_report AS report,
+        mr.lupon_id AS lupon_id  -- Add this line to include LUPON ID
         FROM `monthly_reports` AS mr
         INNER JOIN `pb_accounts` AS pb ON mr.pb_id = pb.pb_id
-        WHERE pb.pb_id = '$pb_id' 
+        WHERE pb.pb_id = '$pbId' 
         AND mr.generate_report LIKE '%$search_case%'
         ORDER BY mr.timestamp DESC"; // Order by TIMESTAMP in ascending order
 } else {
     $query = "SELECT pb.barangay AS barangay, 
         mr.timestamp AS date_submitted, 
-        mr.generate_report AS report
+        mr.generate_report AS report,
+        mr.lupon_id AS lupon_id  -- Add this line to include LUPON ID
         FROM `monthly_reports` AS mr
         INNER JOIN `pb_accounts` AS pb ON mr.pb_id = pb.pb_id
-        WHERE pb.pb_id = '$pb_id'
+        WHERE pb.pb_id = '$pbId'
         ORDER BY mr.timestamp DESC"; // Order by TIMESTAMP in descending order
 }
-
-
 
 $result = mysqli_query($conn, $query);
 
@@ -180,7 +179,6 @@ if (mysqli_num_rows($result) == 0) {
     echo '</div>';
 
         while ($row = mysqli_fetch_assoc($result)) {
-            // Extract data from the query result
             $barangay = $row['barangay'];
             $dateSubmitted = date('M d, Y', strtotime($row['date_submitted']));
             $transmittalReport = $row['report'];
@@ -197,7 +195,7 @@ if (mysqli_num_rows($result) == 0) {
             echo '<tr>';
             echo '<td>' . $dateSubmitted . '</td>';
     if (!empty($transmittalReport)) {
-        echo '<td><span class="generate">VIEW</span></td>';
+        echo '<td><a href="../tcpdf/monthly_report.php?pb_id=' . urlencode($pbId) . '" style="text-decoration: none;"><span class="generate">VIEW</span></a></td>';
     } else {
         echo '<td></td>';
     }

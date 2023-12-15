@@ -16,21 +16,23 @@ header('location: ../index.php');
 if (isset($_POST['submit_search'])) {
     $search_case = mysqli_real_escape_string($conn, $_POST['search_case']);
     $query = "SELECT pb.barangay AS barangay, 
-    mr.timestamp AS date_submitted, 
-    mr.generate_report AS report,
-    mr.pb_id as pbId
-    FROM `monthly_reports` AS mr
-    INNER JOIN `pb_accounts` AS pb ON mr.pb_id = pb.pb_id
-    WHERE pb.barangay LIKE '%$search_case%'
-    ORDER BY mr.timestamp ASC";  // Added ORDER BY clause
+        mr.timestamp AS date_submitted, 
+        mr.generate_report AS report,
+        mr.lupon_id AS lupon_id, -- Add this line to include LUPON ID
+        mr.pb_id AS pbId
+        FROM `monthly_reports` AS mr
+        INNER JOIN `pb_accounts` AS pb ON mr.pb_id = pb.pb_id
+        WHERE pb.barangay LIKE '%$search_case%'
+        ORDER BY mr.timestamp ASC"; // Order by TIMESTAMP in ascending order
 } else {
     $query = "SELECT pb.barangay AS barangay, 
         mr.timestamp AS date_submitted, 
         mr.generate_report AS report,
-        mr.pb_id as pbId
-    FROM `monthly_reports` AS mr
-    INNER JOIN `pb_accounts` AS pb ON mr.pb_id = pb.pb_id
-    ORDER BY mr.timestamp ASC";  // Added ORDER BY clause
+        mr.lupon_id AS lupon_id, -- Add this line to include LUPON ID
+        mr.pb_id AS pbId
+        FROM `monthly_reports` AS mr
+        INNER JOIN `pb_accounts` AS pb ON mr.pb_id = pb.pb_id
+        ORDER BY mr.timestamp ASC"; // Order by TIMESTAMP in ascending order
 }
 
 $result = mysqli_query($conn, $query);
@@ -176,7 +178,7 @@ if (!$result) {
                 echo '<td>' . $barangay . '</td>';
                 echo '<td>' . $dateSubmitted . '</td>';
         if (!empty($transmittalReport)) {
-            echo '<td><span class="generate">VIEW</span></td>';
+            echo '<td><a href="../tcpdf/monthly_report.php?pb_id=' . urlencode($pbId) . '" style="text-decoration: none;"><span class="generate">VIEW</span></a></td>';
         } else {
             echo '<td></td>';
         }

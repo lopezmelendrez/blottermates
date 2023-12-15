@@ -2,14 +2,8 @@
 
 include '../config.php';
 
-session_start();
+$pbId = isset($_GET['pb_id']) ? urldecode($_GET['pb_id']) : null;
 
-$email = $_SESSION['email_address'];
-
-
-if(!isset($email)){
-header('location: ../index.php');
-}
 
 // Include the main TCPDF library (search for installation path).
 require_once('tcpdf.php');
@@ -101,18 +95,9 @@ $pdf->AddPage();
     $space = "  ";
     $time = "12:00 PM";
 
-    $selectLuponId = mysqli_query($conn, "SELECT pb_id FROM `lupon_accounts` WHERE email_address = '$email'");
-if (!$selectLuponId) {
-    die('Failed to fetch pb_id: ' . mysqli_error($conn));
-}
-$row = mysqli_fetch_assoc($selectLuponId);
-$pb_id = $row['pb_id'];
+    $month = date('m');  // Get the current month
 
-$month = date('m');  // Get the current month
-
-$month = date('m');  // Get the current month
-
-$select = mysqli_query($conn, "
+    $select = mysqli_query($conn, "
 SELECT 
     ir.incident_case_number, 
     ir.complainant_last_name, 
@@ -126,40 +111,56 @@ SELECT
     amicable_settlement.date_agreed, 
     amicable_settlement.agreement_description,
     court_action.lupon_signature,
-    execution_notice.compliance_status
+    execution_notice.compliance_status,
+    monthly_reports.timestamp AS monthly_report_timestamp
 FROM `incident_report` AS ir
 INNER JOIN `hearing` AS h ON ir.incident_case_number = h.incident_case_number
 LEFT JOIN `amicable_settlement` AS amicable_settlement ON h.hearing_id = amicable_settlement.hearing_id
 LEFT JOIN `court_action` AS court_action ON h.hearing_id = court_action.hearing_id
 LEFT JOIN `execution_notice` AS execution_notice ON ir.incident_case_number = execution_notice.incident_case_number
+LEFT JOIN `monthly_reports` AS monthly_reports ON ir.pb_id = monthly_reports.pb_id
 WHERE h.date_of_hearing IS NOT NULL 
     AND h.time_of_hearing IS NOT NULL 
     AND (
         amicable_settlement.agreement_description IS NOT NULL 
         OR court_action.lupon_signature IS NOT NULL
     ) 
-    AND ir.pb_id = $pb_id
-    AND MONTH(amicable_settlement.date_agreed) = $month  -- Filter by the current month
+    AND ir.pb_id = $pbId
+    AND amicable_settlement.date_agreed <= monthly_reports.timestamp  -- Adjust the column names accordingly
 ORDER BY ir.created_at DESC
 ") or die('query failed');
+    
 
 $tbodyContent = '';
 
-while ($row = mysqli_fetch_assoc($select)) {
-    $incidentCaseNumber = $row['incident_case_number'];
-    $complainant_last_name = $row['complainant_last_name'];
-    $respondent_last_name = $row['respondent_last_name'];
+// Check if there are rows returned from the query
+if (mysqli_num_rows($select) > 0) {
+    while ($row = mysqli_fetch_assoc($select)) {
+        // ... Your existing code for processing each row ...
+        $incidentCaseNumber = $row['incident_case_number'];
+        $complainant_last_name = $row['complainant_last_name'];
+        $respondent_last_name = $row['respondent_last_name'];
 
+        $tbodyContent .= <<<EOD
+            <tr>
+                <td style="font-size: 12px; text-align: center; border: 1.5px solid black;">$incidentCaseNumber</td>
+                <td style="font-size: 12px; text-align: center; border: 1.5px solid black;">$complainant_last_name vs. $respondent_last_name</td>
+            </tr>
+        EOD;
+    }
+} else {
+    // No settled incident cases, display a message
     $tbodyContent .= <<<EOD
-        <tr>
-            <td style="font-size: 12px; text-align: center; border: 1.5px solid black;">$incidentCaseNumber</td>
-            <td style="font-size: 12px; text-align: center; border: 1.5px solid black;">$complainant_last_name vs. $respondent_last_name</td>
-        </tr>
-    EOD;
+            <tr>
+                <td colspan="2" style="font-size: 12px; text-align: center; border: 1.5px solid black;">NO SETTLED INCIDENT CASES</td>
+            </tr>
+        EOD;
 }
 
-$date = date('F j, Y');
+    $date = date('F j, Y');
 
+    
+// Set some content to print
 $html = <<<EOD
 <style>
  
@@ -197,7 +198,6 @@ th {
     padding: 8px;
     text-align: center;
 }
-
 </style>
 
 <div class="header">
@@ -210,8 +210,8 @@ th {
 </div>
 
   <div class="content-one">
-    <p><u>$date</u>       </p>
-    <p style="margin-left: 10px;">Date&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
+    <p>_______________________, 20</p>
+    <p>Date&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
   </div>
 
   <div class="content" style="text-align: center; font-weight: bold;">
@@ -235,19 +235,16 @@ Tagapagkasundo in the following cases: </br>
 <br><br>
 
 <table>
-    <thead>
-        <tr>
-            <th>Barangay Case No.</th>
-            <th>TITLE</th>
-        </tr>
-    </thead>
-    <tbody>
-    $tbodyContent
-    
-</tbody>
-
+        <thead>
+            <tr>
+                <th>Barangay Case No.</th>
+                <th>TITLE</th>
+            </tr>
+        </thead>
+        <tbody>
+        $tbodyContent
+        </tbody>
 </table>
-
 
 
 <div class="content-one">
