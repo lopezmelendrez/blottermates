@@ -1,5 +1,17 @@
 <?php
 
+include '../config.php';
+
+session_start();
+
+$email = $_SESSION['email_address'];
+
+
+if(!isset($email)){
+header('location: ../index.php');
+}
+
+
 
 // Include the main TCPDF library (search for installation path).
 require_once('tcpdf.php');
@@ -91,8 +103,65 @@ $pdf->AddPage();
     $space = "  ";
     $time = "12:00 PM";
 
-    
-// Set some content to print
+    $selectLuponId = mysqli_query($conn, "SELECT pb_id FROM `lupon_accounts` WHERE email_address = '$email'");
+if (!$selectLuponId) {
+    die('Failed to fetch pb_id: ' . mysqli_error($conn));
+}
+$row = mysqli_fetch_assoc($selectLuponId);
+$pb_id = $row['pb_id'];
+
+$month = date('m');  // Get the current month
+
+$month = date('m');  // Get the current month
+
+$select = mysqli_query($conn, "
+SELECT 
+    ir.incident_case_number, 
+    ir.complainant_last_name, 
+    ir.respondent_last_name, 
+    ir.description_of_violation, 
+    ir.incident_case_type, 
+    ir.incident_date, 
+    ir.submitter_first_name, 
+    ir.submitter_last_name, 
+    ir.created_at, 
+    amicable_settlement.date_agreed, 
+    amicable_settlement.agreement_description,
+    court_action.lupon_signature,
+    execution_notice.compliance_status
+FROM `incident_report` AS ir
+INNER JOIN `hearing` AS h ON ir.incident_case_number = h.incident_case_number
+LEFT JOIN `amicable_settlement` AS amicable_settlement ON h.hearing_id = amicable_settlement.hearing_id
+LEFT JOIN `court_action` AS court_action ON h.hearing_id = court_action.hearing_id
+LEFT JOIN `execution_notice` AS execution_notice ON ir.incident_case_number = execution_notice.incident_case_number
+WHERE h.date_of_hearing IS NOT NULL 
+    AND h.time_of_hearing IS NOT NULL 
+    AND (
+        amicable_settlement.agreement_description IS NOT NULL 
+        OR court_action.lupon_signature IS NOT NULL
+    ) 
+    AND ir.pb_id = $pb_id
+    AND MONTH(amicable_settlement.date_agreed) = $month  -- Filter by the current month
+ORDER BY ir.created_at DESC
+") or die('query failed');
+
+$tbodyContent = '';
+
+while ($row = mysqli_fetch_assoc($select)) {
+    $incidentCaseNumber = $row['incident_case_number'];
+    $complainant_last_name = $row['complainant_last_name'];
+    $respondent_last_name = $row['respondent_last_name'];
+
+    $tbodyContent .= <<<EOD
+        <tr>
+            <td style="font-size: 12px; text-align: center; border: 1.5px solid black;">$incidentCaseNumber</td>
+            <td style="font-size: 12px; text-align: center; border: 1.5px solid black;">$complainant_last_name vs. $respondent_last_name</td>
+        </tr>
+    EOD;
+}
+
+$date = date('F j, Y');
+
 $html = <<<EOD
 <style>
  
@@ -130,6 +199,7 @@ th {
     padding: 8px;
     text-align: center;
 }
+
 </style>
 
 <div class="header">
@@ -142,8 +212,8 @@ th {
 </div>
 
   <div class="content-one">
-    <p>_______________________, 20</p>
-    <p>Date&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
+    <p><u>$date</u>       </p>
+    <p style="margin-left: 10px;">Date&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
   </div>
 
   <div class="content" style="text-align: center; font-weight: bold;">
@@ -167,13 +237,19 @@ Tagapagkasundo in the following cases: </br>
 <br><br>
 
 <table>
-        <thead>
-            <tr>
-                <th>Barangay Case No.</th>
-                <th>TITLE</th>
-            </tr>
-        </thead>
+    <thead>
+        <tr>
+            <th>Barangay Case No.</th>
+            <th>TITLE</th>
+        </tr>
+    </thead>
+    <tbody>
+    $tbodyContent
+    
+</tbody>
+
 </table>
+
 
 
 <div class="content-one">

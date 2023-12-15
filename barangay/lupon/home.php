@@ -77,14 +77,26 @@ if ($isEndOfMonth) {
         </form>
     </div>';
 } else {
-    $modalContent = '
+    // Fetch lupon_id along with email_address from lupon_accounts table
+$selectLuponData = mysqli_query($conn, "SELECT lupon_id FROM `lupon_accounts` WHERE email_address = '$email'");
+if (!$selectLuponData) {
+    die('Failed to fetch lupon_id: ' . mysqli_error($conn));
+}
+$rowLupon = mysqli_fetch_assoc($selectLuponData);
+$lupon_id = $rowLupon['lupon_id'];
+
+$downloadLink = "../../tcpdf/monthly_transmittal_report.php?lupon_id={$lupon_id}";
+$modalContent = '
     <h3 class="modal-title" style="font-size: 18px; text-align:center;">GENERATE MONTHLY TRANSMITTAL REPORT</h3>
     <hr style="border: 1px solid #ccc; margin: 10px 0;">
     <p style="font-size: 15px; text-align: justify; font-weight: 600;">Report generation is only available at the end of the month. Please try again later.</p>
     <p style="font-size: 14px; text-align: center;">To obtain the report for the previous month, kindly click the button below:</p>
     <div class="button-container" style="margin-top: 3%;">
-        <a href="download_last_month_report.php" download="Last_Month_Report.pdf" class="backBtn" style="width: 310px; padding: 12px 12px; font-weight: 600; margin-left: 15px; background: #bc1823; color: #fff; text-decoration: none;" target="_blank">DOWNLOAD LAST MONTH REPORT</a>
+        <a href="' . $downloadLink . '" class="backBtn" style="width: 310px; padding: 12px 12px; font-weight: 600; margin-left: 15px; background: #bc1823; color: #fff; text-decoration: none;" target="_blank">DOWNLOAD LAST MONTH REPORT</a>
     </div>';
+
+
+
 }
 
 ?>
