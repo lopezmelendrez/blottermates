@@ -296,6 +296,23 @@ function loadContent() {
     body{
         overflow-y: scroll;
     }
+
+    .home{
+            position: absolute;
+            top: 0;
+            top: 0;
+            left: 250px;
+            height: 100vh;
+            width: calc(100% - 78px);
+            background-color: var(--body-color);
+            transition: var(--tran-05);
+        }
+
+        .sidebar.close ~ .home{
+            left: 78px;
+            height: 100vh;
+            width: calc(100% - 78px);
+        }
 .search-container{
             margin-left: 6%;
             margin-top: 1%;

@@ -139,7 +139,7 @@ WHERE NOT EXISTS (
 <div class="lupon-online-box">
                     <div class="online" style="display: flex; margin-top: -5px;">
                     <i class='bx bx-notepad' style="font-size: 35px; font-weight: 500; margin-top: -4px; margin-left: -5px;"></i>
-                    <p style="margin-top: 1.5px; margin-left: -30px; width: 17rem;">ONGOING CASES</p>
+                    <p style="margin-top: 1.5px; margin-left: -20px; width: 17rem;">ONGOING CASES</p>
                     <p style="margin-left: 22px; margin-top: -1px; font-weight: 600; font-size: 20px;">(<?php echo $totalOngoingCases ?>)</p>
                     </div>
                 </div>
@@ -188,6 +188,7 @@ FROM `monthly_reports` AS mr
 INNER JOIN `pb_accounts` AS pb ON mr.pb_id = pb.pb_id
 WHERE MONTH(mr.timestamp) = MONTH(CURRENT_DATE())
 AND YEAR(mr.timestamp) = YEAR(CURRENT_DATE())
+ORDER BY mr.timestamp DESC
 LIMIT 6";
 
 
@@ -475,5 +476,6 @@ dateElement.textContent = formatDate(now);
             margin-top: -36.3%;
         }
     }
+    
 
 </style>
