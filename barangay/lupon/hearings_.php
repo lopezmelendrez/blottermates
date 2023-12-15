@@ -28,7 +28,7 @@ if(isset($_POST['submit_search'])){
               WHERE i.pb_id = $pb_id 
                     AND i.incident_case_number LIKE '%$search_case%'
                     AND ca.incident_case_number IS NULL
-              ORDER BY i.created_at DESC";
+              ORDER BY i.created_at ASC";
 } else {
     $query = "SELECT i.*, h.incident_case_number AS hearing_incident_case_number,
                      h.date_of_hearing, h.time_of_hearing, h.hearing_type_status
@@ -37,7 +37,7 @@ if(isset($_POST['submit_search'])){
               LEFT JOIN court_action ca ON i.incident_case_number = ca.incident_case_number
               WHERE i.pb_id = $pb_id
                     AND ca.incident_case_number IS NULL
-              ORDER BY i.created_at DESC";
+              ORDER BY i.created_at ASC";
 }
 
 
@@ -114,8 +114,8 @@ if (!$result) {
     <div class="sort-filter-box">Sort By:</div>
     <form id="sortForm" action="" method="get" onchange="redirectToSortedPage()">
         <select id="sort" name="sort">
+        <option value="oldest">From Oldest to Latest</option>
             <option value="latest">From Latest to Oldest</option>
-            <option value="oldest">From Oldest to Latest</option>
         </select>
     </form>
 </div>
