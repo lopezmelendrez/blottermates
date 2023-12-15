@@ -181,13 +181,14 @@ WHERE NOT EXISTS (
 </div>
 
 <?php
-$queryMonthlyReports = "SELECT pb.barangay AS barangay, 
-                                mr.timestamp AS date_submitted, 
-                                mr.generate_report AS report
-                        FROM `monthly_reports` AS mr
-                        INNER JOIN `pb_accounts` AS pb ON mr.pb_id = pb.pb_id
-                        WHERE MONTH(mr.timestamp) = MONTH(CURRENT_DATE())
-                        AND YEAR(mr.timestamp) = YEAR(CURRENT_DATE())";
+$queryMonthlyReports = "SELECT pb.pb_id, pb.barangay AS barangay, 
+mr.timestamp AS date_submitted, 
+mr.generate_report AS report
+FROM `monthly_reports` AS mr
+INNER JOIN `pb_accounts` AS pb ON mr.pb_id = pb.pb_id
+WHERE MONTH(mr.timestamp) = MONTH(CURRENT_DATE())
+AND YEAR(mr.timestamp) = YEAR(CURRENT_DATE())";
+
 
 $resultMonthlyReports = mysqli_query($conn, $queryMonthlyReports);
 
@@ -210,13 +211,17 @@ $resultMonthlyReports = mysqli_query($conn, $queryMonthlyReports);
                         echo "<th style='font-weight: 500;'>Report</th>";
                         echo "</tr>";
                         echo "<tr>";
-                    while ($row = mysqli_fetch_assoc($resultMonthlyReports)) {
-                        echo "<td style='font-size: 14px;'>" . $row['barangay'] . "</td>";
-                        echo "<td style='font-size: 14px;'>" . date('M d, Y', strtotime($row['date_submitted'])) . "</td>";
-                        echo '<td style="font-size: 14px;"><a href="" style="text-decoration: none;"><span class="summon-record">View</span><a/></td>';
-                        echo "</tr>";
+                        while ($row = mysqli_fetch_assoc($resultMonthlyReports)) {
+                            echo "<td style='font-size: 14px;'>" . $row['barangay'] . "</td>";
+                            echo "<td style='font-size: 14px;'>" . date('M d, Y', strtotime($row['date_submitted'])) . "</td>";
                         
-                    }
+                            // Check if 'pb_id' exists in the current row
+                            $pb_id = isset($row['pb_id']) ? $row['pb_id'] : '';
+                        
+                            echo '<td style="font-size: 14px;"><a href="../tcpdf/monthly_report.php?pb_id=' . $pb_id . '" style="text-decoration: none;"><span class="summon-record">View</span></a></td>';
+                            echo "</tr>";
+                        }
+                        
                 } else {
                     echo "<tr>";
                     echo "<td style='margin-left: 30%;
