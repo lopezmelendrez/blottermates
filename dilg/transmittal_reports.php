@@ -435,8 +435,8 @@ function loadContent() {
 }
 
 .sort-filter-box {
-            background-color: #ccc;
-            padding: 4px;
+            background-color: #F2F3F5;
+            padding: 5px 4px;
             font-size: 15px;
             border-radius: 4px;
             margin-right: 10px;
@@ -444,6 +444,8 @@ function loadContent() {
             font-weight: 600;
             text-transform: uppercase;
             text-align: center;
+            /* Add box shadow */
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
         }
 
         .sort-container {
