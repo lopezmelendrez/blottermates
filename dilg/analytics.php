@@ -182,7 +182,7 @@ WHERE NOT EXISTS (
 
             </center>
 
-            <div class="incident-case-table" style="display: flex; height: 440px; width: 600px;">
+            <div class="incident-case-table" style="display: flex;">
     <div class="head-text">
         <p class="incident-case" style="font-size: 22px;">Ongoing Incident Cases</p>
         <div class="table-container" style="max-height: 283px; overflow-y: hidden; margin-top: -6%;">
@@ -203,8 +203,8 @@ WHERE NOT EXISTS (
         
         while ($row = mysqli_fetch_assoc($select)) {
             echo "<tr>";
-            echo "<td style='font-size: 14px; font-weight: 500; border-bottom: 2px solid #ebecf0; padding-bottom: 10px; width: 100%; padding-top: 10px;'>Barangay " . $row['barangay'] . "</td>";
-            echo "<td style='position: fixed; margin-left: -4%; font-size: 18px; font-weight: 600; padding-top: 10px;'>" . $row['total_cases'] . "</td>";
+            echo "<td style='font-size: 16px; font-weight: 500; border-bottom: 2px solid #ebecf0; padding-bottom: 10px; width: 100%; padding-top: 4px; text-transform: uppercase;'>BRGY. " . $row['barangay'] . "</td>";
+            echo "<td style='position: fixed; margin-left: -4%; font-size: 20px; font-weight: 600; padding-top: 3px;'>" . $row['total_cases'] . "</td>";
             echo "</tr>";
         }
         ?>
@@ -338,6 +338,7 @@ dateElement.textContent = formatDate(now);
 
 </body>
 <style>
+
             .home{
             position: absolute;
             top: 0;
@@ -408,6 +409,10 @@ dateElement.textContent = formatDate(now);
             margin: 10px;
         }
 
+        .incident-case-table{
+            height: 440px; width: 600px;
+        }
+
         .incident-case-table-1{
             background-color: #fff; 
             margin-top: -35.5%; 
@@ -440,6 +445,28 @@ dateElement.textContent = formatDate(now);
         @media screen and (min-width: 1355px) and (min-height: 616px){
             .incident-case-table-1{
                 margin-top: -34.1%;
+            }
+        }
+
+        @media screen and (min-width: 1331px) {
+            .incident-case-table-1{
+                height: 62%;
+                margin-top: -31.8%;
+            }
+
+            .incident-case-table{
+                height: 62%;
+            }
+        }
+
+        @media screen and (min-width: 1360px) and (min-height: 768px) {
+            .incident-case-table-1{
+                height: 62%;
+                margin-top: -37%;
+            }
+
+            .incident-case-table{
+                height: 62%;
             }
         }
 
