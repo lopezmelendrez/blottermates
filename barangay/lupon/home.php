@@ -126,7 +126,7 @@ $modalContent = '
             <div class="date" style="font-size: 21px; width: 24rem;"></div>
         </div>
 
-        <div class="add-account" onclick="showMonthlyReportPopup()" style="display: flex; margin-top: 6%; width: 21.7%;">
+        <div class="add-account" onclick="showMonthlyReportPopup()" style="display: flex; margin-top: 6%; width: 22%;">
             <i class='bx bx-download'></i>
             <p>Generate Monthly Report</p>
         </div>
