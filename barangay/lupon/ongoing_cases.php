@@ -108,8 +108,8 @@ header('location: ../../index.php');
                         <th>Case No.</th>
                         <th>Case Title</th>
                         <th>Hearing Status</th>
+                        <th>Hearing Date</th>
                         <th>Processed By</th>
-                        <th>Date Processed</th>
                         <th>Actions</th>
                 </tr>
             </thead>
@@ -126,18 +126,19 @@ header('location: ../../index.php');
                         $page = isset($_GET['page']) ? $_GET['page'] : 1;
                         $offset = ($page - 1) * $rowsPerPage;
         
-                        $select = mysqli_query($conn, "SELECT ir.incident_case_number, ir.complainant_last_name, ir.respondent_last_name, ir.description_of_violation, ir.incident_date, ir.submitter_first_name, ir.submitter_last_name, ir.created_at 
-                                    FROM `incident_report` AS ir
-                                    INNER JOIN `hearing` AS h ON ir.incident_case_number = h.incident_case_number
-                                    LEFT JOIN `court_action` AS ca ON ir.incident_case_number = ca.incident_case_number
-                                    WHERE h.date_of_hearing IS NOT NULL 
-                                    AND h.time_of_hearing IS NOT NULL
-                                    AND ir.pb_id = $pb_id
-                                    AND NOT EXISTS (SELECT 1 FROM `amicable_settlement` AS amicable WHERE h.hearing_id = amicable.hearing_id)
-                                    AND ca.incident_case_number IS NULL
-                                    ORDER BY ir.created_at DESC
-                                    LIMIT $offset, $rowsPerPage")
-                            or die('query failed');
+                        $select = mysqli_query($conn, "SELECT ir.incident_case_number, ir.complainant_last_name, ir.respondent_last_name, ir.description_of_violation, ir.incident_date, ir.submitter_first_name, ir.submitter_last_name, ir.created_at, h.date_of_hearing
+                        FROM `incident_report` AS ir
+                        INNER JOIN `hearing` AS h ON ir.incident_case_number = h.incident_case_number
+                        LEFT JOIN `court_action` AS ca ON ir.incident_case_number = ca.incident_case_number
+                        WHERE h.date_of_hearing IS NOT NULL 
+                        AND h.time_of_hearing IS NOT NULL
+                        AND ir.pb_id = $pb_id
+                        AND NOT EXISTS (SELECT 1 FROM `amicable_settlement` AS amicable WHERE h.hearing_id = amicable.hearing_id)
+                        AND ca.incident_case_number IS NULL
+                        ORDER BY ir.created_at DESC
+                        LIMIT $offset, $rowsPerPage")
+                or die('query failed');
+
         
 
 
@@ -176,8 +177,8 @@ header('location: ../../index.php');
                         }
                 ?>
                             </td>
+                            <td><?php echo date("M d, Y", strtotime($fetch_cases['date_of_hearing'])); ?></td>
                             <td><?php echo $submitter_full_name; ?></td>
-                            <td><?php echo date("M d, Y", strtotime($fetch_cases['created_at'])); ?></td>
                             <td>
 <!--                           <span class="show"  style="width: 50px; font-size: 20px; margin-top: -17%; margin-left: 88%; border: none; background: transparent;"><i class="fa-solid fa-ellipsis"></i></span>-->
                                         <?php
