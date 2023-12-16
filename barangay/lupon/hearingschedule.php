@@ -101,11 +101,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit'])) {
 
                         <div class="input-field-1" style="width: 49%;">
                             <label class="">Complainant</label>
-                            <input type="text" value="<?php echo $fetch_cases['complainant_last_name']; ?>, <?php echo $fetch_cases['complainant_first_name']; ?> <?php echo substr($fetch_cases['complainant_middle_name'], 0, 1); ?>." disabled>
+                            <input type="text" value="<?php echo ucwords($fetch_cases['complainant_last_name']); ?>, <?php echo ucwords($fetch_cases['complainant_first_name']); ?> <?php echo substr($fetch_cases['complainant_middle_name'], 0, 1); ?>." disabled>
                         </div>
                         <div class="input-field-1" style="width: 49%;">
                             <label class="">Respondent</label>
-                            <input type="text" placeholder="<?php echo $fetch_cases['respondent_last_name']; ?>, <?php echo $fetch_cases['respondent_first_name']; ?> <?php echo substr($fetch_cases['respondent_middle_name'], 0, 1); ?>." disabled>
+                            <input type="text" placeholder="<?php echo ucwords($fetch_cases['respondent_last_name']); ?>, <?php echo ucwords($fetch_cases['respondent_first_name']); ?> <?php echo substr($fetch_cases['respondent_middle_name'], 0, 1); ?>." disabled>
                         </div>
                     </div>
                 </div>

@@ -156,7 +156,7 @@ if (!isset($email)) {
                         ?>
                         <tr>
                             <td style="width: 9rem;"><?php echo htmlspecialchars(substr($fetch_cases['incident_case_number'], 0, 9)); ?></td>
-                            <td><?php echo $fetch_cases['complainant_last_name']; ?> vs. <?php echo $fetch_cases['respondent_last_name']; ?></td>
+                            <td><?php echo ucwords($fetch_cases['complainant_last_name']); ?> vs. <?php echo ucwords($fetch_cases['respondent_last_name']); ?></td>
                             <td><?php echo date("F j, Y", strtotime($fetch_cases['created_at'])); ?></td>
                             <td><?php echo $submitter_full_name; ?></td>
                             <td>
