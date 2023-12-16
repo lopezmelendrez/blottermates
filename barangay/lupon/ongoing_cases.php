@@ -50,6 +50,58 @@ header('location: ../../index.php');
             </div>
         </div>
 
+        <div class="pagination">
+            <?php
+            $selectLuponId = mysqli_query($conn, "SELECT pb_id FROM `lupon_accounts` WHERE email_address = '$email'");
+            if (!$selectLuponId) {
+                die('Failed to fetch lupon_id: ' . mysqli_error($conn));
+            }
+            $row = mysqli_fetch_assoc($selectLuponId);
+            $pb_id = $row['pb_id'];
+
+            $rowsPerPage = 4;
+
+            $selectCount = mysqli_query($conn, "SELECT COUNT(ir.incident_case_number) AS total_rows
+    FROM `incident_report` AS ir
+    INNER JOIN `hearing` AS h ON ir.incident_case_number = h.incident_case_number
+    LEFT JOIN `court_action` AS ca ON ir.incident_case_number = ca.incident_case_number
+    WHERE h.date_of_hearing IS NOT NULL 
+    AND h.time_of_hearing IS NOT NULL
+    AND ir.pb_id = $pb_id
+    AND NOT EXISTS (SELECT 1 FROM `amicable_settlement` AS amicable WHERE h.hearing_id = amicable.hearing_id)
+    AND ca.incident_case_number IS NULL");
+
+            $rowCount = mysqli_fetch_assoc($selectCount);
+            $num_rows = $rowCount['total_rows'];
+
+            $totalPages = ceil($num_rows / $rowsPerPage);
+
+            $currentPage = isset($_GET['page']) ? $_GET['page'] : 1;
+
+            echo '<div class="pages" style="display: flex; margin-left: 80%; margin-top: -4%;">';
+
+            // Previous button
+            if ($currentPage > 1) {
+                echo '<i class="bx bxs-left-arrow-square next" onclick="navigatePage(' . ($currentPage - 1) . ')" style="font-size: 50px; color: #2e5895; cursor: pointer;"></i>';
+            }
+
+            // Next button
+            if ($currentPage == 1 && $num_rows > $rowsPerPage) {
+                echo '<i class="bx bxs-right-arrow-square next" onclick="navigatePage(' . ($currentPage + 1) . ')" style="font-size: 50px; color: #2e5895; cursor: pointer; margin-left: 50px;"></i>';
+            } elseif ($currentPage > 1) {
+                echo '<i class="bx bxs-right-arrow-square next" onclick="navigatePage(' . ($currentPage + 1) . ')" style="font-size: 50px; color: #2e5895; cursor: pointer;"></i>';
+            }
+
+            echo '</div>';
+            ?>
+
+            <script>
+                function navigatePage(page) {
+                    window.location.href = '?page=' + page;
+                }
+            </script>
+        </div>
+
         <table style="margin-left: 120px; width: 84%; background: #fff; text-align: center;">
             <thead>
                 <tr>
@@ -70,17 +122,23 @@ header('location: ../../index.php');
                         $row = mysqli_fetch_assoc($selectLuponId);
                         $pb_id = $row['pb_id'];
 
+                        $rowsPerPage = 4; // Adjust the number of rows per page as needed
+                        $page = isset($_GET['page']) ? $_GET['page'] : 1;
+                        $offset = ($page - 1) * $rowsPerPage;
+        
                         $select = mysqli_query($conn, "SELECT ir.incident_case_number, ir.complainant_last_name, ir.respondent_last_name, ir.description_of_violation, ir.incident_date, ir.submitter_first_name, ir.submitter_last_name, ir.created_at 
-                            FROM `incident_report` AS ir
-                            INNER JOIN `hearing` AS h ON ir.incident_case_number = h.incident_case_number
-                            LEFT JOIN `court_action` AS ca ON ir.incident_case_number = ca.incident_case_number
-                            WHERE h.date_of_hearing IS NOT NULL 
-                            AND h.time_of_hearing IS NOT NULL
-                            AND ir.pb_id = $pb_id
-                            AND NOT EXISTS (SELECT 1 FROM `amicable_settlement` AS amicable WHERE h.hearing_id = amicable.hearing_id)
-                            AND ca.incident_case_number IS NULL -- Change 'some_column' to an actual column in court_action
-                            ORDER BY ir.created_at DESC")
+                                    FROM `incident_report` AS ir
+                                    INNER JOIN `hearing` AS h ON ir.incident_case_number = h.incident_case_number
+                                    LEFT JOIN `court_action` AS ca ON ir.incident_case_number = ca.incident_case_number
+                                    WHERE h.date_of_hearing IS NOT NULL 
+                                    AND h.time_of_hearing IS NOT NULL
+                                    AND ir.pb_id = $pb_id
+                                    AND NOT EXISTS (SELECT 1 FROM `amicable_settlement` AS amicable WHERE h.hearing_id = amicable.hearing_id)
+                                    AND ca.incident_case_number IS NULL
+                                    ORDER BY ir.created_at DESC
+                                    LIMIT $offset, $rowsPerPage")
                             or die('query failed');
+        
 
 
                         $num_rows = mysqli_num_rows($select);
@@ -347,6 +405,38 @@ header('location: ../../index.php');
         margin-left: 0;
         text-decoration: none;
     }
+
+    .previous:hover{
+        color: #2E5895;
+    }
+
+    .pagination {
+            display: flex;
+            padding-left: 27%;
+            margin-top: 10px;
+        }
+
+        .pagination a {
+            display: inline-block;
+            padding: 4px 8px;
+            margin: 0 3px;
+            background-color: #f2f2f2;
+            border: 1px solid #ddd;
+            border-radius: 3px;
+            text-decoration: none;
+            color: #333;
+            font-size: 14px;
+        }
+
+        .pagination a:hover {
+            background-color: #ccc;
+        }
+
+        .pagination .active {
+            background-color: #007bff;
+            color: #fff;
+        }
+
 
 
 

@@ -60,7 +60,7 @@ if (!isset($email)) {
             $row = mysqli_fetch_assoc($selectLuponId);
             $pb_id = $row['pb_id'];
 
-            $rowsPerPage = 4;
+            $rowsPerPage = 3;
 
             $selectCount = mysqli_query($conn, "
             SELECT COUNT(*) AS total_rows
@@ -87,9 +87,9 @@ if (!isset($email)) {
 
             // Next button
             if ($currentPage == 1 && $num_rows > $rowsPerPage) {
-                echo '<i class="bx bxs-right-arrow-square next" onclick="navigatePage(' . ($currentPage + 1) . ')" style="font-size: 50px; color: #C23B21; cursor: pointer; margin-left: 50px;"></i>';
+                echo '<i class="bx bxs-right-arrow-square previous" onclick="navigatePage(' . ($currentPage + 1) . ')" style="font-size: 50px; color: #C23B21; cursor: pointer; margin-left: 50px;"></i>';
             } elseif ($currentPage > 1) {
-                echo '<i class="bx bxs-right-arrow-square next" onclick="navigatePage(' . ($currentPage + 1) . ')" style="font-size: 50px; color: #C23B21; cursor: pointer;"></i>';
+                echo '<i class="bx bxs-right-arrow-square previous" onclick="navigatePage(' . ($currentPage + 1) . ')" style="font-size: 50px; color: #C23B21; cursor: pointer;"></i>';
             }
 
             echo '</div>';

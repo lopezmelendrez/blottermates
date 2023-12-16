@@ -50,6 +50,62 @@ header('location: ../../index.php');
             </div>
         </div>
 
+        <div class="pagination">
+            <?php
+            $selectLuponId = mysqli_query($conn, "SELECT pb_id FROM `lupon_accounts` WHERE email_address = '$email'");
+            if (!$selectLuponId) {
+                die('Failed to fetch lupon_id: ' . mysqli_error($conn));
+            }
+            $row = mysqli_fetch_assoc($selectLuponId);
+            $pb_id = $row['pb_id'];
+
+            $rowsPerPage = 4;
+
+            $selectCount = mysqli_query($conn, "SELECT COUNT(ir.incident_case_number) AS total_rows
+    FROM `incident_report` AS ir
+    INNER JOIN `hearing` AS h ON ir.incident_case_number = h.incident_case_number
+    LEFT JOIN `amicable_settlement` AS amicable_settlement ON h.hearing_id = amicable_settlement.hearing_id
+    LEFT JOIN `court_action` AS court_action ON h.hearing_id = court_action.hearing_id
+    LEFT JOIN `execution_notice` AS execution_notice ON ir.incident_case_number = execution_notice.incident_case_number -- Adjust join condition
+    WHERE h.date_of_hearing IS NOT NULL 
+        AND h.time_of_hearing IS NOT NULL 
+        AND (
+            amicable_settlement.agreement_description IS NOT NULL 
+            OR court_action.lupon_signature IS NOT NULL
+        ) 
+        AND ir.pb_id = $pb_id");
+
+            $rowCount = mysqli_fetch_assoc($selectCount);
+            $num_rows = $rowCount['total_rows'];
+
+            $totalPages = ceil($num_rows / $rowsPerPage);
+
+            $currentPage = isset($_GET['page']) ? $_GET['page'] : 1;
+
+            echo '<div class="pages" style="display: flex; margin-left: 80%; margin-top: -4%;">';
+
+            // Previous button
+            if ($currentPage > 1) {
+                echo '<i class="bx bxs-left-arrow-square next" onclick="navigatePage(' . ($currentPage - 1) . ')" style="font-size: 50px; color: #f5be1d; cursor: pointer;"></i>';
+            }
+
+            // Next button
+            if ($currentPage == 1 && $num_rows > $rowsPerPage) {
+                echo '<i class="bx bxs-right-arrow-square next" onclick="navigatePage(' . ($currentPage + 1) . ')" style="font-size: 50px; color: #f5be1d; cursor: pointer; margin-left: 50px;"></i>';
+            } elseif ($currentPage > 1) {
+                echo '<i class="bx bxs-right-arrow-square next" onclick="navigatePage(' . ($currentPage + 1) . ')" style="font-size: 50px; color: #f5be1d; cursor: pointer;"></i>';
+            }
+
+            echo '</div>';
+            ?>
+
+            <script>
+                function navigatePage(page) {
+                    window.location.href = '?page=' + page;
+                }
+            </script>
+        </div>
+
         <table style="margin-left: 120px; width: 83.5%; background: #fff; text-align: center;">
             <thead>
                 <tr>
@@ -70,6 +126,10 @@ if (!$selectLuponId) {
 }
 $row = mysqli_fetch_assoc($selectLuponId);
 $pb_id = $row['pb_id'];
+
+$rowsPerPage = 4; // Adjust the number of rows per page as needed
+                        $page = isset($_GET['page']) ? $_GET['page'] : 1;
+                        $offset = ($page - 1) * $rowsPerPage;
 
 $select = mysqli_query($conn, "
 SELECT 
@@ -99,7 +159,7 @@ WHERE h.date_of_hearing IS NOT NULL
     ) 
     AND ir.pb_id = $pb_id
 ORDER BY ir.created_at DESC
-") or die('query failed');
+LIMIT $offset, $rowsPerPage") or die('query failed');
 
 $num_rows = mysqli_num_rows($select);
 
@@ -124,22 +184,35 @@ if (mysqli_num_rows($select_hearing) > 0) {
     $hearing_data = mysqli_fetch_assoc($select_hearing);
     $hearing_date = date("F j, Y", strtotime($hearing_data['date_of_hearing']));
     $hearing_type_status = $hearing_data['hearing_type_status'];
+    $agreementDescription = $fetch_cases['agreement_description'];
 
     if ($hearing_type_status === 'mediation') {
         echo '<td><p class="mediation">Mediation</p></td>';
         echo '<td>' . date("F j, Y", strtotime($fetch_cases['date_agreed'])) . '</td>';
-        echo '<td>' . $fetch_cases['agreement_description'] . '</td>';
+        if (strlen($agreementDescription) >= 40) {
+            echo '<td><span class="ellipsis" onclick="showFullText(this)">' . substr($agreementDescription, 0, 40) . '...</span></td>';
+        } else {
+            echo '<td>' . $agreementDescription . '</td>';
+        }
         echo '<td>' . ($compliance_status !== null ? $compliance_status : '—') . '</td>';
     } elseif ($hearing_type_status === 'conciliation') {
         echo '<td><p class="conciliation">Conciliation</p></td>';
         echo '<td>' . date("F j, Y", strtotime($fetch_cases['date_agreed'])) . '</td>';
-        echo '<td>' . $fetch_cases['agreement_description'] . '</td>';
-        echo '<td>' . $fetch_cases['agreement_description'] . '</td>';
+        if (strlen($agreementDescription) >= 40) {
+            echo '<td><span class="ellipsis" onclick="showFullText(this)">' . substr($agreementDescription, 0, 40) . '...</span></td>';
+        } else {
+            echo '<td>' . $agreementDescription . '</td>';
+        }
+        echo '<td>' . ($compliance_status !== null ? $compliance_status : '—') . '</td>';
     } elseif ($hearing_type_status === 'arbitration') {
         echo '<td><p class="arbitration">Arbitration</p></td>';
         echo '<td>' . date("F j, Y", strtotime($fetch_cases['date_agreed'])) . '</td>';
-        echo '<td>' . $fetch_cases['agreement_description'] . '</td>';
-        echo '<td>' . $fetch_cases['agreement_description'] . '</td>';
+        if (strlen($agreementDescription) >= 40) {
+            echo '<td><span class="ellipsis" onclick="showFullText(this)">' . substr($agreementDescription, 0, 40) . '...</span></td>';
+        } else {
+            echo '<td>' . $agreementDescription . '</td>';
+        }
+        echo '<td>' . ($compliance_status !== null ? $compliance_status : '—') . '</td>';
     }
     elseif ($hearing_type_status === 'filed to court action') {
         echo '<td colspan="4"><p class="court">Filed to Court Action</p></td>';
@@ -351,6 +424,33 @@ if (mysqli_num_rows($select_hearing) > 0) {
     text-align: center;
     padding: 3px 3px;
 }
+
+.pagination {
+            display: flex;
+            padding-left: 27%;
+            margin-top: 10px;
+        }
+
+        .pagination a {
+            display: inline-block;
+            padding: 4px 8px;
+            margin: 0 3px;
+            background-color: #f2f2f2;
+            border: 1px solid #ddd;
+            border-radius: 3px;
+            text-decoration: none;
+            color: #333;
+            font-size: 14px;
+        }
+
+        .pagination a:hover {
+            background-color: #ccc;
+        }
+
+        .pagination .active {
+            background-color: #007bff;
+            color: #fff;
+        }
 
 
     </style>
