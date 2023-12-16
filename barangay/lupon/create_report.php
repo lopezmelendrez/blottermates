@@ -68,7 +68,6 @@ if (isset($_POST['submit'])) {
     <link href='https://unpkg.com/boxicons@2.1.1/css/boxicons.min.css' rel='stylesheet'>
     <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css"/>
-    <link rel="stylesheet" href="bootstrap/bootstrap-5.0.2-dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
@@ -469,12 +468,24 @@ if (isset($_POST['submit'])) {
 
 function validateName(event) {
   var keyCode = event.keyCode;
+  var inputValue = event.target.value;
+
+  // Check if the length exceeds 20 characters
+  if (inputValue.length >= 20 && keyCode !== 8) {
+    event.preventDefault();
+    return false;
+  }
 
   if (keyCode === 32) {
     if (event.target.selectionStart === 0) {
       event.preventDefault();
       return false;
     }
+  }
+
+  // Capitalize the first character
+  if (inputValue.length === 0 || inputValue.slice(0, event.target.selectionStart).trim() === '') {
+    event.target.value = inputValue.charAt(0).toUpperCase() + inputValue.slice(1);
   }
 
   if ((keyCode >= 65 && keyCode <= 90) || (keyCode >= 97 && keyCode <= 122)) {
@@ -488,6 +499,9 @@ function validateName(event) {
   event.preventDefault();
   return false;
 }
+
+
+
 
 function validateAddress(event) {
   var allowedCharacters = /^[a-zA-Z0-9\s.,#-]*$/;
@@ -552,17 +566,33 @@ const respondentCellphoneInput = document.getElementById('respondent_cellphone_n
             sidebar.classList.remove("close");
         })
 
-        const form = document.querySelector("form");
+// Global variable to store values for inputs
+let storedValues = {};
+
+// Global variable to store value for textarea
+let textareaValue = "";
+
+const form = document.querySelector("form");
 const nextBtn = form.querySelector(".nextBtn");
 const backBtn = form.querySelector(".backBtn");
-const allInput = form.querySelectorAll(".first input");
+const allInput = form.querySelectorAll(".first input"); // Include textareas
+const descriptionInput = document.querySelector('textarea[name="description_of_violation"]');
 
-nextBtn.addEventListener("click", () => {
+nextBtn.addEventListener("click", (event) => {
+    // Store values for inputs before moving forward
+    allInput.forEach(input => {
+        storedValues[input.name] = input.value;
+    });
+
+    // Store value for "Description of Violation" textarea
+    textareaValue = descriptionInput.value;
+
     // Validate complainant and respondent cellphone numbers
     const complainantPhoneNumber = document.querySelector('input[name="complainant_cellphone_number"]').value;
     const respondentPhoneNumber = document.querySelector('input[name="respondent_cellphone_number"]').value;
 
     if (!validatePhoneNumber(complainantPhoneNumber) || !validatePhoneNumber(respondentPhoneNumber)) {
+        // Display custom alert messages based on validation results
         if (!validatePhoneNumber(complainantPhoneNumber) && !validatePhoneNumber(respondentPhoneNumber)) {
             openCustomAlert("COMPLAINANT and RESPONDENT");
         } else if (!validatePhoneNumber(complainantPhoneNumber)) {
@@ -570,19 +600,33 @@ nextBtn.addEventListener("click", () => {
         } else {
             openCustomAlert("RESPONDENT");
         }
-        event.preventDefault();
+        event.preventDefault(); // Prevent form submission if validation fails
     } else {
-        allInput.forEach(input => {
-            if (input.value !== "") {
-                form.classList.add('secActive');
-            } else {
-                form.classList.remove('secActive');
-            }
-        });
+        // Activate the next section if phone numbers are valid
+        form.classList.add('secActive');
     }
 });
 
-        backBtn.addEventListener("click", () => form.classList.remove('secActive'));
+backBtn.addEventListener("click", (event) => {
+    console.log("Before restoration", storedValues);
+
+    // Restore stored values for inputs when moving backward
+    allInput.forEach(input => {
+        input.value = storedValues[input.name] || "";
+    });
+
+    // Restore value for "Description of Violation" textarea
+    descriptionInput.value = textareaValue || "";
+
+    console.log("After restoration", storedValues);
+
+    form.classList.remove('secActive');
+    event.preventDefault(); // Prevent default behavior of the "Back" button
+});
+
+
+
+
 
 
         const maxLength = 255;
@@ -638,7 +682,6 @@ function openCustomAlert(message) {
 }
 
 function validatePhoneNumber(phoneNumber) {
-  // Regular expression pattern for a valid Philippine phone number
   const phoneNumberPattern = /^(?:\+63|0)[0-9]{10}$/;
 
   return phoneNumberPattern.test(phoneNumber);
@@ -667,18 +710,29 @@ document.addEventListener("DOMContentLoaded", function() {
         openCustomAlert("RESPONDENT");
     }
 }  else {
-        document.getElementById("complainantLastName").textContent = document.querySelector('input[name="complainant_last_name"]').value;
-        document.getElementById("complainantFirstName").textContent = document.querySelector('input[name="complainant_first_name"]').value;
-        document.getElementById("complainantMiddleName").textContent = document.querySelector('input[name="complainant_middle_name"]').value;
-        document.getElementById("complainantCellphone").textContent = document.querySelector('input[name="complainant_cellphone_number"]').value;
-        document.getElementById("complainantAddress").textContent = document.querySelector('input[name="complainant_house_address"]').value;
-        // Add more fields for complainant
+    // Function to capitalize each word
+function capitalizeText(input) {
+    return input.replace(/\b\w/g, function (char) {
+        return char.toUpperCase();
+    });
+}
 
-        document.getElementById("respondentLastName").textContent = document.querySelector('input[name="respondent_last_name"]').value;
-        document.getElementById("respondentFirstName").textContent = document.querySelector('input[name="respondent_first_name"]').value;
-        document.getElementById("respondentMiddleName").textContent = document.querySelector('input[name="respondent_middle_name"]').value;
-        document.getElementById("respondentCellphone").textContent = document.querySelector('input[name="respondent_cellphone_number"]').value;
-        document.getElementById("respondentAddress").textContent = document.querySelector('input[name="respondent_house_address"]').value;
+// Capitalize and set text content for complainant fields
+document.getElementById("complainantLastName").textContent = capitalizeText(document.querySelector('input[name="complainant_last_name"]').value);
+document.getElementById("complainantFirstName").textContent = capitalizeText(document.querySelector('input[name="complainant_first_name"]').value);
+document.getElementById("complainantMiddleName").textContent = capitalizeText(document.querySelector('input[name="complainant_middle_name"]').value);
+document.getElementById("complainantCellphone").textContent = capitalizeText(document.querySelector('input[name="complainant_cellphone_number"]').value);
+document.getElementById("complainantAddress").textContent = capitalizeText(document.querySelector('input[name="complainant_house_address"]').value);
+
+// Add more fields for complainant
+
+// Capitalize and set text content for respondent fields
+document.getElementById("respondentLastName").textContent = capitalizeText(document.querySelector('input[name="respondent_last_name"]').value);
+document.getElementById("respondentFirstName").textContent = capitalizeText(document.querySelector('input[name="respondent_first_name"]').value);
+document.getElementById("respondentMiddleName").textContent = capitalizeText(document.querySelector('input[name="respondent_middle_name"]').value);
+document.getElementById("respondentCellphone").textContent = capitalizeText(document.querySelector('input[name="respondent_cellphone_number"]').value);
+document.getElementById("respondentAddress").textContent = capitalizeText(document.querySelector('input[name="respondent_house_address"]').value);
+
         // Add more fields for respondent
 
         const incidentCaseType = document.querySelector('select[name="incident_case_type"] option:checked').text;
@@ -689,8 +743,11 @@ if (otherCaseType) {
 } else {
     document.getElementById("incidentCaseType").textContent = incidentCaseType;
 }
+function capitalizeFirstWord(input) {
+    return input.charAt(0).toUpperCase() + input.slice(1);
+}
         document.getElementById("incidentDate").textContent = document.querySelector('input[name="incident_date"]').value;
-        document.getElementById("descriptionOfViolation").textContent = document.querySelector('textarea[name="description_of_violation"]').value;
+        document.getElementById("descriptionOfViolation").textContent = capitalizeFirstWord(document.querySelector('textarea[name="description_of_violation"]').value);
         
 
         modalOverlay.style.display = "flex";
@@ -896,12 +953,22 @@ if (input.value.length > 0 && input.value[0] === ' ') {
 .close-icon {
       position: absolute;
       top: 155px;
-      left: 875px;
+      left: 870px;
       cursor: pointer;
       font-size: 50px;
       color:#bc1823;
     }
-    
+
+    @media screen and (min-width: 1331px) {
+        .close-icon {
+            left: 890px;
+        }
+
+        .home{
+            margin-top: -18px;
+        }
+    }
+
 
 
 
