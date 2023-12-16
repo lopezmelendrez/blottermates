@@ -121,10 +121,10 @@ header('location: ../index.php');
 
     <section class="home" style="margin-left: -0.3%; margin-top: 3%;">
         
-        <div class="datetime-container" style="display: flex; margin-top: -4.5%;">
+    <div class="datetime-container" style="display: flex; margin-top: -4.5%;">
         <div class="datetime mb-3" style="width: 26rem;">
-                <div class="time" id="time"></div>
-                <div class="date" style="font-size: 24px; width: 24rem;"></div>
+                <div class="time" id="time" style="padding-left: 8px;"></div>
+                <div class="date" style="font-size: 21px; width: 24rem; padding-left: 8px;"></div>
             </div>
 
             <a href="add_lupon_account.php" style="text-decoration: none; margin-left: 1%;"><div class="add-account" style="display: flex; margin-top: 75px; width: 68%;">

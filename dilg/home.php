@@ -105,8 +105,8 @@ $currentMonth = date("F");
         
         <div class="datetime-container" style="display: flex;">
         <div class="datetime mb-3" style="width: 26rem;">
-                <div class="time" id="time"></div>
-                <div class="date" style="font-size: 24px; width: 24rem;"></div>
+                <div class="time" id="time" style="padding-left: 15px;"></div>
+                <div class="date" style="font-size: 21px; width: 24rem; padding-left: 15px;"></div>
             </div>
 
             <a href="add-barangay-account.php" style="text-decoration: none; margin-left: 1%;"><div class="add-account" style="display: flex; margin-top: 25%;">
