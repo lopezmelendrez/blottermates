@@ -61,6 +61,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit'])) {
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="../../node_modules/bootstrap/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="../../css/dilg.css">
+    <link rel="icon" type="image/x-icon" href="../../images/favicon.ico">
+    <title>Agreement for Arbitration</title>
 </head>
 <body>
 
@@ -174,7 +176,7 @@ if ($fetch['barangay'] == 'Ibaba') {
     <section class="home">
 
     <center>
-            <div class="add-account-container" style="height: 535px; width: 880x; margin-top: 20px; margin-left: -50px;">
+            <div class="add-account-container">
             <?php
         $incident_case_number = $_GET['incident_case_number'];
         $select = mysqli_query($conn, "SELECT * FROM `incident_report` WHERE incident_case_number = '$incident_case_number'") or die('query failed');
@@ -407,63 +409,28 @@ if (input.value.length > 0 && input.value[0] === ' ') {
     width: calc(100% - 78px);
 }
 
-.pw-meter .form-element {
-    position:absolute;
+  .add-account-container{
+    height: 535px; width: 880x; margin-top: 20px; margin-left: -50px;
   }
-  .pw-meter label {
-    display:block;
+
+  @media screen and (min-width: 1310px){
+    .add-account-container{
+        margin-top: 3.5%;
+        margin-left: -5.5%;
+    }
   }
-  .pw-meter input {
-    padding:8px 30px 8px 10px;
-    width:100%;
-    outline:none;
+
+  @media screen and (min-width: 1331px){
+    .add-account-container{
+        margin-top: 1.5%;
+        margin-left: -5%;
+    }
   }
-  .pw-meter .pw-display-toggle-btn {
-    position:absolute;
-    right:10px;
-    top:45px;
-    width:20px;
-    height:20px;
-    text-align:center;
-    line-height:20px;
-    cursor:pointer;
-  }
-  .pw-meter .pw-display-toggle-btn i.fa-eye-slash {
-    display:none;
-  }
-  .pw-meter .pw-display-toggle-btn.active i.fa-eye-slash {
-    display:block;
-  }
-  .pw-meter .pw-display-toggle-btn.active i.fa-eye {
-    display:none;
-  }
-  .pw-meter .pw-strength {
-    position:relative;
-    width:100%;
-    height:25px;
-    margin-top:10px;
-    text-align:center;
-    background:#f2f2f2;
-    display:none;
-  }
-  .pw-meter .pw-strength span:nth-child(1) {
-    position:relative;
-    font-size:14px;
-    padding-bottom: 5px;
-    text-transform: uppercase;
-    color:#111;
-    z-index:2;
-    font-weight:600;
-  }
-  .pw-meter .pw-strength span:nth-child(2) {
-    position:absolute;
-    top:0px;
-    left:0px;
-    width:0%;
-    height:100%;
-    border-radius:5px;
-    z-index:1;
-    transition:all 300ms ease-in-out;
+
+  @media screen and (min-width: 1360px) and (min-height: 768px){
+    .add-account-container{
+        margin-top: 6%;
+    }
   }
 
 

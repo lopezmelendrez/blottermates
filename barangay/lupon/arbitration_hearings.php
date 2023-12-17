@@ -314,14 +314,12 @@ if (mysqli_num_rows($select_arbitration_agreement) > 0) {
         // There is a scheduled hearing
         $hearing_data = mysqli_fetch_assoc($select_hearing);
         $hearing_date = date("F j, Y", strtotime($hearing_data['date_of_hearing']));
-        echo '<a href="hearingschedule.php?incident_case_number=' . $incident_case_number . '" class="schedule">SET HEARING SCHEDULE</a>';
+        echo '<a href="arbitration_agreement.php?incident_case_number=' . $incident_case_number . '" class="hearing-1" style="text-decoration: none; margin-left: -10px;">CREATE ARBITRATION AGREEMENT</a>';
     } else {
         echo '<a href="hearingschedule.php?incident_case_number=' . $incident_case_number . '" class="schedule">SET HEARING SCHEDULE</a>';
     }
 }
 ?>
-
-
             </td>
             </tr>
             <?php
