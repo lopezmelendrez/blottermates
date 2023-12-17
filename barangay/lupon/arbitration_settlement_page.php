@@ -237,7 +237,7 @@ if ($fetch['barangay'] == 'Ibaba') {
     
 
     <section class="home">
-        <div class="container" style="margin-left: 15%; margin-top: 8%; height: 29rem;">
+        <div class="container">
         <?php
         $incident_case_number = $_GET['incident_case_number'];
         $select = mysqli_query($conn, "SELECT * FROM `incident_report` WHERE incident_case_number = '$incident_case_number'") or die('query failed');
@@ -501,6 +501,10 @@ function validateName(event) {
     <script src="../script.js"></script>
 
     <style>
+        .container{
+            margin-left: 15%; margin-top: 8%; height: 29rem;
+        }
+        
         .title::before{
             content: "";
             background: transparent;
@@ -578,6 +582,12 @@ function validateName(event) {
 
 .backBtn:hover{
     background-color: #bc1823;
+    }
+
+    @media screen and (min-width: 1360px) and (min-height: 768px){
+        .container{
+            margin-top: 12%;
+        }
     }
 
     </style>
