@@ -366,6 +366,12 @@ if ($result && mysqli_num_rows($result) > 0) {
             height: 33px;
         }
 
+        @media screen and (min-width: 1331px){
+            .activity{
+                margin-left: 30%;
+            }
+        }
+
     </style>
 </head>
 <body>

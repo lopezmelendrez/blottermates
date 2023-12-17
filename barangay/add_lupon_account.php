@@ -69,6 +69,8 @@ if (isset($_POST['submit'])) {
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="../css/dilg.css">
+    <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+    <title>Add Lupon Account</title>
 </head>
 <body>
 <nav class="sidebar close">
@@ -160,7 +162,7 @@ if (isset($_POST['submit'])) {
     <section class="home">
 
             <center>
-            <div class="add-account-container" style="height: 600px; width: 800px; margin-top: 2px;">
+            <div class="add-account-container">
                 <div class="header-text">Add Lupon Account</div>
                 
                 <form action="" method="post" style="height: 490px;" id="barangayForm">
@@ -452,6 +454,10 @@ document.querySelector(".pw-meter .pw-display-toggle-btn").addEventListener("cli
 </script>
 
 <style>
+    .add-account-container{
+        height: 600px; width: 800px; margin-top: 2px;
+    }
+
     select[name="barangay"] option:disabled {
         color: #707070;
         background-color: #DDD;
@@ -550,6 +556,19 @@ document.querySelector(".pw-meter .pw-display-toggle-btn").addEventListener("cli
     content: '*';
     color: red;
     margin-left: 5px;
+    }
+
+    @media screen and (min-width: 1331px){
+        .add-account-container{
+            margin-top: -1%;
+            margin-left: -3%;
+        }
+    }
+
+    @media screen and (min-width: 1360px) and (min-height: 768px){
+        .add-account-container{
+            margin-top: 5%;
+        }
     }
 
 

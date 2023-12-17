@@ -14,6 +14,58 @@ if(!isset($pb_id)){
 header('location: ../index.php');
 }
 
+function displayPage($conn, $incident_case_number)
+{
+    // Check if the incident case number exists in the notify_residents table
+    $check_notify_query = "SELECT * FROM notify_residents WHERE incident_case_number = '$incident_case_number' AND generate_execution = 'form generated'";
+    $check_notify_result = mysqli_query($conn, $check_notify_query);
+
+    if ($check_notify_result && mysqli_num_rows($check_notify_result) > 0) {
+        // Check if the incident case number is found in the execution_notice table
+        $check_execution_query = "SELECT * FROM execution_notice WHERE incident_case_number = '$incident_case_number'";
+        $check_execution_result = mysqli_query($conn, $check_execution_query);
+
+        if ($check_execution_result && mysqli_num_rows($check_execution_result) == 0) {
+            // If the incident case number is not found in the execution_notice table, proceed
+
+            // Your additional conditions can be added here if needed
+
+            // If all conditions are met, return true
+            return true;
+        }
+    }
+
+    // If the conditions are not met or there was an issue with the query, return false
+    return false;
+}
+
+$incident_case_number = $_GET['incident_case_number'];
+
+if (!displayPage($conn, $incident_case_number)) {
+    header('location: home.php');
+}
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['court_action_submit'])) {
+    $incident_case_number = $_POST['incident_case_number'];
+    $hearing_type_status = 'filed to court action';
+
+    $update_query = "UPDATE `hearing` SET `hearing_type_status` = '$hearing_type_status' WHERE incident_case_number = '$incident_case_number'";
+    $result = mysqli_query($conn, $update_query);
+
+    if ($result) {
+        if (mysqli_affected_rows($conn) > 0) {
+            header("Location: file_court_action.php?incident_case_number=$incident_case_number");
+            exit;
+        } else {
+            echo "Row not found.";
+            exit;
+        }
+    } else {
+        echo "Error: " . mysqli_error($conn);
+        exit;
+    }
+}
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit'])) {
     $execution_date = $_POST['execution_date'];
     $compliance_status = $_POST['compliance_status'];
@@ -143,7 +195,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit'])) {
     <section class="home" style="margin-left: -0.3%;">
         
     <center>
-            <div class="add-account-container" style="height: 485px; width: 800px; margin-top: 5%; margin-left: 3%;">
+            <div class="add-account-container">
             <?php
             $incident_case_number = $_GET['incident_case_number'];
             $select = mysqli_query($conn, "SELECT * FROM `incident_report` WHERE incident_case_number = '$incident_case_number'") or die('query failed');
@@ -173,7 +225,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit'])) {
                         
                     <div class="input-group1 d-flex" style="margin-top: 4%;">
                         <a href="home.php" style="text-decoration: none;"><input type="button" value="Back" class="btn btn-secondary back-btn" style="width: 15%; margin-left: 460px;" onclick="history.back()"></a>
-                        <input type="submit" name="submit" value="Execute Agreement" class="btn btn-danger" style="width: 25%; margin-left: 25px;">
+                        <input type="submit" name="submit" value="Execute Agreement" class="btn btn-danger" style="width: 25%; margin-left: 25px;" id="submitBtn" disabled>
                     </div>
 
 
@@ -186,6 +238,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit'])) {
 
     <script src="search_bar.js"></script>
     <script>
+
+function checkForm() {
+        var executionDate = document.getElementById('datepicker').value;
+        var complianceStatus = document.querySelector('select[name="compliance status"]').value;
+        var remarks = document.querySelector('textarea[name="remarks"]').value;
+
+        // Enable the submit button only if all fields are filled
+        if (executionDate && complianceStatus && remarks) {
+            document.getElementById('submitBtn').removeAttribute('disabled');
+        } else {
+            document.getElementById('submitBtn').setAttribute('disabled', 'disabled');
+        }
+    }
+
+    // Attach the checkForm function to input events on relevant fields
+    document.getElementById('datepicker').addEventListener('input', checkForm);
+    document.querySelector('select[name="compliance status"]').addEventListener('input', checkForm);
+    document.querySelector('textarea[name="remarks"]').addEventListener('input', checkForm);
     
     $(function () {
     $("#datepicker").datepicker({
@@ -240,17 +310,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit'])) {
                 incidentDateInput.value = formattedCurrentDate;
             }
         });
+        
 
         
 
     </script>
 
     <style>
+        .add-account-container{
+            height: 485px; width: 800px; margin-top: 5%; margin-left: 3%;
+        }
 
         .container {
             display: flex;
             justify-content: space-around;
             margin-right: 20px;
+            
         }
 
         .ongoing-cases-box {
@@ -352,6 +427,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit'])) {
     content: '*';
     color: red;
     margin-left: 5px;
+    }
+
+    @media screen and (min-width: 1360px) and (min-height: 768px){
+        .add-account-container{
+            margin-top: 8%;
+        }
+    }
+
+    @media screen and (min-width: 1331px){
+        .add-account-container{
+            margin-top: 4%;
+        }
     }
 
     </style>
