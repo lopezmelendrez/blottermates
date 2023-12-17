@@ -450,7 +450,7 @@ if ($fetch['barangay'] == 'Ibaba') {
 
     
     <section class="home">
-        <div class="container" style="margin-left: 15%; margin-top: 45px;">
+        <div class="container">
         <?php
         $incident_case_number = $_GET['incident_case_number'];
         $select = mysqli_query($conn, "SELECT * FROM `incident_report` WHERE incident_case_number = '$incident_case_number'") or die('query failed');
@@ -905,6 +905,9 @@ function showPopup() {
 </script>
 <script src="../script.js"></script>
 <style>
+    .container{
+        margin-left: 15%; margin-top: 45px;
+    }
     .title::before{
         content: "";
         background: transparent;
@@ -1039,6 +1042,26 @@ function showPopup() {
     .generate:hover{
         background: #0d52bd;
         color: #fff;     
+    }
+
+    @media screen and (min-width: 1310px){
+    .container{
+        margin-left: 14.5%;
+        margin-top: 5%;
+    }
+}
+
+@media screen and (min-width: 1331px){
+    .container{
+        margin-left: 14.5%;
+        margin-top: 3.2%;
+    }
+}
+
+    @media screen and (min-width: 1360px) and (min-height: 768px) {
+        .container{
+            margin-top: 7%;
+        }
     }
 
 

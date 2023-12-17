@@ -179,7 +179,7 @@ if (isset($_POST['submit'])) {
 
 
     <section class="home">
-        <div class="container" style="margin-left: 15%; margin-top: 25px;">
+        <div class="container">
         <div class="card">
             <div class="card-body">
                 <div class="d-flex justify-content-between align-items-center mb-3">
@@ -831,6 +831,10 @@ if (input.value.length > 0 && input.value[0] === ' ') {
 
     </script>
 <style>
+    .container{
+        margin-left: 15%; 
+        margin-top: 25px;
+    }
 
     .container form{
         position: relative;
@@ -969,8 +973,11 @@ if (input.value.length > 0 && input.value[0] === ' ') {
         }
     }
 
-
-
+     @media screen and (min-width: 1360px) and (min-height: 768px) {
+        .container{
+            margin-top: 6%;
+        }
+    }
 
 </style>
 </body>

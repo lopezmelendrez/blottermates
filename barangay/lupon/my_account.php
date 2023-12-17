@@ -188,7 +188,7 @@ if ($fetch['barangay'] == 'Ibaba') {
     <section class="home">
 
             <center>
-            <div class="add-account-container" style="height: 600px; width: 800px; margin-top: 2px;">
+            <div class="add-account-container">
                 <div class="header-text">MY ACCOUNT</div>
 
                 <?php
@@ -266,7 +266,7 @@ if ($fetch['barangay'] == 'Ibaba') {
 
                     <div class="input-group1 d-flex" style="margin-top: 7%;">
                         <input type="button" value="Back" class="btn btn-secondary back-btn" style="width: 10%; margin-left: 430px; font-size: 20px;" onclick="history.back()">
-                        <input type="button" id="openModalBtn" value="Update Account" class="btn btn-danger" style="width: 30%; margin-left: 10px; font-size: 20px;">
+                        <input type="button" id="openModalBtn" value="Update Account" class="btn btn-danger" style="width: 30%; margin-left: 10px; font-size: 20px;" disabled>
                     </div>
 
                     
@@ -351,6 +351,37 @@ function validateName(event) {
             sidebar.classList.remove("close");
         })
 
+        document.addEventListener("DOMContentLoaded", function () {
+    // Get references to the input fields
+    const oldPasswordInput = document.querySelector("input[name='old_password']");
+    const newPasswordInput = document.querySelector("input[name='password']");
+    const confirmPasswordInput = document.querySelector("input[name='confirmPassword']");
+    const firstNameInput = document.querySelector("input[name='first_name']");
+    const lastNameInput = document.querySelector("input[name='last_name']");
+    const emailInput = document.querySelector("input[name='email_address']");
+    const updateAccountBtn = document.getElementById("openModalBtn");
+
+    // Function to check if the conditions for enabling the button are met
+    function checkConditions() {
+        const oldPasswordNotEmpty = oldPasswordInput.value.trim() !== "";
+        const newPasswordNotEmpty = newPasswordInput.value.trim() !== "";
+        const confirmPasswordNotEmpty = confirmPasswordInput.value.trim() !== "";
+        const firstNameNotEmpty = firstNameInput.value.trim() !== "";
+        const lastNameNotEmpty = lastNameInput.value.trim() !== "";
+        const emailNotEmpty = emailInput.value.trim() !== "";
+
+        // Enable the button if the conditions are met, otherwise disable it
+        updateAccountBtn.disabled = !(oldPasswordNotEmpty && ((newPasswordNotEmpty && confirmPasswordNotEmpty) || (!newPasswordNotEmpty && !confirmPasswordNotEmpty)) && (firstNameNotEmpty || lastNameNotEmpty || emailNotEmpty));
+    }
+
+    // Attach event listeners to input fields to check conditions on input
+    oldPasswordInput.addEventListener("input", checkConditions);
+    newPasswordInput.addEventListener("input", checkConditions);
+    confirmPasswordInput.addEventListener("input", checkConditions);
+    firstNameInput.addEventListener("input", checkConditions);
+    lastNameInput.addEventListener("input", checkConditions);
+    emailInput.addEventListener("input", checkConditions);
+});
         
 
 // Get the modal and button elements
@@ -536,6 +567,23 @@ document.querySelector(".pw-meter .pw-display-toggle-btn").addEventListener("cli
     content: '*';
     color: red;
     margin-left: 5px;
+    }
+
+    .add-account-container{
+        height: 600px; width: 800px; margin-top: 2px
+    }
+
+    @media screen and (min-width: 1331px){
+        .add-account-container{
+            margin-top: -1%;
+            margin-left: -5%;
+        }
+    }
+
+    @media screen and (min-width: 1360px) and (min-height: 768px) {
+        .add-account-container{
+            margin-top: 3.5%;
+        }
     }
 
 

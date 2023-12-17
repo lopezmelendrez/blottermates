@@ -386,6 +386,25 @@ label{
     margin-top: -15px;
 }
 
+@media screen and (min-width: 1310px){
+    .container{
+        margin-left: 14%;
+        margin-top: 8.5%;
+    }
+}
+
+@media screen and (min-width: 1331px){
+    .container{
+        margin-left: 13%;
+    }
+}
+
+@media screen and (min-width: 1360px) and (min-height: 768px) {
+        .container{
+            margin-top: 10%;
+        }
+    }
+
     </style>
 
 </body>

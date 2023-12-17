@@ -164,7 +164,7 @@ if ($fetch['barangay'] == 'Ibaba') {
 
 
     <section class="home">
-        <div class="container" style="margin-left: 15%; margin-top: 22px;">
+        <div class="container">
         <?php
         $incident_case_number = $_GET['incident_case_number'];
         $select = mysqli_query($conn, "SELECT * FROM `incident_report` WHERE incident_case_number = '$incident_case_number'") or die('query failed');
@@ -300,10 +300,6 @@ if ($generate_execution_result && mysqli_num_rows($generate_execution_result) > 
                         
                     </div> 
                 </div>
-
-
-
-                
                 
                 </form>
 
@@ -533,6 +529,9 @@ if (input.value.length > 0 && input.value[0] === ' ') {
     </script>
     <script src="../script.js"></script>
 <style>
+    .container{
+        margin-left: 15%; margin-top: 22px;
+    }
 
     .container form{
         position: relative;
@@ -745,15 +744,29 @@ if (input.value.length > 0 && input.value[0] === ' ') {
 
 @media screen and (min-width: 1310px){
             .close-icon{
-                left: 875px;
+                left: 870px;
+            }
+            .container{
+                margin-top: 3%;
             }
         }
+       
         @media screen and (min-width: 1331px){
             .close-icon{
                 left: 895px;
             }
+            .container{
+                margin-top: 1.7%;
+            }
         
         }
+
+        @media screen and (min-width: 1360px) and (min-height: 768px) {
+        .container{
+            margin-top: 6%;
+        }
+    }
+
 
 
 </style>

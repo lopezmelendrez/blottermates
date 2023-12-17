@@ -193,7 +193,7 @@ $modalContent = '
 
     <div class="home-container" style="display: flex;">
 
-        <div class="calendar-container" style="display: flex; height: 470px; width: 530px; margin-left: 3%; margin-top: 0.5%;">
+        <div class="calendar-container">
             <div id="calendar" style="width: 500px;"></div>
         </div>
 
@@ -636,6 +636,10 @@ function closeMonthlyReportPopup() {
         color: #bc1823;
         letter-spacing: 2;
         }
+    
+    .calendar-container{
+        display: flex; height: 470px; width: 530px; margin-left: 3%; margin-top: 0.5%
+    }
 
     @media screen and (min-width: 1310px) {
         .close-icon {
@@ -679,6 +683,20 @@ function closeMonthlyReportPopup() {
             margin-top: 0.5%;
         }
     }
+
+    @media screen and (min-width: 1360px) and (min-height: 768px) {
+        .incident-case-table {
+            margin-top: 3.5%;
+        }
+        .calendar-container{
+            margin-top: 3.5%;
+        }
+        .datetime-container{
+            margin-top: 1.5%;
+        }
+    }
+
+
 </style>
 
 </body>

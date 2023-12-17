@@ -63,7 +63,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit'])) {
 <?php include 'nav_bar.php'; ?>
 
     <section class="home">
-        <div class="container" style="margin-left: 15%; margin-top: 80px; width: 950px; height: 475px;">
+        <div class="container">
         <?php
         // Assuming you have already established the database connection
         $incident_case_number = $_GET['incident_case_number'];
@@ -279,6 +279,10 @@ document.addEventListener("DOMContentLoaded", function() {
     </script>
     
     <style>
+    .container{
+        margin-left: 15%; margin-top: 80px; width: 950px; height: 475px;
+    }
+
     .container form{
     position: relative;
     margin-top: 16px;
@@ -364,6 +368,25 @@ label{
     text-align: center;
     margin-top: -15px;
 }
+
+@media screen and (min-width: 1310px){
+    .container{
+        margin-left: 14%;
+        margin-top: 8.5%;
+    }
+}
+
+@media screen and (min-width: 1331px){
+    .container{
+        margin-left: 13%;
+    }
+}
+
+@media screen and (min-width: 1360px) and (min-height: 768px) {
+        .container{
+            margin-top: 10%;
+        }
+    }
 
     </style>
 
