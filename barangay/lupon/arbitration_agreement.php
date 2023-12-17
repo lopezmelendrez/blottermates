@@ -11,6 +11,41 @@ if(!isset($email)){
 header('location: ../../index.php');
 }
 
+function displayPage($conn, $incident_case_number)
+{
+    // Check if the incident case number is found in the hearing table with hearing_type_status "arbitration"
+    $check_hearing_query = "SELECT * FROM hearing WHERE incident_case_number = '$incident_case_number' AND hearing_type_status = 'arbitration'";
+    $check_hearing_result = mysqli_query($conn, $check_hearing_query);
+
+    if ($check_hearing_result && mysqli_num_rows($check_hearing_result) > 0) {
+        // If incident_case_number is found in the hearing table with hearing_type_status "arbitration", check if it's not found in amicable_settlement and court_action
+
+        // Check if incident_case_number is not found in the amicable_settlement table
+        $check_amicable_query = "SELECT * FROM amicable_settlement WHERE incident_case_number = '$incident_case_number'";
+        $check_amicable_result = mysqli_query($conn, $check_amicable_query);
+
+        // Check if incident_case_number is not found in the court_action table
+        $check_court_action_query = "SELECT * FROM court_action WHERE incident_case_number = '$incident_case_number'";
+        $check_court_action_result = mysqli_query($conn, $check_court_action_query);
+
+        // Check if incident_case_number is not found in amicable_settlement and court_action
+        if ($check_amicable_result && mysqli_num_rows($check_amicable_result) == 0 &&
+            $check_court_action_result && mysqli_num_rows($check_court_action_result) == 0) {
+            // If all conditions are met, return true
+            return true;
+        }
+    }
+
+    // If the conditions are not met or there was an issue with the queries, return false
+    return false;
+}
+
+$incident_case_number = $_GET['incident_case_number'];
+
+if (!displayPage($conn, $incident_case_number)) {
+    header('location: hearings.php');
+}
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit'])) {
     $incident_case_number = $_POST['incident_case_number'];
     $signatureData = mysqli_real_escape_string($conn, $_POST["lupon_signature"]);

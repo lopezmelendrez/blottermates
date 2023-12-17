@@ -9,6 +9,38 @@ if (!isset($email)) {
     header('location: ../../index.php');
 }
 
+function displayPage($conn, $incident_case_number)
+{
+    // Check if the incident case number is found in the hearing table
+    $check_hearing_query = "SELECT * FROM hearing WHERE incident_case_number = '$incident_case_number'";
+    $check_hearing_result = mysqli_query($conn, $check_hearing_query);
+
+    if ($check_hearing_result && mysqli_num_rows($check_hearing_result) > 0) {
+        // If incident_case_number is found in the hearing table, check additional conditions
+
+        $hearing_row = mysqli_fetch_assoc($check_hearing_result);
+
+        // Check if incident_case_number is not found in the amicable_settlement table
+        $check_amicable_query = "SELECT * FROM amicable_settlement WHERE incident_case_number = '$incident_case_number'";
+        $check_amicable_result = mysqli_query($conn, $check_amicable_query);
+
+        // Check if the hearing_type_status is not "filed to court action"
+        if ($check_amicable_result && mysqli_num_rows($check_amicable_result) == 0 && $hearing_row['hearing_type_status'] != 'filed to court action') {
+            // If all conditions are met, return true
+            return true;
+        }
+    }
+
+    // If the conditions are not met or there was an issue with the queries, return false
+    return false;
+}
+
+$incident_case_number = $_GET['incident_case_number'];
+
+if (!displayPage($conn, $incident_case_number)) {
+    header('location: incident_reports.php');
+}
+
 $generate_hearing_value = '';
 $generate_summon_value = '';
 $notify_complainant_value = '';
