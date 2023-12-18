@@ -40,34 +40,65 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['image'])) {
     $output_file = $upload_directory . 'out.txt';
     $ocr_results = file_get_contents($output_file);
 
-
     $query = "SELECT complainant_first_name, complainant_last_name FROM incident_report WHERE incident_case_number = '$incident_case_number'";
     $result = mysqli_query($conn, $query);
-
+    
     if ($result) {
         $row = mysqli_fetch_assoc($result);
-
+    
         if ($row) {
-            $first_name = $row['complainant_first_name'];
-            $last_name = $row['complainant_last_name'];
-
-            if (stripos($ocr_results, $first_name) !== false && stripos($ocr_results, $last_name) !== false) {
-                echo "<p>OCR results contain the names: $first_name $last_name</p>";
-
+            $complainant_first_name = $row['complainant_first_name'];
+            $complainant_last_name = $row['complainant_last_name'];
+    
+            // Check if complainant names are found in OCR results
+            if (stripos($ocr_results, $complainant_first_name) !== false && stripos($ocr_results, $complainant_last_name) !== false) {
+                echo "<p>OCR results contain the complainant names: $complainant_first_name $complainant_last_name</p>";
+    
                 $redirect_url = "track_case_status.php?incident_case_number=" . urlencode($incident_case_number);
-    header("Location: $redirect_url");
-    exit(); 
+                header("Location: $redirect_url");
+                exit();
             } else {
                 $msg_error = "These credentials do not match our records.";
             }
         } else {
             echo "<p>No records found for the incident_case_number: $incident_case_number</p>";
         }
-
+    
         mysqli_free_result($result);
     } else {
-        echo "<p>Error executing query: " . mysqli_error($conn) . "</p>";
+        echo "<p>Error executing complainant query: " . mysqli_error($conn) . "</p>";
     }
+    
+    // Now check for the respondent separately
+    $respondent_query = "SELECT respondent_first_name, respondent_last_name FROM incident_report WHERE incident_case_number = '$incident_case_number'";
+    $respondent_result = mysqli_query($conn, $respondent_query);
+    
+    if ($respondent_result) {
+        $respondent_row = mysqli_fetch_assoc($respondent_result);
+    
+        if ($respondent_row) {
+            $respondent_first_name = $respondent_row['respondent_first_name'];
+            $respondent_last_name = $respondent_row['respondent_last_name'];
+    
+            // Check if respondent names are found in OCR results
+            if (stripos($ocr_results, $respondent_first_name) !== false && stripos($ocr_results, $respondent_last_name) !== false) {
+                echo "<p>OCR results contain the respondent names: $respondent_first_name $respondent_last_name</p>";
+    
+                $redirect_url = "track_case_status.php?incident_case_number=" . urlencode($incident_case_number);
+                header("Location: $redirect_url");
+                exit();
+            } else {
+                $msg_error = "These credentials do not match our records.";
+            }
+        } else {
+            echo "<p>No records found for the incident_case_number: $incident_case_number</p>";
+        }
+    
+        mysqli_free_result($respondent_result);
+    } else {
+        echo "<p>Error executing respondent query: " . mysqli_error($conn) . "</p>";
+    }
+    
 
     echo "</pre>";
 }

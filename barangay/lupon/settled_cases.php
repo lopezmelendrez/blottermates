@@ -223,7 +223,7 @@ if (mysqli_num_rows($select_hearing) > 0) {
 ?>
             <td>
             <?php if ($hearing_type_status === 'filed to court action'): ?>
-        <a href="casereport.php?incident_case_number=<?php echo $incident_case_number ?>" class="shownotices" style="width: 100%; padding: 4px 15px;">Details</a>
+        <a href="casereport_.php?incident_case_number=<?php echo $incident_case_number ?>" class="shownotices" style="width: 100%; padding: 4px 15px;">Details</a>
     <?php else: ?>
         <a href="case_report.php?incident_case_number=<?php echo $incident_case_number ?>" class="shownotices" style="width: 100%; padding: 4px 15px;">Details</a>
     <?php endif; ?>

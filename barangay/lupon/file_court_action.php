@@ -14,7 +14,7 @@ header('location: ../../index.php');
 function displayPage($conn, $incident_case_number)
 {
     // Check if the incident case number is found in the hearing table with hearing_type_status "filed to court action"
-    $check_hearing_query = "SELECT * FROM hearing WHERE incident_case_number = '$incident_case_number' AND hearing_type_status = 'filed to court action'";
+    $check_hearing_query = "SELECT * FROM hearing WHERE incident_case_number = '$incident_case_number'";
     $check_hearing_result = mysqli_query($conn, $check_hearing_query);
 
     if ($check_hearing_result && mysqli_num_rows($check_hearing_result) > 0) {
@@ -63,7 +63,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit'])) {
         $insert_result = mysqli_query($conn, $insert_query);
 
         if ($insert_result) {
-            header("Location: home.php");
+            $incident_case_number = $_POST['incident_case_number'];
+            echo '<script>';
+            echo 'window.open("http://localhost/barangay%20justice%20management%20system%2001/tcpdf/certification_to_file_action.php?incident_case_number=' . $incident_case_number . '", "_blank");';
+            echo 'window.location.href = "settled_cases.php";';
+            echo '</script>';
             exit;
         } else {
             // Insertion failed, handle the error accordingly

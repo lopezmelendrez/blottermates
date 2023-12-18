@@ -237,7 +237,8 @@ if (mysqli_num_rows($result) == 0) {
         if ($notifyRow && $executionRow === null) {
             echo '<p>-</p>';
         } elseif ($notifyRow && $executionRow !== null) {
-            echo 'VALIDATED';
+            echo '<span style="font-weight: 900; color: #0b6623;">
+            VALIDATED</span>';
         } else {
             echo '-';
         }

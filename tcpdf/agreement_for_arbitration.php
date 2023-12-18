@@ -63,14 +63,6 @@ if (!$incident_data) {
   die("Incident data not found");
 }
 
-$amicable_query = "SELECT * FROM `amicable_settlement` WHERE `incident_case_number` = '$incident_case_number'";
-$select_amicable = mysqli_query($conn, $amicable_query) or die('Amicable settlement query failed');
-$amicable_data = mysqli_fetch_assoc($select_amicable);
-
-if (!$amicable_data) {
-  die("Amicable settlement data not found");
-}
-
 $notify_query = "SELECT * FROM `notify_residents` WHERE `incident_case_number` = '$incident_case_number'";
 $select_notify = mysqli_query($conn, $notify_query) or die('Notify residents query failed');
 $notify_data = mysqli_fetch_assoc($select_notify);
@@ -87,10 +79,6 @@ $respondent_first_name = $incident_data['respondent_first_name'];
 $respondent_middle_name = $incident_data['respondent_middle_name'];
 $caseNo = $incident_data['incident_case_number'];
 $caseType = $incident_data['incident_case_type'];
-
-$date_agreed = $amicable_data['date_agreed'];
-$formatted_date_agreed = date('jS \of F Y', strtotime($date_agreed));
-$dateAgreedObj = new DateTime($date_agreed);
 
 $generated_arbitration_timestamp = $notify_data['generated_arbitration_timestamp'];
 $formatted_arbitration_date = date('jS \of F Y', strtotime($generated_arbitration_timestamp));
@@ -117,11 +105,6 @@ if ($day > 10 && $day < 20) {
 }
 return $day . $suffix;
 }
-
-$day = formatDay($dateAgreedObj->format('d'));
-$month = $dateAgreedObj->format('F');
-$year = $dateAgreedObj->format('Y'); 
-$agreement_description = $amicable_data['agreement_description'];
 
 $html = <<<EOD
 <style>
@@ -159,20 +142,18 @@ $html = <<<EOD
     <br>OFFICE OF LUPONG TAGAPAMAYAPA
 </div>
 
-  <div class="content-one">
-    <p>Barangay Case No. _______________</p>
-    <p>For : __________________________</p>
-  </div>
+<div class="content-one">
+<p>Barangay Case No. <u>$caseNo</u></p>
+<p>For : <u>$caseType</u></p>
+</div>
 
-  <div class="content-complainants">
-    <p>___________________________</p>
-    <p>___________________________</p>
-    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Complainant/s</p>
-    <p><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;--against--</p>
-    <p>___________________________</p>
-    <p>___________________________</p>
-    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Respondent/s</p>
-  </div>
+<div class="content-complainants">
+<u>$complainant_last_name, $complainant_first_name $complainant_middle_name</u>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Complainant</p>
+<p><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;--against--</p>
+<u>$respondent_last_name, $respondent_first_name $respondent_middle_name</u>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Respondent</p>
+</div>
 
 <br><br><br>
 <div class="content" style="text-align: center; font-weight: bold;">

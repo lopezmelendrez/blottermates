@@ -28,7 +28,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['selectedDate'])) {
             $existingTimes[] = $row['formatted_time'];
         }
 
-        $defaultTimeslots = array('8:00:00', '9:00:00', '10:00:00', '11:00:00', '13:00:00', '14:00:00', '15:00:00', '16:00:00', '17:00:00');
+        $defaultTimeslots = array('08:00:00', '09:00:00', '10:00:00', '11:00:00', '13:00:00', '14:00:00', '15:00:00', '16:00:00', '17:00:00');
 
         $availableTimes = array_diff($defaultTimeslots, $existingTimes);
 

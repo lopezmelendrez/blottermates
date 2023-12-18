@@ -63,14 +63,6 @@ if (!$incident_data) {
   die("Incident data not found");
 }
 
-$amicable_query = "SELECT * FROM `amicable_settlement` WHERE `incident_case_number` = '$incident_case_number'";
-$select_amicable = mysqli_query($conn, $amicable_query) or die('Amicable settlement query failed');
-$amicable_data = mysqli_fetch_assoc($select_amicable);
-
-if (!$amicable_data) {
-  die("Amicable settlement data not found");
-}
-
 $complainant_last_name = $incident_data['complainant_last_name'];
 $complainant_first_name = $incident_data['complainant_first_name'];
 $complainant_middle_name = $incident_data['complainant_middle_name'];
@@ -79,10 +71,6 @@ $respondent_first_name = $incident_data['respondent_first_name'];
 $respondent_middle_name = $incident_data['respondent_middle_name'];
 $caseNo = $incident_data['incident_case_number'];
 $caseType = $incident_data['incident_case_type'];
-
-$date_agreed = $amicable_data['date_agreed'];
-$formatted_date_agreed = date('jS \of F Y', strtotime($date_agreed));
-$dateAgreedObj = new DateTime($date_agreed);
 
 function formatDay($day) {
 $suffix = '';
@@ -107,10 +95,6 @@ if ($day > 10 && $day < 20) {
 return $day . $suffix;
 }
 
-$day = formatDay($dateAgreedObj->format('d'));
-$month = $dateAgreedObj->format('F');
-$year = $dateAgreedObj->format('Y'); 
-$agreement_description = $amicable_data['agreement_description'];
 $html = <<<EOD
 <style>
  

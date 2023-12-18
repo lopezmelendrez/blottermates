@@ -13,7 +13,7 @@ if(!isset($account_id)){
 header('location: ../index.php');
 }
 
-$query = "SELECT * FROM pb_accounts";
+$query = "SELECT * FROM pb_accounts ORDER BY created_at DESC";
 $result = mysqli_query($conn, $query);
 
 ?>
@@ -337,6 +337,10 @@ function confirmDisable() {
 
 </body>
 <style>
+
+body{
+    overflow-y: auto;
+}
 table {
             width: 1120px;
             border-collapse: collapse;

@@ -9,13 +9,13 @@ if (!isset($incident_case_number) || empty($incident_case_number)) {
     exit();
 }
 
-$referrer = $_SERVER['HTTP_REFERER'];
-$expected_referrer = 'http://localhost/barangay%20justice%20management%20system%2001/resident/track_case.php'; // Change this to your actual domain and path
+//$referrer = $_SERVER['HTTP_REFERER'];
+//$expected_referrer = 'http://localhost/barangay%20justice%20management%20system%2001/resident/track_case.php'; // Change this to your actual domain and path
 
-if (strpos($referrer, $expected_referrer) === false) {
-    header('Location: error_page.php');
-    exit();
-}
+//if (strpos($referrer, $expected_referrer) === false) {
+   // header('Location: error_page.php');
+    //exit();
+//}
 
 $select = mysqli_query($conn, "SELECT *
                                 FROM `incident_report`

@@ -70,7 +70,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit'])) {
                 $result = mysqli_query($conn, $update_query);
 
                 if ($result) {
-                    header("Location: arbitration_hearings.php");
+                    header("Location: conciliation_hearings.php");
                     exit;
                 } else {
                     echo "Error: " . mysqli_error($conn);

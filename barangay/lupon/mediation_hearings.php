@@ -179,7 +179,6 @@ header('location: ../../index.php');
 
         if ($current_time >= $date_of_hearing && $hearing_type_status == "mediation") {
             echo '<a href="settlement_page.php?incident_case_number=' . $incident_case_number . '" class="hearing-1" style="text-decoration: none; margin-left: 0%;">Hearing</a>';
-            echo '<a href="file_court_action.php?incident_case_number=' . $incident_case_number . '" class="filecourt-action" style="text-decoration: none; margin-left: 0%;">File Court Action</a>';
         } else {
             // Display an appropriate text for upcoming mediation hearings
             echo '<div class="upcoming-hearing">Upcoming Hearing</div>';

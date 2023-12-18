@@ -169,11 +169,11 @@ if (isset($_POST['submit'])) {
                     <div class="fields">
                         <div class="input-field-1">
                             <label class="required-label">First Name</label>
-                            <input type="text" name="first_name">
+                            <input type="text" onkeypress="return validateName(event)" name="first_name">
                         </div>
                         <div class="input-field-1">
                             <label class="required-label">Last Name</label>
-                            <input type="text" name="last_name">
+                            <input type="text" onkeypress="return validateName(event)" name="last_name">
                         </div>
                         <div class="input-field" style="width: 100%;">
                             <label class="required-label">Email Address</label>
@@ -262,6 +262,40 @@ if (isset($_POST['submit'])) {
     <script src="search_bar.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/signature_pad/1.5.3/signature_pad.min.js"></script>
     <script>
+        function validateName(event) {
+  var keyCode = event.keyCode;
+  var inputValue = event.target.value;
+
+  // Check if the length exceeds 20 characters
+  if (inputValue.length >= 20 && keyCode !== 8) {
+    event.preventDefault();
+    return false;
+  }
+
+  if (keyCode === 32) {
+    if (event.target.selectionStart === 0) {
+      event.preventDefault();
+      return false;
+    }
+  }
+
+  // Capitalize the first character
+  if (inputValue.length === 0 || inputValue.slice(0, event.target.selectionStart).trim() === '') {
+    event.target.value = inputValue.charAt(0).toUpperCase() + inputValue.slice(1);
+  }
+
+  if ((keyCode >= 65 && keyCode <= 90) || (keyCode >= 97 && keyCode <= 122)) {
+    return true;
+  }
+
+  if (keyCode === 32 || keyCode === 46 || keyCode === 45 || keyCode === 9) {
+    return true;
+  }
+
+  event.preventDefault();
+  return false;
+}
+
         document.addEventListener('DOMContentLoaded', function () {
     const barangayForm = document.getElementById('barangayForm');
     const createAccountBtn = document.getElementById('openModalBtn');

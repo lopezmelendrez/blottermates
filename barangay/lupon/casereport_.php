@@ -6,11 +6,13 @@ session_start();
 
 $email = $_SESSION['email_address'];
 
-if (!isset($email)) {
-    header('location: ../../index.php');
+
+if(!isset($email)){
+header('location: ../../index.php');
 }
 
 $generate_execution = '';
+
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['execution_submit'])) {
     $incident_case_number = $_POST['incident_case_number'];
@@ -29,13 +31,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['execution_submit'])) 
     }
 
     if ($result) {
-        header("Location: case_reportPage2.php?incident_case_number=$incident_case_number");
+        header("Location: incident_reports.php");
         exit;
     } else {
         echo "Error: " . mysqli_error($conn);
         exit;
     }
 }
+
 
 ?>
 
@@ -51,10 +54,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['execution_submit'])) 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css"/>
     <link rel="stylesheet" href="bootstrap/bootstrap-5.0.2-dist/css/bootstrap.min.css">
     <link rel="icon" type="image/x-icon" href="../../images/favicon.ico">
-    <title>Case Report Summary</title>
+    <title>Case Report</title>
 </head>
 <body>
-    
+
 <nav class="sidebar close">
         <header>
             <div class="image-text">
@@ -162,7 +165,6 @@ if ($fetch['barangay'] == 'Ibaba') {
 
     </nav>
 
-
     <section class="home">
         <div class="container">
         <?php
@@ -174,204 +176,60 @@ if ($fetch['barangay'] == 'Ibaba') {
             <div class="card-body">
                 <div class="d-flex justify-content-between align-items-center mb-3">
                 <header class="card-title" style="font-size: 18px;">Case Report Summary of Case #<?php echo htmlspecialchars(substr($incident_case_number, 0, 9)); ?></header>
-                    <span class="generate" onclick="showPDFPopup()" style="text-decoration: none;"><i class="fa-solid fa-file-pdf" style="margin-right: 5px;"></i>Generate PDF Forms</span>
-                    <p style="font-size: 15px; font-style: italic; margin-top: -5px;"><?php echo $fetch_cases['complainant_last_name'] ?> vs. <?php echo $fetch_cases['respondent_last_name'] ?></p>
+                    <p style="font-size: 15px; font-style: italic; margin-top: 10px;"><?php echo $fetch_cases['complainant_last_name'] ?> vs. <?php echo $fetch_cases['respondent_last_name'] ?></p>
                     <hr style="border: 1px solid #ccc; margin: 20px 0;">
                 </div>
             <form action="#">
-                <div class="form first">
+                <div class="form first" style="width: 855px;">
                     <div class="details personal">
                         <div class="fields">
-                        <span class="title" style="width: 100%; margin-top: -5px;">Hearing Information</span>
-                            <?php
-             $select = mysqli_query($conn, "SELECT * FROM `hearing` WHERE incident_case_number = '$incident_case_number'") or die('query failed');
-             if(mysqli_num_rows($select) > 0){
-                $fetch = mysqli_fetch_assoc($select);
-             }
-             $hearing_date = date('M j, Y', strtotime($fetch['date_of_hearing']));
-             $formatted_time = date('g:i A', strtotime($fetch['time_of_hearing']));
-             $hearing_status = $fetch['hearing_type_status'];
-            ?>
-                            <div class="input-field">
-                                <label class="label">Hearing Status</label>
+                            <div class="input-field-1">
+                                <label class="label">Complainant</label>
                                 <div class="text-box">
-                                    <p style="padding: 10px 0; text-transform: uppercase;"><?php echo $hearing_status ?></p></div>
+                                    <p style="padding: 10px 0"><?php echo $fetch_cases['complainant_last_name'] ?>, <?php echo $fetch_cases['complainant_first_name'] ?> <?php echo substr($fetch_cases['complainant_middle_name'], 0, 1) ?>.</p></div>
                             </div>
-                            <div class="input-field">
-                                <label class="label">Date of Hearing</label>
+                            <div class="input-field-1">
+                                <label class="label">Respondent</label>
                                 <div class="text-box">
-                                    <p style="padding: 10px 0"><?php echo $formatted_time ?> - <?php echo $hearing_date?></p></div>
+                                    <p style="padding: 10px 0"><?php echo $fetch_cases['respondent_last_name'] ?>, <?php echo $fetch_cases['respondent_first_name'] ?> <?php echo substr($fetch_cases['respondent_middle_name'], 0, 1) ?>.</p></div>
                             </div>
-                            <?php
-$select = mysqli_query($conn, "SELECT * FROM `amicable_settlement` WHERE `incident_case_number` = '$incident_case_number'") or die('query failed');
-if(mysqli_num_rows($select) > 0){
-    $fetch = mysqli_fetch_assoc($select);
-    $date_agreed = $fetch['date_agreed'];
-    $agreed_date = date("F j, Y", strtotime($date_agreed));
-    $agreement_description = $fetch['agreement_description'];
-} else {
-    $agreed_date = "NO SETTLEMENT YET";
-    $agreement_description = "NO SETTLEMENT YET";
-}
-?><div class="input-field">
-<label class="label">Date of Settlement</label>
-<div class="text-box">
-    <p style="padding: 10px 0"><?php echo $agreed_date ?></p></div>
-</div>
-<div class="input-field" style="width: 100%; position: relative;">
-<label class="label">Final Agreement</label>
-<div class="text-box">
-<p style="padding: 10px 0"><?php echo ucfirst($agreement_description); ?></p></div>
-</div>
-
-<span class="title" style="width: 100%;">Execution of Agreement</span>
-
+                            <span class="title" style="width: 100%;">Incident Description</span>
+                            <div class="input-field-1">
+                                <label class="label">Date Of Incident</label>
+                                <div class="text-box">
+                                    <p style="padding: 10px 0"><?php echo date('F d, Y', strtotime($fetch_cases['incident_date'])); ?></p></div>
+                            </div>
+                            <div class="input-field-1"">
+                                <label class="label">Date Reported</label>
+                                <div class="text-box">
+                                    <p style="padding: 10px 0"><?php echo date('F d, Y \— g:i A', strtotime($fetch_cases['created_at'])); ?></p></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="details ID">
+                        <div class="fields">
+                            <div class="input-field" style="width: 100%;">
+                                <label class="label">Description of Violation</label>
+                                <div class="text-box" style="height: 150px; margin-top: 8px;">
+                                    <p style="padding: 10px 0"><?php echo $fetch_cases['description_of_violation'] ?></p></div>
+                            </div>
                             
-<?php
-// Assuming you have a connection to the database ($conn)
-$generate_execution_query = "SELECT * FROM `notify_residents` WHERE incident_case_number = '$incident_case_number'";
-$generate_execution_result = mysqli_query($conn, $generate_execution_query);
-
-if ($generate_execution_result && mysqli_num_rows($generate_execution_result) > 0) {
-    $generate_execution_data = mysqli_fetch_assoc($generate_execution_result);
-    
-    // Check the value of generate_execution
-    $generate_execution_value = $generate_execution_data['generate_execution'];
-
-    if ($generate_execution_value == '' || strtolower($generate_execution_value) == 'not generated') {
-        // Display "PLEASE FILE A MOTION FIRST"
-        echo '<p class="file" style="padding: 10px 0">PLEASE GENERATE A MOTION FOR EXECUTION</p>';
-    } elseif ($generate_execution_value == 'form generated') {
-        // Check if there is data in the execution_notice table
-        $execution_query = "SELECT * FROM `execution_notice` WHERE incident_case_number = '$incident_case_number'";
-        $execution_result = mysqli_query($conn, $execution_query);
-
-        if ($execution_result && mysqli_num_rows($execution_result) > 0) {
-            // Display the fields from execution_notice
-            $execution_data = mysqli_fetch_assoc($execution_result);
-            ?>
-            
-            <span class="generate" style="font-size: 14px; text-align: center; margin-top: -3%;"><a href="../../tcpdf/notice_of_execution.php?incident_case_number=<?php echo $incident_case_number; ?>" target="_blank" style="text-decoration: none; cursor: pointer; color: white;">Generate KP Form #27</a></span>
-            <div class="input-field-1">
-                <label class="label">Date of Agreement Execution</label>
-                <div class="text-box">
-                <p style="padding: 10px 0"><?php echo date('F j, Y', strtotime($execution_data['execution_date'])); ?></p>
-                </div>
-            </div>
-
-            <div class="input-field-1">
-                <label class="label">Compliance Status</label>
-                <div class="text-box">
-                    <p style="padding: 10px 0"><?php echo $execution_data['compliance_status']; ?></p>
-                </div>
-            </div>
-
-            <div class="input-field" style="width: 100%; position: relative;">
-                <label class="label">Remarks</label>
-                <div class="text-box">
-                <p style="padding: 10px 0"><?php echo ucfirst($execution_data['remarks']); ?></p>
-                </div>
-            </div>
-            <?php
-        } else {
-            // Display "THE MOTION FOR EXECUTION IS SUBMITTED TO THE BARANGAY FOR VALIDATION"
-            echo '<p class="pending" style="padding: 10px 0">THE MOTION FOR EXECUTION IS SUBMITTED TO THE PUNONG BARANGAY FOR VALIDATION</p>';
-        }
-    }
-} else {
-    // No else block needed to display default content
-}
-?>
-
-
-
                         </div>
                         <div class="buttons" style="margin-top: -2%;">
-                            <a href="case_report.php?incident_case_number=<?php echo $incident_case_number ?>" style="text-decoration: none;">
-                            <div class="backBtn-1" style="padding: 12px 12px; width: 100px; border: 1px solid #bc1823; background: #fff; color: #bc1823; margin-left: 550%;">
-                                <span class="btnText" style="text-align: center;">Back</span>
-                            </div></a>
                             <a href="incident_reports.php" style="text-decoration: none;">
-                            <div class="backBtn-1" style="width: 600px; margin-left: 280%; padding: 12px 12px; ">
-                                <span class="btnText">See All Cases</span>
-                            </div>
-                            </a>
+                            <div class="backBtn-1" style="padding: 12px 12px; width: 600px; border: 1px solid #bc1823; background: #fff; color: #bc1823; margin-left: 327%;">
+                                <span class="btnText" style="text-align: center;">See All Cases</span>
+                            </div></a>
+                            
                         </div>
                         
                     </div> 
                 </div>
+
+                
                 
                 </form>
 
-                <div id="pdf_popup" class="popup">
-                <div class="close-icon" onclick="closePDFPopup()">
-                <i class='bx bxs-x-circle' ></i> <!-- Replace with the desired close icon -->
-    </div>
-            <center>
-            <div class="modal">
-            <h3 class="modal-title" style="font-size: 18px; text-align:center;">SELECT PDF TO GENERATE</h3>
-            <hr style="border: 1px solid #ebecf0; margin: 10px 0;">
-            <p style="font-size: 14px; text-align: left;">
-    Amicable Settlement Form (KP #16)
-    <a href="../../tcpdf/amicable_settlement_form.php?incident_case_number=<?php echo $incident_case_number; ?>" target="_blank" class="button" style="margin-left: 17.5%;">
-      Generate
-    </a>
-    <span class="printer-icon">
-      <i class='bx bxs-printer'></i>
-    </span>
-  </p>
-  <hr style="border: 1px solid #ccc; margin: 10px 0;">
-  <p style="font-size: 14px; text-align: left;">
-    Certification to File Action (KP #20)
-    <?php
-    $check_hearing_query = "SELECT * FROM `court_action` WHERE incident_case_number = '$incident_case_number'";
-    $check_hearing_result = mysqli_query($conn, $check_hearing_query);
-
-    if ($check_hearing_result && mysqli_num_rows($check_hearing_result) > 0) {
-        echo '
-            <a href="../../tcpdf/certification_to_file_action_form.php?incident_case_number=' . $incident_case_number . '" class="button" style="margin-left: 18%;">
-                Generate
-            </a>
-            <span class="printer-icon">
-                <i class="bx bxs-printer"></i>
-            </span>';
-    } else {
-        echo '<span class="button1" style="margin-left: 18%;">NOT APPLICABLE</span>';
-    }
-    ?>
-</p>
-  <hr style="border: 1px solid #ccc; margin: 10px 0;">
-  <form action="" method="post">
-  <input type="hidden" name="incident_case_number" value="<?php echo $incident_case_number; ?>">
-  <p style="font-size: 14px; text-align: left;">
-        Motion for Execution (KP #25)
-        <?php
-        $check_generation_query = "SELECT generate_execution FROM `notify_residents` WHERE incident_case_number = '$incident_case_number'";
-        $check_generation_result = mysqli_query($conn, $check_generation_query);
-
-        if ($check_generation_result && mysqli_num_rows($check_generation_result) > 0) {
-            $generation_data = mysqli_fetch_assoc($check_generation_result);
-
-            // If generate_execution is "form generated," display "NOT APPLICABLE"
-            if ($generation_data['generate_execution'] === 'form generated') {
-                echo '<span class="button1" style="margin-left: 26%;">NOT APPLICABLE</span>';
-            } else {
-                // If generate_execution is not "form generated," display the "Generate" button
-                echo '
-                    <input type="submit" name="execution_submit" class="button" value="Generate" style="border: none; cursor: pointer; margin-left: 26%;">
-                    <span class="printer-icon">
-                        <i class="bx bxs-printer"></i>
-                    </span>';
-            }
-        } else {
-            echo '<span class="button1" style="margin-left: 26%;">NOT APPLICABLE</span>';
-        }
-        ?>
-    </p>
-  </form>
-                            
-            </center>
-        </div>
 </div>
 
         </div>
@@ -381,72 +239,8 @@ if ($generate_execution_result && mysqli_num_rows($generate_execution_result) > 
     
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="search_bar.js"></script>
     <script>
-
-const searchIcon = document.querySelector('.search-box .icon');
-    const searchInput1 = document.getElementById('searchInput1');
-
-    searchIcon.addEventListener('click', function () {
-    const searchTerm = searchInput1.value.trim().toLowerCase();
-
-    if (searchTerm !== '') {
-        handleSearch(searchTerm);
-    }
-    });
-
-searchInput1.addEventListener('keyup', function (e) {
-    if (e.key === 'Enter') {
-        const searchTerm = searchInput1.value.trim().toLowerCase();
-
-        if (searchTerm !== '') {
-            handleSearch(searchTerm);
-        }
-    }
-});
-
-function handleSearch(searchTerm) {
-    const lowerCaseSearchTerm = searchTerm.trim().toLowerCase();
-
-    if (lowerCaseSearchTerm.startsWith('mediation') || lowerCaseSearchTerm.endsWith('mediation')) {
-        window.location.href = 'mediation_hearings.php';
-    } else if (lowerCaseSearchTerm === 'hearing' || lowerCaseSearchTerm === 'hearings') {
-        window.location.href = 'hearings.php';
-    } else if (lowerCaseSearchTerm.startsWith('incident')) {
-        window.location.href = 'incident_reports.php';
-    } else if (lowerCaseSearchTerm.startsWith('conciliation') || lowerCaseSearchTerm.endsWith('conciliation')) {
-        window.location.href = 'conciliation_hearings.php';
-    } else if (lowerCaseSearchTerm.startsWith('arbitration') || lowerCaseSearchTerm.endsWith('arbitration')) {
-        window.location.href = 'arbitration_hearings.php';
-    } else if (lowerCaseSearchTerm.startsWith('create') || lowerCaseSearchTerm.endsWith('create')) {
-        window.location.href = 'create_report.php';
-    } else if (lowerCaseSearchTerm.startsWith('ongoing') || lowerCaseSearchTerm.endsWith('ongoing')) {
-        window.location.href = 'ongoing_cases.php';
-    } else if (lowerCaseSearchTerm.startsWith('settled') || lowerCaseSearchTerm.endsWith('settled')) {
-        window.location.href = 'settled_cases.php';
-    } else if (lowerCaseSearchTerm.startsWith('incomplete') || lowerCaseSearchTerm.endsWith('incomplete')) {
-        window.location.href = 'incomplete_notices.php';
-    } else if (lowerCaseSearchTerm.startsWith('home') || lowerCaseSearchTerm.endsWith('home')) {
-        window.location.href = 'home.php';
-    } else if (lowerCaseSearchTerm.startsWith('account') || lowerCaseSearchTerm.endsWith('account')) {
-        window.location.href = 'my_account.php';
-    } else if (lowerCaseSearchTerm.startsWith('profile') || lowerCaseSearchTerm.endsWith('profile')) {
-        window.location.href = 'my_account.php';
-    }  else {
-    searchInput1.value = `'${searchTerm.charAt(0).toUpperCase() + searchTerm.slice(1)}' was not found`;
-    }
-}
-
-function restrictInput(input) {
-
-// Remove special characters and numbers
-input.value = input.value.replace(/[^a-zA-Z\s]/g, '');
-
-// Restrict spacebar only if it's the first character
-if (input.value.length > 0 && input.value[0] === ' ') {
-  input.value = input.value.substring(1); // Remove the leading space
-}
-}
-
         const body = document.querySelector('body'),
         sidebar = body.querySelector('nav'),
         toggle = body.querySelector(".toggle"),
@@ -663,21 +457,6 @@ if (input.value.length > 0 && input.value[0] === ' ') {
       font-size: 14px;
     }
 
-    .button1 {
-      display: inline-block;
-      background-color: #fff;
-      border: 1px solid #007bff;
-      color: #007bff;
-      padding: 8px;
-      width: 120px;
-      text-decoration: none;
-      border-radius: 5px;
-      font-size: 12.5px;
-      font-weight: 500;
-      text-align: center;
-      cursor: default;
-    }
-
     /* Style the printer icon with a blue border and white background */
     .printer-icon {
       display: inline-block;
@@ -716,32 +495,6 @@ if (input.value.length > 0 && input.value[0] === ' ') {
     margin: 8px 0;
 }
 
-.pending{
-    background: #F5BE1D;
-    width: 80%;
-    text-align: center;
-    border-radius: 5px;
-    color: #fff;
-    font-weight: 500;
-    margin-left: 10%;
-    margin-top: 4%;
-    margin-bottom: 5%;
-    font-size: 22px;
-}
-
-.file{
-    background: #bc1823;
-    width: 80%;
-    text-align: center;
-    border-radius: 5px;
-    color: #fff;
-    font-weight: 500;
-    margin-left: 10%;
-    margin-top: 4%;
-    margin-bottom: 5%;
-    font-size: 22px;
-}
-
 @media screen and (min-width: 1310px){
             .close-icon{
                 left: 870px;
@@ -750,7 +503,7 @@ if (input.value.length > 0 && input.value[0] === ' ') {
                 margin-top: 3%;
             }
         }
-       
+
         @media screen and (min-width: 1331px){
             .close-icon{
                 left: 895px;

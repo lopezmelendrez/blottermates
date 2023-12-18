@@ -307,7 +307,7 @@ if ($fetch['barangay'] == 'Ibaba') {
             <div class="modal">
             <h3 class="modal-title" style="font-size: 18px; text-align:center;">ARE YOU SURE?</h3>
             <hr style="border: 1px solid #ccc; margin: 10px 0;">
-            <p style="font-size: 18px; text-align: center; margin-top: 10%;">By clicking the "Confirm" button, you will initiate the progression of the CONCILIATION record into the ARBITRATION process.</p>
+            <p style="font-size: 18px; text-align: center; margin-top: 3%;">By clicking the "Confirm" button, you will initiate the progression of the CONCILIATION record into the ARBITRATION process.</p>
             <hr style="border: 1px solid #ccc; margin: 10px 0;">
             <div class="button-container" style="display: flex;">
             <button class="backBtn" onclick="closeArbitrationPopup()" style="width: 150px; padding: 12px 12px; font-weight: 600; background: #fff; border: 1px solid #bc1823; color: #bc1823; margin-left: 170px;">CANCEL</button>
@@ -325,7 +325,8 @@ if ($fetch['barangay'] == 'Ibaba') {
             <div class="modal">
             <h3 class="modal-title" style="font-size: 18px; text-align:center;">ARE YOU SURE?</h3>
             <hr style="border: 1px solid #ccc; margin: 10px 0;">
-            <p style="font-size: 18px; text-align: center; margin-top: 10%;">By clicking the "Confirm" button, you will initiate the progression of the CONCILIATION record to "File Court Action".</p>
+            <p style="font-size: 18px; text-align: center; margin-top: 3%;">By clicking the "Confirm" button, you will initiate the progression of the CONCILIATION record to "File Court Action".</p>
+            <hr style="border: 1px solid #ccc; margin: 10px 0;">
             <div class="button-container" style="display: flex;">
             <button class="backBtn" onclick="closeCourtActionPopup()" style="width: 150px; padding: 12px 12px; font-weight: 600; background: #fff; border: 1px solid #bc1823; color: #bc1823; margin-left: 180px;">NO</button>
                 <form action="" method="post">
@@ -341,10 +342,10 @@ if ($fetch['barangay'] == 'Ibaba') {
             <center>
             <div class="modal" style="width: 600px; height: 270px;">
             <h3 class="modal-title" style="font-size: 18px; text-align:center;">CONCILIATION HEARING</h3>
-            <hr style="border: 1px solid #ccc; margin: 10px 0;">
-            <p style="font-size: 17px; text-align: center; margin-top: 4%; margin-bottom: 4%; letter-spacing: 1; text-transform: uppercase;">Would you like to proceed with the creation of the Settlement record, or reschedule the hearing?</p>
-            <hr style="border: 1px solid #ccc; margin: 10px 0;">
-            <div class="button-container" style="display: flex;">
+            <hr style="border: 1px solid #ccc; margin: 25px 0;">
+            <p style="font-size: 17px; text-align: center; margin-top: 5%; margin-bottom: 5%; letter-spacing: 1; text-transform: uppercase;">Would you like to proceed or reschedule the hearing?</p>
+            <hr style="border: 1px solid #ccc; margin: 25px 0;">
+            <div class="button-container" style="display: flex; margin-top: -3%;">
             <a href="change_schedule.php?incident_case_number=<?php echo $incident_case_number; ?>" style="text-decoration: none;">
             <button class="backBtn" style="width: 150px; padding: 12px 12px; font-weight: 600; background: #fff; border: 1px solid #bc1823; color: #bc1823; margin-left: 120px; font-size: 19px;">RESCHEDULE</button>
             </a>    

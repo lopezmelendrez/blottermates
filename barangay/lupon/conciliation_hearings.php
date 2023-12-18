@@ -27,7 +27,7 @@ $generate_pangkat = '';
     <link href="https://cdn.jsdelivr.net/npm/fullcalendar@5.9.0/main.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.9.0/main.js"></script>
     <link rel="icon" type="image/x-icon" href="../../images/favicon.ico">
-    <title>Mediation Hearings</title>
+    <title>Conciliation Hearings</title>
 </head>
 <body>
 
@@ -204,12 +204,11 @@ $generate_pangkat = '';
         if ($date_of_hearing && $time_of_hearing) {
             if ($current_time >= $date_of_hearing && $hearing_type_status == "conciliation") {
                 echo '<a href="conciliation_settlement_page.php?incident_case_number=' . $incident_case_number . '" class="hearing-1" style="text-decoration: none; margin-left: 0%;">Hearing</a>';
-                echo '<a href="file_court_action.php?incident_case_number=' . $incident_case_number . '" class="filecourt-action" style="text-decoration: none; margin-left: 0%;">File Court Action</a>';
             } else {
                 echo '<div class="upcoming-hearing">Upcoming Hearing</div>';
             }
         } else {
-            echo '<a href="hearingschedule.php?incident_case_number=' . $incident_case_number . '" class="schedule">SET HEARING SCHEDULE</a>';
+            echo '<a href="hearingschedule_.php?incident_case_number=' . $incident_case_number . '" class="schedule">SET HEARING SCHEDULE</a>';
         }
     }
 ?>

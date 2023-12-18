@@ -114,7 +114,7 @@ if (!$result) {
     <div class="sort-filter-box">Sort By:</div>
     <form id="sortForm" action="" method="get" onchange="redirectToSortedPage()">
         <select id="sort" name="sort">
-        <option value="oldest">From Oldest to Latest</option>
+            <option value="oldest">From Oldest to Latest</option>
             <option value="latest">From Latest to Oldest</option>
         </select>
     </form>
@@ -270,7 +270,7 @@ while ($row = mysqli_fetch_assoc($result)) {
                 echo '<span class="forms" style="text-decoration: none; width: 90%; margin-left: 6%; cursor: default">Create Notice Form(s)</span>';
             } else {
                 if (date('Y-m-d', $current_time) == date('Y-m-d', $date_of_hearing)) {
-                    echo '<a href="conciliation_settlement_page.php?incident_case_number=' . $row['incident_case_number'] . '" class="shownotices" style="text-decoration: none; width: 90%; margin-left: 6%;">Hearing</a>';
+                    echo '<a href="conciliation_settlement_page.php?incident_case_number=' . $row['incident_case_number'] . '" class="shownotices" style="text-decoration: none; width: 90%; margin-left: 6%;">Go To Hearing</a>';
                 } else {
                     echo '<span class="forms" style="text-decoration: none; width: 90%; margin-left: 6%; cursor: default;">Upcoming Hearing</span>';
                 }
@@ -283,7 +283,7 @@ while ($row = mysqli_fetch_assoc($result)) {
         if ($select_arbitration_agreement && mysqli_num_rows($select_arbitration_agreement) > 0) {
             // Check if the arbitration date is in the future
             if (date('Y-m-d', $current_time) < date('Y-m-d', $date_of_hearing)) {
-                echo '<span class="shownotices" style="text-decoration: none;">Upcoming Hearing</span>';
+                echo '<span class="forms" style="text-decoration: none; width: 90%; margin-left: 6%; cursor: default;">Upcoming Hearing</span>';
             } else {
                 echo '<a href="arbitration_settlement_page.php?incident_case_number=' . $row['incident_case_number'] . '" class="shownotices" style="text-decoration: none;">Go to Hearing</a>';
             }
@@ -304,7 +304,7 @@ while ($row = mysqli_fetch_assoc($result)) {
                 echo '<span class="forms" style="text-decoration: none; width: 90%; margin-left: 6%; cursor: default">Create Notice Form(s)</span>';
             } else {
                 if (date('Y-m-d', $current_time) == date('Y-m-d', $date_of_hearing)) {
-                    echo '<a href="mediation_settlement_page.php?incident_case_number=' . $row['incident_case_number'] . '" class="shownotices" style="text-decoration: none; width: 90%; margin-left: 6%;">Hearing</a>';
+                    echo '<a href="settlement_page.php?incident_case_number=' . $row['incident_case_number'] . '" class="shownotices" style="text-decoration: none; width: 90%; margin-left: 6%;">Go To Hearing</a>';
                 } else {
                     echo '<span class="forms" style="text-decoration: none; width: 90%; margin-left: 6%; cursor: default;">Upcoming Hearing</span>';
                 }
