@@ -212,7 +212,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit'])) {
 $(function () {
     $("#datepicker").datepicker({
         dateFormat: 'yy-mm-dd',
-        minDate: 0,
+        minDate: '+1d', 
         maxDate: '+3w',
         beforeShowDay: function (date) {
             var day = date.getDay();
