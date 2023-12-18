@@ -18,8 +18,7 @@ function displayPage($conn, $incident_case_number)
     $check_incident_report_result = mysqli_query($conn, $check_incident_report_query);
 
     if ($check_incident_report_result && mysqli_num_rows($check_incident_report_result) > 0) {
-        $check_hearing_query = "SELECT * FROM hearing WHERE incident_case_number = '$incident_case_number'";
-        $check_hearing_result = mysqli_query($conn, $check_hearing_query);
+        // Remove the check for hearing data
 
         // Check if incident_case_number is not found in the amicable_settlement table
         $check_amicable_query = "SELECT * FROM amicable_settlement WHERE incident_case_number = '$incident_case_number'";
@@ -29,9 +28,8 @@ function displayPage($conn, $incident_case_number)
         $check_court_action_query = "SELECT * FROM court_action WHERE incident_case_number = '$incident_case_number'";
         $check_court_action_result = mysqli_query($conn, $check_court_action_query);
 
-        // Check if there's no data in hearing, amicable_settlement, and court_action
-        if (mysqli_num_rows($check_hearing_result) == 0 &&
-            $check_amicable_result && mysqli_num_rows($check_amicable_result) == 0 &&
+        // Check if there's no data in amicable_settlement and court_action
+        if ($check_amicable_result && mysqli_num_rows($check_amicable_result) == 0 &&
             $check_court_action_result && mysqli_num_rows($check_court_action_result) == 0) {
             // If all conditions are met, return true
             return true;
@@ -47,6 +45,7 @@ $incident_case_number = $_GET['incident_case_number'];
 if (!displayPage($conn, $incident_case_number)) {
     header('location: incident_reports.php');
 }
+
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit'])) {
 

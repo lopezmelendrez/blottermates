@@ -63,7 +63,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit'])) {
 
         $insert_result = mysqli_query($conn, $insert_query);
 
-        if ($result) {
+        if ($insert_result) {
             $incident_case_number = $_POST['incident_case_number'];
             echo '<script>';
             echo 'window.open("http://localhost/barangay%20justice%20management%20system%2001/tcpdf/agreement_for_arbitration.php?incident_case_number=' . $incident_case_number . '", "_blank");';
