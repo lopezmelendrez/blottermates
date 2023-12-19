@@ -1,98 +1,132 @@
 <?php
 
+include '../config.php';
 
-// Include the main TCPDF library (search for installation path).
 require_once('tcpdf.php');
 require_once('tcpdf_autoconfig.php');
-
-// create new PDF document
 $pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
 
-
-// set document information
 $pdf->SetCreator(PDF_CREATOR);
 $pdf->SetAuthor('PUP Santa Rosa Branch');
 $pdf->SetTitle('KP # 18 : NOTICE OF HEARING FOR COMPLAINANT');
-
-
-
-
-// set default header data
 $pdf->SetHeaderData(PDF_HEADER_LOGO, PDF_HEADER_LOGO_WIDTH, PDF_HEADER_TITLE , PDF_HEADER_STRING, array(255,255,255), array(255,255,255));
 $pdf->setFooterData(array(255,255,255), array(255,255,255));
-
-
-
-// set header and footer fonts
 $pdf->setHeaderFont(Array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
 $pdf->setFooterFont(Array(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA));
-
-
-// set default monospaced font
 $pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
-
-
-// set margins
 $pdf->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
 $pdf->SetHeaderMargin(PDF_MARGIN_HEADER);
 $pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
-
-
-// set auto page breaks
 $pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
-
-
-// set image scale factor
 $pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
 
-
-// set some language-dependent strings (optional)
 if (@file_exists(dirname(__FILE__).'/lang/eng.php')) {
     require_once(dirname(__FILE__).'/lang/eng.php');
     $pdf->setLanguageArray($l);
 }
 
-
-// ---------------------------------------------------------
-
-
-// set default font subsetting mode
 $pdf->setFontSubsetting(true);
-
-
-// Set font
-// dejavusans is a UTF-8 Unicode font, if you only need to
-// print standard ASCII chars, you can use core fonts like
-// helvetica or times to reduce file size.
 $pdf->SetFont('times', '', 4, '', true);
-
-
-// Add a page
-// This method has several options, check the source code documentation for more information.
 $pdf->AddPage();
 
-    // Set default values or handle the case when the form is not submitted
-    
-    $complainant = "Nagrereklamo 1<br>Nagrereklamo 2";
-    $defendant = "Inerereklamo 1<br>Inerereklamo 2";
-    $caseNo = "12345";
-    $caseType = "Utang";
-    $month = date('F');
-    $date = date ('d'); 
-    $year = date('Y'); 
-    $pangkat_secretary = "Jaimie Lopez";
-    $attested  = "Mary Anne Matos";
-    $pangkat_chairman = "Anna Michaella Mangahis";
-    $signature_image_path = "../images/sign1.jpg";
-    $logo_image_path1 = "../images/ibaba.jpg";
-    $logo_image_path2 = "../images/ibaba.jpg";
-    $petsa = date('m-d-Y');
-    $araw = date('l');
-    $space = "  ";
-    $time = "12:00 PM";
+if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['incident_case_number'])) {
+  $incident_case_number = $_GET['incident_case_number'];
+} else {
+  header("Location: ../lupon/home.php");
+  exit;
+}
 
+$select_incident = mysqli_query($conn, "SELECT * FROM `incident_report` WHERE `incident_case_number` = '$incident_case_number'") or die('query failed');
+$incident_data = mysqli_fetch_assoc($select_incident);
+
+// Check if data was fetched successfully
+if ($incident_data) {
+    $complainant_last_name = $incident_data['complainant_last_name'];
+    $complainant_first_name = $incident_data['complainant_first_name'];
+    $complainant_middle_name = $incident_data['complainant_middle_name'];
+    $respondent_last_name = $incident_data['respondent_last_name'];
+    $respondent_first_name = $incident_data['respondent_first_name'];
+    $respondent_middle_name = $incident_data['respondent_middle_name'];
+    $caseNo = $incident_data['incident_case_number'];
+    $caseType = $incident_data['incident_case_type'];
+    $description_of_violation = $incident_data['description_of_violation'];
+    $incident_date = $incident_data['incident_date'];
+if ($incident_data['incident_case_type'] === "Other") {
+  $caseType = $incident_data['other_incident_case_type'];
+}
+    // Create a DateTime object from the incident date
+    $dateObj = new DateTime($incident_date);
     
-// Set some content to print
+    // Extract day, month, and year
+    $day = $dateObj->format('d');
+    $month = $dateObj->format('F');
+    $year = $dateObj->format('Y');
+    
+    $formattedDate = "Made this $day day of $month, $year";
+
+   
+    // Add other fields as needed
+} else {
+    // Handle the case when incident data is not found, e.g., redirect back to the dashboard or show an error message.
+    // Replace the following line with your preferred error handling code.
+    die("Incident data not found");
+}
+
+// New code to fetch hearing data of the from hearing table
+$hearing_query = "SELECT * FROM `hearing` WHERE `incident_case_number` = '$incident_case_number'";
+$select_hearing = mysqli_query($conn, $hearing_query) or die('Signature query failed');
+$hearing_data = mysqli_fetch_assoc($select_hearing);
+
+if (!$hearing_data) {
+  die("Signature data not found");
+}
+
+
+$date_of_hearing = $hearing_data["date_of_hearing"];
+$time_of_hearing = $hearing_data["time_of_hearing"];
+$hearing_type_status = $hearing_data["hearing_type_status"];
+$timestamp = $hearing_data["timestamp"];
+$schedule_change_timestamp = $hearing_data["schedule_change_timestamp"];
+$conciliation_timestamp = $hearing_data["conciliation_timestamp"];
+$arbitration_timestamp = $hearing_data["arbitration_timestamp"];
+
+$newdateObj = new DateTime($date_of_hearing);
+    
+// Extract day, month, and year
+$day = $dateObj->format('d');
+$month = $dateObj->format('F');
+$year = $dateObj->format('Y');
+
+$formattedDate = "Made this $day day of $month, $year";
+
+
+
+$pb_id = $incident_data ['pb_id'];
+// New code to fetch barangay from pb_account table
+$barangay_query = "SELECT * FROM `pb_accounts` WHERE `pb_id` = '$pb_id'";
+$select_barangay = mysqli_query($conn, $barangay_query) or die('Barangay query failed');
+$barangay_data = mysqli_fetch_assoc($select_barangay);
+
+if (!$barangay_data) {
+  die("Barangay data not found for pb_id: $pb_id");
+}
+
+$barangay = $barangay_data['barangay'];
+$barangay_captain = $barangay_data['barangay_captain'];
+
+
+// New code to fetch signature of the barangay captain from lupon_accounts table
+$captainSign_query = "SELECT * FROM `lupon_accounts` WHERE `pb_id` = '$pb_id'";
+$select_captainSign = mysqli_query($conn, $captainSign_query) or die('Signature query failed');
+$captain_data = mysqli_fetch_assoc($select_captainSign);
+
+if (!$captain_data) {
+  die("Signature data not found for pb_id: $pb_id");
+}
+
+$captainSign = $captain_data ['signature_image'];
+
+
 $html = <<<EOD
 <style>
  
@@ -118,31 +152,40 @@ $html = <<<EOD
   margin-top: 10px;
   text-align: left;
 }
+td {
+  font-size: 12px;
+  text-align: center;
+  text-indent: -0.5em;
+}
 
 </style>
-
 <div class="header">
     Republic of the Philippines
-    <br>Province of 
-    <br>CITY/MUNICIPALITY OF
-    <br>Barangay 
+    <br>Province of Laguna
+    <br>CITY/MUNICIPALITY OF SANTA ROSA
+    <br>Barangay $barangay
     <br>OFFICE OF LUPONG TAGAPAMAYAPA
 </div>
 
   <div class="content-one">
-    <p>Barangay Case No. _______________</p>
-    <p>For : __________________________</p>
+    <p>Barangay Case No. <u>$caseNo</u></p>
+    <p>For : <u>$caseType</u></p>
   </div>
 
-  <div class="content-complainants">
-    <p>___________________________</p>
-    <p>___________________________</p>
-    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Complainant/s</p>
-    <p><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;--against--</p>
-    <p>___________________________</p>
-    <p>___________________________</p>
-    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Respondent/s</p>
-  </div>
+  <table style="width:30%;">
+  <tbody>
+      <tr>
+          <td>
+              <u>$complainant_last_name, $complainant_first_name $complainant_middle_name</u>
+              <p>Complainant</p>
+              <p><b>--against--</b></p>
+              <u>$respondent_last_name, $respondent_first_name $respondent_middle_name</u>
+              <p>Respondent</p>
+          </td>
+      </tr>
+  </tbody>
+</table>
+
 
 <br><br><br>
 <div class="content" style="text-align: center; font-weight: bold;">
@@ -151,15 +194,15 @@ $html = <<<EOD
 </div>
 
 <div class="content-complainants">  
-  <br>TO:_______________
-  <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Complainants
+  <br>TO:<u>$complainant_last_name, $complainant_first_name $complainant_middle_name</u>
+  <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Complainant
 </div>
   
 <div class="content" style="text-align: justify;">
-<br>You are hereby required to appear before me/the Pangkat on the ______ day
-of _________, 19____, at ________ o’clock in the morning/afternoon to
+<br>You are hereby required to appear before me/the Pangkat on the ___ day
+of ____, ____, at ________ o’clock in the morning/afternoon to
 explain why you failed to appear for mediation/conciliation scheduled on
-_____________, 19____ and why your complaint should not be dismissed, a
+____ day of ______, ______ and why your complaint should not be dismissed, a
 certificate to bar the filing of your action on court/government office should
 not be issued, and contempt proceedings should not be initiated in court for
 willful failure or refusal to appear before the Punong Barangay/Pangkat ng
@@ -169,16 +212,15 @@ Tagapagkasundo.
 
 <div class="content" style="text-align: left">
 <br>This ________ day of ___________, 19____.
-<br><br>_____________________________
+<br><br><u>$barangay_captain</u>
 <br>Punong Barangay/Pangkat Chairman
 <br>(Cross out whichever is not applicable)
 <br><br>Notified this _________ day of ________, 19_____.
-<br><br>Complainant/s
-<br>__________________
-<br>__________________
-<br>Respondent/s
-<br>__________________
-<br>__________________
+<br><br>Complainant
+<br><u>$complainant_last_name, $complainant_first_name $complainant_middle_name</u>
+<br><br>Respondent
+<br><u>$respondent_last_name, $respondent_first_name $respondent_middle_name.</u>
+
 </div>
 
 </body>

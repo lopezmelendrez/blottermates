@@ -251,7 +251,7 @@ if ($fetch['barangay'] == 'Ibaba') {
   <hr style="border: 1px solid #ccc; margin: 10px 0;">
   <p style="font-size: 14px; text-align: left;">
     Hearing Notice for Complainant (KP #18)
-    <a href="your-link-here" class="button" style="margin-left: 10%;">
+    <a href="../../tcpdf/Kp18.php?incident_case_number=<?php echo $incident_case_number; ?>" class="button" style="margin-left: 10%;">
       Generate
     </a>
     <span class="printer-icon">
@@ -261,7 +261,7 @@ if ($fetch['barangay'] == 'Ibaba') {
   <hr style="border: 1px solid #ccc; margin: 10px 0;">
   <p style="font-size: 14px; text-align: left;">
     Hearing Notice for Respondent (KP #19)
-    <a href="your-link-here" class="button" style="margin-left: 12%;">
+    <a href="../../tcpdf/Kp19.php?incident_case_number=<?php echo $incident_case_number; ?>" class="button" style="margin-left: 12%;">
       Generate
     </a>
     <span class="printer-icon">
