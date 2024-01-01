@@ -130,14 +130,14 @@ $result = mysqli_query($conn, $query);
                     letter-spacing: 1;
                     text-transform: uppercase;">No Registered Barangay Accounts Found</div>';
                 } else {
-                    echo '<table>';
+                    echo '<table style="margin-top: -1%;">';
                     echo '<thead>';
                     echo '<tr>';
-                    echo '<th>Barangay Captain</th>';
-                    echo '<th>Email Address</th>';
+                    echo '<th style="padding: 14px;">Barangay Captain</th>';
+                    echo '<th style="padding: 14px;">Email Address</th>';
                     echo '<th style="padding: 13px;">Status</th>';
                     echo '<th style="padding: 14px;">Created At</th>';
-                    echo '<th>Actions</th>';
+                    echo '<th style="padding: 14px;">Actions</th>';
                     echo '</tr>';
                     echo '</thead>';
                     echo '<tbody>';
