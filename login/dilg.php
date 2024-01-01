@@ -1,48 +1,58 @@
 <?php
 session_start();
 
-include '../config.php'; 
+include '../config.php';
 
-$max_attempts = 3; 
-$lockout_duration = 900; 
+$max_attempts = 3;
+$lockout_duration = 900;
 
-function getLoginAttempts($conn, $email) {
-    $query = "SELECT login_attempts FROM account WHERE email_address = '" . $email . "'";
-    $result = mysqli_query($conn, $query);
-    $row = mysqli_fetch_assoc($result);
+function getLoginAttempts($conn, $email)
+{
+    $query = "SELECT login_attempts FROM account WHERE email_address = ?";
+    $stmt = mysqli_prepare($conn, $query);
+    mysqli_stmt_bind_param($stmt, "s", $email);
+    mysqli_stmt_execute($stmt);
+    mysqli_stmt_bind_result($stmt, $attempts);
+    mysqli_stmt_fetch($stmt);
+    mysqli_stmt_close($stmt);
 
-    if ($row) {
-        return (int) $row['login_attempts'];
-    }
-    return $row ? (int) $row['login_attempts'] : 0;
+    return $attempts ? (int)$attempts : 0;
 }
 
-function updateLoginAttempts($conn, $email, $attempts) {
-    $query = "UPDATE account SET login_attempts = " . $attempts . " WHERE email_address = '" . $email . "'";
-    mysqli_query($conn, $query);
-
+function updateLoginAttempts($conn, $email, $attempts)
+{
+    $query = "UPDATE account SET login_attempts = ? WHERE email_address = ?";
+    $stmt = mysqli_prepare($conn, $query);
+    mysqli_stmt_bind_param($stmt, "is", $attempts, $email);
+    mysqli_stmt_execute($stmt);
+    mysqli_stmt_close($stmt);
 }
 
-function getLastFailedAttemptTimestamp($conn, $email) {
-    $query = "SELECT last_failed_attempt FROM account WHERE email_address = '" . $email . "'";
-    $result = mysqli_query($conn, $query);
-    $row = mysqli_fetch_assoc($result);
+function getLastFailedAttemptTimestamp($conn, $email)
+{
+    $query = "SELECT last_failed_attempt FROM account WHERE email_address = ?";
+    $stmt = mysqli_prepare($conn, $query);
+    mysqli_stmt_bind_param($stmt, "s", $email);
+    mysqli_stmt_execute($stmt);
+    mysqli_stmt_bind_result($stmt, $timestamp);
+    mysqli_stmt_fetch($stmt);
+    mysqli_stmt_close($stmt);
 
-    if ($row) {
-        return strtotime($row['last_failed_attempt']);
-    }
-
-    return $row ? strtotime($row['last_failed_attempt']) : 0;
+    return $timestamp ? strtotime($timestamp) : 0;
 }
 
-function updateLastFailedAttemptTimestamp($conn, $email, $timestamp) {
+function updateLastFailedAttemptTimestamp($conn, $email, $timestamp)
+{
     $formattedTimestamp = date('Y-m-d H:i:s', $timestamp);
-    $query = "UPDATE account SET last_failed_attempt = '" . $formattedTimestamp . "' WHERE email_address = '" . $email . "'";
-    mysqli_query($conn, $query);
-
+    $query = "UPDATE account SET last_failed_attempt = ? WHERE email_address = ?";
+    $stmt = mysqli_prepare($conn, $query);
+    mysqli_stmt_bind_param($stmt, "ss", $formattedTimestamp, $email);
+    mysqli_stmt_execute($stmt);
+    mysqli_stmt_close($stmt);
 }
 
-function resetLoginAttemptsIfNeeded($conn, $email, $lockout_duration) {
+function resetLoginAttemptsIfNeeded($conn, $email, $lockout_duration)
+{
     $lastFailedAttemptTimestamp = getLastFailedAttemptTimestamp($conn, $email);
     $currentTimestamp = time();
     $timeElapsed = $currentTimestamp - $lastFailedAttemptTimestamp;
@@ -50,16 +60,9 @@ function resetLoginAttemptsIfNeeded($conn, $email, $lockout_duration) {
     if ($timeElapsed >= $lockout_duration) {
         updateLoginAttempts($conn, $email, 0);
     }
-
-    $lastFailedAttemptTimestampPB = getLastFailedAttemptTimestamp($conn, $email);
-    $timeElapsedPB = $currentTimestamp - $lastFailedAttemptTimestampPB;
-
-    if ($timeElapsedPB >= $lockout_duration) {
-        updateLoginAttempts($conn, $email, 0);
-    }
 }
 
-if(isset($_POST['submit'])){
+if (isset($_POST['submit'])) {
     $email = mysqli_real_escape_string($conn, $_POST['email_address']);
     $password = mysqli_real_escape_string($conn, $_POST['password']);
 
@@ -77,35 +80,35 @@ if(isset($_POST['submit'])){
             $msg_error = "Maximum Attempts Reached. Retry in " . $remainingTimeMinutes . " minutes.";
         }
     } else {
-    
-    
-    $query = "SELECT * FROM account WHERE email_address = '$email' AND account_role = 'DILG'";
-    $result = mysqli_query($conn, $query);
-    
-    if(mysqli_num_rows($result) == 1){
-        $row = mysqli_fetch_assoc($result);
-        
-        
-        if(password_verify($password, $row['password'])){
-            $_SESSION['account_id'] = $row['account_id']; 
-            $_SESSION['first_name'] = $row['first_name'];
-            $_SESSION['last_name'] = $row['last_name'];
-            $_SESSION['account_role'] = $row['account_role']; 
-            
-            
-            header('location: ../dilg/home.php');
-            exit();
+        $query = "SELECT * FROM account WHERE email_address = ? AND account_role = 'DILG'";
+        $stmt = mysqli_prepare($conn, $query);
+        mysqli_stmt_bind_param($stmt, "s", $email);
+        mysqli_stmt_execute($stmt);
+        $result = mysqli_stmt_get_result($stmt);
+
+        if (mysqli_num_rows($result) == 1) {
+            $row = mysqli_fetch_assoc($result);
+
+            if (password_verify($password, $row['password'])) {
+                $_SESSION['account_id'] = $row['account_id'];
+                $_SESSION['first_name'] = $row['first_name'];
+                $_SESSION['last_name'] = $row['last_name'];
+                $_SESSION['account_role'] = $row['account_role'];
+
+                header('location: ../dilg/home.php');
+                exit();
+            } else {
+                $error = "Invalid Password";
+                updateLoginAttempts($conn, $email, $attempts + 1);
+                updateLastFailedAttemptTimestamp($conn, $email, time());
+            }
         } else {
-            $error = "Invalid Password";
-            updateLoginAttempts($conn, $email, $attempts + 1);
-            updateLastFailedAttemptTimestamp($conn, $email, time());
+            $msgerror = "Email Address not Found";
         }
-    } else {
-        $msgerror = "Email Address not Found";
     }
 }
-}
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
     <head>

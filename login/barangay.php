@@ -3,59 +3,92 @@ session_start();
 
 include '../config.php';
 
-$max_attempts = 3; 
-$lockout_duration = 900; 
+$max_attempts = 3;
+$lockout_duration = 900;
 
-function getLoginAttempts($conn, $email) {
-    $query = "SELECT login_attempts FROM lupon_accounts WHERE email_address = '" . $email . "'";
-    $result = mysqli_query($conn, $query);
-    $row = mysqli_fetch_assoc($result);
+function getLoginAttempts($conn, $email)
+{
+    $query = "SELECT login_attempts FROM lupon_accounts WHERE email_address = ?";
+    $stmt = mysqli_prepare($conn, $query);
+    mysqli_stmt_bind_param($stmt, "s", $email);
+    mysqli_stmt_execute($stmt);
+    mysqli_stmt_bind_result($stmt, $attempts);
+    mysqli_stmt_fetch($stmt);
+    mysqli_stmt_close($stmt);
 
-    if ($row) {
-        return (int) $row['login_attempts'];
+    if ($attempts) {
+        return (int)$attempts;
     }
 
-    $query = "SELECT login_attempts FROM pb_accounts WHERE email_address = '" . $email . "'";
-    $result = mysqli_query($conn, $query);
-    $row = mysqli_fetch_assoc($result);
+    $query = "SELECT login_attempts FROM pb_accounts WHERE email_address = ?";
+    $stmt = mysqli_prepare($conn, $query);
+    mysqli_stmt_bind_param($stmt, "s", $email);
+    mysqli_stmt_execute($stmt);
+    mysqli_stmt_bind_result($stmt, $attempts);
+    mysqli_stmt_fetch($stmt);
+    mysqli_stmt_close($stmt);
 
-    return $row ? (int) $row['login_attempts'] : 0;
+    return $attempts ? (int)$attempts : 0;
 }
 
-function updateLoginAttempts($conn, $email, $attempts) {
-    $query = "UPDATE lupon_accounts SET login_attempts = " . $attempts . " WHERE email_address = '" . $email . "'";
-    mysqli_query($conn, $query);
+function updateLoginAttempts($conn, $email, $attempts)
+{
+    $query = "UPDATE lupon_accounts SET login_attempts = ? WHERE email_address = ?";
+    $stmt = mysqli_prepare($conn, $query);
+    mysqli_stmt_bind_param($stmt, "is", $attempts, $email);
+    mysqli_stmt_execute($stmt);
+    mysqli_stmt_close($stmt);
 
-    $query = "UPDATE pb_accounts SET login_attempts = " . $attempts . " WHERE email_address = '" . $email . "'";
-    mysqli_query($conn, $query);
+    $query = "UPDATE pb_accounts SET login_attempts = ? WHERE email_address = ?";
+    $stmt = mysqli_prepare($conn, $query);
+    mysqli_stmt_bind_param($stmt, "is", $attempts, $email);
+    mysqli_stmt_execute($stmt);
+    mysqli_stmt_close($stmt);
 }
 
-function getLastFailedAttemptTimestamp($conn, $email) {
-    $query = "SELECT last_failed_attempt FROM lupon_accounts WHERE email_address = '" . $email . "'";
-    $result = mysqli_query($conn, $query);
-    $row = mysqli_fetch_assoc($result);
+function getLastFailedAttemptTimestamp($conn, $email)
+{
+    $query = "SELECT last_failed_attempt FROM lupon_accounts WHERE email_address = ?";
+    $stmt = mysqli_prepare($conn, $query);
+    mysqli_stmt_bind_param($stmt, "s", $email);
+    mysqli_stmt_execute($stmt);
+    mysqli_stmt_bind_result($stmt, $timestamp);
+    mysqli_stmt_fetch($stmt);
+    mysqli_stmt_close($stmt);
 
-    if ($row) {
-        return strtotime($row['last_failed_attempt']);
+    if ($timestamp) {
+        return strtotime($timestamp);
     }
 
-    $query = "SELECT last_failed_attempt FROM pb_accounts WHERE email_address = '" . $email . "'";
-    $result = mysqli_query($conn, $query);
-    $row = mysqli_fetch_assoc($result);
+    $query = "SELECT last_failed_attempt FROM pb_accounts WHERE email_address = ?";
+    $stmt = mysqli_prepare($conn, $query);
+    mysqli_stmt_bind_param($stmt, "s", $email);
+    mysqli_stmt_execute($stmt);
+    mysqli_stmt_bind_result($stmt, $timestamp);
+    mysqli_stmt_fetch($stmt);
+    mysqli_stmt_close($stmt);
 
-    return $row ? strtotime($row['last_failed_attempt']) : 0;
+    return $timestamp ? strtotime($timestamp) : 0;
 }
 
-function updateLastFailedAttemptTimestamp($conn, $email, $timestamp) {
+function updateLastFailedAttemptTimestamp($conn, $email, $timestamp)
+{
     $formattedTimestamp = date('Y-m-d H:i:s', $timestamp);
-    $query = "UPDATE lupon_accounts SET last_failed_attempt = '" . $formattedTimestamp . "' WHERE email_address = '" . $email . "'";
-    mysqli_query($conn, $query);
+    $query = "UPDATE lupon_accounts SET last_failed_attempt = ? WHERE email_address = ?";
+    $stmt = mysqli_prepare($conn, $query);
+    mysqli_stmt_bind_param($stmt, "ss", $formattedTimestamp, $email);
+    mysqli_stmt_execute($stmt);
+    mysqli_stmt_close($stmt);
 
-    $query = "UPDATE pb_accounts SET last_failed_attempt = '" . $formattedTimestamp . "' WHERE email_address = '" . $email . "'";
-    mysqli_query($conn, $query);
+    $query = "UPDATE pb_accounts SET last_failed_attempt = ? WHERE email_address = ?";
+    $stmt = mysqli_prepare($conn, $query);
+    mysqli_stmt_bind_param($stmt, "ss", $formattedTimestamp, $email);
+    mysqli_stmt_execute($stmt);
+    mysqli_stmt_close($stmt);
 }
 
-function resetLoginAttemptsIfNeeded($conn, $email, $lockout_duration) {
+function resetLoginAttemptsIfNeeded($conn, $email, $lockout_duration)
+{
     $lastFailedAttemptTimestamp = getLastFailedAttemptTimestamp($conn, $email);
     $currentTimestamp = time();
     $timeElapsed = $currentTimestamp - $lastFailedAttemptTimestamp;
@@ -71,7 +104,6 @@ function resetLoginAttemptsIfNeeded($conn, $email, $lockout_duration) {
         updateLoginAttempts($conn, $email, 0);
     }
 }
-
 
 if (isset($_POST['submit'])) {
     $email = mysqli_real_escape_string($conn, $_POST['email_address']);
@@ -91,8 +123,11 @@ if (isset($_POST['submit'])) {
             $msgerror = "Maximum Attempts Reached. Retry in " . $remainingTimeMinutes . " minutes.";
         }
     } else {
-        $query = "SELECT * FROM pb_accounts WHERE email_address = '$email'";
-        $result = mysqli_query($conn, $query);
+        $query = "SELECT * FROM pb_accounts WHERE email_address = ?";
+        $stmt = mysqli_prepare($conn, $query);
+        mysqli_stmt_bind_param($stmt, "s", $email);
+        mysqli_stmt_execute($stmt);
+        $result = mysqli_stmt_get_result($stmt);
 
         if (mysqli_num_rows($result) == 1) {
             $row = mysqli_fetch_assoc($result);
@@ -109,8 +144,11 @@ if (isset($_POST['submit'])) {
                 updateLastFailedAttemptTimestamp($conn, $email, time());
             }
         } else {
-            $query = "SELECT * FROM lupon_accounts WHERE email_address = '$email'";
-            $result = mysqli_query($conn, $query);
+            $query = "SELECT * FROM lupon_accounts WHERE email_address = ?";
+            $stmt = mysqli_prepare($conn, $query);
+            mysqli_stmt_bind_param($stmt, "s", $email);
+            mysqli_stmt_execute($stmt);
+            $result = mysqli_stmt_get_result($stmt);
 
             if (mysqli_num_rows($result) == 1) {
                 $row = mysqli_fetch_assoc($result);
@@ -118,12 +156,13 @@ if (isset($_POST['submit'])) {
                 if ($row['login_status'] == 'disabled') {
                     $msg_error = 'Account is temporarily disabled';
                 } elseif (password_verify($password, $row['password'])) {
-                    $updateQuery = "UPDATE lupon_accounts SET login_status = 'active' WHERE email_address = '$email'";
-                    mysqli_query($conn, $updateQuery);
-
+                    $updateQuery = "UPDATE lupon_accounts SET login_status = 'active' WHERE email_address = ?";
+                    $stmt = mysqli_prepare($conn, $updateQuery);
+                    mysqli_stmt_bind_param($stmt, "s", $email);
+                    mysqli_stmt_execute($stmt);
                     $_SESSION['email_address'] = $email;
-                    $_SESSION['lupon_id'] = $row['lupon_id']; 
-                    $_SESSION['pb_id'] = $row['pb_id']; 
+                    $_SESSION['lupon_id'] = $row['lupon_id'];
+                    $_SESSION['pb_id'] = $row['pb_id'];
                     header('location: ../barangay/lupon/home.php');
                     exit();
                 } else {
@@ -137,9 +176,8 @@ if (isset($_POST['submit'])) {
         }
     }
 }
-
-
 ?>
+
 
 
 <!DOCTYPE html>
