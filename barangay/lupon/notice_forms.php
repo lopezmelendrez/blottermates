@@ -178,7 +178,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['notify_complainant_su
 For any questions, contact Barangay Ibaba, Santa Rosa Laguna. Thank you for your cooperation.",
             ];
 
-            $token = "121|ozwIOYwIR4KLkgpBNkRyRGwVuo5x5efMpIM9ArSD ";
+            $token = "187|4Ix57qaMwfknN0suokLhfdNiM88e1LDdAxDoqOqI ";
 
             $parameters = json_encode($send_data);
             $ch = curl_init();
@@ -253,7 +253,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['notify_respondent_sub
 For any questions, contact Barangay Ibaba, Santa Rosa Laguna. Thank you for your cooperation.",
             ];
 
-            $token = "121|ozwIOYwIR4KLkgpBNkRyRGwVuo5x5efMpIM9ArSD ";
+            $token = "187|4Ix57qaMwfknN0suokLhfdNiM88e1LDdAxDoqOqI ";
 
             $parameters = json_encode($send_data);
             $ch = curl_init();
@@ -324,7 +324,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['notify_pangkat_submit
 For any questions, contact Barangay Ibaba, Santa Rosa Laguna. Thank you for your cooperation.",
             ];
 
-            $token = "121|ozwIOYwIR4KLkgpBNkRyRGwVuo5x5efMpIM9ArSD ";
+            $token = "187|4Ix57qaMwfknN0suokLhfdNiM88e1LDdAxDoqOqI ";
 
             $parameters = json_encode($send_data);
             $ch = curl_init();

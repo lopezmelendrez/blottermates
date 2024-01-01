@@ -63,7 +63,7 @@ if (isset($_POST['submit'])) {
 
 $currentDate = date('Y-m-d');
 
-$isEndOfMonth = (date('d', strtotime($currentDate)) >= 30 && date('m', strtotime($currentDate)) == 12) || date('d', strtotime($currentDate)) == 1;
+$isEndOfMonth = (date('d', strtotime($currentDate)) <= 5) || (date('d', strtotime($currentDate)) == 1 && date('m', strtotime($currentDate)) == 1);
 
 if ($isEndOfMonth) {
     $modalContent = '
@@ -89,7 +89,7 @@ $downloadLink = "../../tcpdf/monthly_transmittal_report.php?lupon_id={$lupon_id}
 $modalContent = '
     <h3 class="modal-title" style="font-size: 18px; text-align:center;">GENERATE MONTHLY TRANSMITTAL REPORT</h3>
     <hr style="border: 1px solid #ccc; margin: 10px 0;">
-    <p style="font-size: 15px; text-align: justify; font-weight: 600;">Report generation is only available at the end of the month. Please try again later.</p>
+    <p style="font-size: 15px; text-align: justify; font-weight: 600;">Report generation is only available during the first week of the month. Please try again later.</p>
     <p style="font-size: 14px; text-align: center;">To obtain the report for the previous month, kindly click the button below:</p>
     <div class="button-container" style="margin-top: 3%;">
         <a href="' . $downloadLink . '" class="backBtn" style="width: 310px; padding: 12px 12px; font-weight: 600; margin-left: 15px; background: #bc1823; color: #fff; text-decoration: none;" target="_blank">DOWNLOAD LAST MONTH REPORT</a>
