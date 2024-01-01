@@ -139,9 +139,10 @@ WHERE h.date_of_hearing IS NOT NULL
         OR court_action.lupon_signature IS NOT NULL
     ) 
     AND ir.pb_id = $pb_id
-    AND MONTH(amicable_settlement.date_agreed) = $month  -- Filter by the current month
+    AND MONTH(amicable_settlement.date_agreed) = MONTH(CURDATE() - INTERVAL 1 MONTH)
 ORDER BY ir.created_at DESC
 ") or die('query failed');
+
 
 $tbodyContent = '';
 

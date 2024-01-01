@@ -32,7 +32,7 @@ if ($barangayResult) {
 if (isset($_POST['submit_search'])) {
     $search_case = mysqli_real_escape_string($conn, $_POST['search_case']);
     $query = "SELECT pb.barangay AS barangay, 
-        mr.timestamp AS date_submitted, 
+        mr.timestamp, 
         mr.generate_report AS report,
         mr.lupon_id AS lupon_id  -- Add this line to include LUPON ID
         FROM `monthly_reports` AS mr
@@ -42,7 +42,7 @@ if (isset($_POST['submit_search'])) {
         ORDER BY mr.timestamp DESC"; // Order by TIMESTAMP in ascending order
 } else {
     $query = "SELECT pb.barangay AS barangay, 
-        mr.timestamp AS date_submitted, 
+        mr.timestamp, 
         mr.generate_report AS report,
         mr.lupon_id AS lupon_id  -- Add this line to include LUPON ID
         FROM `monthly_reports` AS mr
@@ -170,20 +170,13 @@ if (mysqli_num_rows($result) == 0) {
     echo '<div class="text-box">No Monthly Transmittal Reports Found</div>';
 } else {
 
-    echo '<div class="sort-container">';
-    echo '<div class="sort-filter-box">Sort By:</div>';
-    echo '<select id="sort" onchange="loadContent()">';
-    echo '<option value="latest">From Latest to Oldest</option>';
-    echo '<option value="oldest">From Oldest to Latest</option>';
-    echo '</select>';
-    echo '</div>';
-
         while ($row = mysqli_fetch_assoc($result)) {
             $barangay = $row['barangay'];
-            $dateSubmitted = date('M d, Y', strtotime($row['date_submitted']));
+            $dateSubmitted = $row['timestamp'];
+            $formattedDate = date("F d, Y", strtotime($dateSubmitted));
             $transmittalReport = $row['report'];
 
-            echo '<div class="container" style="margin-top: 1%;">';
+            echo '<div class="container" style="margin-top: 1.8%;">';
             echo '<table>';
             echo '<thead>';
             echo '<tr>';
@@ -193,10 +186,10 @@ if (mysqli_num_rows($result) == 0) {
             echo '</thead>';
             echo '<tbody>';
             echo '<tr>';
-            echo '<td>' . $dateSubmitted . '</td>';
-    if (!empty($transmittalReport)) {
-        echo '<td><a href="../tcpdf/monthly_report.php?pb_id=' . urlencode($pbId) . '" style="text-decoration: none;"><span class="generate">VIEW</span></a></td>';
-    } else {
+            echo '<td>' . $formattedDate . '</td>';
+            if (!empty($transmittalReport)) {
+                echo '<td><a href="../tcpdf/monthly_report.php?pb_id=' . urlencode($pbId) . '&date_submitted=' . urlencode($dateSubmitted) . '" style="text-decoration: none;"><span class="generate">VIEW</span></a></td>';
+            } else {
         echo '<td></td>';
     }
             echo '</tr>';
@@ -228,17 +221,6 @@ if (mysqli_num_rows($result) == 0) {
         searchBtn.addEventListener("click" , () =>{
             sidebar.classList.remove("close");
         })
-
-        modeSwitch.addEventListener("click" , () =>{
-            body.classList.toggle("dark");
-            
-            if(body.classList.contains("dark")){
-                modeText.innerText = "Light mode";
-            }else{
-                modeText.innerText = "Dark mode";
-                
-            }
-        });
 
         const timeElement = document.querySelector(".time");
 const dateElement = document.querySelector(".date");
@@ -302,16 +284,6 @@ const now = new Date();
 timeElement.textContent = formatTime(now);
 dateElement.textContent = formatDate(now);
 }, 200);
-
-//function loadContent() {
-    //const selectedOption = document.getElementById("sort").value;
-
-    //if (selectedOption === "oldest") {
-        //window.location.href = "monthlyreports.php#oldest";
-    //} else if (selectedOption === "latest") {
-       // window.location.href = "monthly_reports.php#latest";
-    //}
-//}
 
     </script>
 

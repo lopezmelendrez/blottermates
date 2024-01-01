@@ -2,40 +2,53 @@
 
 include '../config.php';
 
-$pbId = isset($_GET['pb_id']) ? urldecode($_GET['pb_id']) : null;
-$dateSubmitted = isset($_GET['date_submitted']) ? urldecode($_GET['date_submitted']) : null;
+session_start();
 
-// Use $dateSubmitted in your script as needed
+$email = $_SESSION['email_address'];
 
 
+if(!isset($email)){
+header('location: ../index.php');
+}
+
+// Include the main TCPDF library (search for installation path).
 require_once('tcpdf.php');
 require_once('tcpdf_autoconfig.php');
 
+// create new PDF document
 $pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
 
 
+// set document information
 $pdf->SetCreator(PDF_CREATOR);
 $pdf->SetAuthor('PUP Santa Rosa Branch');
 $pdf->SetTitle('KP # 28 :  MONTHLY TRANSMITTAL OF FINAL REPORTS');
 
 
+
+
+// set default header data
 $pdf->SetHeaderData(PDF_HEADER_LOGO, PDF_HEADER_LOGO_WIDTH, PDF_HEADER_TITLE , PDF_HEADER_STRING, array(255,255,255), array(255,255,255));
 $pdf->setFooterData(array(255,255,255), array(255,255,255));
 
 
+
+// set header and footer fonts
 $pdf->setHeaderFont(Array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
 $pdf->setFooterFont(Array(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA));
 
 
+// set default monospaced font
 $pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
 
 
+// set margins
 $pdf->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
 $pdf->SetHeaderMargin(PDF_MARGIN_HEADER);
 $pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
 
 
-
+// set auto page breaks
 $pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
 
 
@@ -88,63 +101,65 @@ $pdf->AddPage();
     $space = "  ";
     $time = "12:00 PM";
 
-    $select = mysqli_query($conn, "
-    SELECT DISTINCT
-        ir.incident_case_number, 
-        ir.complainant_last_name, 
-        ir.respondent_last_name, 
-        ir.description_of_violation, 
-        ir.incident_case_type, 
-        ir.incident_date, 
-        ir.submitter_first_name, 
-        ir.submitter_last_name, 
-        ir.created_at, 
-        amicable_settlement.date_agreed, 
-        amicable_settlement.agreement_description,
-        court_action.lupon_signature,
-        execution_notice.compliance_status
-    FROM `incident_report` AS ir
-    INNER JOIN `hearing` AS h ON ir.incident_case_number = h.incident_case_number
-    LEFT JOIN `amicable_settlement` AS amicable_settlement ON h.hearing_id = amicable_settlement.hearing_id
-    LEFT JOIN `court_action` AS court_action ON h.hearing_id = court_action.hearing_id
-    LEFT JOIN `execution_notice` AS execution_notice ON ir.incident_case_number = execution_notice.incident_case_number
-    WHERE h.date_of_hearing IS NOT NULL 
-        AND h.time_of_hearing IS NOT NULL 
-        AND (
-            amicable_settlement.agreement_description IS NOT NULL 
-            OR court_action.lupon_signature IS NOT NULL
-        ) 
-        AND ir.pb_id = $pbId
-        AND MONTH(amicable_settlement.date_agreed) = MONTH(DATE_SUB('$dateSubmitted', INTERVAL 1 MONTH))
-    ORDER BY ir.created_at DESC
+    $selectLuponId = mysqli_query($conn, "SELECT pb_id FROM `lupon_accounts` WHERE email_address = '$email'");
+if (!$selectLuponId) {
+    die('Failed to fetch pb_id: ' . mysqli_error($conn));
+}
+$row = mysqli_fetch_assoc($selectLuponId);
+$pb_id = $row['pb_id'];
+
+$month = date('m');  // Get the current month
+
+$month = date('m');  // Get the current month
+
+$select = mysqli_query($conn, "
+SELECT 
+    ir.incident_case_number, 
+    ir.complainant_last_name, 
+    ir.respondent_last_name, 
+    ir.description_of_violation, 
+    ir.incident_case_type, 
+    ir.incident_date, 
+    ir.submitter_first_name, 
+    ir.submitter_last_name, 
+    ir.created_at, 
+    amicable_settlement.date_agreed, 
+    amicable_settlement.agreement_description,
+    court_action.lupon_signature,
+    execution_notice.compliance_status
+FROM `incident_report` AS ir
+INNER JOIN `hearing` AS h ON ir.incident_case_number = h.incident_case_number
+LEFT JOIN `amicable_settlement` AS amicable_settlement ON h.hearing_id = amicable_settlement.hearing_id
+LEFT JOIN `court_action` AS court_action ON h.hearing_id = court_action.hearing_id
+LEFT JOIN `execution_notice` AS execution_notice ON ir.incident_case_number = execution_notice.incident_case_number
+WHERE h.date_of_hearing IS NOT NULL 
+    AND h.time_of_hearing IS NOT NULL 
+    AND (
+        amicable_settlement.agreement_description IS NOT NULL 
+        OR court_action.lupon_signature IS NOT NULL
+    ) 
+    AND ir.pb_id = $pb_id
+    AND MONTH(amicable_settlement.date_agreed) = MONTH(CURDATE() - INTERVAL 2 MONTH)
+ORDER BY ir.created_at DESC
 ") or die('query failed');
 
-    
 
 $tbodyContent = '';
 
-if (mysqli_num_rows($select) > 0) {
-    while ($row = mysqli_fetch_assoc($select)) {
-        $incidentCaseNumber = $row['incident_case_number'];
-        $complainant_last_name = $row['complainant_last_name'];
-        $respondent_last_name = $row['respondent_last_name'];
+while ($row = mysqli_fetch_assoc($select)) {
+    $incidentCaseNumber = $row['incident_case_number'];
+    $complainant_last_name = $row['complainant_last_name'];
+    $respondent_last_name = $row['respondent_last_name'];
 
-        $tbodyContent .= <<<EOD
-            <tr>
-                <td style="font-size: 12px; text-align: center; border: 1.5px solid black;">$incidentCaseNumber</td>
-                <td style="font-size: 12px; text-align: center; border: 1.5px solid black;">$complainant_last_name vs. $respondent_last_name</td>
-            </tr>
-        EOD;
-    }
-} else {
     $tbodyContent .= <<<EOD
-            <tr>
-                <td colspan="2" style="font-size: 12px; text-align: center; border: 1.5px solid black;">NO SETTLED INCIDENT CASES</td>
-            </tr>
-        EOD;
+        <tr>
+            <td style="font-size: 12px; text-align: center; border: 1.5px solid black;">$incidentCaseNumber</td>
+            <td style="font-size: 12px; text-align: center; border: 1.5px solid black;">$complainant_last_name vs. $respondent_last_name</td>
+        </tr>
+    EOD;
 }
 
-    $date = date('F j, Y');
+$date = date('F j, Y');
 
 $html = <<<EOD
 <style>
@@ -183,6 +198,7 @@ th {
     padding: 8px;
     text-align: center;
 }
+
 </style>
 
 <div class="header">
@@ -195,8 +211,8 @@ th {
 </div>
 
   <div class="content-one">
-    <p>_______________________, 20</p>
-    <p>Date&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
+    <p><u>$date</u>       </p>
+    <p style="margin-left: 10px;">Date&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
   </div>
 
   <div class="content" style="text-align: center; font-weight: bold;">
@@ -220,16 +236,19 @@ Tagapagkasundo in the following cases: </br>
 <br><br>
 
 <table>
-        <thead>
-            <tr>
-                <th>Barangay Case No.</th>
-                <th>TITLE</th>
-            </tr>
-        </thead>
-        <tbody>
-        $tbodyContent
-        </tbody>
+    <thead>
+        <tr>
+            <th>Barangay Case No.</th>
+            <th>TITLE</th>
+        </tr>
+    </thead>
+    <tbody>
+    $tbodyContent
+    
+</tbody>
+
 </table>
+
 
 
 <div class="content-one">

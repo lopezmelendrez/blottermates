@@ -16,7 +16,7 @@ header('location: ../index.php');
 if (isset($_POST['submit_search'])) {
     $search_case = mysqli_real_escape_string($conn, $_POST['search_case']);
     $query = "SELECT pb.barangay AS barangay, 
-        mr.timestamp AS date_submitted, 
+        mr.timestamp, 
         mr.generate_report AS report,
         mr.lupon_id AS lupon_id, -- Add this line to include LUPON ID
         mr.pb_id AS pbId
@@ -26,7 +26,7 @@ if (isset($_POST['submit_search'])) {
         ORDER BY mr.timestamp DESC"; // Order by TIMESTAMP in descending order
 } else {
     $query = "SELECT pb.barangay AS barangay, 
-        mr.timestamp AS date_submitted, 
+        mr.timestamp, 
         mr.generate_report AS report,
         mr.lupon_id AS lupon_id, -- Add this line to include LUPON ID
         mr.pb_id AS pbId
@@ -161,7 +161,8 @@ if (!$result) {
 
             while ($row = mysqli_fetch_assoc($result)) {
                 $barangay = $row['barangay'];
-                $dateSubmitted = date('M d, Y', strtotime($row['date_submitted']));
+                $dateSubmitted = $row['timestamp'];
+                $formattedDate = date("F d, Y", strtotime($dateSubmitted));
                 $transmittalReport = $row['report'];
                 $pbId = $row['pbId'];
 
@@ -177,10 +178,10 @@ if (!$result) {
                 echo '<tbody>';
                 echo '<tr>';
                 echo '<td>' . $barangay . '</td>';
-                echo '<td>' . $dateSubmitted . '</td>';
-        if (!empty($transmittalReport)) {
-            echo '<td><a href="../tcpdf/monthly_report.php?pb_id=' . urlencode($pbId) . '" style="text-decoration: none;"><span class="generate">VIEW</span></a></td>';
-        } else {
+                echo '<td>' . $formattedDate . '</td>';
+                if (!empty($transmittalReport)) {
+                    echo '<td><a href="../tcpdf/monthly_report.php?pb_id=' . urlencode($pbId) . '&date_submitted=' . urlencode($dateSubmitted) . '" style="text-decoration: none;" target="_blank"><span class="generate">VIEW</span></a></td>';
+                } else {
             echo '<td></td>';
         }
                 echo '</tr>';
