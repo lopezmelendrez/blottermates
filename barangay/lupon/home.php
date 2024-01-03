@@ -321,7 +321,7 @@ if ($isEndOfMonth) {
                                         echo '<tr>';
                                         echo '<td>';
                                         if (mysqli_num_rows($checkHearingTable) === 0 || $fetchCases['date_of_hearing'] === NULL) {
-                                            echo '<a href="hearingschedule.php?incident_case_number=' . $incident_case_number . '" target="_blank">';
+                                            echo '<a href="hearingschedule_.php?incident_case_number=' . $incident_case_number . '" target="_blank">';
                                         } else {
                                             echo '<a href="notice_forms.php?incident_case_number=' . $incident_case_number . '" target="_blank">';
                                         }
