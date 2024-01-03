@@ -60,5 +60,18 @@
 
     </body>
 
+    <style>
+
+        @media screen and (min-width: 1920px) and (min-height: 1080px){
+            .header-text{
+                margin-left: 20px;
+            }
+
+            .header-text::after{
+                width: 68.5%;
+                margin-left: 18px;
+            }
+        }
+    </style>
     
 </html>

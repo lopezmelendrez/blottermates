@@ -152,7 +152,7 @@ else
                 </div>
 
                 <div class="col-md-6 right-box">
-                            <span class="header-text-1" style="font-size: 37.5px; margin-left: -120px;">Reset Your Password</span>
+                            <span class="header-text-1">Reset Your Password</span>
                             <hr style="border: 1px solid #949494; margin: 20px 0;">
 
                             <?php if (isset($msg_error) && !empty($msg_error)) { ?>
@@ -289,6 +289,22 @@ else
 
 .custom-search-button:hover{
     background: #bc1823;
+}
+
+.header-text-1{
+    font-size: 37.5px; 
+    margin-left: -120px;
+}
+
+@media screen and (min-width: 1920px) and (min-height: 1080px){
+    .header-text-1{
+        margin-left: -190px;
+    }
+
+    .header-text-1::after{
+        width: 66%;
+        margin-left: -190px;
+    }
 }
 
     </style>

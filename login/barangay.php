@@ -208,7 +208,7 @@ if (isset($_POST['submit'])) {
                 </div>
 
                 <div class="col-md-6 right-box">
-                            <span class="header-text-1" style="font-size: 37.5px; margin-left: -100px;">Login to start session</span>
+                            <span class="header-text-1">Login to start session</span>
                             <hr style="border: 1px solid #949494; margin: 20px 0;">
 
                             <?php if (isset($msg_error) && !empty($msg_error)) { ?>
@@ -297,5 +297,24 @@ if (isset($_POST['submit'])) {
             })
         })
     </script>
+
+<style>
+
+.header-text-1{
+    font-size: 37.5px; 
+    margin-left: -100px;
+}
+
+@media screen and (min-width: 1920px) and (min-height: 1080px){
+    .header-text-1{
+        margin-left: -160px;
+    }
+
+    .header-text-1::after{
+        width: 68.5%;
+        margin-left: -160px;
+    }
+}
+</style>
 
 </html>
