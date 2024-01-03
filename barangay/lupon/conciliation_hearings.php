@@ -173,20 +173,26 @@ $generate_pangkat = '';
 </td>
 <td>
 <?php
-    $check_query = "SELECT generate_pangkat FROM notify_residents WHERE incident_case_number = '$incident_case_number'";
-    $check_result = mysqli_query($conn, $check_query);
+    $check_query = "SELECT nr.generate_pangkat, h.date_of_hearing 
+    FROM notify_residents nr
+    LEFT JOIN hearing h ON nr.incident_case_number = h.incident_case_number
+    WHERE nr.incident_case_number = '$incident_case_number'";
+$check_result = mysqli_query($conn, $check_query);
 
-    if ($check_result && mysqli_num_rows($check_result) > 0) {
-        $row = mysqli_fetch_assoc($check_result);
-        $generate_pangkat = $row['generate_pangkat'];
+if ($check_result && mysqli_num_rows($check_result) > 0) {
+$row = mysqli_fetch_assoc($check_result);
+$generate_pangkat = $row['generate_pangkat'];
+$date_of_hearing = $row['date_of_hearing'];
 
-        if (empty($generate_pangkat) || $generate_pangkat === 'not generated') {
-            echo '<a href="notice_forms.php?incident_case_number=' . $incident_case_number . '"><span class="to-notify">NEEDS PANGKAT CONSTITUTION NOTICE</span>';
+        if ($date_of_hearing == NULL) {
+            echo '<span class="to-notify">NEEDS PANGKAT CONSTITUTION NOTICE</span>';
+        } elseif ($generate_pangkat === 'not generated'){
+            echo '<a href="notice_forms.php?incident_case_number=' . $incident_case_number . '"><span class="to-notify">NEEDS PANGKAT CONSTITUTION NOTICE</span></a>';
         } else {
             echo '-';
         }
     }
-    ?>
+?>
 </td>
             <td>
             <?php

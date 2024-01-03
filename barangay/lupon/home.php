@@ -269,23 +269,31 @@ if ($isEndOfMonth) {
                             $pb_id = $row['pb_id'];
 
                             $select = mysqli_query($conn, "
-                                SELECT
-                                    incident_report.incident_case_number AS incident_case_number,
-                                    incident_report.complainant_last_name AS complainant_last_name,
-                                    incident_report.respondent_last_name AS respondent_last_name,
-                                    incident_report.created_at AS created_at,
-                                    incident_report.submitter_first_name AS submitter_first_name,
-                                    incident_report.submitter_last_name AS submitter_last_name,
-                                    notify_residents.generate_summon AS generate_summon,
-                                    notify_residents.generate_hearing AS generate_hearing
-                                FROM `incident_report`
-                                LEFT JOIN `notify_residents` ON incident_report.incident_case_number = notify_residents.incident_case_number
-                                LEFT JOIN `amicable_settlement` ON incident_report.incident_case_number = amicable_settlement.incident_case_number
-                                WHERE (notify_residents.generate_summon = 'not generated' OR notify_residents.generate_hearing = 'not generated' OR notify_residents.generate_summon IS NULL OR notify_residents.generate_hearing IS NULL)
-                                    AND incident_report.pb_id = $pb_id
-                                    AND amicable_settlement.incident_case_number IS NULL
-                                ORDER BY incident_report.created_at DESC
-                            ") or die('query failed');
+    SELECT
+        incident_report.incident_case_number AS incident_case_number,
+        incident_report.complainant_last_name AS complainant_last_name,
+        incident_report.respondent_last_name AS respondent_last_name,
+        incident_report.created_at AS created_at,
+        incident_report.submitter_first_name AS submitter_first_name,
+        incident_report.submitter_last_name AS submitter_last_name,
+        notify_residents.generate_summon AS generate_summon,
+        notify_residents.generate_hearing AS generate_hearing,
+        hearing.date_of_hearing AS date_of_hearing
+    FROM `incident_report`
+    LEFT JOIN `notify_residents` ON incident_report.incident_case_number = notify_residents.incident_case_number
+    LEFT JOIN `amicable_settlement` ON incident_report.incident_case_number = amicable_settlement.incident_case_number
+    LEFT JOIN `hearing` ON incident_report.incident_case_number = hearing.incident_case_number
+    WHERE (
+            notify_residents.generate_summon = 'not generated'
+            OR notify_residents.generate_hearing = 'not generated'
+            OR notify_residents.generate_summon IS NULL
+            OR notify_residents.generate_hearing IS NULL
+            OR hearing.date_of_hearing IS NULL
+        )
+        AND incident_report.pb_id = $pb_id
+        AND amicable_settlement.incident_case_number IS NULL
+    ORDER BY incident_report.created_at DESC
+") or die('query failed');
 
                             if (mysqli_num_rows($select) === 0) {
                                 echo '<tr><td colspan="3" style="font-size: 22px; font-weight: 600; text-transform: capitalize;">No Incident Cases with Incomplete Notice</td></tr>';
@@ -311,11 +319,19 @@ if ($isEndOfMonth) {
                                         echo '</tr>';
                                     } else {
                                         echo '<tr>';
-                                        echo '<td><a href="notice_forms.php?incident_case_number=' . $incident_case_number . '" target="_blank">' . htmlspecialchars(substr($incident_case_number, 0, 9)) . '</a></td>';
+                                        echo '<td>';
+                                        if (mysqli_num_rows($checkHearingTable) === 0 || $fetchCases['date_of_hearing'] === NULL) {
+                                            echo '<a href="hearingschedule.php?incident_case_number=' . $incident_case_number . '" target="_blank">';
+                                        } else {
+                                            echo '<a href="notice_forms.php?incident_case_number=' . $incident_case_number . '" target="_blank">';
+                                        }
+                                        echo htmlspecialchars(substr($incident_case_number, 0, 9)) . '</a></td>';
                                         echo '<td>' . $fetchCases['complainant_last_name'] . ' vs. ' . $fetchCases['respondent_last_name'] . '</td>';
                                         echo '<td>'; // Start the column
 
-        if ($fetchCases['generate_summon'] === 'not generated' && $fetchCases['generate_hearing'] === 'form generated') {
+                                        if ($fetchCases['date_of_hearing'] === NULL) {
+                                            echo '<span style="font-weight: 900;">SET HEARING SCHEDULE</span>';
+                                        } elseif ($fetchCases['generate_summon'] === 'not generated' && $fetchCases['generate_hearing'] === 'form generated') {
             echo '<span class="to-notify">NEEDS KP FORM #9</span>';
         } elseif ($fetchCases['generate_hearing'] === 'not generated' && $fetchCases['generate_summon'] === 'form generated') {
             echo '<span class="to-notify">NEEDS KP FORM #8</span>';
