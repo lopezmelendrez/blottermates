@@ -239,7 +239,7 @@ if ($isEndOfMonth) {
     <div class="home-container" style="display: flex;">
 
         <div class="calendar-container">
-            <div id="calendar" style="width: 500px;"></div>
+            <div id="calendar" class="calendar"></div>
         </div>
 
         <div class="incident-case-table">
@@ -247,9 +247,9 @@ if ($isEndOfMonth) {
                 <p class="incident-case">Recent Incident Cases</p>
                 <p class="notice-records">* Needs Notice Records</p>
 
-                <div class="table-container" style="max-height: 310px; overflow-y: hidden; overflow-x: hidden; margin-top: -1%;">
+                <div class="table-container">
                     <hr style="border: 1px solid #949494; margin: 10px 0; width: 100%; margin-top: 0.2%;">
-                    <table class="incident-table" style="width: 570px; padding: 10px 10px; margin-left: 9px;">
+                    <table class="incident-table">
                         <thead>
                             <tr>
                                 <th>Case No.</th>
@@ -539,8 +539,12 @@ function closeMonthlyReportPopup() {
 
 <style>
     .home .table-container table {
-        width: 100%;
         border-collapse: collapse;
+        width: 570px; padding: 10px 10px; margin-left: 9px;
+    }
+
+    .table-container{
+        max-height: 310px; overflow-y: hidden; overflow-x: hidden; margin-top: -1%;
     }
 
     .add-account{
@@ -692,6 +696,10 @@ function closeMonthlyReportPopup() {
         display: flex; height: 470px; width: 530px; margin-left: 3%; margin-top: 0.5%
     }
 
+    .calendar{
+        width: 500px;
+    }
+
     @media screen and (min-width: 1310px) {
         .close-icon {
             left: 875px;
@@ -748,6 +756,40 @@ function closeMonthlyReportPopup() {
         }
         .datetime-container{
             margin-top: 1.5%;
+        }
+    }
+
+    @media screen and (min-width: 1920px) and (min-height: 1080px){
+        .home{
+            margin-left: 1.5%;
+        }
+        .datetime-container{
+            margin-top: -20px;
+            height: 15rem;
+        }
+        .datetime-container .datetime{
+            padding: 33px;
+        }
+        .add-account{
+            width: 15%;
+        }
+        .calendar-container{
+            width: 950px;
+            height: 40rem;
+        }
+        .calendar{
+            width: 950px;
+        }
+        .incident-case-table{
+            width: 600px;
+            height: 40rem;
+        }
+        .incident-case-table .head-text .notice-records{
+            margin-top: -1.5%;
+        }
+        .incident-case-table table{
+            width: 800px;
+            padding: 20px 20px;
         }
     }
 
