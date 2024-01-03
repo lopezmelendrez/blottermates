@@ -38,6 +38,9 @@ if (isset($_POST['submit'])) {
     $incident_date = $_POST['incident_date'];
     $description_of_violation = $_POST['description_of_violation'];
     $other_incident_case_type = $_POST['other_incident_case_type'];
+    $image = $_FILES['attachment']['name'];
+    $image_tmp_name = $_FILES['attachment']['tmp_name'];
+    $image_folder = 'uploads/'.$image;
 
     $result = mysqli_query($conn, "SELECT incident_case_number FROM incident_report WHERE incident_case_number = '$incident_case_number'");
     if (mysqli_num_rows($result) > 0) {
@@ -51,7 +54,9 @@ if (isset($_POST['submit'])) {
             $submitter_first_name = $submitter_data['first_name'];
             $submitter_last_name = $submitter_data['last_name'];
 
-            mysqli_query($conn, "INSERT INTO `incident_report` (complainant_last_name, complainant_first_name, complainant_middle_name, complainant_cellphone_number, complainant_house_address, respondent_last_name, respondent_first_name, respondent_middle_name, respondent_cellphone_number, respondent_house_address, incident_case_number, incident_case_type, other_incident_case_type, incident_date, description_of_violation, created_at, pb_id, submitter_first_name, submitter_last_name, lupon_id) VALUES ('$complainant_last_name', '$complainant_first_name', '$complainant_middle_name', '$complainant_cellphone_number', '$complainant_house_address', '$respondent_last_name', '$respondent_first_name', '$respondent_middle_name', '$respondent_cellphone_number', '$respondent_house_address', '$incident_case_number', '$incident_case_type', '$other_incident_case_type', '$incident_date', '$description_of_violation', NULL, $pb_id, '$submitter_first_name', '$submitter_last_name', '$lupon_id')") or die('query failed');
+            move_uploaded_file($image_tmp_name, $image_folder);
+
+            mysqli_query($conn, "INSERT INTO `incident_report` (complainant_last_name, complainant_first_name, complainant_middle_name, complainant_cellphone_number, complainant_house_address, respondent_last_name, respondent_first_name, respondent_middle_name, respondent_cellphone_number, respondent_house_address, incident_case_number, incident_case_type, other_incident_case_type, incident_date, description_of_violation, created_at, pb_id, submitter_first_name, submitter_last_name, lupon_id, attachment) VALUES ('$complainant_last_name', '$complainant_first_name', '$complainant_middle_name', '$complainant_cellphone_number', '$complainant_house_address', '$respondent_last_name', '$respondent_first_name', '$respondent_middle_name', '$respondent_cellphone_number', '$respondent_house_address', '$incident_case_number', '$incident_case_type', '$other_incident_case_type', '$incident_date', '$description_of_violation', NULL, $pb_id, '$submitter_first_name', '$submitter_last_name', '$lupon_id', '$image')") or die('query failed');
             header("location: incomplete_notices.php");
         }
     }
@@ -176,8 +181,6 @@ if (isset($_POST['submit'])) {
     </div>
 </nav>
 
-
-
     <section class="home">
         <div class="container">
         <div class="card">
@@ -189,7 +192,7 @@ if (isset($_POST['submit'])) {
                     <span>INCIDENT CASE #<?php echo htmlspecialchars(substr($incident_case_number, 0, 9)); ?></span>
                     </div>
                 </div>
-            <form action="#" method="post">
+            <form action="#" method="post" enctype="multipart/form-data">
                 <div class="form first">
                     <div class="details personal">
                         <span class="title">Complainant Details</span>
@@ -313,16 +316,22 @@ if (isset($_POST['submit'])) {
                                 </div>
                             </div>
 
-                            <div class="input-field" style="width: 100%; position: relative;">
+                            <div class="input-field" style="width: 100%; position: relative; margin-top: 1.75%;">
                                 <label class="required-label">Description of Violation</label>
-                                <textarea style="width: 100%; height: 150px; padding: 10px 15px; border: 1px solid #aaa; outline: none; font-size: 14px; border-radius: 5px; font-weight: 400; margin-top: 8px; resize: vertical;" name="description_of_violation" id="description_input" required></textarea>
+                                <div id="customFile">
+        <label for="customFileInput" id="customFileLabel"><i class="fas fa-plus" style="margin-right: 5px;"></i>Add Attachment <em>(optional)</em></label>
+        <input type="file" name="attachment" accept="image/jpg, image/jpeg, image/png" id="customFileInput" style="width: 250px; border: none; margin-top: -21px; margin-left: 20%; margin-bottom: 5%;" onchange="updateLabel()">
+    </div>          
+        <div class="text" style="margin-top: 2%;">                        
+        <textarea style="width: 100%; height: 150px; padding: 10px 15px; border: 1px solid #aaa; outline: none; font-size: 14px; border-radius: 5px; font-weight: 400; margin-top: 5px; resize: vertical;" name="description_of_violation" id="description_input" required></textarea>
                                 <p id="character_count" style="position: absolute; bottom: 8px; right: 15px; color: #333; font-size: 11px;">255 characters left</p>
+                            </div>
                             </div>
                         </div>
                 </div>
 
                     <div class="details family">
-                        <div class="buttons">
+                        <div class="buttons" style="margin-top: -2%;">
                             <div class="backBtn">
                                 <span class="btnText" style="margin-left: -20px;">Back</span>
                             </div>
@@ -465,6 +474,13 @@ if (isset($_POST['submit'])) {
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
+
+function updateLabel() {
+            var input = document.getElementById('customFileInput');
+            var label = document.getElementById('customFileLabel');
+            var fileName = input.files[0].name;
+            label.innerHTML = fileName;
+}
 
 function validateName(event) {
   var keyCode = event.keyCode;
@@ -963,6 +979,34 @@ if (input.value.length > 0 && input.value[0] === ' ') {
       color:#bc1823;
     }
 
+    .add-attachment{
+        font-size: 12px;
+    }
+
+    #customFile {
+            width: 680px;
+            border: none;
+            margin-top: -25px;
+            margin-left: 20%;
+            margin-bottom: -1%;
+            overflow: hidden;
+        }
+
+        #customFileLabel {
+            display: inline-block;
+            padding: 4px 10px;
+            cursor: pointer;
+            border: 1.5px solid #ccc;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+            color: #2e2e2e;
+            border-radius: 5px;
+            margin-top: -0.5px;
+        }
+
+        #customFileInput {
+            display: none;
+        }
+
     @media screen and (min-width: 1331px) {
         .close-icon {
             left: 890px;
@@ -970,6 +1014,10 @@ if (input.value.length > 0 && input.value[0] === ' ') {
 
         .home{
             margin-top: -18px;
+        }
+
+        .container{
+            margin-top: 19px;
         }
     }
 
