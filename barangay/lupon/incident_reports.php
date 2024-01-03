@@ -81,9 +81,9 @@ if (!$result) {
 
     <section class="home">
 
-        <h1 style="margin-left: 4%; margin-top: 1%; display: flex; font-size: 48px;">INCIDENT REPORTS</h1>
+        <h1 class="incident-reports">INCIDENT REPORTS</h1>
         <a href="create_report.php" style="text-decoration: none;">
-        <div class="add-account" style="margin-top: -5%; margin-left: 518px; width: 250px;">
+        <div class="add-account">
         <i class='bx bx-book-add'></i>
         <p style="margin-left: 10px;">Create Incident Report</p>
         </div></a>
@@ -103,13 +103,13 @@ if (!$result) {
 
         <div class="search-container">
             <form action="" method="post">
-                <span class="case-button" style="padding: 0px 12px; cursor: default;">CASE NO.</span>
-                <input type="text" class="search-input" name="search_case" placeholder="Search..." style="width: 71%;">
+            <span class="case-button" style="padding: 0px 12px; cursor: default">CASE NO.</span>
+                <input type="text" class="search-input" name="search_case" placeholder="Search...">
                 <button type="submit" name="submit_search" class="search-button" style="padding: 0px 12px;">Search</button>
             </form>
         </div>
 
-        <div class="sort-container" style="margin-left: 64%;">
+        <div class="sort-container">
     <div class="sort-filter-box">Sort By:</div>
     <form id="sortForm" action="" method="get" onchange="redirectToSortedPage()">
         <select id="sort" name="sort">
@@ -312,7 +312,7 @@ if (mysqli_num_rows($result) == 0) {
         }
 
         .search-input{
-            width: 790px;
+            width: 71%;
             padding: 0 12px;
         }
 
@@ -439,7 +439,7 @@ if (mysqli_num_rows($result) == 0) {
 }
 
         .sort-container {
-            margin-left: 63.6%;
+            margin-left: 64%;
             margin-top: 10px;
             display: flex;
             align-items: center;
@@ -447,6 +447,14 @@ if (mysqli_num_rows($result) == 0) {
 
         #sort {
             height: 33px;
+        }
+
+        .incident-reports{
+            margin-left: 4%; margin-top: 1%; display: flex; font-size: 48px;
+        }
+
+        .add-account{
+            margin-top: -5%; margin-left: 518px; width: 250px;
         }
 
         @media screen and (min-width: 1331px){
@@ -458,24 +466,25 @@ if (mysqli_num_rows($result) == 0) {
             }
         }
 
-        @media screen and (min-width: 1260px) and (max-height: 680px){
-            .search-input{
-                width: 755px;
-            }
-            .sort-container{
-                margin-left: 62.4%;
-            }
-            .container{
-                width: 945px;
-            }
-        }
-
         @media screen and (min-width: 1352px){
             .search-input{
                 width: 835px;
             }
             .container{
                 width: 1025px;
+            }
+        }
+
+        @media screen and (min-width: 1920px) and (min-height: 1080px){
+            .add-account{
+                margin-top: -3.4%;
+                margin-left: 530px;
+            }
+            .search-input{
+                width: 75%;
+            }
+            .sort-container{
+                margin-left: 70.5%;
             }
         }
 
