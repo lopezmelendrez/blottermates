@@ -774,23 +774,31 @@ function closeMonthlyReportPopup() {
             width: 15%;
         }
         .calendar-container{
-            width: 950px;
+            width: 920px;
             height: 40rem;
         }
         .calendar{
             width: 950px;
         }
         .incident-case-table{
-            width: 600px;
+            width: 760px;
             height: 40rem;
         }
         .incident-case-table .head-text .notice-records{
             margin-top: -1.5%;
         }
-        .incident-case-table table{
-            width: 800px;
-            padding: 20px 20px;
+        table thead tr th {
+            font-size: 20px;
+            padding-right: 190px;
         }
+        .popup .modal{
+            margin-top: 20%;
+        }
+        .close-icon{
+            top: 33.4%;
+            left: 1190px;
+        }
+
     }
 
 
