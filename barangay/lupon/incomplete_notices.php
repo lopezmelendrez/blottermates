@@ -135,20 +135,22 @@ if (!isset($email)) {
                 $offset = ($page - 1) * $rowsPerPage;
 
                 $select = mysqli_query($conn, "
-                SELECT incident_report.incident_case_number AS incident_case_number,
-                incident_report.complainant_last_name AS complainant_last_name,
-                incident_report.respondent_last_name AS respondent_last_name,
-                incident_report.created_at AS created_at,
-                incident_report.submitter_first_name as submitter_first_name,
-                incident_report.submitter_last_name as submitter_last_name
-                FROM `incident_report`
-                LEFT JOIN `notify_residents` ON incident_report.incident_case_number = notify_residents.incident_case_number
-                LEFT JOIN `amicable_settlement` ON incident_report.incident_case_number = amicable_settlement.incident_case_number
-                WHERE (generate_summon = 'not generated' OR generate_hearing = 'not generated' OR generate_summon IS NULL OR generate_hearing IS NULL)
-                AND incident_report.pb_id = $pb_id
-                ORDER BY incident_report.created_at DESC
-                LIMIT $offset, $rowsPerPage
-            ") or die('query failed');
+    SELECT incident_report.incident_case_number AS incident_case_number,
+    incident_report.complainant_last_name AS complainant_last_name,
+    incident_report.respondent_last_name AS respondent_last_name,
+    incident_report.created_at AS created_at,
+    incident_report.submitter_first_name as submitter_first_name,
+    incident_report.submitter_last_name as submitter_last_name
+    FROM `incident_report`
+    LEFT JOIN `notify_residents` ON incident_report.incident_case_number = notify_residents.incident_case_number
+    LEFT JOIN `amicable_settlement` ON incident_report.incident_case_number = amicable_settlement.incident_case_number
+    WHERE (generate_summon = 'not generated' OR generate_hearing = 'not generated' OR generate_summon IS NULL OR generate_hearing IS NULL)
+    AND incident_report.pb_id = $pb_id
+    AND amicable_settlement.incident_case_number IS NULL  -- Exclude if found in amicable_settlement
+    ORDER BY incident_report.created_at DESC
+    LIMIT $offset, $rowsPerPage
+") or die('query failed');
+
 
                 $num_rows = mysqli_num_rows($select);
 
