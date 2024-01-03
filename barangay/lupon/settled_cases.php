@@ -33,9 +33,9 @@ header('location: ../../index.php');
 
     <section class="home">
 
-    <h1 style="margin-left: 4%; margin-top: 1%; display: flex; font-size: 48px;">INCIDENT REPORTS</h1>
+    <h1 class="incident-reports">INCIDENT REPORTS</h1>
         <a href="create_report.php" style="text-decoration: none;">
-        <div class="add-account" style="margin-top: -5%; margin-left: 518px; width: 250px;">
+        <div class="add-account">
         <i class='bx bx-book-add'></i>
         <p style="margin-left: 10px;">Create Incident Report</p>
         </div></a>
@@ -59,7 +59,7 @@ header('location: ../../index.php');
             $row = mysqli_fetch_assoc($selectLuponId);
             $pb_id = $row['pb_id'];
 
-            $rowsPerPage = 4;
+            $rowsPerPage = 3;
 
             $selectCount = mysqli_query($conn, "SELECT COUNT(ir.incident_case_number) AS total_rows
     FROM `incident_report` AS ir
@@ -106,7 +106,7 @@ header('location: ../../index.php');
             </script>
         </div>
 
-        <table style="margin-left: 120px; width: 83.5%; background: #fff; text-align: center;">
+        <table>
             <thead>
                 <tr>
                     <th>Case No.</th>
@@ -127,7 +127,7 @@ if (!$selectLuponId) {
 $row = mysqli_fetch_assoc($selectLuponId);
 $pb_id = $row['pb_id'];
 
-$rowsPerPage = 4; // Adjust the number of rows per page as needed
+$rowsPerPage = 3; // Adjust the number of rows per page as needed
                         $page = isset($_GET['page']) ? $_GET['page'] : 1;
                         $offset = ($page - 1) * $rowsPerPage;
 
@@ -450,6 +450,45 @@ if (mysqli_num_rows($select_hearing) > 0) {
         .pagination .active {
             background-color: #007bff;
             color: #fff;
+        }
+
+        .incident-reports{
+            margin-left: 4%; 
+            margin-top: 1%; 
+            display: flex; 
+            font-size: 48px;
+        }
+
+        .add-account{
+            margin-top: -5%; margin-left: 518px; width: 250px;
+        }
+
+        table{
+            margin-left: 118px; 
+            width: 83.7%; 
+            background: #fff; 
+            text-align: center;
+        }
+
+        @media screen and (min-width: 1920px) and (min-height: 1080px){
+            .add-account{
+                margin-top: -3.4%;
+                margin-left: 530px;
+            }
+
+            table{
+                margin-left: 150px;
+                width: 85.5%;
+            }
+
+            .pagination{
+                margin-left: 300px;
+            }
+
+            .previous{
+                margin-top: 20%;
+                margin-bottom: 20%;
+            }
         }
 
 
