@@ -39,6 +39,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['execution_submit'])) 
     }
 }
 
+$incident_case_number = $_GET['incident_case_number'];
+$select_attachment = mysqli_query($conn, "SELECT attachment FROM `incident_report` WHERE incident_case_number = '$incident_case_number'");
+$fetch_attachment = mysqli_fetch_assoc($select_attachment);
+
 
 ?>
 
@@ -211,6 +215,11 @@ if ($fetch['barangay'] == 'Ibaba') {
                         <div class="fields">
                             <div class="input-field" style="width: 100%;">
                                 <label class="label">Description of Violation</label>
+                                <?php
+                if (!empty($fetch_attachment['attachment'])) {
+                    echo '<label class="attachment" onclick="showAttachmentPopup()">View Attachment</label>';
+                }
+                ?>
                                 <div class="text-box" style="height: 150px; margin-top: 8px;">
                                     <p style="padding: 10px 0"><?php echo $fetch_cases['description_of_violation'] ?></p></div>
                             </div>
@@ -226,10 +235,37 @@ if ($fetch['barangay'] == 'Ibaba') {
                         
                     </div> 
                 </div>
-
-                
                 
                 </form>
+
+                <div id="attachment_popup" class="popup">
+    <div class="close-icon-1" onclick="closeAttachmentPopup()">
+        <i class='bx bxs-x-circle' ></i>
+    </div>
+    <center>
+        <div class="modal-attachment">
+            <h3 class="modal-title" style="font-size: 18px; text-align:center;">UPLOADED ATTACHMENT</h3>
+            <hr style="border: 1px solid #ebecf0; margin: 10px 0;">
+
+            <?php
+                // Fetch the attachment information from the database
+                $incident_case_number = $_GET['incident_case_number'];
+                $select_attachment = mysqli_query($conn, "SELECT attachment FROM `incident_report` WHERE incident_case_number = '$incident_case_number'");
+                $fetch_attachment = mysqli_fetch_assoc($select_attachment);
+
+                // Check if there is an attachment
+                if ($fetch_attachment && $fetch_attachment['attachment']) {
+                    // Display the image using the fetched attachment filename
+                    echo '<img src="uploads/' . $fetch_attachment['attachment'] . '" alt="Uploaded Image" style="max-width: 50%; margin-top: 4%;">';
+                } else {
+                    // Handle the case where there is no attachment
+                    echo '<p>No attachment available</p>';
+                }
+            ?>
+        </div>
+    </center>
+</div>
+
 
                 <div id="pdf_popup" class="popup">
                 <div class="close-icon" onclick="closePDFPopup()">
@@ -360,6 +396,18 @@ if ($fetch['barangay'] == 'Ibaba') {
         popup.style.display = "none";
     }
 
+    function showAttachmentPopup() {
+        var popup = document.getElementById("attachment_popup");
+        popup.style.display = "block";
+
+
+    }
+
+    function closeAttachmentPopup() {
+        var popup = document.getElementById("attachment_popup");
+        popup.style.display = "none";
+    }
+
 
 
     </script>
@@ -418,6 +466,17 @@ if ($fetch['barangay'] == 'Ibaba') {
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     width: 500px;
     height: 250px;
+    overflow-y: hidden;
+}
+
+.modal-attachment {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 5px;
+    margin-top: 150px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    width: 600px;
+    height: 400px;
     overflow-y: hidden;
 }
 
@@ -525,6 +584,15 @@ if ($fetch['barangay'] == 'Ibaba') {
       color:#bc1823;
     }
 
+    .close-icon-1 {
+      position: absolute;
+      top: 130px;
+      left: 920px;
+      cursor: pointer;
+      font-size: 50px;
+      color:#bc1823;
+    }
+
     .text-box{
     outline: none;
     font-size: 14px;
@@ -535,6 +603,20 @@ if ($fetch['barangay'] == 'Ibaba') {
     padding: 0 15px;
     height: 42px;
     margin: 8px 0;
+}
+
+.attachment{
+    display: inline-block;
+    width: 150px;
+    padding: 4px 10px;
+    cursor: pointer;
+    border: 1.5px solid #ccc;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+            color: #2e2e2e;
+            border-radius: 5px;
+            margin-top: -25px;
+            margin-left: 19%;
+            text-align: center;
 }
 
 @media screen and (min-width: 1310px){
@@ -549,9 +631,14 @@ if ($fetch['barangay'] == 'Ibaba') {
         @media screen and (min-width: 1331px){
             .close-icon{
                 left: 895px;
+                top: 161px;
             }
             .container{
                 margin-top: 1.7%;
+            }
+            
+            .close-icon-1{
+                left: 940px;
             }
         
         }
