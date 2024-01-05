@@ -84,16 +84,22 @@ header('location: ../../index.php');
 
             echo '<div class="pages" style="display: flex; margin-left: 80%; margin-top: -4%;">';
 
-            // Previous button
             if ($currentPage > 1) {
-                echo '<i class="bx bxs-left-arrow-square next" onclick="navigatePage(' . ($currentPage - 1) . ')" style="font-size: 50px; color: #f5be1d; cursor: pointer;"></i>';
+                $prevButtonStyle = '';
+            
+                // Check if it's the last page
+                if ($currentPage == $totalPages) {
+                    $prevButtonStyle = 'margin-left: 50px;';
+                }
+            
+                echo '<i class="bx bxs-left-arrow-square previous" onclick="navigatePage(' . ($currentPage - 1) . ')" style="font-size: 50px; color: #f5be1d; cursor: pointer;' . $prevButtonStyle . '"></i>';
             }
 
             // Next button
             if ($currentPage == 1 && $num_rows > $rowsPerPage) {
-                echo '<i class="bx bxs-right-arrow-square next" onclick="navigatePage(' . ($currentPage + 1) . ')" style="font-size: 50px; color: #f5be1d; cursor: pointer; margin-left: 50px;"></i>';
-            } elseif ($currentPage > 1) {
-                echo '<i class="bx bxs-right-arrow-square next" onclick="navigatePage(' . ($currentPage + 1) . ')" style="font-size: 50px; color: #f5be1d; cursor: pointer;"></i>';
+                echo '<i class="bx bxs-right-arrow-square previous" onclick="navigatePage(' . ($currentPage + 1) . ')" style="font-size: 50px; color: #f5be1d; cursor: pointer; margin-left: 50px;"></i>';
+            } elseif ($currentPage > $totalPages) {
+                echo '<i class="bx bxs-right-arrow-square previous" onclick="navigatePage(' . ($currentPage + 1) . ')" style="font-size: 50px; color: #f5be1d; cursor: pointer;"></i>';
             }
 
             echo '</div>';
