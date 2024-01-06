@@ -52,8 +52,11 @@ $barangay = $fetch_cases['barangay'];
     <title>Track Your Case</title>
 </head>
 <body>
-    <center>
-        <div class="track-case-container" style="margin-top: 11.5%;">
+<div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <center>
+                    <div class="track-case-container" style="margin-top: 11.5%;">
             <div class="hearing-text">
                 <img src="../images/logo.png" class="image">
                 <h4 class="case-id" style="margin-top: 0px; font-size: 11px;">
@@ -71,7 +74,19 @@ $barangay = $fetch_cases['barangay'];
             ?>
 
             <?php
-            if ($fetch_cases['notify_summon'] == 'not notified' && $fetch_cases['notify_hearing'] == 'not notified') {
+            if (!empty($fetch_cases['date_agreed'])){
+                $date_of_hearing = isset($fetch_cases['date_of_hearing']) ? date('jS \of F Y', strtotime($fetch_cases['date_of_hearing'])) : '2nd of December 2023';
+                $time_of_hearing = isset($fetch_cases['time_of_hearing']) ? date('h:i A', strtotime($fetch_cases['time_of_hearing'])) : '11:00 AM';
+
+                echo '<div class="hearing-notice" style="color: white;">
+                        <div class="hearing-text">
+                            <i class="fa-solid fa-circle-check" style="color: #1db954;"></i>
+                            <p>Hearing Notified</p>
+                        </div>
+                        <p class="text">The Complainant and the Respondent have now been notified of their Hearing.</p>
+                    </div>';
+            }
+            elseif ($fetch_cases['notify_summon'] == 'not notified' && $fetch_cases['notify_hearing'] == 'not notified') {
                 echo '<div class="hearing-notice" style="color: white;">
                         <div class="hearing-text">
                             <i class="fa-solid fa-circle-notch" style="color: #eed202;"></i>
@@ -187,8 +202,12 @@ $barangay = $fetch_cases['barangay'];
         
             }
             ?>
+                    </div>
+                </center>
+            </div>
         </div>
-    </center>
+    </div>
+
 </body>
 <style>
 
@@ -200,6 +219,31 @@ $barangay = $fetch_cases['barangay'];
     font-weight: 500;
     letter-spacing: 1;
     font-size: 14px;
+}
+
+.container{
+    width: 50%;
+    margin-top: 7%;
+}
+
+@media screen and (max-width: 430px){
+    .container{
+        margin-top: 40%;
+        margin-left: -3%;
+    }
+    .track-case-container{
+        width: 27rem;
+    }
+}
+
+@media screen and (max-width: 491px){
+    .container{
+        margin-top: 55%;
+        margin-left: -0.3%;
+    }
+    .track-case-container{
+        width: 27rem;
+    }
 }
 </style>
 </html>
