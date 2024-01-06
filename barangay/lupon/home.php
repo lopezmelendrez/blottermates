@@ -127,7 +127,7 @@ if ($isEndOfMonth) {
         mysqli_stmt_bind_result($selectLuponData, $lupon_id);
         mysqli_stmt_fetch($selectLuponData);
 
-        $downloadLink = "../../tcpdf/transmittal_report.php?lupon_id={$lupon_id}";
+        $downloadLink = "../../tcpdf/monthly_transmittal_report.php?lupon_id={$lupon_id}";
         $modalContent = '
             <h3 class="modal-title" style="font-size: 18px; text-align:center;">GENERATE MONTHLY TRANSMITTAL REPORT</h3>
             <hr style="border: 1px solid #ccc; margin: 10px 0;">
