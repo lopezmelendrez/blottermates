@@ -106,7 +106,7 @@ date_default_timezone_set('Asia/Manila');
         </div>
 
     </nav>
-    <section class="home" style="margin-left: 1%;">
+    <section class="home">
 
     <h1 style="margin-left: 3.5%; margin-top: -2%; display: flex; font-size: 48px;">ANALYTICS</h1>
     <p class="notice-records" style="margin-left: 25%; margin-top: -3.5%; font-size: 16px;">* As of <b><?php echo date('l, d F Y - h:i A'); ?></b></p>
@@ -137,7 +137,7 @@ WHERE NOT EXISTS (
         ?>
 
                 <div class="ongoing-cases-box">
-                    <p>Ongoing Cases</p>
+                    <p>Ongoing Incident Cases</p>
                     <p style="font-size: 30px; margin-top: -8%; font-weight: 600;"><?php echo $totalOngoingCases ?></p>
                 </div>
             </div>
@@ -185,30 +185,9 @@ WHERE NOT EXISTS (
             <div class="incident-case-table" style="display: flex;">
     <div class="head-text">
         <p class="incident-case" style="font-size: 22px;">Ongoing Incident Cases</p>
-        <div class="table-container" style="max-height: 283px; overflow-y: hidden; margin-top: -6%;">
-            <hr style="border: 1px solid #3d3d3d; margin: 3px 0; width: 100%; margin-top: 5%; margin-bottom: 10px;">
-            <table class="incident-table" style="width: 548px; margin-top: 0.5%;">
-            <?php
-               $select = mysqli_query($conn, "
-               SELECT pb.barangay AS barangay, COUNT(ir.incident_case_number) AS total_cases
-               FROM `incident_report` AS ir
-               INNER JOIN `lupon_accounts` AS la ON ir.lupon_id = la.lupon_id
-               INNER JOIN `pb_accounts` AS pb ON la.pb_id = pb.pb_id
-               LEFT JOIN `amicable_settlement` AS amicable ON ir.incident_case_number = amicable.incident_case_number
-               WHERE amicable.hearing_id IS NULL
-               GROUP BY pb.barangay
-               ORDER BY total_cases DESC
-           ") or die('query failed');
-           
-        
-        while ($row = mysqli_fetch_assoc($select)) {
-            echo "<tr>";
-            echo "<td style='font-size: 16px; font-weight: 500; border-bottom: 2px solid #ebecf0; padding-bottom: 10px; width: 100%; padding-top: 4px; text-transform: uppercase;'>BRGY. " . $row['barangay'] . "</td>";
-            echo "<td style='position: fixed; margin-left: -4%; font-size: 20px; font-weight: 600; padding-top: 3px;'>" . $row['total_cases'] . "</td>";
-            echo "</tr>";
-        }
-        ?>
-            </table>
+        <div class="table-container">
+            <hr class="border-1">
+            <canvas id="barGraph" width="400" height="200"></canvas>
         </div>
         </div>
     </div>
@@ -218,32 +197,33 @@ WHERE NOT EXISTS (
 <div class="head-text">
         <p class="incident-case" style="font-size: 22px;">Top Incident Case Type</p>
         <div class="table-container" style="max-height: 380px; overflow-y: hidden; margin-top: -6%;">
-            <hr style="border: 1px solid #3d3d3d; margin: 3px 0; width: 98%; margin-top: 5%; margin-bottom: 5%;">
+            <hr style="border: 1px solid #3d3d3d; margin: 3px 0; width: 73%; margin-top: 3.7%; margin-bottom: 5%;">
             <?php
     $select = mysqli_query($conn, "SELECT incident_case_type, COUNT(*) AS total_cases
     FROM `incident_report`
     GROUP BY incident_case_type
     ORDER BY total_cases DESC
     LIMIT 10")
-or die('query failed');
+    or die('query failed');
 
-    $rank = 1;
-
-    echo "<table>";  // Start the table here
+    $data = array(); // Array to store data for the chart
 
     while ($row = mysqli_fetch_assoc($select)) {
         $description = isset($incidentTypeMap[$row['incident_case_type']]) ? $incidentTypeMap[$row['incident_case_type']] : $row['incident_case_type'];
 
-        echo "<tr>";
-        echo "<td style='font-size: 12px; font-weight: 500; padding-right: 10px;'>" . $rank . ".</td>";
-        echo "<td style='font-size: 15px; font-weight: 600;'>" . $description . "</td>";
-        echo "</tr>";
-
-        $rank++;
+        // Store data for the chart
+        $data[] = array(
+            "label" => $description,
+            "value" => $row['total_cases']
+        );
     }
-
-    echo "</table>";  // End the table here
 ?>
+
+<!-- Add the following HTML and JavaScript code after the PHP code -->
+
+<div style="width: 400px; height: 340px;">
+    <canvas id="myPieChart"></canvas>
+</div>
 
 
         </div>
@@ -254,6 +234,7 @@ or die('query failed');
     </section>
 
     <script src="search_bar.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
         const body = document.querySelector('body'),
         sidebar = body.querySelector('nav'),
@@ -334,6 +315,104 @@ timeElement.textContent = formatTime(now);
 dateElement.textContent = formatDate(now);
 }, 200);
 
+var ctx = document.getElementById('myPieChart').getContext('2d');
+    var myPieChart = new Chart(ctx, {
+        type: 'pie',
+        data: {
+            labels: <?php echo json_encode(array_column($data, 'label')); ?>,
+            datasets: [{
+                data: <?php echo json_encode(array_map(function($value) { return $value * 10; }, array_column($data, 'value'))); ?>,
+                backgroundColor: [
+                    'rgba(246, 109, 68)',
+                    'rgba(254, 174, 101)',
+                    'rgba(230, 246, 157)',
+                    'rgba(170, 222, 167)',
+                    'rgba(100, 194, 166)',
+                    'rgba(45, 135, 187)',
+                    // Add more colors if needed
+                ],
+            }]
+        },
+        options: {
+            plugins: {
+                legend: {
+                    display: true,
+                    position: 'bottom',
+                    labels: {
+                        usePointStyle: true,
+                        // Display only the first 5 labels
+                        filter: function (legendItem, chartData) {
+                            return chartData.labels.indexOf(legendItem.text) < 5;
+                        },
+                        // Customize the legend text color and font weight
+                        color: 'black', // Change to the desired color
+                        fontWeight: 600, // Change to the desired font weight
+                    },
+                },
+                tooltip: {
+                callbacks: {
+                    label: function (context) {
+                        var label = context.label || '';
+                        var percentage = Math.round(context.parsed); // Round the percentage to a whole number
+                        return label + ": " + percentage + "%";
+                    },
+                    },
+                },
+            },
+        },
+    });
+
+    <?php
+            $select = mysqli_query($conn, "
+               SELECT pb.barangay AS barangay, COUNT(ir.incident_case_number) AS total_cases
+               FROM `incident_report` AS ir
+               INNER JOIN `lupon_accounts` AS la ON ir.lupon_id = la.lupon_id
+               INNER JOIN `pb_accounts` AS pb ON la.pb_id = pb.pb_id
+               LEFT JOIN `amicable_settlement` AS amicable ON ir.incident_case_number = amicable.incident_case_number
+               WHERE amicable.hearing_id IS NULL
+               GROUP BY pb.barangay
+               ORDER BY total_cases DESC
+            ") or die('query failed');
+
+            $data = array();
+            while ($row = mysqli_fetch_assoc($select)) {
+                $data[$row['barangay']] = $row['total_cases'];
+            }
+        ?>
+
+        var labels = <?php echo json_encode(array_keys($data)); ?>;
+        var data = <?php echo json_encode(array_values($data)); ?>;
+
+        var ctx = document.getElementById('barGraph').getContext('2d');
+var myBarChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+        labels: labels,
+        datasets: [{
+            label: 'Total Cases',
+            data: data,
+            backgroundColor: [
+                'rgba(246, 109, 68, 0.7)',
+                    'rgba(254, 174, 101, 0.7)',
+                    'rgba(230, 246, 157, 0.7)',
+                    'rgba(170, 222, 167, 0.7)',
+                    'rgba(100, 194, 166, 0.7)',
+                    'rgba(45, 135, 187, 0.7)',
+            ],
+            borderWidth: 1
+        }]
+    },
+    options: {
+        scales: {
+            y: {
+                beginAtZero: true
+            }
+        }
+    }
+});
+
+    </script>
+
     </script>
 
 </body>
@@ -348,6 +427,8 @@ dateElement.textContent = formatDate(now);
             width: calc(100% - 78px);
             background-color: var(--body-color);
             transition: var(--tran-05);
+            margin-left: 2.6%;
+            margin-top: 3%;
         }
 
         .sidebar.close ~ .home{
@@ -434,6 +515,10 @@ dateElement.textContent = formatDate(now);
             border-radius: 5px;
         }
 
+        .border-1{
+            border: 1px solid #3d3d3d; margin: 3px 0; width: 100%; margin-top: 5%; margin-bottom: 40px;
+        }
+
         .notice-records{
             margin-top: -1%;
             font-style: italic;
@@ -442,6 +527,17 @@ dateElement.textContent = formatDate(now);
             color: #c82333;
         }
 
+        #myPieChart {
+        max-width: 500px; 
+        margin-top: -3%;
+        margin-left: 11%;
+        margin-bottom: 3%;
+    }
+
+    .table-container{
+        height: 400px; overflow-y: hidden; margin-top: -6%; width: 545px;
+    }
+
         @media screen and (min-width: 1355px) and (min-height: 616px){
             .incident-case-table-1{
                 margin-top: -34.1%;
@@ -449,13 +545,29 @@ dateElement.textContent = formatDate(now);
         }
 
         @media screen and (min-width: 1331px) {
+            .home{
+                margin-top: 2.8%;
+                margin-left: 1%;
+            }
             .incident-case-table-1{
-                height: 62%;
-                margin-top: -31.8%;
+                height: 65%;
+                width: 35%;
+                margin-left: 61%;
+                margin-top: -32.5%;
             }
 
             .incident-case-table{
-                height: 62%;
+                height: 64%;
+                width: 700px;
+            }
+
+            .incident-case-table .table-container{
+                width: 650px;
+                height: 400px;
+            }
+
+            .border-1{
+                margin-bottom: 10px;
             }
         }
 
@@ -468,6 +580,7 @@ dateElement.textContent = formatDate(now);
             .incident-case-table{
                 height: 62%;
             }
+
         }
 
 
