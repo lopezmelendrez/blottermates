@@ -297,7 +297,7 @@ $activityLogQuery = "
 )
      
     ORDER BY formatted_timestamp DESC
-    LIMIT 4
+    LIMIT 8
 ";
 
 

@@ -119,7 +119,7 @@ header('location: ../index.php');
 
     </nav>
 
-    <section class="home" style="margin-left: -0.3%; margin-top: 3%;">
+    <section class="home">
         
     <div class="datetime-container" style="display: flex; margin-top: -4.5%;">
         <div class="datetime mb-3" style="width: 26rem;">
@@ -258,7 +258,7 @@ header('location: ../index.php');
         </div>
             </center>
         
-            <div class="incident-case-table" style="display: flex; margin-top: 15px; height: 350px;">
+            <div class="incident-case-table">
             <div class="head-text">
                 <p class="incident-case">Incident Report Cases</p>
                 <p class="notice-records">* Validate File of Motion</p>
@@ -320,11 +320,11 @@ header('location: ../index.php');
         </div>
     </div>
 
-    <div class="incident-case-table" style="display: flex; margin-top: -16px; height: 350px; margin-left: 6%; width: 600px;">
+    <div class="incident-case-table-1">
     <div class="head-text">
         <p class="incident-case">Recent Activity Log</p>
 
-        <div class="table-container" style="max-height: 240px; overflow-y: hidden; margin-top: -6%;">
+        <div class="table-container">
             <hr style="border: 1px solid #949494; margin: 5px 0; width: 100%; margin-top: 3%;">
             <table class="incident-table" style="width: 560px;">
                 <tbody>
@@ -440,6 +440,7 @@ header('location: ../index.php');
             width: calc(100% - 78px);
             background-color: var(--body-color);
             transition: var(--tran-05);
+            margin-left: -0.3%; margin-top: 3%;
         }
 
         .sidebar.close ~ .home{
@@ -572,6 +573,40 @@ header('location: ../index.php');
         border: 1px solid #fff;
         transition: .5s;
     }
+
+    .incident-case-table{
+        display: flex; margin-top: 15px; height: 350px;
+    }
+
+    .incident-case-table-1{
+        display: flex; margin-top: -16px; height: 350px; margin-left: 6%; width: 600px;
+    background: white;
+    border-radius: 8px;
+    padding: 16px 24px;
+}
+
+.table-container{
+    height: 240px; overflow-y: hidden; margin-top: -6%;
+}
+
+    @media screen and (min-width: 1331px){
+        .home{
+            margin-left: 1.1%;
+        }
+    }
+
+    @media screen and (min-width: 1360px) and (min-height: 768px){
+    .incident-case-table, .incident-case-table-1{
+        height: 450px;
+    }
+
+    .incident-case-table-1 .table-container{
+        height: 360px;
+    }
+   
+}
+
+
 
     </style>
 

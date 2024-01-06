@@ -172,7 +172,7 @@ if (!$result) {
         <h1 style="margin-left: 4%; margin-top: 1%; display: flex; font-size: 48px;">INCIDENT REPORTS</h1>
 
         <div class="cases-container" style="margin-left: -33%; width: 100%; margin-top: -2%;">
-            <a href="incomplete_notices.php" style="text-decoration: none;">
+            <a href="" style="text-decoration: none;">
             <div class="validate-cases" style="height:40px; width: 460%;" >
                 <p>Validate File of Motion</p>
             </div></a>
@@ -424,6 +424,15 @@ if (mysqli_num_rows($result) == 0) {
     margin-left: 3%;
     cursor: default;
 }
+
+@media screen and (min-width: 1331px){
+    .home{
+        margin-left: 1.3%;
+        margin-top: 0%;
+    }
+}
+
+
 
     </style>
 
