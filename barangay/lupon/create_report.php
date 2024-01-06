@@ -640,12 +640,7 @@ backBtn.addEventListener("click", (event) => {
     event.preventDefault(); // Prevent default behavior of the "Back" button
 });
 
-
-
-
-
-
-        const maxLength = 255;
+const maxLength = 255;
 const inputElement = document.getElementById('description_input');
 const characterCountElement = document.getElementById('character_count');
 
@@ -703,7 +698,6 @@ function validatePhoneNumber(phoneNumber) {
   return phoneNumberPattern.test(phoneNumber);
 }
 
-
 document.addEventListener("DOMContentLoaded", function() {
     const form = document.querySelector("form");
     const popUpButton = form.querySelector(".pop-up");
@@ -712,62 +706,72 @@ document.addEventListener("DOMContentLoaded", function() {
     const modalCancelBtn = document.getElementById("modalCancelBtn");
     const modalConfirmBtn = document.getElementById("modalConfirmBtn");
 
+    function checkFields() {
+        const incidentCaseType = document.querySelector('select[name="incident_case_type"]');
+        const incidentDate = document.querySelector('input[name="incident_date"]');
+        const descriptionOfViolation = document.querySelector('textarea[name="description_of_violation"]');
+
+        // Check if any of the specified fields is empty
+        if (incidentCaseType.value === "" || incidentDate.value === "" || descriptionOfViolation.value === "") {
+            // If any field is empty, disable the button
+            popUpButton.disabled = true;
+        } else {
+            // If all fields have values, enable the button
+            popUpButton.disabled = false;
+        }
+    }
+
+    // Event listener for changes in the input fields
+    form.addEventListener("input", checkFields);
+
     popUpButton.addEventListener("click", function(event) {
         event.preventDefault();
-        const complainantPhoneNumber = document.querySelector('input[name="complainant_cellphone_number"]').value;
-        const respondentPhoneNumber = document.querySelector('input[name="respondent_cellphone_number"]').value;
+        checkFields();
 
-        if (!validatePhoneNumber(complainantPhoneNumber) || !validatePhoneNumber(respondentPhoneNumber)) {
-    if (!validatePhoneNumber(complainantPhoneNumber) && !validatePhoneNumber(respondentPhoneNumber)) {
-        openCustomAlert("COMPLAINANT and RESPONDENT");
-    } else if (!validatePhoneNumber(complainantPhoneNumber)) {
-        openCustomAlert("COMPLAINANT");
-    } else {
-        openCustomAlert("RESPONDENT");
-    }
-}  else {
-    // Function to capitalize each word
-function capitalizeText(input) {
-    return input.replace(/\b\w/g, function (char) {
-        return char.toUpperCase();
-    });
-}
+        if (!popUpButton.disabled) {
+            // Proceed with the rest of the code only if the button is not disabled
+            function capitalizeText(input) {
+                return input.replace(/\b\w/g, function (char) {
+                    return char.toUpperCase();
+                });
+            }
 
-// Capitalize and set text content for complainant fields
-document.getElementById("complainantLastName").textContent = capitalizeText(document.querySelector('input[name="complainant_last_name"]').value);
-document.getElementById("complainantFirstName").textContent = capitalizeText(document.querySelector('input[name="complainant_first_name"]').value);
-document.getElementById("complainantMiddleName").textContent = capitalizeText(document.querySelector('input[name="complainant_middle_name"]').value);
-document.getElementById("complainantCellphone").textContent = capitalizeText(document.querySelector('input[name="complainant_cellphone_number"]').value);
-document.getElementById("complainantAddress").textContent = capitalizeText(document.querySelector('input[name="complainant_house_address"]').value);
+            // Capitalize and set text content for complainant fields
+            document.getElementById("complainantLastName").textContent = capitalizeText(document.querySelector('input[name="complainant_last_name"]').value);
+            document.getElementById("complainantFirstName").textContent = capitalizeText(document.querySelector('input[name="complainant_first_name"]').value);
+            document.getElementById("complainantMiddleName").textContent = capitalizeText(document.querySelector('input[name="complainant_middle_name"]').value);
+            document.getElementById("complainantCellphone").textContent = capitalizeText(document.querySelector('input[name="complainant_cellphone_number"]').value);
+            document.getElementById("complainantAddress").textContent = capitalizeText(document.querySelector('input[name="complainant_house_address"]').value);
 
-// Add more fields for complainant
+            // Add more fields for complainant
 
-// Capitalize and set text content for respondent fields
-document.getElementById("respondentLastName").textContent = capitalizeText(document.querySelector('input[name="respondent_last_name"]').value);
-document.getElementById("respondentFirstName").textContent = capitalizeText(document.querySelector('input[name="respondent_first_name"]').value);
-document.getElementById("respondentMiddleName").textContent = capitalizeText(document.querySelector('input[name="respondent_middle_name"]').value);
-document.getElementById("respondentCellphone").textContent = capitalizeText(document.querySelector('input[name="respondent_cellphone_number"]').value);
-document.getElementById("respondentAddress").textContent = capitalizeText(document.querySelector('input[name="respondent_house_address"]').value);
+            // Capitalize and set text content for respondent fields
+            document.getElementById("respondentLastName").textContent = capitalizeText(document.querySelector('input[name="respondent_last_name"]').value);
+            document.getElementById("respondentFirstName").textContent = capitalizeText(document.querySelector('input[name="respondent_first_name"]').value);
+            document.getElementById("respondentMiddleName").textContent = capitalizeText(document.querySelector('input[name="respondent_middle_name"]').value);
+            document.getElementById("respondentCellphone").textContent = capitalizeText(document.querySelector('input[name="respondent_cellphone_number"]').value);
+            document.getElementById("respondentAddress").textContent = capitalizeText(document.querySelector('input[name="respondent_house_address"]').value);
 
-        // Add more fields for respondent
+            // Add more fields for respondent
 
-        const incidentCaseType = document.querySelector('select[name="incident_case_type"] option:checked').text;
-const otherCaseType = document.querySelector('input[name="other_incident_case_type"]').value;
+            const incidentCaseType = document.querySelector('select[name="incident_case_type"] option:checked').text;
+            const otherCaseType = document.querySelector('input[name="other_incident_case_type"]').value;
 
-if (otherCaseType) {
-    document.getElementById("incidentCaseType").textContent = incidentCaseType + " — " + otherCaseType;
-} else {
-    document.getElementById("incidentCaseType").textContent = incidentCaseType;
-}
-function capitalizeFirstWord(input) {
-    return input.charAt(0).toUpperCase() + input.slice(1);
-}
-        document.getElementById("incidentDate").textContent = document.querySelector('input[name="incident_date"]').value;
-        document.getElementById("descriptionOfViolation").textContent = capitalizeFirstWord(document.querySelector('textarea[name="description_of_violation"]').value);
-        
+            if (otherCaseType) {
+                document.getElementById("incidentCaseType").textContent = incidentCaseType + " — " + otherCaseType;
+            } else {
+                document.getElementById("incidentCaseType").textContent = incidentCaseType;
+            }
 
-        modalOverlay.style.display = "flex";
-    }
+            function capitalizeFirstWord(input) {
+                return input.charAt(0).toUpperCase() + input.slice(1);
+            }
+
+            document.getElementById("incidentDate").textContent = document.querySelector('input[name="incident_date"]').value;
+            document.getElementById("descriptionOfViolation").textContent = capitalizeFirstWord(document.querySelector('textarea[name="description_of_violation"]').value);
+
+            modalOverlay.style.display = "flex";
+        }
     });
 
     // Close modal when cancel button is clicked
@@ -780,6 +784,7 @@ function capitalizeFirstWord(input) {
         submitInput.click(); // Trigger the submit input element's click event
     });
 });
+
 
 const searchIcon = document.querySelector('.search-box .icon');
     const searchInput1 = document.getElementById('searchInput1');
@@ -1023,7 +1028,7 @@ if (input.value.length > 0 && input.value[0] === ' ') {
 
      @media screen and (min-width: 1360px) and (min-height: 768px) {
         .container{
-            margin-top: 6%;
+            margin-top: 6.5%;
         }
     }
 
