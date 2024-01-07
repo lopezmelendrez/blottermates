@@ -221,7 +221,7 @@ WHERE NOT EXISTS (
 
 <!-- Add the following HTML and JavaScript code after the PHP code -->
 
-<div style="width: 400px; height: 340px;">
+<div style="width: 400px; height: 335px;">
     <canvas id="myPieChart"></canvas>
 </div>
 
@@ -316,51 +316,53 @@ dateElement.textContent = formatDate(now);
 }, 200);
 
 var ctx = document.getElementById('myPieChart').getContext('2d');
-    var myPieChart = new Chart(ctx, {
-        type: 'pie',
-        data: {
-            labels: <?php echo json_encode(array_column($data, 'label')); ?>,
-            datasets: [{
-                data: <?php echo json_encode(array_map(function($value) { return $value * 10; }, array_column($data, 'value'))); ?>,
-                backgroundColor: [
-                    'rgba(246, 109, 68)',
-                    'rgba(254, 174, 101)',
-                    'rgba(230, 246, 157)',
-                    'rgba(170, 222, 167)',
-                    'rgba(100, 194, 166)',
-                    'rgba(45, 135, 187)',
-                    // Add more colors if needed
-                ],
-            }]
-        },
-        options: {
-            plugins: {
-                legend: {
-                    display: true,
-                    position: 'bottom',
-                    labels: {
-                        usePointStyle: true,
-                        // Display only the first 5 labels
-                        filter: function (legendItem, chartData) {
-                            return chartData.labels.indexOf(legendItem.text) < 5;
-                        },
-                        // Customize the legend text color and font weight
-                        color: 'black', // Change to the desired color
-                        fontWeight: 600, // Change to the desired font weight
+var myPieChart = new Chart(ctx, {
+    type: 'doughnut', // Change the chart type to doughnut
+    data: {
+        labels: <?php echo json_encode(array_column($data, 'label')); ?>,
+        datasets: [{
+            data: <?php echo json_encode(array_map(function($value) { return $value * 10; }, array_column($data, 'value'))); ?>,
+            backgroundColor: [
+                'rgba(246, 109, 68)',
+                'rgba(254, 174, 101)',
+                'rgba(230, 246, 157)',
+                'rgba(170, 222, 167)',
+                'rgba(100, 194, 166)',
+                'rgba(45, 135, 187)',
+                // Add more colors if needed
+            ],
+        }]
+    },
+    options: {
+        cutoutPercentage: 30, // Adjust this value to control the size of the center hole
+        plugins: {
+            legend: {
+                display: true,
+                position: 'bottom',
+                labels: {
+                    usePointStyle: true,
+                    // Display only the first 5 labels
+                    filter: function (legendItem, chartData) {
+                        return chartData.labels.indexOf(legendItem.text) < 5;
                     },
+                    // Customize the legend text color and font weight
+                    color: 'black', // Change to the desired color
+                    fontWeight: 600, // Change to the desired font weight
                 },
-                tooltip: {
+            },
+            tooltip: {
                 callbacks: {
                     label: function (context) {
                         var label = context.label || '';
                         var percentage = Math.round(context.parsed); // Round the percentage to a whole number
                         return label + ": " + percentage + "%";
                     },
-                    },
                 },
             },
         },
-    });
+    },
+});
+
 
     <?php
             $select = mysqli_query($conn, "
@@ -375,13 +377,18 @@ var ctx = document.getElementById('myPieChart').getContext('2d');
             ") or die('query failed');
 
             $data = array();
-            while ($row = mysqli_fetch_assoc($select)) {
-                $data[$row['barangay']] = $row['total_cases'];
-            }
+while ($row = mysqli_fetch_assoc($select)) {
+    $data[$row['barangay']] = round($row['total_cases']);
+}
+
         ?>
 
         var labels = <?php echo json_encode(array_keys($data)); ?>;
         var data = <?php echo json_encode(array_values($data)); ?>;
+
+        data = data.map(function(value) {
+    return Math.round(value);
+});
 
         var ctx = document.getElementById('barGraph').getContext('2d');
 var myBarChart = new Chart(ctx, {
@@ -528,8 +535,9 @@ var myBarChart = new Chart(ctx, {
         }
 
         #myPieChart {
-        max-width: 500px; 
-        margin-top: -3%;
+        max-width: 500px;
+        height: 360px; 
+        margin-top: -1%;
         margin-left: 11%;
         margin-bottom: 3%;
     }
@@ -569,16 +577,20 @@ var myBarChart = new Chart(ctx, {
             .border-1{
                 margin-bottom: 10px;
             }
+
+            #myPieChart{
+                margin-top: -3.5%;
+            }
         }
 
         @media screen and (min-width: 1360px) and (min-height: 768px) {
             .incident-case-table-1{
-                height: 62%;
-                margin-top: -37%;
+                height: 56%;
+                margin-top: -33.5%;
             }
 
             .incident-case-table{
-                height: 62%;
+                height: 56%;
             }
 
         }
