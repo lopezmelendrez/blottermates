@@ -196,14 +196,14 @@ if (!isset($email)) {
                                     $hearing_date = $hearing_data['date_of_hearing'];
                                     if (empty($hearing_date)) {
                                         echo '<a href="../../barangay/lupon/hearing_schedule.php?incident_case_number=' . $incident_case_number . '" class="schedule">Set Hearing Schedule</a>';
-                                        echo '<a href="../../tcpdf/generate_kp7.php?incident_case_number=' . $incident_case_number . '" class="shownotices" target="_blank"><i class="bx bx-printer" style="margin-right: 5px;"></i>Generate KPL Form 7</a>';
+                                        echo '<a href="../../tcpdf/generate_kp7.php?incident_case_number=' . $incident_case_number . '" class="shownotices" target="_blank"><i class="bx bx-printer" style="margin-right: 5px;"></i>Generate KP Form #7</a>';
                                     } else {
                                         $hearing_date = date("F j, Y", strtotime($hearing_date));
                                         echo '<a href="../../barangay/lupon/notice_forms.php?incident_case_number=' . $incident_case_number . '" class="shownotices">Create Notice Form(s)</a>';
                                     }
                                 } else {
                                     echo '<a href="../../barangay/lupon/hearing_schedule.php?incident_case_number=' . $incident_case_number . '" class="schedule">Set Hearing Schedule</a>';
-                                    echo '<a href="../../tcpdf/complainants_form.php?incident_case_number=' . $incident_case_number . '" class="shownotices" target="_blank"><i class="bx bx-printer" style="margin-right: 5px;"></i>Generate KPL Form 7</a>';
+                                    echo '<a href="../../tcpdf/complainants_form.php?incident_case_number=' . $incident_case_number . '" class="shownotices" target="_blank"><i class="bx bx-printer" style="margin-right: 5px;"></i>Generate KP Form #7</a>';
                                 }
 
                                 ?>
