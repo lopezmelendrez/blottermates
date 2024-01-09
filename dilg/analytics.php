@@ -109,7 +109,7 @@ date_default_timezone_set('Asia/Manila');
     <section class="home">
 
     <h1 style="margin-left: 3.5%; margin-top: -2%; display: flex; font-size: 48px;">ANALYTICS</h1>
-    <p class="notice-records" style="margin-left: 25%; margin-top: -3.5%; font-size: 16px;">* As of <b><?php echo date('l, d F Y - h:i A'); ?></b></p>
+    <p class="notice-records">* As of <b><?php echo date('l, d F Y - h:i A'); ?></b></p>
 
     <center>
         <div class="container" style="margin-left: -2%;">
@@ -542,6 +542,10 @@ var myBarChart = new Chart(ctx, {
         margin-bottom: 3%;
     }
 
+    .notice-records{
+        margin-left: 25%; margin-top: -3.5%; font-size: 16px;
+    }
+
     .table-container{
         height: 400px; overflow-y: hidden; margin-top: -6%; width: 545px;
     }
@@ -595,7 +599,27 @@ var myBarChart = new Chart(ctx, {
 
         }
 
+        @media screen and (min-width: 1400px) and (max-width: 1920px) and (min-height: 1080px){
+            .notice-records{
+                margin-top: -2.5%;
+                margin-left: 19%;
+            }
+            .container{
+                margin-top: 3%;
+                margin-bottom: 3%;
+            }
+            .incident-case-table{
+                height: 40%;
+                margin-left: 13%;
+            }
 
+            .incident-case-table-1{
+                height: 40%;
+                width: 25%;
+                margin-top: -23.4%;
+                margin-left: 55%;
+            }
+        }
 
 </style>
 </html>

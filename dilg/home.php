@@ -109,7 +109,7 @@ $currentMonth = date("F");
                 <div class="date" style="font-size: 21px; width: 24rem; padding-left: 15px;"></div>
             </div>
 
-            <a href="add-barangay-account.php" style="text-decoration: none; margin-left: 1%;"><div class="add-account" style="display: flex; margin-top: 25%;">
+            <a href="add-barangay-account.php" style="text-decoration: none; margin-left: 1%;"><div class="add-account">
                 <i class='bx bx-folder-plus'></i>
                 <p>Add Barangay Account</p>
             </div></a>
@@ -426,6 +426,10 @@ dateElement.textContent = formatDate(now);
     width: 570px;
 }
 
+.add-account{
+    display: flex; margin-top: 25%;
+}
+
 .seeall{
         font-size: 16px;
         background: #fff;
@@ -476,6 +480,25 @@ dateElement.textContent = formatDate(now);
             margin-top: -36.3%;
         }
     }
+
+    @media screen and (min-width: 1400px) and (max-width: 1920px) and (min-height: 1080px){
+        .home-container{
+            margin-left: 8%;
+            margin-top: 3%;
+        }
+        .incident-case-table{
+            margin-top: 5%;
+            margin-left: 7%;
+        }    
+        .incident-case-table-1{
+                margin-top: -24%;
+                margin-left: 45%;
+            }
+        .add-account{
+            margin-top: 33%;
+        }
+        }
+
     
 
 </style>

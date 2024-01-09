@@ -460,5 +460,18 @@ function loadContent() {
             height: 33px;
         }
 
+        @media screen and (min-width: 1400px) and (max-width: 1920px) and (min-height: 1080px){
+            .search-container{
+                margin-left: 17%;
+            }
+            .sort-container{
+                margin-left: 54.4%;
+            }
+            .container{
+                margin-left: 19%;
+            }
+        }
+
+
 </style>
 </html>

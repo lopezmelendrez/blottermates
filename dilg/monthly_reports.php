@@ -149,7 +149,7 @@ if (!$result) {
 
     <h1 style="margin-left: 1%; margin-top: -2.3%; display: flex; font-size: 48px;">MONTHLY TRANSMITTAL REPORTS</h1>
 
-    <div class="cases-container" style="margin-left: -31%; width: 100%; margin-top: -2%; ">
+    <div class="cases-container">
             <a href="incomplete_notices.php" style="text-decoration: none;">
             <div class="validate-cases" style="height:40px; width: 965px; margin-left: 33.5%;" >
                 <p style="text-transform: uppercase;">BRGY. <?php echo $barangayName ?></p>
@@ -355,6 +355,10 @@ dateElement.textContent = formatDate(now);
                 color: #bc1823;
         }
 
+        .cases-container{
+            margin-left: -31%; width: 100%; margin-top: -2%;
+        }
+
         table tbody tr:nth-child(even) {
         background-color: white;
         }
@@ -454,6 +458,20 @@ dateElement.textContent = formatDate(now);
         #sort {
             height: 33px;
         }
+
+        @media screen and (min-width: 1400px) and (max-width: 1920px) and (min-height: 1080px){
+            .cases-container{
+                margin-top: -0.5%;
+                margin-left: -23%;
+            }
+            .search-container{
+                margin-left: 18.4%;
+            }
+            .container{
+                margin-left: 20%;
+            }
+        }
+
 
 </style>
 </html>

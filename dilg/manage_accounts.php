@@ -108,7 +108,7 @@ $result = mysqli_query($conn, $query);
 
         <div class="container" style="margin-left: -1%; display: flex;">
 
-            <a href="add-barangay-account.php" style="text-decoration: none; margin-left: 1%;"><div class="add-account" style="margin-top: -65px; margin-left: 240%; margin-bottom: 30px; width: 255px;">
+            <a href="add-barangay-account.php" style="text-decoration: none; margin-left: 1%;"><div class="add-account">
                 <i class='bx bx-folder-plus'></i>
                 <p>Add Barangay Account</p>
             </div></a>
@@ -130,7 +130,7 @@ $result = mysqli_query($conn, $query);
                     letter-spacing: 1;
                     text-transform: uppercase;">No Registered Barangay Accounts Found</div>';
                 } else {
-                    echo '<table style="margin-top: -1%;">';
+                    echo '<table>';
                     echo '<thead>';
                     echo '<tr>';
                     echo '<th style="padding: 14px;">Barangay Captain</th>';
@@ -345,7 +345,7 @@ table {
             width: 1120px;
             border-collapse: collapse;
             margin-bottom: 20px;
-            margin-top: 3%;
+            margin-top: -1%;
             margin-left: 1%;
             border-radius: 5px;
             margin-top: 0.5%;
@@ -417,6 +417,10 @@ table {
     color: #fff;
 }
 
+.add-account{
+    margin-top: -65px; margin-left: 240%; margin-bottom: 30px; width: 255px;
+}
+
 .popup {
     display: none;
     position: fixed;
@@ -442,6 +446,19 @@ table {
     overflow-y: hidden;
     margin-left: 30%;
 }
+
+@media screen and (min-width: 1400px) and (max-width: 1920px) and (min-height: 1080px){
+            .add-account{
+                margin-left: 245%;
+            }
+            table{
+                margin-left: 17%;
+            }
+            .modal{
+                margin-left: 38%;
+                margin-top: 16%;
+            }
+        }
 
 </style>
 </html>
