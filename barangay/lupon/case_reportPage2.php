@@ -29,7 +29,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['execution_submit'])) 
     }
 
     if ($result) {
-        header("Location: case_reportPage2.php?incident_case_number=$incident_case_number");
+        $incident_case_number = $_POST['incident_case_number'];
+        echo '<script>';
+        echo 'window.open("http://localhost/barangay%20justice%20management%20system%2001/tcpdf/motion_for_execution.php?incident_case_number=' . $incident_case_number . '", "_blank");';
+        echo 'window.location.href = window.location.href;';
+        echo '</script>';
         exit;
     } else {
         echo "Error: " . mysqli_error($conn);
