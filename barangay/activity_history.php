@@ -304,6 +304,13 @@ $result = mysqli_query($conn, $activityLogQuery);
                         </a>
                     </li>
 
+                    <li class="nav-link">
+                        <a href="analytics.php">
+                            <i class='bx bx-pie-chart-alt icon' ></i>
+                            <span class="text nav-text">Analytics</span>
+                        </a>
+                    </li>
+
                     
             </div>
 
@@ -336,6 +343,7 @@ $result = mysqli_query($conn, $activityLogQuery);
         </div>
 
     </nav>
+
     <section class="home" style="margin-left: -0.3%; margin-top: 3%;">
         
         <h1 style="margin-left: 4%; margin-top: -2.3%; display: flex; font-size: 48px;">ACTIVITY HISTORY</h1>
@@ -346,7 +354,7 @@ $result = mysqli_query($conn, $activityLogQuery);
 
     </section>
 
-    <script src="search_bar.js"></script>
+    <script src="searchbar.js"></script>
     <script>
         const body = document.querySelector('body'),
         sidebar = body.querySelector('nav'),

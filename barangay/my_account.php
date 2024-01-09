@@ -142,6 +142,13 @@ if (isset($_POST['submit'])) {
                         </a>
                     </li>
 
+                    <li class="nav-link">
+                        <a href="analytics.php">
+                            <i class='bx bx-pie-chart-alt icon' ></i>
+                            <span class="text nav-text">Analytics</span>
+                        </a>
+                    </li>
+
                     
             </div>
 
@@ -279,7 +286,7 @@ if (isset($_POST['submit'])) {
 
     </section>
 
-    <script src="search_bar.js"></script>
+    <script src="searchbar.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/signature_pad/1.5.3/signature_pad.min.js"></script>
     <script>
 

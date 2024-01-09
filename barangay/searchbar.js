@@ -46,6 +46,11 @@ function handleSearch(searchTerm) {
         window.location.href = 'incident_reports.php';
     } else if (lowerCaseSearchTerm.startsWith('notice') || lowerCaseSearchTerm.endsWith('notice')) {
         window.location.href = 'incident_reports.php';
+    }
+    else if (lowerCaseSearchTerm.startsWith('analytic') || lowerCaseSearchTerm.endsWith('analytic')) {
+        window.location.href = 'analytics.php';
+    } else if (lowerCaseSearchTerm.startsWith('analytics') || lowerCaseSearchTerm.endsWith('analytics')) {
+        window.location.href = 'analytics.php';
     } else {
     searchInput1.value = `'${searchTerm.charAt(0).toUpperCase() + searchTerm.slice(1)}' was not found`;
     }

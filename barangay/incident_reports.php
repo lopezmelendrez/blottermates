@@ -142,6 +142,13 @@ if (!$result) {
                         </a>
                     </li>
 
+                    <li class="nav-link">
+                        <a href="analytics.php">
+                            <i class='bx bx-pie-chart-alt icon' ></i>
+                            <span class="text nav-text">Analytics</span>
+                        </a>
+                    </li>
+
                     
             </div>
 
@@ -273,7 +280,7 @@ if (mysqli_num_rows($result) == 0) {
 
     </section>
 
-    <script src="search_bar.js"></script>
+    <script src="searchbar.js"></script>
     <script>
         const body = document.querySelector('body'),
         sidebar = body.querySelector('nav'),
