@@ -134,7 +134,7 @@ header('location: ../index.php');
                 <div class="date" style="font-size: 21px; width: 24rem; padding-left: 8px;"></div>
             </div>
 
-            <a href="add_lupon_account.php" style="text-decoration: none; margin-left: 1%;"><div class="add-account" style="display: flex; margin-top: 75px; width: 68%;">
+            <a href="add_lupon_account.php" style="text-decoration: none; margin-left: 1%;"><div class="add-account">
                 <i class='bx bx-folder-plus'></i>
                 <p>Add Lupon Account</p>
             </div></a>
@@ -596,6 +596,10 @@ header('location: ../index.php');
     height: 240px; overflow-y: hidden; margin-top: -6%;
 }
 
+.add-account{
+    display: flex; margin-top: 75px; width: 68%;
+}
+
     @media screen and (min-width: 1331px){
         .home{
             margin-left: 1.1%;
@@ -609,6 +613,23 @@ header('location: ../index.php');
 
     .incident-case-table-1 .table-container{
         height: 360px;
+    }
+
+    @media screen and (min-width: 1400px) and (max-width: 1920px) and (min-height: 1080px){
+        .add-account{
+            margin-top: 90px;
+        }
+        .container{
+            margin-top: 2%;
+        }
+        .incident-case-table{
+            margin-top: 4%;
+            margin-left: 12%;
+            width: 550px;
+        }
+        .incident-case-table-1{
+            margin-left: 20%;
+        }
     }
    
 }

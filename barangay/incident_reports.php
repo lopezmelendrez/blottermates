@@ -179,7 +179,7 @@ if (!$result) {
 
         <h1 style="margin-left: 4%; margin-top: 1%; display: flex; font-size: 48px;">INCIDENT REPORTS</h1>
 
-        <div class="cases-container" style="margin-left: -33%; width: 100%; margin-top: -2%;">
+        <div class="cases-container">
             <a href="" style="text-decoration: none;">
             <div class="validate-cases" style="height:40px; width: 460%;" >
                 <p>Validate File of Motion</p>
@@ -194,6 +194,7 @@ if (!$result) {
             </form>
         </div>
 
+        <div class="container-box">
         <?php
 if (mysqli_num_rows($result) == 0) {
     echo '<div class="text-box">No Incident Cases found</div>';
@@ -268,6 +269,7 @@ if (mysqli_num_rows($result) == 0) {
     }
 }
 ?>
+        </div>
 
     </section>
 
@@ -433,12 +435,31 @@ if (mysqli_num_rows($result) == 0) {
     cursor: default;
 }
 
+.cases-container{
+    margin-left: -33%; 
+    width: 100%; 
+    margin-top: -2%;
+}
+
 @media screen and (min-width: 1331px){
     .home{
         margin-left: 1.3%;
         margin-top: 0%;
     }
 }
+
+@media screen and (min-width: 1400px) and (max-width: 1920px) and (min-height: 1080px){
+        .cases-container{
+            margin-top: -0.5%;
+            margin-left: -25%;
+        }
+        .search-container{
+            margin-left: 19.5%;
+        }
+        .container-box{
+            margin-left: 10%;
+        }
+    }
 
 
 

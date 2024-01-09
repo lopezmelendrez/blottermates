@@ -450,6 +450,12 @@ function checkForm() {
         }
     }
 
+    @media screen and (min-width: 1400px) and (max-width: 1920px) and (min-height: 1080px){
+        .add-account-container{
+            margin-top: 12%;
+        }
+    }
+
     </style>
 
 </body>

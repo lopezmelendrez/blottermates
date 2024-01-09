@@ -634,6 +634,14 @@ function showDisablePopup(luponId) {
       z-index: 1002;
     }
 
+    @media screen and (min-width: 1400px) and (max-width: 1920px) and (min-height: 1080px){
+            .modal{
+                margin-left: 38%;
+                margin-top: 18%;
+            }
+        }
+
+
 
 
     </style>

@@ -340,7 +340,9 @@ $result = mysqli_query($conn, $activityLogQuery);
         
         <h1 style="margin-left: 4%; margin-top: -2.3%; display: flex; font-size: 48px;">ACTIVITY HISTORY</h1>
 
+        <div class="audit-box">
         <?php include 'audit_trail.php'; ?>
+        </div>
 
     </section>
 
@@ -558,6 +560,12 @@ $result = mysqli_query($conn, $activityLogQuery);
         margin-left: 19.2%;
     }
   }
+  @media screen and (min-width: 1400px) and (max-width: 1920px) and (min-height: 1080px){
+        .activity-history{
+            margin-left: 50%;
+            margin-top: 4%;
+        }
+    }
 
     </style>
 
