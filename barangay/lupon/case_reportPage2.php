@@ -771,6 +771,23 @@ if (input.value.length > 0 && input.value[0] === ' ') {
         }
     }
 
+    @media screen and (min-width: 1400px) and (max-width: 1920px) and (min-height: 1080px){
+        .container{
+            margin-left: 25%;
+            margin-top: 13%;
+        }
+
+        .modal{
+            margin-top: 20%;
+            margin-left: 5%;
+        }
+
+        .close-icon{
+            margin-left: 17%;
+            margin-top: 10.8%;
+        }
+    }
+
 
 
 </style>

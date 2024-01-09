@@ -646,6 +646,28 @@ if (input.value.length > 0 && input.value[0] === ' ') {
             margin-top: 10px;
         }
 
+        @media screen and (min-width: 1400px) and (max-width: 1920px) and (min-height: 1080px){
+            .add-account{
+                margin-top: -3.4%;
+                margin-left: 530px;
+            }
+
+            table{
+                margin-left: 150px;
+                width: 85.5%;
+            }
+
+            .pagination{
+                margin-left: 300px;
+            }
+
+            .previous{
+                margin-top: 20%;
+                margin-bottom: 20%;
+            }
+        }
+
+
     </style>
 
 </body>
