@@ -244,8 +244,8 @@ $result = mysqli_query($conn, $activityLogQuery);
 <body>
 <nav class="sidebar close">
         <header>
-            <div class="image-text">
-            <?php
+                    <div class="image-text">
+                    <?php
                     $select = mysqli_query($conn, "SELECT * FROM `pb_accounts` WHERE pb_id = '$pb_id'") or die('Query failed');
 
                     if (mysqli_num_rows($select) > 0) {
@@ -265,11 +265,11 @@ $result = mysqli_query($conn, $activityLogQuery);
                     }
                     ?>
 
-                <div class="text logo-text">
-                    <span class="name"><?php echo $barangay_captain ?></span>
-                    <span class="profession"  style="font-size: 13px;">Punong Barangay</span>
-                </div>
-            </div>
+                    <div class="text logo-text">
+                        <span class="name"><?php echo $barangay_captain ?></span>
+                        <span class="profession"  style="font-size: 13px;">Punong Barangay</span>
+                    </div>
+                    </div>
 
             <i class='bx bx-chevron-right toggle'></i>
         </header>
@@ -277,10 +277,10 @@ $result = mysqli_query($conn, $activityLogQuery);
         <div class="menu-bar">
             <div class="menu">
 
-                <li class="search-box">
-                    <i class='bx bx-search icon'></i>
-                    <input type="text" placeholder="Search...">
-                </li>
+            <li class="search-box">
+                <i class='bx bx-search icon'></i>
+                <input type="text" id="searchInput1" placeholder="Search..." oninput="restrictInput(this)">
+            </li>
 
                     <li class="nav-link">
                         <a href="home.php">
@@ -296,6 +296,7 @@ $result = mysqli_query($conn, $activityLogQuery);
                         </a>
                     </li>
 
+
                     <li class="nav-link">
                         <a href="activity_history.php">
                             <i class='bx bx-history icon'></i>
@@ -303,9 +304,17 @@ $result = mysqli_query($conn, $activityLogQuery);
                         </a>
                     </li>
 
+                    
             </div>
 
             <div class="bottom-content">
+            <li class="">
+                <a href="my_account.php">
+                        <i class='bx bx-user-circle icon' ></i>
+                        <span class="text nav-text">My Account</span>
+                    </a>
+                </li>
+                
                 <li class="">
                 <a href="manage_accounts.php">
                 <i class="fa-solid fa-users-line icon"></i>

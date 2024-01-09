@@ -1,21 +1,27 @@
 <?php
 
-include '../../config.php';
+$configFile = file_get_contents('../barangays.json');
+$config = json_decode($configFile, true);
+
+include '../config.php';
 
 session_start();
 
-$email = $_SESSION['email_address'];
+$pb_id = $_SESSION['pb_id'];
+$barangay_captain = $_SESSION['barangay_captain'];
+
+if(!isset($pb_id)){
+header('location: ../index.php');
+}
 
 if (isset($_POST['submit'])) {
 
-    $first_name = mysqli_real_escape_string($conn, $_POST["first_name"]);
-    $last_name = mysqli_real_escape_string($conn, $_POST["last_name"]);
-    $email_address = mysqli_real_escape_string($conn, $_POST["email_address"]);
+    $barangay_captain = mysqli_real_escape_string($conn, $_POST["barangay_captain"]);
     $old_password = mysqli_real_escape_string($conn, $_POST["old_password"]);
     $password = mysqli_real_escape_string($conn, $_POST["password"]);
     $confirmPassword = mysqli_real_escape_string($conn, $_POST["confirmPassword"]);
 
-    $check_password_query = "SELECT password FROM lupon_accounts WHERE email_address = '$email'";
+    $check_password_query = "SELECT password FROM pb_accounts WHERE barangay_captain = '$barangay_captain'";
     $result = $conn->query($check_password_query);
 
     if ($result->num_rows > 0) {
@@ -30,20 +36,16 @@ if (isset($_POST['submit'])) {
                 } else {
                     $hashed_password = password_hash($password, PASSWORD_DEFAULT);
                     // Include the new password in the update query
-                    $update_query = "UPDATE lupon_accounts SET 
-                        first_name = '$first_name',
-                        last_name = '$last_name',
-                        email_address = '$email_address',
+                    $update_query = "UPDATE pb_accounts SET 
+                        barangay_captain = '$barangay_captain',
                         password = '$hashed_password'
-                        WHERE email_address = '$email'";
+                        WHERE barangay_captain = '$barangay_captain'";
                 }
             } else {
                 // Do not update the password in the query
-                $update_query = "UPDATE lupon_accounts SET 
-                    first_name = '$first_name',
-                    last_name = '$last_name',
-                    email_address = '$email_address'
-                    WHERE email_address = '$email'";
+                $update_query = "UPDATE pb_accounts SET 
+                    barangay_captain = '$barangay_captain',
+                    WHERE barangay_captain = '$barangay_captain'";
             }
     
             // Execute the update query
@@ -71,63 +73,41 @@ if (isset($_POST['submit'])) {
     <link href='https://unpkg.com/boxicons@2.1.1/css/boxicons.min.css' rel='stylesheet'>
     <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel="stylesheet" href="../../node_modules/bootstrap/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="../../css/dilg.css">
-    <link rel="icon" type="image/x-icon" href="../../images/favicon.ico">
+    <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../css/dilg.css">
+    <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
     <title>My Account</title>
 </head>
 <body>
 
 <nav class="sidebar close">
         <header>
-            <div class="image-text">
-            <?php
-                    $select = mysqli_query($conn, "SELECT l.*, pb.barangay 
-                                                FROM `lupon_accounts` l
-                                                LEFT JOIN `pb_accounts` pb ON l.pb_id = pb.pb_id
-                                                WHERE l.email_address = '$email'") or die('query failed');
-                    if(mysqli_num_rows($select) > 0){
+                    <div class="image-text">
+                    <?php
+                    $select = mysqli_query($conn, "SELECT * FROM `pb_accounts` WHERE pb_id = '$pb_id'") or die('Query failed');
+
+                    if (mysqli_num_rows($select) > 0) {
                         $fetch = mysqli_fetch_assoc($select);
                     }
-                ?>
-                              <?php
-if ($fetch['barangay'] == 'Ibaba') {
-    echo '<span class="image"><img src="../../images/ibaba_logo.png"></span>';
-} elseif ($fetch['barangay'] == 'Other') {
-    echo '<span class="image"><img src="../../images/logo.png"></span>';
-} elseif ($fetch['barangay'] == 'Labas') {
-    echo '<span class="image"><img src="../../images/labas.png"></span>';
-} elseif ($fetch['barangay'] == 'Tagapo') {
-    echo '<span class="image"><img src="../../images/tagapo.png"></span>';
-} elseif ($fetch['barangay'] == 'Malusak') {
-    echo '<span class="image"><img src="../../images/malusak.png"></span>';
-} elseif ($fetch['barangay'] == 'Balibago') {
-    echo '<span class="image"><img src="../../images/balibago.png"></span>';
-} elseif ($fetch['barangay'] == 'Caingin') {
-    echo '<span class="image"><img src="../../images/caingin.png"></span>';
-} elseif ($fetch['barangay'] == 'Pook') {
-    echo '<span class="image"><img src="../../images/pooc.png"></span>';
-} elseif ($fetch['barangay'] == 'Aplaya') {
-    echo '<span class="image"><img src="../../images/aplaya.png"></span>';
-} elseif ($fetch['barangay'] == 'Kanluran') {
-    echo '<span class="image"><img src="../../images/kanluran.png"></span>';
-} else {
-    // Default image if the barangay is not matched
-    echo '<span class="image"><img src="../../images/logo.png"></span>';
-}
-?>
-                <div class="text logo-text">
-                
-                    <span class="name"><?php echo $fetch['first_name'] . ' ' . $fetch['last_name']; ?></span>
-                    <?php
-    if ($fetch['barangay']) {
-        echo '<span class="profession">Barangay ' . $fetch['barangay'] . '</span>';
-    } else {
-        echo '<span class="profession">Not specified</span>'; 
-    }
-    ?>
-                </div>
-            </div>
+
+                    if (!empty($fetch['barangay'])) {
+                        $barangay = $fetch['barangay'];
+
+                        if (isset($config['barangayLogos'][$barangay])) {
+                            echo '<span class="image"><img src="' . $config['barangayLogos'][$barangay] . '"></span>';
+                        } else {
+                            echo '<span class="image"><img src="../images/default_logo.png"></span>';
+                        }
+                    } else {
+                        echo '<span class="image"><img src="../images/default_logo.png"></span>';
+                    }
+                    ?>
+
+                    <div class="text logo-text">
+                        <span class="name"><?php echo $barangay_captain ?></span>
+                        <span class="profession"  style="font-size: 13px;">Punong Barangay</span>
+                    </div>
+                    </div>
 
             <i class='bx bx-chevron-right toggle'></i>
         </header>
@@ -136,10 +116,9 @@ if ($fetch['barangay'] == 'Ibaba') {
             <div class="menu">
 
             <li class="search-box">
-    <i class='bx bx-search icon'></i>
-    <input type="text" id="searchInput1" placeholder="Search..." oninput="restrictInput(this)">
-</li>
-
+                <i class='bx bx-search icon'></i>
+                <input type="text" id="searchInput1" placeholder="Search..." oninput="restrictInput(this)">
+            </li>
 
                     <li class="nav-link">
                         <a href="home.php">
@@ -150,35 +129,46 @@ if ($fetch['barangay'] == 'Ibaba') {
 
                     <li class="nav-link">
                         <a href="incident_reports.php">
-                            <i class='bx bx-file icon' ></i>
+                            <i class='bx bx-receipt icon' ></i>
                             <span class="text nav-text">Incident Reports</span>
                         </a>
                     </li>
 
+
                     <li class="nav-link">
-                        <a href="hearings.php">
-                            <i class='bx bx-calendar-event icon' ></i>
-                            <span class="text nav-text">Hearings</span>
+                        <a href="activity_history.php">
+                            <i class='bx bx-history icon'></i>
+                            <span class="text nav-text">Activity History</span>
                         </a>
                     </li>
 
-
+                    
             </div>
 
             <div class="bottom-content">
-                <li class="">
+            <li class="">
                 <a href="my_account.php">
                         <i class='bx bx-user-circle icon' ></i>
                         <span class="text nav-text">My Account</span>
                     </a>
                 </li>
-
+                
                 <li class="">
-                    <a href="../../logout.php">
+                <a href="manage_accounts.php">
+                <i class="fa-solid fa-users-line icon"></i>
+                        <span class="text nav-text">Manage Accounts</span>
+                    </a>
+                </li>
+
+           
+                <li class="">
+                    <a href="../logout.php">
                         <i class='bx bx-log-out icon' ></i>
                         <span class="text nav-text">Logout</span>
                     </a>
                 </li>
+
+                
                 
             </div>
         </div>
@@ -192,7 +182,7 @@ if ($fetch['barangay'] == 'Ibaba') {
                 <div class="header-text">MY ACCOUNT</div>
 
                 <?php
-             $select = mysqli_query($conn, "SELECT * FROM `lupon_accounts` WHERE email_address = '$email'") or die('query failed');
+             $select = mysqli_query($conn, "SELECT * FROM `pb_accounts` WHERE barangay_captain = '$barangay_captain'") or die('query failed');
              if(mysqli_num_rows($select) > 0){
                 $fetch = mysqli_fetch_assoc($select);
              }
@@ -201,17 +191,13 @@ if ($fetch['barangay'] == 'Ibaba') {
                 
                 <form action="" method="post" style="height: 490px; width: 750px;">
                     <div class="fields">
-                        <div class="input-field-1">
-                            <label>First Name</label>
-                            <input type="text" name="first_name" onkeypress="return validateName(event)" value="<?php echo $fetch['first_name']; ?>">
-                        </div>
-                        <div class="input-field-1">
-                            <label>Last Name</label>
-                            <input type="text" name="last_name" onkeypress="return validateName(event)" value="<?php echo $fetch['last_name']; ?>">
+                        <div class="input-field-1" style="width: 100%;">
+                            <label>Barangay Captain</label>
+                            <input type="text" name="barangay_captain" onkeypress="return validateName(event)" value="<?php echo $fetch['barangay_captain']; ?>">
                         </div>
                         <div class="input-field-1">
                             <label>Email Address</label>
-                            <input type="text" name="email_address" value="<?php echo $fetch['email_address']; ?>">
+                            <input type="text" name="email_address" value="<?php echo $fetch['email_address']; ?>" readonly>
                         </div>
                         <div class="input-field-1">
                             <label class="required-label">Old Password</label>
@@ -356,9 +342,7 @@ function validateName(event) {
     const oldPasswordInput = document.querySelector("input[name='old_password']");
     const newPasswordInput = document.querySelector("input[name='password']");
     const confirmPasswordInput = document.querySelector("input[name='confirmPassword']");
-    const firstNameInput = document.querySelector("input[name='first_name']");
-    const lastNameInput = document.querySelector("input[name='last_name']");
-    const emailInput = document.querySelector("input[name='email_address']");
+    const firstNameInput = document.querySelector("input[name='barangay_captain']");
     const updateAccountBtn = document.getElementById("openModalBtn");
 
     // Function to check if the conditions for enabling the button are met
@@ -367,8 +351,6 @@ function validateName(event) {
         const newPasswordNotEmpty = newPasswordInput.value.trim() !== "";
         const confirmPasswordNotEmpty = confirmPasswordInput.value.trim() !== "";
         const firstNameNotEmpty = firstNameInput.value.trim() !== "";
-        const lastNameNotEmpty = lastNameInput.value.trim() !== "";
-        const emailNotEmpty = emailInput.value.trim() !== "";
 
         // Enable the button if the conditions are met, otherwise disable it
         updateAccountBtn.disabled = !(oldPasswordNotEmpty && ((newPasswordNotEmpty && confirmPasswordNotEmpty) || (!newPasswordNotEmpty && !confirmPasswordNotEmpty)) && (firstNameNotEmpty || lastNameNotEmpty || emailNotEmpty));
@@ -379,8 +361,6 @@ function validateName(event) {
     newPasswordInput.addEventListener("input", checkConditions);
     confirmPasswordInput.addEventListener("input", checkConditions);
     firstNameInput.addEventListener("input", checkConditions);
-    lastNameInput.addEventListener("input", checkConditions);
-    emailInput.addEventListener("input", checkConditions);
 });
         
 

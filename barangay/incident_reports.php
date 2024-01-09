@@ -134,6 +134,7 @@ if (!$result) {
                         </a>
                     </li>
 
+
                     <li class="nav-link">
                         <a href="activity_history.php">
                             <i class='bx bx-history icon'></i>
@@ -141,10 +142,17 @@ if (!$result) {
                         </a>
                     </li>
 
-
+                    
             </div>
 
             <div class="bottom-content">
+            <li class="">
+                <a href="my_account.php">
+                        <i class='bx bx-user-circle icon' ></i>
+                        <span class="text nav-text">My Account</span>
+                    </a>
+                </li>
+                
                 <li class="">
                 <a href="manage_accounts.php">
                 <i class="fa-solid fa-users-line icon"></i>
