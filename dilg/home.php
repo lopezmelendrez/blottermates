@@ -215,13 +215,17 @@ $resultMonthlyReports = mysqli_query($conn, $queryMonthlyReports);
                         echo "</tr>";
                         echo "<tr>";
                         while ($row = mysqli_fetch_assoc($resultMonthlyReports)) {
+                            $dateSubmitted = $row['date_submitted'];
+                            $formattedDate = date("F d, Y", strtotime($dateSubmitted));
+                            $transmittalReport = $row['report'];
+                
                             echo "<td style='font-size: 18px; margin-top: 5px;'>" . $row['barangay'] . "</td>";
                             echo "<td style='font-size: 18px;'>" . date('M d, Y', strtotime($row['date_submitted'])) . "</td>";
                         
-                            // Check if 'pb_id' exists in the current row
-                            $pb_id = isset($row['pb_id']) ? $row['pb_id'] : '';
+                            
+                            $pbId = isset($row['pb_id']) ? $row['pb_id'] : '';
                         
-                            echo '<td style="font-size: 14px;"><a href="../tcpdf/report.php?pb_id=' . $pb_id . '" style="text-decoration: none;"><span class="summon-record">View</span></a></td>';
+                            echo '<td style="font-size: 14px;"><a href="../tcpdf/monthly_report.php?pb_id=' . urlencode($pbId) . '&date_submitted=' . urlencode($dateSubmitted) . '" style="text-decoration: none;" target="_blank"><span class="summon-record">View</span></a></td>';
                             echo "</tr>";
                         }
                         

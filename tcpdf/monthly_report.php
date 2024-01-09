@@ -69,6 +69,8 @@ $pdf->SetFont('times', '', 4, '', true);
 $pdf->AddPage();
 
     // Set default values or handle the case when the form is not submitted
+
+    $formattedDate = date('F j, Y', strtotime($dateSubmitted));
     
     $complainant = "Nagrereklamo 1<br>Nagrereklamo 2";
     $defendant = "Inerereklamo 1<br>Inerereklamo 2";
@@ -195,8 +197,8 @@ th {
 </div>
 
   <div class="content-one">
-    <p>_______________________, 20</p>
-    <p>Date&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
+    <p><u>$formattedDate</u></p>
+    <p>Date&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
   </div>
 
   <div class="content" style="text-align: center; font-weight: bold;">

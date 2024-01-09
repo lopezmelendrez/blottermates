@@ -159,6 +159,20 @@ if (mysqli_num_rows($select) > 0) {
 
     $date = date('F j, Y');
 
+    $selectTimestamp = mysqli_query($conn, "
+    SELECT timestamp
+    FROM `monthly_reports`
+    WHERE pb_id = $pbId
+") or die('query failed');
+
+// Check if there are rows returned from the query
+if ($rowTimestamp = mysqli_fetch_assoc($selectTimestamp)) {
+    $timestamp = strtotime($rowTimestamp['timestamp']);  // Convert the timestamp to a Unix timestamp
+    $formattedDate = date('F j, Y', $timestamp);  // Format the date as desired
+} else {
+    $formattedDate = '';  // Default value if timestamp is not found
+}
+
     
 // Set some content to print
 $html = <<<EOD
@@ -209,10 +223,10 @@ th {
     <br><br>OFFICE OF THE BARANGAY CAPTAIN
 </div>
 
-  <div class="content-one">
-    <p>_______________________, 20</p>
-    <p>Date&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
-  </div>
+<div class="content-one">
+<p><u>$formattedDate</u></p>
+<p>Date&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
+</div>
 
   <div class="content" style="text-align: center; font-weight: bold;">
   <br>MONTHLY TRANSMITTAL OF FINAL REPORTS
