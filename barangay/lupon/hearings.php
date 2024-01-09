@@ -82,9 +82,9 @@ if (!$result) {
 
     <section class="home">
 
-        <h1 style="margin-left: 4%; margin-top: 1%; display: flex; font-size: 48px;">INCIDENT REPORTS</h1>
+        <h1 class="incident-reports">INCIDENT REPORTS</h1>
         <a href="create_report.php" style="text-decoration: none;">
-        <div class="add-account" style="margin-top: -5%; margin-left: 518px; width: 250px;">
+        <div class="add-account">
         <i class='bx bx-book-add'></i>
         <p style="margin-left: 10px;">Create Incident Report</p>
         </div></a>
@@ -110,7 +110,7 @@ if (!$result) {
             </form>
         </div>
 
-        <div class="sort-container" style="margin-left: 64%;">
+        <div class="sort-container">
     <div class="sort-filter-box">Sort By:</div>
     <form id="sortForm" action="" method="get" onchange="redirectToSortedPage()">
         <select id="sort" name="sort">
@@ -530,6 +530,14 @@ while ($row = mysqli_fetch_assoc($result)) {
             height: 33px;
         }
 
+        .incident-reports{
+            margin-left: 4%; margin-top: 1%; display: flex; font-size: 48px;
+        }
+
+        .add-account{
+            margin-top: -5%; margin-left: 518px; width: 250px;
+        }
+
     @media screen and (min-width: 1352px){
             .search-input{
                 width: 843px;
@@ -552,6 +560,24 @@ while ($row = mysqli_fetch_assoc($result)) {
             }
             .container{
                 width: 1015px;
+            }
+        }
+
+        @media screen and (min-width: 1400px) and (max-width: 1920px) and (min-height: 1080px){
+            .add-account{
+                margin-top: -3.4%;
+                margin-left: 530px;
+            }
+            .search-input{
+                width: 75%;
+            }
+            .sort-container{
+                margin-left: 70.3%;
+                margin-top: 1%;
+                margin-bottom: 1%;
+            }
+            .container{
+                margin-left: 21.7%;
             }
         }
 

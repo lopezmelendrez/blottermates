@@ -39,11 +39,13 @@ function displayPage($conn, $incident_case_number)
     return false;
 }
 
+
 $incident_case_number = $_GET['incident_case_number'];
 
 if (!displayPage($conn, $incident_case_number)) {
     header('location: incident_reports.php');
 }
+
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit'])) {
     $incident_case_number = $_POST['incident_case_number'];
@@ -516,6 +518,17 @@ document.querySelector(".pw-meter .pw-display-toggle-btn").addEventListener("cli
         margin-left: -5%;
     }
 }
+
+@media screen and (min-width: 1400px) and (max-width: 1920px) and (min-height: 1080px){
+            .add-account-container{
+                margin-top: 13%;
+                margin-left: -1%;
+            }
+
+            .modal-content{
+                margin-top: 18%;
+            }
+        }
 
 
 </style>

@@ -33,9 +33,9 @@ header('location: ../../index.php');
 
     <section class="home">
 
-    <h1 style="margin-left: 4%; margin-top: 1%; display: flex; font-size: 48px;">INCIDENT REPORTS</h1>
+    <h1 class="incident-reports">INCIDENT REPORTS</h1>
         <a href="create_report.php" style="text-decoration: none;">
-        <div class="add-account" style="margin-top: -5%; margin-left: 518px; width: 250px;">
+        <div class="add-account">
         <i class='bx bx-book-add'></i>
         <p style="margin-left: 10px;">Create Incident Report</p>
         </div></a>
@@ -101,7 +101,7 @@ header('location: ../../index.php');
             </script>
         </div>
 
-        <table style="margin-left: 120px; width: 84%; background: #fff; text-align: center;">
+        <table>
             <thead>
                 <tr>
                     <th>Case No.</th>
@@ -460,6 +460,45 @@ header('location: ../../index.php');
             display: flex;
             padding-left: 27%;
             margin-top: 10px;
+        }
+
+        .incident-reports{
+            margin-left: 4%; 
+            margin-top: 1%; 
+            display: flex; 
+            font-size: 48px;
+        }
+
+        .add-account{
+            margin-top: -5%; margin-left: 518px; width: 250px;
+        }
+
+        table{
+            margin-left: 118px; 
+            width: 83.7%; 
+            background: #fff; 
+            text-align: center;
+        }
+
+        @media screen and (min-width: 1400px) and (max-width: 1920px) and (min-height: 1080px){
+            .add-account{
+                margin-top: -3.4%;
+                margin-left: 530px;
+            }
+
+            table{
+                margin-left: 150px;
+                width: 85.5%;
+            }
+
+            .pagination{
+                margin-left: 300px;
+            }
+
+            .previous{
+                margin-top: 20%;
+                margin-bottom: 20%;
+            }
         }
 
     </style>

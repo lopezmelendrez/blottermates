@@ -475,7 +475,7 @@ if (mysqli_num_rows($result) == 0) {
             }
         }
 
-        @media screen and (min-width: 1920px) and (min-height: 1080px){
+        @media screen and (min-width: 1400px) and (max-width: 1920px) and (min-height: 1080px){
             .add-account{
                 margin-top: -3.4%;
                 margin-left: 530px;
@@ -484,9 +484,15 @@ if (mysqli_num_rows($result) == 0) {
                 width: 75%;
             }
             .sort-container{
-                margin-left: 70.5%;
+                margin-left: 70.3%;
+                margin-top: 1%;
+                margin-bottom: 1%;
+            }
+            .container{
+                margin-left: 12.2%;
             }
         }
+
 
     </style>
 
