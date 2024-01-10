@@ -104,9 +104,9 @@ $currentMonth = date("F");
     <section class="home" style="margin-top: -1%;">
         
         <div class="datetime-container" style="display: flex;">
-        <div class="datetime mb-3" style="width: 26rem;">
-                <div class="time" id="time" style="padding-left: 15px;"></div>
-                <div class="date" style="font-size: 21px; width: 24rem; padding-left: 15px;"></div>
+        <div class="datetime mb-3">
+                <div class="time" id="time"></div>
+                <div class="date"></div>
             </div>
 
             <a href="add-barangay-account.php" style="text-decoration: none; margin-left: 1%;"><div class="add-account">
@@ -138,21 +138,21 @@ WHERE NOT EXISTS (
 
 <div class="lupon-online-box">
                     <div class="online" style="display: flex; margin-top: -5px;">
-                    <i class='bx bx-notepad' style="font-size: 35px; font-weight: 500; margin-top: -4px; margin-left: -5px;"></i>
-                    <p style="margin-top: 1.5px; margin-left: -20px; width: 17rem;">ONGOING CASES</p>
-                    <p style="margin-left: 22px; margin-top: -1px; font-weight: 600; font-size: 20px;">(<?php echo $totalOngoingCases ?>)</p>
+                    <i class='bx bx-notepad notepad'></i>
+                    <p class="ongoingcases">ONGOING CASES</p>
+                    <p class="total">(<?php echo $totalOngoingCases ?>)</p>
                     </div>
                 </div>
         </div>
 
         <div class="home-container" style="display: flex;">
-        <div class="incident-case-table" style="display: flex; height: 450px; width: 535px;">
+        <div class="incident-case-table">
     <div class="head-text">
-        <p class="incident-case" style="font-size: 22px;">Incident Cases</p>
+        <p class="incident-case">Incident Cases</p>
         <p class="notice-records">* Barangays with the Most Number of Ongoing Incident Cases</p>
-        <div class="table-container" style="max-height: 370px; overflow-y: hidden; margin-top: -6%;">
+        <div class="table-container">
             <hr style="border: 1px solid #3d3d3d; margin: 3px 0; width: 90%; margin-top: 5%">
-            <table class="incident-table" style="width: 530px; margin-top: 0.5%;">
+            <table class="incident-table">
             <?php
        $select = mysqli_query($conn, "
        SELECT pb.barangay AS barangay, COUNT(ir.incident_case_number) AS total_cases
@@ -199,11 +199,11 @@ $resultMonthlyReports = mysqli_query($conn, $queryMonthlyReports);
 
 <div class="incident-case-table-1">
     <div class="head-text">
-        <p class="incident-case" style="font-size: 22px;">Monthly Transmittal Reports</p>
+        <p class="incident-case">Monthly Transmittal Reports</p>
         <p class="notice-records">* For the Month of <em><?php echo $currentMonth; ?></em></p>
         <div class="table-container" style="height: 800px;">
             <hr style="border: 1px solid #3d3d3d; margin: 10px 0; width: 100%; margin-top: 5%">
-            <table class="incident-table" style="width: 570px; height: 240px; margin-top: 2%;">
+            <table class="incident-table-1">
                 
                 <?php
                 // Check if there are any reports
@@ -344,6 +344,18 @@ dateElement.textContent = formatDate(now);
 </html>
 
 <style>
+    .lupon-online-box .notepad{
+        font-size: 35px; font-weight: 500; margin-top: -4px; margin-left: -5px;
+    }
+    .lupon-online-box .ongoingcases{
+        margin-top: 1.5px; margin-left: -20px; width: 17rem;
+    }
+    .lupon-online-box .total{
+        margin-left: 22px; margin-top: -1px; font-weight: 600; font-size: 20px;
+    }
+    .incident-case{
+        font-size: 22px;
+    }
             .home{
             position: absolute;
             top: 0;
@@ -370,11 +382,10 @@ dateElement.textContent = formatDate(now);
 
     .incident-case-table{
     background: white;
-    width: 45%;
-    height: 400px;
     margin-top: 2%;
     border-radius: 8px;
     padding: 16px 24px;
+    display: flex; height: 450px; width: 535px;
     }
 
     .incident-case-table-1{
@@ -423,11 +434,23 @@ dateElement.textContent = formatDate(now);
 
 }
 
+.incident-case-table .table-container{
+   height: 370px; overflow-y: hidden; margin-top: -6%;
+}
+
 .incident-case-table-1 .table-container{
     max-height: 283px; 
     overflow-y: hidden; 
     margin-top: -6%; 
     width: 570px;
+}
+
+.incident-table{
+    width: 530px; margin-top: 0.5%;
+}
+
+.incident-table-1{
+    width: 570px; height: 240px; margin-top: 2%;
 }
 
 .add-account{
@@ -479,6 +502,35 @@ dateElement.textContent = formatDate(now);
         transition: .5s;
     }
 
+    .home .datetime{
+    font-size: 16px;
+    width: 26rem;
+    padding: 10px;
+    padding-left: 1%;
+    margin-top: 3%;
+    background: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.25);
+    border-radius: 4px;
+    font-weight: 500;
+    border-right: 10px #FADA5F solid;
+    font-family: 'Oswald', sans-serif;
+}
+
+
+.home .datetime .time{
+    font-size: 40px;
+    width: 20rem;
+    color: #F5BE1D;
+    padding-left: 15px;
+}
+
+.home .datetime .date{
+    margin-top: 3px;
+    color: var(--text-color);
+    font-size: 21px; width: 24rem; padding-left: 15px;
+}
+
+
     @media screen and (max-width: 1325px){
         .incident-case-table-1{
             margin-top: -36.3%;
@@ -486,20 +538,92 @@ dateElement.textContent = formatDate(now);
     }
 
     @media screen and (min-width: 1400px) and (max-width: 1920px) and (min-height: 1080px){
-        .home-container{
-            margin-left: 8%;
-            margin-top: 3%;
-        }
         .incident-case-table{
-            margin-top: 5%;
-            margin-left: 7%;
+            margin-top: 3%;
+            width: 800px;
+            height: 550px;
         }    
         .incident-case-table-1{
-                margin-top: -24%;
-                margin-left: 45%;
+                margin-top: -30.5%;
+                margin-left: 48%;
+                width: 800px;
+                height: 550px;
             }
         .add-account{
-            margin-top: 33%;
+            margin-top: 30%;
+            height: 80px;
+            width: 26rem;
+        }
+        .add-account i{
+            font-size: 45px;
+            margin-top: 4px;
+        }
+        .add-account p{
+            font-size: 27px;
+            width: 20rem;
+            margin-top: 5px;
+        }
+        .home .datetime{
+            width: 37rem;
+            height: 215px;
+        }
+        .home .datetime .time{
+            font-size: 85px;
+            width: 29rem;
+        }
+        .home .datetime .date{
+            font-size: 30px;
+            width: 32rem;
+            padding-bottom: 15px
+        }
+        .lupon-online-box{
+            width: 22rem;
+            height: 65px;
+        }
+        .lupon-online-box .notepad{
+            font-size: 45px;
+            margin-top: 2px;
+        }
+        .lupon-online-box .ongoingcases{
+            font-size: 24px;
+            margin-top: 6px;
+            margin-left: -4px;
+        }
+
+        .lupon-online-box .total{
+            font-size: 30px;
+        }
+
+        .incident-case-table .incident-case{
+            font-size: 37px;
+        }
+        .incident-case-table .notice-records{
+            font-size: 20px;
+            margin-top: -20px;
+            margin-bottom: 25px;
+        }
+        .incident-case-table .table-container{
+            width: 830px;
+            height: 600px;
+        }
+        .incident-table{
+            width: 800px;
+        }
+        .incident-case-table-1 .incident-case{
+            font-size: 37px;
+        }
+        .incident-case-table-1 .notice-records{
+            font-size: 20px;
+            margin-top: -20px;
+            margin-bottom: 25px;
+        }
+        .incident-case-table-1 .table-container{
+            width: 745px;
+            height: 900px;
+        }
+        .incident-case-table-1 .incident-table-1{
+            width: 730px;
+            margin-left: 2%;
         }
         }
 
