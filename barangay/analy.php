@@ -173,12 +173,12 @@ WHERE h.date_of_hearing IS NOT NULL
 
                 <div class="ongoing-cases-box">
                     <p>Ongoing Incident Cases</p>
-                    <p class="count"><?php echo $totalOngoingCases ?></p>
+                    <p style="font-size: 30px; margin-top: -8%; font-weight: 600;"><?php echo $totalOngoingCases ?></p>
                 </div>
             </div>
             
             <div class="col-md-4">
-            <?php
+    <?php
         $queryMonthlyReports = "SELECT pa.barangay, COUNT(*) as settled_cases
         FROM `incident_report` AS ir
         INNER JOIN `hearing` AS h ON ir.incident_case_number = h.incident_case_number
@@ -198,14 +198,14 @@ WHERE h.date_of_hearing IS NOT NULL
         }
     ?>
     <div class="settled-cases-box">
-        <p>Monthly Transmittal Reports</p>
-        <p class="count"><?php echo $totalMonthlyReports; ?></p>
+        <p>Settled Cases</p>
+        <p style="font-size: 30px; margin-top: -8%; font-weight: 600;"><?php echo $totalMonthlyReports; ?></p>
     </div>
 </div>
 
 
 <div class="col-md-3">
-<?php
+    <?php
         $queryRegisteredBarangays = "SELECT pa.barangay, COUNT(*) as incomplete_cases
         FROM `incident_report` AS ir
         INNER JOIN `lupon_accounts` AS la ON ir.lupon_id = la.lupon_id
@@ -228,8 +228,8 @@ WHERE h.date_of_hearing IS NOT NULL
         }
     ?>
     <div class="incomplete-cases-box">
-        <p>Registered Barangays</p>
-        <p class="count"><?php echo $totalRegisteredBarangays; ?></p>
+        <p>Cases with Incomplete Notice</p>
+        <p style="font-size: 30px; margin-top: -8%; font-weight: 600;"><?php echo $totalRegisteredBarangays; ?></p>
     </div>
 </div>
 
@@ -238,9 +238,9 @@ WHERE h.date_of_hearing IS NOT NULL
 
             <div class="incident-case-table" style="display: flex;">
     <div class="head-text">
-        <p class="incident-case">Ongoing Incident Cases</p>
+    <p class="incident-case" style="font-size: 22px;">Monthly Incident Cases Overview</p>
         <div class="table-container">
-        <hr class="border-1">
+            <hr class="border-1">
             <canvas id="barGraph" width="400" height="200"></canvas>
         </div>
         </div>
@@ -249,8 +249,8 @@ WHERE h.date_of_hearing IS NOT NULL
 
 <div class="incident-case-table-1">
 <div class="head-text">
-        <p class="incident-case">Top Incident Case Type</p>
-        <div class="table-container">
+        <p class="incident-case" style="font-size: 22px;">Top Incident Case Type</p>
+        <div class="table-container" style="max-height: 380px; overflow-y: hidden; margin-top: -6%;">
             <hr style="border: 1px solid #3d3d3d; margin: 3px 0; width: 73%; margin-top: 3.7%; margin-bottom: 5%;">
             <?php
     $select = mysqli_query($conn, "SELECT pa.barangay, ir.incident_case_type, COUNT(*) as total_cases
@@ -274,7 +274,7 @@ WHERE h.date_of_hearing IS NOT NULL
     }
 ?>
 
-<div class="piechart">
+<div style="width: 400px; height: 335px;">
     <canvas id="myPieChart"></canvas>
 </div>
 
@@ -286,7 +286,7 @@ WHERE h.date_of_hearing IS NOT NULL
 
     </section>
 
-    <script src="search_bar.js"></script>
+    <script src="searchbar.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
         const body = document.querySelector('body'),
@@ -416,6 +416,7 @@ var myPieChart = new Chart(ctx, {
     },
 });
 
+
 <?php
 // Create an array to map numeric month values to month names
 $monthNames = [
@@ -486,20 +487,12 @@ var myBarChart = new Chart(ctx, {
 });
 
 
-
+    </script>
 
     </script>
 
 </body>
 <style>
-    .incident-case, .incident-case-table-1 .head-text .incident-case{
-        font-size: 22px;
-    }
-
-
-    .piechart{
-        width: 400px; height: 335px;
-    }
 
             .home{
             position: absolute;
@@ -611,7 +604,7 @@ var myBarChart = new Chart(ctx, {
         }
 
         #myPieChart {
-        width: 500px;
+        max-width: 500px;
         height: 360px; 
         margin-top: -1%;
         margin-left: 11%;
@@ -622,17 +615,9 @@ var myBarChart = new Chart(ctx, {
         margin-left: 25%; margin-top: -3.5%; font-size: 16px;
     }
 
-    .incident-case-table-1 .table-container{
-        height: 380px; overflow-y: hidden; margin-top: -6%;
-    }
-
     .table-container{
         height: 400px; overflow-y: hidden; margin-top: -6%; width: 545px;
     }
-
-    .ongoing-cases-box .count, .settled-cases-box .count, .incomplete-cases-box .count{
-    font-size: 30px; margin-top: -8%; font-weight: 600;
-}
 
         @media screen and (min-width: 1355px) and (min-height: 616px){
             .incident-case-table-1{
@@ -693,45 +678,16 @@ var myBarChart = new Chart(ctx, {
                 margin-bottom: 3%;
             }
             .incident-case-table{
-                height: 51%;
-                margin-left: 8%;
+                height: 40%;
+                margin-left: 13%;
             }
 
             .incident-case-table-1{
-                height: 51%;
-                width: 35%;
-                margin-top: -30%;
-                margin-left: 51%;
+                height: 40%;
+                width: 25%;
+                margin-top: -23.4%;
+                margin-left: 55%;
             }
-            .incident-case-table-1 .table-container{
-                height: 600px;
-                width: 810px;
-            }
-            .ongoing-cases-box, .settled-cases-box, .incomplete-cases-box{
-            height: 8rem;
-            width: 350px;
-        }
-        .ongoing-cases-box p,.settled-cases-box p,.incomplete-cases-box p{
-            font-size: 20px;
-        }
-        .ongoing-cases-box .count, .settled-cases-box .count, .incomplete-cases-box .count{
-            font-size: 50px;
-        }
-    
-        .piechart{
-            width: 500px;
-            height: 450px;
-            margin-left: 5%;
-        }
-
-        .incident-case-table .table-container{
-            height: 600px;
-        }
-
-        .incident-case-table canvas{
-            margin-top: 10%;
-        }
-
         }
 
 </style>
