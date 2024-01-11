@@ -91,7 +91,6 @@ if (!isset($email)) {
                 echo '<i class="bx bxs-left-arrow-square previous" onclick="navigatePage(' . ($currentPage - 1) . ')" style="font-size: 50px; color: #C23B21; cursor: pointer;' . $prevButtonStyle . '"></i>';
             }
 
-            // Next button
             if ($currentPage == 1 && $num_rows > $rowsPerPage) {
                 echo '<i class="bx bxs-right-arrow-square previous" onclick="navigatePage(' . ($currentPage + 1) . ')" style="font-size: 50px; color: #C23B21; cursor: pointer; margin-left: 50px;"></i>';
             } elseif ($currentPage > $totalPages) {

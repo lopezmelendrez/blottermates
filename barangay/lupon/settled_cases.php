@@ -92,7 +92,7 @@ header('location: ../../index.php');
                     $prevButtonStyle = 'margin-left: 50px;';
                 }
             
-                echo '<i class="bx bxs-left-arrow-square previous" onclick="navigatePage(' . ($currentPage - 1) . ')" style="font-size: 50px; color: #f5be1d; cursor: pointer;' . $prevButtonStyle . '"></i>';
+                echo '<i class="bx bxs-left-arrow-square previous" onclick="navigatePage(' . ($currentPage - 1) . ')" style="font-size: 50px; color: #f5be1d; cursor: pointer; margin-left: 50px;' . $prevButtonStyle . '"></i>';
             }
 
             // Next button

@@ -1,13 +1,13 @@
 <?php
 
-include '../config.php';
+include '../../config.php';
 
 session_start();
 
-$configFile = file_get_contents('incident_case_types.json'); // Adjust the file path accordingly
+$configFile = file_get_contents('../incident_case_types.json'); // Adjust the file path accordingly
 $incidentTypeMap = json_decode($configFile, true);
 
-$configFile = file_get_contents('../barangays.json');
+$configFile = file_get_contents('barangays.json');
 $config = json_decode($configFile, true);
 
 $pb_id = $_SESSION['pb_id'];
@@ -30,11 +30,11 @@ date_default_timezone_set('Asia/Manila');
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href='https://unpkg.com/boxicons@2.1.1/css/boxicons.min.css' rel='stylesheet'>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="../css/dilg.css">
-    <link rel="stylesheet" href="../css/lupon_home.css">
+    <link rel="stylesheet" href="../../node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../../css/dilg.css">
+    <link rel="stylesheet" href="../../css/lupon_home.css">
     <title>Analytics</title>
-    <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+    <link rel="icon" type="image/x-icon" href="../../images/favicon.ico">
 </head>
 <body>
 <script>
@@ -43,19 +43,19 @@ date_default_timezone_set('Asia/Manila');
         var sortValue = document.getElementById("sort").value;
 
         if (sortValue === "seven-days") {
-            window.location.href = "analytics.php#last-seven-days";
+            window.location.href = "../analytics.php#last-seven-days";
         } else if (sortValue === "thirty-days") {
-            window.location.href = "analytics/last_thirty_days.php";
+            window.location.href = "last_thirty_days.php";
         } else if (sortValue === "ninety-days") {
-            window.location.href = "analytics/last_ninety_days.php";
+            window.location.href = "last_ninety_days.php";
         } else if (sortValue === "180-days") {
-            window.location.href = "analytics/last_180_days.php";
+            window.location.href = "last_180_days.php";
         }
         else if (sortValue === "365-days") {
-            window.location.href = "analytics/last_365_days.php";
+            window.location.href = "last_365_days.php";
         }
         else if (sortValue === "all-time") {
-            window.location.href = "analytics/all_time.php";
+            window.location.href = "all_time.php";
         }
     }
 </script>
@@ -75,10 +75,10 @@ date_default_timezone_set('Asia/Manila');
                         if (isset($config['barangayLogos'][$barangay])) {
                             echo '<span class="image"><img src="' . $config['barangayLogos'][$barangay] . '"></span>';
                         } else {
-                            echo '<span class="image"><img src="../images/default_logo.png"></span>';
+                            echo '<span class="image"><img src="../../images/default_logo.png"></span>';
                         }
                     } else {
-                        echo '<span class="image"><img src="../images/default_logo.png"></span>';
+                        echo '<span class="image"><img src="../../images/default_logo.png"></span>';
                     }
                     ?>
 
@@ -100,14 +100,14 @@ date_default_timezone_set('Asia/Manila');
             </li>
 
                     <li class="nav-link">
-                        <a href="home.php">
+                        <a href="../home.php">
                             <i class='bx bx-home-alt icon' ></i>
                             <span class="text nav-text">Home</span>
                         </a>
                     </li>
 
                     <li class="nav-link">
-                        <a href="incident_reports.php">
+                        <a href="../incident_reports.php">
                             <i class='bx bx-receipt icon' ></i>
                             <span class="text nav-text">Incident Reports</span>
                         </a>
@@ -115,14 +115,14 @@ date_default_timezone_set('Asia/Manila');
 
 
                     <li class="nav-link">
-                        <a href="activity_history.php">
+                        <a href="../activity_history.php">
                             <i class='bx bx-history icon'></i>
                             <span class="text nav-text">Activity History</span>
                         </a>
                     </li>
 
                     <li class="nav-link">
-                        <a href="analytics.php">
+                        <a href="../analytics.php">
                             <i class='bx bx-pie-chart-alt icon' ></i>
                             <span class="text nav-text">Analytics</span>
                         </a>
@@ -133,14 +133,14 @@ date_default_timezone_set('Asia/Manila');
 
             <div class="bottom-content">
             <li class="">
-                <a href="my_account.php">
+                <a href="../my_account.php">
                         <i class='bx bx-user-circle icon' ></i>
                         <span class="text nav-text">My Account</span>
                     </a>
                 </li>
                 
                 <li class="">
-                <a href="manage_accounts.php">
+                <a href="../manage_accounts.php">
                 <i class="fa-solid fa-users-line icon"></i>
                         <span class="text nav-text">Manage Accounts</span>
                     </a>
@@ -266,9 +266,9 @@ WHERE h.date_of_hearing IS NOT NULL
     <div class="sort-filter-box"><i class='bx bx-calendar-alt'></i>Date Range:</div>
     <form id="sortForm" action="" method="get" onchange="redirectToSortedPage()">
         <select id="sort" name="sort">
+        <option value="ninety-days">Last 90 Days</option>
             <option value="seven-days">Last 7 Days</option>
             <option value="thirty-days">Last 30 Days</option>
-            <option value="ninety-days">Last 90 Days</option>
             <option value="180-days">Last 180 Days</option>
             <option value="365-days">Last 365 Days</option>
             <option value="all-time">All Time</option>
@@ -454,8 +454,8 @@ var myPieChart = new Chart(ctx, {
 });
 
 <?php
-$startDate = date('Y-m-d', strtotime('-7 days')); // Get the date 7 days ago
-$endDate = date('Y-m-d'); // Today's date
+$startDate = date('Y-m-d', strtotime('-90 days')); 
+$endDate = date('Y-m-d'); 
 
 $select = mysqli_query($conn, "SELECT DATE(ir.created_at) as date, COUNT(*) as total_cases
     FROM `incident_report` AS ir
@@ -469,7 +469,7 @@ $select = mysqli_query($conn, "SELECT DATE(ir.created_at) as date, COUNT(*) as t
 
 $data = array();
 while ($row = mysqli_fetch_assoc($select)) {
-    $formattedDate = date('F j', strtotime($row['date'])); // Format the date as "January 12"
+    $formattedDate = date('F j', strtotime($row['date'])); 
     $data[$formattedDate] = round($row['total_cases']);
 }
 ?>
@@ -508,6 +508,7 @@ var myBarChart = new Chart(ctx, {
         }
     }
 });
+
 
     </script>
 
