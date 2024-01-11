@@ -1048,7 +1048,7 @@ if (input.value.length > 0 && input.value[0] === ' ') {
         }
     }
 
-    @media screen and (min-width: 1920px) and (min-height: 1080px){
+    @media screen and (min-width: 1400px) and (max-width: 1920px) and (min-height: 1080px){
         .container{
             margin-top: 12%;
             margin-left: 25%;

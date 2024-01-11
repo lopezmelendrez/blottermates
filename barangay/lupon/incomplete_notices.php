@@ -346,6 +346,10 @@ if (!isset($email)) {
                 margin-top: 20%;
                 margin-bottom: 20%;
             }
+            .shownotices{
+                margin-left: 18%;
+                width: 15rem;
+            }
         }
 
     </style>

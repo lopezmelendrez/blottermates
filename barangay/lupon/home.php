@@ -166,9 +166,9 @@ if ($isEndOfMonth) {
 <section class="home" style="margin-top: -10px;">
 
     <div class="datetime-container" style="display: flex;">
-        <div class="datetime mb-3" style="width: 26rem;">
+        <div class="datetime mb-3">
             <div class="time" id="time"></div>
-            <div class="date" style="font-size: 21px; width: 24rem;"></div>
+            <div class="date"></div>
         </div>
 
         <div class="add-account" onclick="showMonthlyReportPopup()">
@@ -209,7 +209,6 @@ if ($isEndOfMonth) {
             $notifications[] = $notification;
         }
 
-        // Display notifications in the HTML structure
         echo '<div class="notification-box" style="cursor: default;">';
         echo '<div class="online" style="display: flex; margin-top: -5px;">';
         echo '<i class="fa-solid fa-bell" style="font-size: 25px;"></i>';
@@ -598,6 +597,21 @@ function closeMonthlyReportPopup() {
         width: calc(100% - 78px);
     }
 
+    .home .datetime{
+    font-size: 16px;
+    width: 26rem;
+    padding: 10px;
+    padding-left: 2%;
+    margin-left: 3%;
+    margin-top: 3%;
+    background: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.25);
+    border-radius: 4px;
+    font-weight: 500;
+    border-right: 10px #FADA5F solid;
+    font-family: 'Oswald', sans-serif;
+}
+
     .popup {
         display: none;
         position: fixed;
@@ -716,6 +730,12 @@ function closeMonthlyReportPopup() {
         width: 500px;
     }
 
+    .home .datetime .date{
+    margin-top: 3px;
+    font-size: 21px; width: 24rem;
+    color: var(--text-color);
+}
+
     @media screen and (min-width: 1310px) {
         .close-icon {
             left: 875px;
@@ -775,7 +795,7 @@ function closeMonthlyReportPopup() {
         }
     }
 
-    @media screen and (min-width: 1920px) and (min-height: 1080px){
+    @media screen and (min-width: 1400px) and (max-width: 1920px) and (min-height: 1080px){
         .home{
             margin-left: 1.5%;
         }
@@ -783,11 +803,32 @@ function closeMonthlyReportPopup() {
             margin-top: -20px;
             height: 15rem;
         }
-        .datetime-container .datetime{
-            padding: 33px;
+        .home .datetime{
+            width: 37rem;
+            height: 215px;
+        }
+        .home .datetime .time{
+            font-size: 85px;
+            width: 29rem;
+        }
+        .home .datetime .date{
+            font-size: 30px;
+            width: 32rem;
+            padding-bottom: 15px
         }
         .add-account{
-            width: 15%;
+            margin-top: 7%;
+            height: 80px;
+            width: 26rem;
+        }
+        .add-account i{
+            font-size: 40px;
+            margin-top: 4px;
+        }
+        .add-account p{
+            font-size: 25px;
+            width: 20rem;
+            margin-top: 6px;
         }
         .calendar-container{
             width: 920px;
