@@ -261,7 +261,7 @@ WHERE h.date_of_hearing IS NOT NULL
             <div class="incident-case-table" style="display: flex;">
     <div class="head-text">
         <div class="head-text-1" style="display: flex;">
-            <p class="incident-case">Ongoing Incident Cases</p>
+            <p class="incident-case">Incident Cases Overview</p>
             <div class="sort-container">
     <div class="sort-filter-box"><i class='bx bx-calendar-alt'></i>Date Range:</div>
     <form id="sortForm" action="" method="get" onchange="redirectToSortedPage()">
@@ -543,8 +543,13 @@ var myBarChart = new Chart(ctx, {
             width: 150px;
         }
 
-    .incident-case, .incident-case-table-1 .head-text .incident-case{
+        .incident-case-table-1 .head-text .incident-case{
         font-size: 22px;
+    }
+
+    .incident-case-table .incident-case{
+        font-size: 22px;
+        width: 300px;
     }
 
 
