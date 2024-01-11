@@ -660,7 +660,7 @@ var myBarChart = new Chart(ctx, {
 
         .incident-case-table canvas{
             margin-top: 10%;
-        }
+        } 
 
         }
 
