@@ -136,9 +136,9 @@ header('location: ../index.php');
     <section class="home">
         
     <div class="datetime-container" style="display: flex; margin-top: -4.5%;">
-        <div class="datetime mb-3" style="width: 26rem;">
+        <div class="datetime mb-3">
                 <div class="time" id="time" style="padding-left: 8px;"></div>
-                <div class="date" style="font-size: 21px; width: 24rem; padding-left: 8px;"></div>
+                <div class="date"></div>
             </div>
 
             <a href="add_lupon_account.php" style="text-decoration: none; margin-left: 1%;"><div class="add-account">
@@ -201,7 +201,7 @@ header('location: ../index.php');
 
                 <div class="ongoing-cases-box">
                     <p>Ongoing Cases</p>
-                    <p style="font-size: 30px; margin-top: -8%; font-weight: 600;"><?php echo $ongoingCasesCount ?></p>
+                    <p class="count"><?php echo $ongoingCasesCount ?></p>
                 </div>
             </div>
             
@@ -230,7 +230,7 @@ header('location: ../index.php');
         
                 <div class="settled-cases-box">
                     <p>Settled Cases</p>
-                    <p style="font-size: 30px; margin-top: -8%; font-weight: 600;"><?php echo $settledCasesCount ?></p>
+                    <p class="count"><?php echo $settledCasesCount ?></p>
                 </div>
             </div>
 
@@ -266,7 +266,7 @@ header('location: ../index.php');
 
                 <div class="incomplete-cases-box">
                     <p>Cases with Incomplete Notice</p>
-                    <p style="font-size: 30px; margin-top: -8%; font-weight: 600;"><?php echo $incompleteCasesCount ?></p>
+                    <p class="count"><?php echo $incompleteCasesCount ?></p>
                 </div>
             </div>
         </div>
@@ -280,7 +280,7 @@ header('location: ../index.php');
 
         <div class="table-container"  style="max-height: 310px; overflow-y: hidden; margin-top: -6%;">
         <hr style="border: 1px solid #949494; margin: 5px 0; width: 95%; margin-top: 5%;">
-        <table class="incident-table" style="width: 530px; margin-top: 10px;">
+        <table class="incident-table">
             <thead>
                 <tr>
                     <th>Case No</th>
@@ -445,6 +445,27 @@ header('location: ../index.php');
     </script>
 
     <style>
+        .home .datetime{
+    font-size: 16px;
+    width: 26rem;
+    padding: 10px;
+    padding-left: 2%;
+    margin-left: 3%;
+    margin-top: 3%;
+    background: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.25);
+    border-radius: 4px;
+    font-weight: 500;
+    border-right: 10px #FADA5F solid;
+    font-family: 'Oswald', sans-serif;
+}
+
+.home .datetime .date{
+    margin-top: 3px;
+    font-size: 21px; width: 24rem;
+    color: var(--text-color);
+}
+
         .home{
             position: absolute;
             top: 0;
@@ -607,6 +628,14 @@ header('location: ../index.php');
     display: flex; margin-top: 75px; width: 68%;
 }
 
+.ongoing-cases-box .count, .settled-cases-box .count, .incomplete-cases-box .count{
+    font-size: 30px; margin-top: -8%; font-weight: 600;
+}
+
+.incident-table{
+    width: 530px; margin-top: 10px;
+}
+
     @media screen and (min-width: 1331px){
         .home{
             margin-left: 1.1%;
@@ -624,18 +653,59 @@ header('location: ../index.php');
 
     @media screen and (min-width: 1400px) and (max-width: 1920px) and (min-height: 1080px){
         .add-account{
-            margin-top: 90px;
+            margin-top: 125px;
+            height: 80px;
+            width: 21rem;
+        }
+        .add-account i{
+            font-size: 40px;
+            margin-top: 4px;
+        }
+        .add-account p{
+            font-size: 25px;
+            width: 20rem;
+            margin-top: 6px;
         }
         .container{
-            margin-top: 2%;
+            margin-top: 4%;
         }
         .incident-case-table{
             margin-top: 4%;
-            margin-left: 12%;
-            width: 550px;
+            margin-left: 8%;
+            width: 700px;
         }
         .incident-case-table-1{
-            margin-left: 20%;
+            margin-left: 10%;
+        }
+        .incident-case-table .incident-table{
+            width: 685px;
+        }
+        .datetime-container{
+            margin-top: -20px;
+            height: 15rem;
+        }
+        .home .datetime{
+            width: 37rem;
+            height: 215px;
+        }
+        .home .datetime .time{
+            font-size: 85px;
+            width: 29rem;
+        }
+        .home .datetime .date{
+            font-size: 30px;
+            width: 32rem;
+            padding-bottom: 15px
+        }
+        .ongoing-cases-box, .settled-cases-box, .incomplete-cases-box{
+            height: 8rem;
+            width: 350px;
+        }
+        .ongoing-cases-box p,.settled-cases-box p,.incomplete-cases-box p{
+            font-size: 20px;
+        }
+        .ongoing-cases-box .count, .settled-cases-box .count, .incomplete-cases-box .count{
+            font-size: 50px;
         }
     }
    

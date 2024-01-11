@@ -327,7 +327,7 @@ if (!isset($email)) {
             text-align: center;
         }
 
-        @media screen and (min-width: 1920px) and (min-height: 1080px){
+        @media screen and (min-width: 1400px) and (max-width: 1920px) and (min-height: 1080px){
             .add-account{
                 margin-top: -3.4%;
                 margin-left: 530px;
