@@ -42,7 +42,12 @@ if (isset($_POST['submit'])) {
     $image_tmp_name = $_FILES['attachment']['tmp_name'];
     $image_folder = 'uploads/'.$image;
 
-    $result = mysqli_query($conn, "SELECT incident_case_number FROM incident_report WHERE incident_case_number = '$incident_case_number'");
+    $select_query = "SELECT incident_case_number FROM incident_report WHERE incident_case_number = ?";
+    $stmt_select = mysqli_prepare($conn, $select_query);
+    mysqli_stmt_bind_param($stmt_select, "s", $incident_case_number);
+    mysqli_stmt_execute($stmt_select);
+    $result = mysqli_stmt_get_result($stmt_select);
+
     if (mysqli_num_rows($result) > 0) {
         die('Error: Incident case number already exists.');
     } else {
@@ -56,8 +61,19 @@ if (isset($_POST['submit'])) {
 
             move_uploaded_file($image_tmp_name, $image_folder);
 
-            mysqli_query($conn, "INSERT INTO `incident_report` (complainant_last_name, complainant_first_name, complainant_middle_name, complainant_cellphone_number, complainant_house_address, respondent_last_name, respondent_first_name, respondent_middle_name, respondent_cellphone_number, respondent_house_address, incident_case_number, incident_case_type, other_incident_case_type, incident_date, description_of_violation, created_at, pb_id, submitter_first_name, submitter_last_name, lupon_id, attachment) VALUES ('$complainant_last_name', '$complainant_first_name', '$complainant_middle_name', '$complainant_cellphone_number', '$complainant_house_address', '$respondent_last_name', '$respondent_first_name', '$respondent_middle_name', '$respondent_cellphone_number', '$respondent_house_address', '$incident_case_number', '$incident_case_type', '$other_incident_case_type', '$incident_date', '$description_of_violation', NULL, $pb_id, '$submitter_first_name', '$submitter_last_name', '$lupon_id', '$image')") or die('query failed');
-            header("location: incomplete_notices.php");
+            $insert_query = "INSERT INTO `incident_report` (complainant_last_name, complainant_first_name, complainant_middle_name, complainant_cellphone_number, complainant_house_address, respondent_last_name, respondent_first_name, respondent_middle_name, respondent_cellphone_number, respondent_house_address, incident_case_number, incident_case_type, other_incident_case_type, incident_date, description_of_violation, created_at, pb_id, submitter_first_name, submitter_last_name, lupon_id, attachment) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), ?, ?, ?, ?, ?)";
+        $stmt_insert = mysqli_prepare($conn, $insert_query);
+        
+        mysqli_stmt_bind_param($stmt_insert, "ssssssssssssssssssss", 
+            $complainant_last_name, $complainant_first_name, $complainant_middle_name, $complainant_cellphone_number, $complainant_house_address, 
+            $respondent_last_name, $respondent_first_name, $respondent_middle_name, $respondent_cellphone_number, $respondent_house_address, 
+            $incident_case_number, $incident_case_type, $other_incident_case_type, $incident_date, $description_of_violation, 
+            $pb_id, $submitter_first_name, $submitter_last_name, $lupon_id, $image
+        );
+
+        mysqli_stmt_execute($stmt_insert) or die('query failed');
+
+        header("location: incomplete_notices.php");
         }
     }
 }
