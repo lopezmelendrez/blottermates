@@ -111,6 +111,17 @@ $day = formatDay($dateAgreedObj->format('d'));
 $month = $dateAgreedObj->format('F');
 $year = $dateAgreedObj->format('Y'); 
 $agreement_description = $amicable_data['agreement_description'];
+
+$execution_query = "SELECT * FROM `execution_notice` WHERE `incident_case_number` = '$incident_case_number'";
+$select_execution = mysqli_query($conn, $execution_query) or die('Execution notice query failed');
+$execution_data = mysqli_fetch_assoc($select_execution);
+
+if (!$execution_data) {
+    die("Execution notice data not found");
+}
+
+// Additional data from the execution_notice table
+$remarks = $execution_data['remarks'];
 $html = <<<EOD
 <style>
  
@@ -174,7 +185,7 @@ the parties in the above-entitled case [or an arbitration award was rendered by
 the Punong Barangay/Pangkat ng Tagapagkasundo];
 WHEREAS, the terms and conditions of the settlement, the dispositive portion
 of the award. read:
-<br><u>$agreement_description</u>
+<br><u>$remarks</u>
 _______________________________________________________________________________________________________________________________________________________________________________________________________________________________________
 
 <br>The said settlement/award is now final and executory;
