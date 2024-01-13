@@ -72,6 +72,12 @@
                 margin-left: 18px;
             }
         }
+
+        @media screen and (min-width: 1536px) and (min-height: 730px){
+            .header-text::after{
+                width: 67.5%;
+            }
+        }
     </style>
     
 </html>

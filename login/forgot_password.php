@@ -156,26 +156,10 @@ else
                             <hr style="border: 1px solid #949494; margin: 20px 0;">
 
                             <?php if (isset($msg_error) && !empty($msg_error)) { ?>
-        <div class="message d-flex" style="background: #F5E2D1; border: none; border-radius: 5px; width: 100%; margin-top: -1%; padding: 2px 2px; margin-left: 0;">
-            <i class="fa-solid fa-circle-exclamation" style="margin-left: 3%; margin-top: 0.6%; font-size: 20px; color: #D52826;"></i>
-            <span style="margin-left: 2%; font-size: 14px; color: #D52826; font-weight: 600; margin-top: 0.3%;"><?php echo $msg_error; ?></span>
-            <i class="fas fa-times" style="margin-left: 32%; margin-top: 0.4%; color: #D52826; font-size: 24px;" onclick="this.parentElement.remove();"></i>
-        </div>
-    <?php } ?>
-
-    <?php if (isset($msgerror) && !empty($msgerror)) { ?>
-        <div class="message d-flex" style="background: #F5E2D1; border: none; border-radius: 5px; width: 100%; margin-top: -1%; padding: 2px 2px; margin-left: 0;">
-            <i class="fa-solid fa-circle-exclamation" style="margin-left: 3%; margin-top: 0.6%; font-size: 20px; color: #D52826;"></i>
-            <span style="margin-left: 2%; font-size: 14px; color: #D52826; font-weight: 600; margin-top: 0.3%;"><?php echo $msgerror; ?></span>
-            <i class="fas fa-times" style="margin-left: 47%; margin-top: 0.4%; color: #D52826; font-size: 24px;" onclick="this.parentElement.remove();"></i>
-        </div>
-    <?php } ?>
-
-                            <?php if (isset($error) && !empty($error)) { ?>
-        <div class="message d-flex" style="background: #F5E2D1; border: none; border-radius: 5px; width: 100%; margin-top: -1%; padding: 2px 2px; margin-left: 0;">
-            <i class="fa-solid fa-circle-exclamation" style="margin-left: 3%; margin-top: 0.6%; font-size: 20px; color: #D52826;"></i>
-            <span style="margin-left: 2%; font-size: 16px; color: #D52826; font-weight: 600; margin-top: 0.5%;"><?php echo $error; ?></span>
-            <i class="fas fa-times" style="margin-left: 60%; margin-top: 0.4%; color: #D52826; font-size: 24px;" onclick="this.parentElement.remove();"></i>
+        <div class="message_error d-flex">
+            <i class="fa-solid fa-circle-exclamation exclamation"></i>
+            <span class="text-error"><?php echo $msg_error; ?></span>
+            <i class="fas fa-times close-error" onclick="this.parentElement.remove();"></i>
         </div>
     <?php } ?>
                     
@@ -189,7 +173,7 @@ else
                                     <div class="message d-flex" style="background: #e0f19c; border: none; border-radius: 5px; width: 100%; margin-top: 3%;">
                                     <i class="error error-icon fas fa-circle-check" style="margin-left: 3%; margin-top: 0.6%; font-size: 20px; color: #2a4c09;"></i>
                                     <div class="error error-txt" style="margin-left: 2%; font-size: 16px; margin-top: 0.5%; color: #2a4c09; font-weight: 600;">'.$success_msg.'</div>
-                                    <i class="fas fa-times" style="margin-left: 15%; margin-top: 0.4%; font-size: 24px; color: #2a4c09;" onclick="this.parentElement.remove();"></i>
+                                    <i class="fas fa-times success_error"  onclick="this.parentElement.remove();"></i>
                                     </div>
                                     ';
                                 }
@@ -202,7 +186,7 @@ else
                             <button input type="submit" id="login" name="reset" class="custom-search-button">Send Password Reset Link</button>
                     </div>
 
-                    <input type="button" value="Back" class="btn btn-secondary back-btn fs-4" style="width: 30%; margin-left: 360px; margin-top: 10%;" onclick="history.back()">
+                    <input type="button" value="Back" class="btn btn-secondary back-btn fs-4 back" onclick="history.back()">
                 
                         </form>
             </div>
@@ -249,7 +233,7 @@ else
     .header-text-1::after{
     content: "";
     display: block;
-    border-bottom: 3px solid #F9C918; /* Adjust the color and thickness as needed */
+    border-bottom: 3px solid #F9C918;
     width: 76%;
     border-radius: 25px;
     margin-left: -23%;
@@ -296,6 +280,30 @@ else
     margin-left: -120px;
 }
 
+.message_error{
+    background: #F5E2D1; border: none; border-radius: 5px; width: 100%; margin-top: -1%; padding: 2px 2px; margin-left: 0;
+}
+
+.exclamation{
+    margin-left: 3%; margin-top: 0.6%; font-size: 20px; color: #D52826;
+}
+
+.text-error{
+    margin-left: 2%; font-size: 14px; color: #D52826; font-weight: 600; margin-top: 0.3%;
+}
+
+.close-error{
+    margin-left: 32%; margin-top: 0.4%; color: #D52826; font-size: 24px;
+}
+
+.success_error{
+    margin-left: 15%; margin-top: 0.4%; font-size: 24px; color: #2a4c09;
+}
+
+.back{
+    width: 30%; margin-left: 360px; margin-top: 10%;
+}
+
 @media screen and (min-width: 1920px) and (min-height: 1080px){
     .header-text-1{
         margin-left: -190px;
@@ -306,6 +314,31 @@ else
         margin-left: -190px;
     }
 }
+
+@media screen and (min-width: 1536px) and (min-height: 730px){
+    .header-text-1{
+        margin-left: -180px;
+    }        
+    .header-text-1::after{
+                width: 66%;
+                margin-left: -180px;
+            }
+        }
+    .text-error{
+        margin-top: 3px;
+        font-size: 16px;
+    }
+    .close-error{
+        margin-left: 35%;
+    }
+
+    .success_error{
+        margin-left: 27%;
+    }
+
+    .back{
+        margin-left: 70%;
+    }
 
     </style>
 

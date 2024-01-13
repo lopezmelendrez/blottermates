@@ -65,7 +65,7 @@ if($_GET['secret'])
                 </div>
 
                 <div class="col-md-6 right-box">
-                            <span class="header-text-1" style="font-size: 37.5px; margin-left: -120px;">Reset Your Password</span>
+                            <span class="header-text-1">Reset Your Password</span>
                             <hr style="border: 1px solid #949494; margin: 20px 0;">
 
                             <p style="font-size: 15px; margin-top: 3%; text-align: center; font-weight: 500;">Please Enter your New Password.</p>
@@ -195,6 +195,9 @@ if($_GET['secret'])
     </script>
 
     <style>
+        .header-text-1{
+            font-size: 37.5px; margin-left: -120px;
+        }
     
     .header-text-1::after{
     content: "";
@@ -240,6 +243,16 @@ if($_GET['secret'])
 .custom-search-button:hover{
     background: #bc1823;
 }
+
+@media screen and (min-width: 1536px) and (min-height: 730px){
+    .header-text-1{
+        margin-left: -180px;
+    }        
+    .header-text-1::after{
+                width: 66%;
+                margin-left: -180px;
+            }
+        }
 
     </style>
 

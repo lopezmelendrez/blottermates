@@ -244,6 +244,16 @@ if (isset($_POST['submit'])) {
         margin-left: -160px;
     }
 }
+
+@media screen and (min-width: 1536px) and (min-height: 730px){
+    .header-text-1{
+        margin-left: -180px;
+    }        
+    .header-text-1::after{
+                width: 67.5%;
+                margin-left: -180px;
+            }
+        }
 </style>
 
 </html>
