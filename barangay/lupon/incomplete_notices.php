@@ -8,6 +8,20 @@ $email = $_SESSION['email_address'];
 if (!isset($email)) {
     header('location: ../../index.php');
 }
+
+if (isset($_POST['submit'])) {
+    $incident_case_number_to_delete = mysqli_real_escape_string($conn, $_POST['incident_case_number']);
+
+    $delete_query = mysqli_query($conn, "DELETE FROM incident_report WHERE incident_case_number = '$incident_case_number_to_delete'");
+    
+    if ($delete_query) {
+        header('Location: ' . $_SERVER['PHP_SELF']);
+        exit();
+    } else {
+        echo 'Failed to delete incident case.';
+    }
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -20,8 +34,7 @@ if (!isset($email)) {
     <link href='https://unpkg.com/boxicons@2.1.1/css/boxicons.min.css' rel='stylesheet'>
     <link rel="stylesheet" href="../../node_modules/bootstrap/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="../../css/lupon.css">
-    <link href="https://cdn.jsdelivr.net/npm/fullcalendar@5.9.0/main.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.9.0/main.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css"/>
     <link rel="icon" type="image/x-icon" href="../../images/favicon.ico">
     <title>Incident Cases with Incomplete Notices</title>
 </head>
@@ -194,18 +207,68 @@ if (!isset($email)) {
                                     $hearing_data = mysqli_fetch_assoc($select_hearing);
                                     $hearing_date = $hearing_data['date_of_hearing'];
                                     if (empty($hearing_date)) {
+                                        echo '<div id="popup" class="popup">';
+        echo '<center>';
+        echo '<div class="modal">';
+        echo '<h3 class="modal-title" style="font-size: 18px; text-align:center;">CONFIRMATION</h3>';
+        echo '<hr style="border: 1px solid #ccc; margin: 10px 0;">';
+        echo '<p style="font-size: 16px; letter-spacing: 1px; text-align: center; margin-top: 10%; margin-bottom: 10%;">Are you sure you want to delete Incident Case #' . htmlspecialchars(substr($incident_case_number, 0, 9)) . '?</p>';
+        echo '<hr style="border: 1px solid #ccc; margin: 10px 0;">';
+        echo '<div class="button-container" style="display: flex; margin-top: -4%; margin-left: 6%;">';
+        echo '<button class="backBtn" onclick="closeConfirmation()" style="width: 100px; padding: 12px 12px; font-weight: 600; background: #fff; border: 1px solid #bc1823; color: #bc1823; margin-left: 190px;">CANCEL</button>';
+        echo '<form action="" method="post">';
+        echo '<input type="hidden" name="incident_case_number" value="' . $incident_case_number . '">';
+        echo '<input type="submit" name="submit" value="YES" class="backBtn" style="width: 150px; padding: 8px 8px; font-size: 20px; font-weight: 600; margin-left: 10px;"></button>';
+        echo '</form>';
+        echo '</div>';
+        echo '</div>';
+        echo '</center>';
+        echo '</div>';
                                         echo '<a href="../../barangay/lupon/hearing_schedule.php?incident_case_number=' . $incident_case_number . '" class="schedule">Set Hearing Schedule</a>';
                                         echo '<a href="../../tcpdf/generate_kp7.php?incident_case_number=' . $incident_case_number . '" class="shownotices" target="_blank"><i class="bx bx-printer" style="margin-right: 5px;"></i>Generate KP Form #7</a>';
+                                        echo '<span class="close-icon" onclick="showConfirmation()">DELETE INCIDENT CASE</span>';
                                     } else {
                                         $hearing_date = date("F j, Y", strtotime($hearing_date));
                                         echo '<a href="../../barangay/lupon/notice_forms.php?incident_case_number=' . $incident_case_number . '" class="shownotices">Create Notice Form(s)</a>';
                                     }
                                 } else {
+                                    echo '<div id="popup" class="popup">';
+        echo '<center>';
+        echo '<div class="modal">';
+        echo '<h3 class="modal-title" style="font-size: 18px; text-align:center;">CONFIRMATION</h3>';
+        echo '<hr style="border: 1px solid #ccc; margin: 10px 0;">';
+        echo '<p style="font-size: 16px; letter-spacing: 1px; text-align: center; margin-top: 10%; margin-bottom: 10%;">Are you sure you want to delete Incident Case #' . htmlspecialchars(substr($incident_case_number, 0, 9)) . '?</p>';
+        echo '<hr style="border: 1px solid #ccc; margin: 10px 0;">';
+        echo '<div class="button-container" style="display: flex; margin-top: -4%; margin-left: 6%;">';
+        echo '<button class="backBtn" onclick="closeConfirmation()" style="width: 100px; padding: 12px 12px; font-weight: 600; background: #fff; border: 1px solid #bc1823; color: #bc1823; margin-left: 190px;">CANCEL</button>';
+        echo '<form action="" method="post">';
+        echo '<input type="hidden" name="incident_case_number" value="' . $incident_case_number . '">';
+        echo '<input type="submit" name="submit" value="YES" class="backBtn" style="width: 150px; padding: 8px 8px; font-size: 20px; font-weight: 600; margin-left: 10px;"></button>';
+        echo '</form>';
+        echo '</div>';
+        echo '</div>';
+        echo '</center>';
+        echo '</div>';
                                     echo '<a href="../../barangay/lupon/hearing_schedule.php?incident_case_number=' . $incident_case_number . '" class="schedule">Set Hearing Schedule</a>';
                                     echo '<a href="../../tcpdf/complainants_form.php?incident_case_number=' . $incident_case_number . '" class="shownotices" target="_blank"><i class="bx bx-printer" style="margin-right: 5px;"></i>Generate KP Form #7</a>';
+                                     echo '<span class="close-icon" onclick="showConfirmation()">DELETE INCIDENT CASE</span>';
                                 }
 
                                 ?>
+                                <script>
+function showConfirmation() {
+        var popup = document.getElementById("popup");
+        popup.style.display = "block";
+
+
+    }
+
+    function closeConfirmation() {
+        var popup = document.getElementById("popup");
+        popup.style.display = "none";
+    }
+
+</script>
                             </td>
                         </tr>
                 <?php
@@ -237,9 +300,32 @@ if (!isset($email)) {
         })
 
 
+
     </script>
 
     <style>
+        .close-icon{
+            background: #fff;
+        padding: 4px 4px;
+        color: #bc1823;
+        border: 1px solid #bc1823;
+        text-transform: uppercase;
+        border-radius: 0.2rem;
+        cursor: pointer;
+        display: block;
+        margin-bottom: 5px;
+        width: 10rem;
+        margin-left: 0;
+        text-decoration: none;
+        font-size: 13px;
+        }
+
+        .close-icon:hover{
+        background: #bc1823;
+        color: #fff;
+        border: 1px solid #fff;
+        transition: .5s;
+    }
 
         thead tr th {
             font-size: 13px;
@@ -350,6 +436,52 @@ if (!isset($email)) {
                 width: 15rem;
             }
         }
+
+        .backBtn{
+            display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 45px;
+    max-width: 200px;
+    border: none;
+    outline: none;
+    color: #fff;
+    border-radius: 5px;
+    margin: 25px 0;
+    background-color: #E83422;
+    transition: all 0.3s linear;
+    cursor: pointer;
+        }
+
+        .backBtn:hover{
+    background-color: #bc1823;
+    }
+
+        .popup {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        justify-content: center;
+        align-items: center;
+        z-index: 1000;
+    }
+
+    .modal {
+        display: block;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 5px;
+    margin-top: 180px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    width: 500px;
+    height: 280px;
+    overflow-y: hidden;
+    margin-left: 35%;
+}
 
     </style>
 
