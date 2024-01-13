@@ -163,10 +163,10 @@ date_default_timezone_set('Asia/Manila');
     <section class="home">
 
     <h1 style="margin-left: 3.5%; margin-top: -2%; display: flex; font-size: 48px;">ANALYTICS</h1>
-    <p class="notice-records">* As of <b><?php echo date('l, d F Y - h:i A'); ?></b></p>
+    <p class="notice-records" id="dateNotice"><b></b></p>
 
     <center>
-        <div class="container" style="margin-left: -2%;">
+        <div class="container">
         <div class="row">
             <div class="col-md-4">
             <?php
@@ -288,7 +288,7 @@ WHERE h.date_of_hearing IS NOT NULL
 <div class="head-text">
         <p class="incident-case">Top Incident Case Type</p>
         <div class="table-container">
-            <hr style="border: 1px solid #3d3d3d; margin: 3px 0; width: 73%; margin-top: 3.7%; margin-bottom: 5%;">
+            <hr class="border1">
             <?php
     $select = mysqli_query($conn, "SELECT pa.barangay, ir.incident_case_type, COUNT(*) as total_cases
     FROM `incident_report` AS ir
@@ -342,68 +342,28 @@ WHERE h.date_of_hearing IS NOT NULL
             sidebar.classList.remove("close");
         })
 
-        const timeElement = document.querySelector(".time");
-const dateElement = document.querySelector(".date");
+// Function to format the current date and time
+function formatDateTime() {
+    const now = new Date();
+    const formattedDateTime = now.toLocaleString('en-US', {
+      weekday: 'long',
+      day: 'numeric',
+      month: 'long',
+      year: 'numeric',
+      hour: 'numeric',
+      minute: 'numeric',
+      hour12: true
+    });
+    return formattedDateTime;
+  }
 
-/**
- * @param {Date} date
- */
- function formatTime(date) {
-  const hours = date.getHours();
-  const hours12 = hours % 12 || 12;
-  const minutes = date.getMinutes();
-  const isAm = hours < 12;
-
-  // Use conditional (ternary) operator to format hours without leading zero if it's a single digit
-  const formattedHours = hours12 < 10 ? hours12.toString() : hours12;
-
-  return `${formattedHours}:${minutes.toString().padStart(2, "0")} ${isAm ? "AM" : "PM"}`;
-}
-
-// Example usage:
-const now = new Date();
-console.log(formatTime(now)); // Outputs: "7:02 AM" for 07:02 and "12:15 PM" for 12:15
-
-
-/**
-* @param {Date} date
-*/
-function formatDate(date) {
-const DAYS = [
-"Sunday",
-"Monday",
-"Tuesday",
-"Wednesday",
-"Thursday",
-"Friday",
-"Saturday"
-];
-const MONTHS = [
-"January",
-"February",
-"March",
-"April",
-"May",
-"June",
-"July",
-"August",
-"September",
-"October",
-"November",
-"December"
-];
-
-return `${DAYS[date.getDay()]} - ${
-MONTHS[date.getMonth()]
-} ${date.getDate()}, ${date.getFullYear()}`;
-}
-
-setInterval(() => {
-const now = new Date();
-
-timeElement.textContent = formatTime(now);
-dateElement.textContent = formatDate(now);
-}, 200);
+  // Update the notice with the formatted date and time
+  document.addEventListener('DOMContentLoaded', function() {
+    const dateNotice = document.getElementById('dateNotice');
+    if (dateNotice) {
+      dateNotice.innerHTML = `* As of <b>${formatDateTime()}</b>`;
+    }
+  });
 
 var ctx = document.getElementById('myPieChart').getContext('2d');
 var myPieChart = new Chart(ctx, {
@@ -584,6 +544,7 @@ var myBarChart = new Chart(ctx, {
             display: flex;
             justify-content: space-around;
             margin-right: 20px;
+            margin-left: -2%;
         }
 
         .ongoing-cases-box {
@@ -661,6 +622,10 @@ var myBarChart = new Chart(ctx, {
         .border-1{
             border: 1px solid #3d3d3d; margin: 3px 0; width: 100%; margin-top: 5%; margin-bottom: 40px;
         }
+
+        .border1{
+        border: 1px solid #3d3d3d; margin: 3px 0; width: 73%; margin-top: 3.7%; margin-bottom: 5%;
+    }
 
         .notice-records{
             margin-top: -1%;
@@ -792,6 +757,40 @@ var myBarChart = new Chart(ctx, {
             margin-top: 10%;
         }
 
+        }
+
+        @media screen and (min-width: 1536px) and (min-height: 730px){
+            .notice-records{
+                margin-left: 22.5%;
+                margin-top: -2.8%;
+            }
+            .incident-case-table{
+                margin-left: 3.7%;
+            }
+            .incident-case-table-1{
+                margin-top: -32%;
+                margin-left: 56%;
+                width: 510px;
+            }
+            .incident-case-table-1 .table-container{
+                height: 700px;
+                width: 630px;
+            }
+            .piechart{
+                height: 480px;
+                margin-top:-1%;
+                margin-left: 5%;
+            }
+            #myPieChart{
+                margin-top: 1.5%;
+                margin-left: 10%;
+            }
+            .incident-case-table canvas{
+                margin-top: 6%;
+            }
+            .container{
+                margin-left: 5%;
+            }
         }
 
 </style>

@@ -173,7 +173,7 @@ header('location: ../index.php');
         </div>
 
         <center>
-        <div class="container" style="margin-left: -2%;">
+        <div class="container">
         <div class="row">
             <div class="col-md-4">
             <?php
@@ -488,6 +488,7 @@ header('location: ../index.php');
             display: flex;
             justify-content: space-around;
             margin-right: 20px;
+            margin-left: -2%;
         }
 
         .ongoing-cases-box {
@@ -709,6 +710,27 @@ header('location: ../index.php');
         }
     }
    
+}
+
+@media screen and (min-width: 1536px) and (min-height: 730px){
+    .container{
+        margin-left: -0.5%;
+        margin-bottom: 2%;
+        margin-top: 0.5%;
+    }
+    .incident-case-table-1{
+        margin-left: 14%;
+        width: 650px;
+    }
+    .incident-case-table{
+        width: 630px;
+    }
+    .incident-case-table .table-container{
+        width: 610px;
+    }
+    .seeall{
+        margin-left: 79%;
+    }
 }
 
 

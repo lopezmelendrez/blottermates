@@ -647,6 +647,15 @@ function showDisablePopup(luponId) {
                 margin-top: 18%;
             }
         }
+    
+    @media screen and (min-width: 1536px) and (min-height: 730px){
+        table{
+            margin-left: 13%;
+        }
+        .modal{
+            margin-left: 35%;
+        }
+    }
 
 
 

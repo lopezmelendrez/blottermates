@@ -222,7 +222,7 @@ if (mysqli_num_rows($result) == 0) {
         $executionResult = mysqli_query($conn, $executionQuery);
         $executionRow = mysqli_fetch_assoc($executionResult);
 
-        echo '<div class="container" style="width: 900px; margin-left: 13%;">';
+        echo '<div class="container">';
         echo '<div class="top-text" style="display: flex;">';
         echo '<h3 class="case-no-text" style="font-size: 20px;">Case No. #' . substr($incident_case_number, 0, 9) . '</h3>';
         echo '</div>';
@@ -335,9 +335,8 @@ if (mysqli_num_rows($result) == 0) {
 
         .container{
             background: #f2f3f5;
-            margin-left: 9%;
             margin-top: 3%;
-            width: 1018px;
+            width: 900px; margin-left: 13%;
         }
 
         .home{
@@ -467,6 +466,20 @@ if (mysqli_num_rows($result) == 0) {
             margin-left: 10%;
         }
     }
+
+@media screen and (min-width: 1536px) and (min-height: 730px){
+    .cases-container{
+        margin-top: -1%;
+        margin-left: -27%;
+    }
+    .search-container{
+        margin-left: 16.2%;
+    }
+    .container{
+        width: 900px;
+        margin-left: 18.8%;
+    }
+}
 
 
 

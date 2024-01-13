@@ -579,6 +579,18 @@ $result = mysqli_query($conn, $activityLogQuery);
         }
     }
 
+    @media screen and (min-width: 1536px) and (min-height: 730px){
+        .activity-history{
+            margin-left: 30%;
+        }
+        .sort-container{
+          margin-left: 58.6%;  
+        }
+    }
+
+
+    
+
     </style>
 
 </body>
