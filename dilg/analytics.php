@@ -184,7 +184,7 @@ WHERE NOT EXISTS (
 
             <div class="incident-case-table" style="display: flex;">
     <div class="head-text">
-        <p class="incident-case">Ongoing Incident Cases</p>
+        <p class="incident-case">Incident Cases Overview</p>
         <div class="table-container">
         <hr class="border-1">
             <canvas id="barGraph" width="400" height="200"></canvas>
@@ -388,7 +388,7 @@ while ($row = mysqli_fetch_assoc($select)) {
     return Math.round(value);
 });
 
-        var ctx = document.getElementById('barGraph').getContext('2d');
+var ctx = document.getElementById('barGraph').getContext('2d');
 var myBarChart = new Chart(ctx, {
     type: 'bar',
     data: {
@@ -398,11 +398,11 @@ var myBarChart = new Chart(ctx, {
             data: data,
             backgroundColor: [
                 'rgba(246, 109, 68, 0.7)',
-                    'rgba(254, 174, 101, 0.7)',
-                    'rgba(230, 246, 157, 0.7)',
-                    'rgba(170, 222, 167, 0.7)',
-                    'rgba(100, 194, 166, 0.7)',
-                    'rgba(45, 135, 187, 0.7)',
+                'rgba(254, 174, 101, 0.7)',
+                'rgba(230, 246, 157, 0.7)',
+                'rgba(170, 222, 167, 0.7)',
+                'rgba(100, 194, 166, 0.7)',
+                'rgba(45, 135, 187, 0.7)',
             ],
             borderWidth: 1
         }]
@@ -410,11 +410,17 @@ var myBarChart = new Chart(ctx, {
     options: {
         scales: {
             y: {
-                beginAtZero: true
+                beginAtZero: true,
+                ticks: {
+                    precision: 0,
+                    callback: function (value) { return value.toFixed(0); }
+                }
             }
         }
     }
 });
+
+
 
     </script>
 
