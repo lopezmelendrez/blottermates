@@ -530,6 +530,18 @@ document.querySelector(".pw-meter .pw-display-toggle-btn").addEventListener("cli
             }
         }
 
+@media screen and (min-width: 1536px) and (min-height: 730px){
+    .add-account-container{
+        margin-top: 4.5%;
+        margin-left: -1.5%;
+    }
+
+    .modal-content{
+        margin-top: 13%;
+        margin-left: 5%;
+    }
+}
+
 
 </style>
 </body>

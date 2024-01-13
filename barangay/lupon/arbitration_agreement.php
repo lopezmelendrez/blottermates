@@ -46,8 +46,6 @@ if (!displayPage($conn, $incident_case_number)) {
     header('location: hearings.php');
 }
 
-
-
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit'])) {
     $incident_case_number = $_POST['incident_case_number'];
     $signatureData = mysqli_real_escape_string($conn, $_POST["lupon_signature"]);
@@ -480,6 +478,18 @@ if (input.value.length > 0 && input.value[0] === ' ') {
             }
         }
 
+
+    @media screen and (min-width: 1536px) and (min-height: 730px){
+        .add-account-container{
+            margin-top: 5%;
+            margin-left: -2%;
+        }
+
+        .modal-content{
+            margin-top: 13%;
+            margin-left: 5%;
+        }
+    }
 
 
 </style>

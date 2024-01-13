@@ -596,6 +596,18 @@ function validateName(event) {
         }
     }
 
+    @media screen and (min-width: 1536px) and (min-height: 730px){
+        .container{
+            margin-left: 20%;
+            margin-top: 10%;
+        }
+
+        .modal{
+            margin-top: 14.5%;
+            margin-left: 5%;
+        }
+    }
+
     </style>
 
 </body>

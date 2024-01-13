@@ -1106,6 +1106,16 @@ function showPopup() {
         }
     }
 
+    @media screen and (min-width: 1536px) and (min-height: 730px){
+        .container{
+            margin-top: 6%;
+            margin-left: 20%;
+        }
+        .modal{
+            margin-top: 15%;
+        }
+    }
+
 
 </style>
 

@@ -208,7 +208,7 @@ header('location: ../../index.php');
                                     }
                                 } else {
                                     // Hearing is upcoming, display an appropriate text
-                                    echo '<div class="upcoming-hearing" style="margin-top: -5%;">Upcoming Hearing</div>';
+                                    echo '<div class="upcoming-hearing">Upcoming Hearing</div>';
                                 }
                                     echo '<a href="casereport.php?incident_case_number=' . $incident_case_number . '" class="shownotices">Details</a>';
                             
@@ -397,6 +397,7 @@ header('location: ../../index.php');
         width: 10rem;
         margin-left: 0;
         text-decoration: none;
+        margin-top: -5%;
     }
 
     .show{
@@ -462,6 +463,16 @@ header('location: ../../index.php');
             text-align: center;
         }
 
+        @media screen and (min-width: 1331px){
+            .upcoming-hearing{
+            margin-top: -3%;
+            margin-left: 5%;
+            }
+            .shownotices{
+                margin-left: 5%;
+            }
+        }
+
         @media screen and (min-width: 1920px) and (min-height: 1080px){
             .add-account{
                 margin-top: -3.4%;
@@ -496,6 +507,27 @@ header('location: ../../index.php');
                 margin-left: 15%;
             }
         }
+
+        @media screen and (min-width: 1536px) and (min-height: 730px){
+    .add-account{
+        margin-top: -4.5%;
+    }
+    .pagination{
+        margin-top: 1.5%;
+        margin-bottom: 1%;
+        margin-left: 8%;
+    }
+    table{
+        width: 85.5%;
+    }
+    .shownotices{
+        margin-left: 13%;   
+    }
+    .upcoming-hearing{
+        margin-left: 13%;
+        margin-top: -0.5%;
+    }
+}
 
 
 

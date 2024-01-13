@@ -454,6 +454,16 @@ label{
         }
     }
 
+    @media screen and (min-width: 1536px) and (min-height: 730px){
+        .container{
+            margin-left: 19.5%;
+            margin-top: 10%;
+        }
+        .modal-content{
+            margin-left: 5%;
+        }
+    }
+
     </style>
 
 </body>

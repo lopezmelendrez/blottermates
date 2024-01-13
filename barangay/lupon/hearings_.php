@@ -114,7 +114,7 @@ if (!$result) {
     <div class="sort-filter-box">Sort By:</div>
     <form id="sortForm" action="" method="get" onchange="redirectToSortedPage()">
         <select id="sort" name="sort">
-            <option value="oldest">From Oldest to Latest</option>
+        <option value="oldest">From Oldest to Latest</option>
             <option value="latest">From Latest to Oldest</option>
         </select>
     </form>
@@ -149,7 +149,7 @@ while ($row = mysqli_fetch_assoc($result)) {
         echo '<h3 class="case-no-text" style="font-size: 20px;">Case No. #' . htmlspecialchars(substr($row['incident_case_number'], 0, 9)) . '</h3>';
         echo '</div>';
         if ($schedule_status !== "NO SCHEDULE YET") {
-            echo '<div class="top-text" style="display: flex;">';
+            echo '<div class="top-text-1" style="display: flex;">';
             echo '<h3 class="hearing-text" style="font-size: 15px; margin-top: -2.8%; margin-left: 58%; font-weight: 500;"><b>Hearing Type Status</b>: ' . strtoupper($row['hearing_type_status']) . '</h3>';
             echo '</div>';
         }        
@@ -159,7 +159,7 @@ while ($row = mysqli_fetch_assoc($result)) {
         if ($schedule_status === "NO SCHEDULE YET") {
             echo '';
         } else {
-            echo '<h3 class="hearing-text" style="font-size: 15px; font-weight: 500; margin-left: 38%;"><b>Hearing Schedule: </b>' . $schedule_status . '</h3>';
+            echo '<h3 class="hearing-text"><b>Hearing Schedule: </b>' . $schedule_status . '</h3>';
         }
         echo '</div>';
         echo '<table>';
@@ -372,6 +372,9 @@ while ($row = mysqli_fetch_assoc($result)) {
     </script>
 
     <style>
+        .hearing-text{
+            font-size: 15px; font-weight: 500; margin-left: 38%;
+        }
     
         .search-container{
             margin-left: 9%;
@@ -578,6 +581,28 @@ while ($row = mysqli_fetch_assoc($result)) {
             }
             .container{
                 margin-left: 21.7%;
+            }
+        }
+
+        @media screen and (min-width: 1536px) and (min-height: 730px){
+            .add-account{
+                margin-top: -4.2%;
+            }
+            .search-input{
+                width: 73.3%;
+            }
+            .sort-container{
+                margin-left: 67.3%;
+            }
+            .container{
+              width: 80%;
+              margin-bottom: 3%;   
+            }
+            .top-text-1{
+                margin-left: 10.5%;
+            }
+            .hearing-text{
+                margin-left: 42.5%;
             }
         }
 

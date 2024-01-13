@@ -501,6 +501,23 @@ header('location: ../../index.php');
             }
         }
 
+        @media screen and (min-width: 1536px) and (min-height: 730px){
+    .add-account{
+        margin-top: -4.5%;
+    }
+    .pagination{
+        margin-top: 1.5%;
+        margin-bottom: 1%;
+        margin-left: 8%;
+    }
+    table{
+        width: 85.5%;
+    }
+    .upcoming-hearing{
+        margin-left: 8%;   
+    }
+}
+
     </style>
 
 </body>

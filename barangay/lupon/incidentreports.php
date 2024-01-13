@@ -140,12 +140,12 @@ if (mysqli_num_rows($result) == 0) {
         $schedule_status = isset($row['date_of_hearing']) && isset($row['time_of_hearing']) ?
             date('D, j F Y - h:i A', strtotime($row['date_of_hearing'] . ' ' . $row['time_of_hearing'])) :
             "NO SCHEDULE YET";
-        echo '<div class="container" style="margin-top: 10px; width: 80%;">';
+        echo '<div class="container" style="margin-top: 10px;">';
         echo '<div class="top-text" style="display: flex;">';
         echo '<h3 class="case-no-text" style="font-size: 20px;">Case No. #' . htmlspecialchars(substr($row['incident_case_number'], 0, 9)) . '</h3>';
         echo '</div>';
         if ($schedule_status !== "NO SCHEDULE YET") {
-            echo '<div class="top-text" style="display: flex;">';
+            echo '<div class="top-text-1" style="display: flex;">';
             echo '<h3 class="hearing-text" style="font-size: 15px; margin-top: -2.8%; margin-left: 58%; font-weight: 500;"><b>Hearing Type Status</b>: ' . strtoupper($row['hearing_type_status']) . '</h3>';
             echo '</div>';
         }
@@ -155,7 +155,7 @@ if (mysqli_num_rows($result) == 0) {
         if ($schedule_status === "NO SCHEDULE YET") {
             echo '';
         } else {
-            echo '<h3 class="hearing-text" style="font-size: 15px; font-weight: 500; margin-left: 38%;"><b>Schedule: </b>' . $schedule_status . '</h3>';
+            echo '<h3 class="hearing-text"><b>Schedule: </b>' . $schedule_status . '</h3>';
         }
         echo '</div>';
 
@@ -339,7 +339,7 @@ if (mysqli_num_rows($result) == 0) {
             background: #f2f3f5;
             margin-left: 9%;
             margin-top: 2%;
-            width: 980px;
+            width: 80%;
             padding: 20px;
         }
 
@@ -410,6 +410,10 @@ if (mysqli_num_rows($result) == 0) {
         cursor: default;
     }
 
+    .hearing-text{
+        font-size: 15px; font-weight: 500; margin-left: 38%;
+    }
+
     .text-box{
         margin-left: 30%;
         margin-top: 15%;
@@ -472,6 +476,30 @@ if (mysqli_num_rows($result) == 0) {
             }
             .container{
                 width: 1025px;
+            }
+        }
+
+        @media screen and (min-width: 1536px) and (min-height: 730px){
+            .add-account{
+                margin-top: -4.2%;
+            }
+            .search-input{
+                width: 72.6%;
+            }
+            .sort-container{
+                margin-left: 66.5%;
+            }
+            .container{
+                width: 79%;
+            }
+            .top-text-1{
+                margin-left: 21.8%;
+            }
+            .hearing-text{
+                margin-left: 47%;
+            }
+            .generate{
+                margin-left: 10%;
             }
         }
 

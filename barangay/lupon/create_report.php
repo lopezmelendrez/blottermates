@@ -336,7 +336,7 @@ if (isset($_POST['submit'])) {
                                 <label class="required-label">Description of Violation</label>
                                 <div id="customFile">
         <label for="customFileInput" id="customFileLabel"><i class="fas fa-plus" style="margin-right: 5px;"></i>Add Attachment <em>(optional)</em></label>
-        <input type="file" name="attachment" accept="image/jpg, image/jpeg, image/png" id="customFileInput" style="width: 250px; border: none; margin-top: -21px; margin-left: 20%; margin-bottom: 5%;" onchange="updateLabel()">
+        <input type="file" name="attachment" class="attachment" accept="image/jpg, image/jpeg, image/png" id="customFileInput" onchange="updateLabel()">
     </div>          
         <div class="text" style="margin-top: 2%;">                        
         <textarea style="width: 100%; height: 150px; padding: 10px 15px; border: 1px solid #aaa; outline: none; font-size: 14px; border-radius: 5px; font-weight: 400; margin-top: 5px; resize: vertical;" name="description_of_violation" id="description_input" required></textarea>
@@ -901,6 +901,10 @@ if (input.value.length > 0 && input.value[0] === ' ') {
         background-color: #bc1823;
     }
 
+    .attachment{
+       width: 250px; border: none; margin-top: -21px; margin-left: 20%; margin-bottom: 5%;
+    }
+
     .modal-overlay {
             display: none;
             position: fixed;
@@ -1045,6 +1049,16 @@ if (input.value.length > 0 && input.value[0] === ' ') {
      @media screen and (min-width: 1360px) and (min-height: 768px) {
         .container{
             margin-top: 6.5%;
+        }
+    }
+
+    @media screen and (min-width: 1536px) and (min-height: 730px){
+        .container{
+            margin-top: 4.5%;
+            margin-left: 21%;
+        }
+        .close-icon{
+            left: 980px;
         }
     }
 

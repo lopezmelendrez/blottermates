@@ -685,6 +685,23 @@ if (input.value.length > 0 && input.value[0] === ' ') {
             }
         }
 
+        @media screen and (min-width: 1536px) and (min-height: 730px){
+    .add-account{
+        margin-top: -4.5%;
+    }
+    .pagination{
+        margin-top: 1.5%;
+        margin-bottom: 1%;
+        margin-left: 8%;
+    }
+    table{
+        width: 85.5%;
+    }
+    .shownotices{
+        margin-left: 1%;   
+    }
+}
+
 
     </style>
 

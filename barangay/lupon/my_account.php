@@ -595,6 +595,18 @@ document.querySelector(".pw-meter .pw-display-toggle-btn").addEventListener("cli
                 margin-top: 18%;
             }
         }
+    
+    @media screen and (min-width: 1536px) and (min-height: 730px){
+        .add-account-container{
+            margin-top: 2.2%;
+            margin-left: -2%;
+        }
+
+        .modal-content{
+            margin-top: 10.5%;
+            margin-left: 5%;
+        }
+    }
 
 
 </style>

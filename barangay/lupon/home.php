@@ -795,6 +795,27 @@ function closeMonthlyReportPopup() {
         }
     }
 
+    @media screen and (min-width: 1536px) and (min-height: 730px){
+        .home{
+            margin-left: 2%;
+        }
+        .datetime-container{
+            margin-bottom: 1.5%;
+        }
+    .add-account{
+        width: 18.5%;
+    }
+    .calendar-container{
+            width: 700px;
+        }
+        .calendar{
+            width: 690px;
+        }
+        .close-icon{
+            margin-left: 100px;
+        }
+ }
+
     @media screen and (min-width: 1400px) and (max-width: 1920px) and (min-height: 1080px){
         .home{
             margin-left: 1.5%;
