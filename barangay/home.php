@@ -279,7 +279,7 @@ header('location: ../index.php');
 
 
         <div class="table-container"  style="max-height: 310px; overflow-y: hidden; margin-top: -6%;">
-        <hr style="border: 1px solid #949494; margin: 5px 0; width: 100%; margin-top: 5%;">
+        <hr class="border-1">
         <table class="incident-table">
             <thead>
                 <tr>
@@ -348,7 +348,7 @@ if ($rowCount >= 3) {
 
         <div class="table-container">
             <hr style="border: 1px solid #949494; margin: 5px 0; width: 100%; margin-top: 3%;">
-            <table class="incident-table" style="width: 560px;">
+            <table class="incident-table" style="width: 565px;">
                 <tbody>
                                     <?php
                     include 'activity_log.php';
@@ -611,6 +611,10 @@ if ($rowCount >= 3) {
         margin-top: 2%;
     }
 
+    .border-1{
+        border: 1px solid #949494; margin: 5px 0; width: 100%; margin-top: 5%;
+    }
+
     .seeall-1{
         font-size: 16px;
         background: #fff;
@@ -776,6 +780,52 @@ if ($rowCount >= 3) {
 }
 
 @media screen and (min-width: 1280px) and (max-width: 1290px) and (min-height: 569px){
+    .ongoing-cases-box, .settled-cases-box, .incomplete-cases-box{
+            height: 70px;
+            margin-top: -.5%;
+        }
+        .ongoing-cases-box p,.settled-cases-box p,.incomplete-cases-box p{
+            font-size: 16px;
+            margin-top: -8px;
+        }
+        .ongoing-cases-box .count, .settled-cases-box .count, .incomplete-cases-box .count{
+            font-size: 30px;
+        }
+        .home .datetime{
+            width: 23rem;
+            height: 100px;
+        }
+        .home .datetime .time{
+            margin-top: -5.5px;
+            font-size: 40px;
+            width: 27rem;
+        }
+        .home .datetime .date{
+            font-size: 20px;
+            margin-top: -8px;
+            width: 32rem;
+            padding-bottom: 15px
+        }
+        .incident-case-table{
+            height: 21rem;
+            margin-top: 0.5%;
+        }
+        .incident-case-table-1{
+            height: 21rem;
+            margin-left: 1%;
+        }
+        .incident-case-table-1 .table-container{
+            width: 565px;
+        }
+        .border-1{
+            width: 92%;
+        }
+        .seeall-1{
+            margin-left: 69%;
+        }
+        .container{
+            margin-left: 4%;
+        }
 
 }
     </style>

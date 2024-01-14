@@ -11,7 +11,6 @@ if(!isset($email)){
 header('location: ../../index.php');
 }
 
-
 function displayPage($conn, $incident_case_number)
 {
     // Check if the incident case number is found in the hearing table with hearing_type_status "filed to court action"
