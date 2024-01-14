@@ -481,6 +481,12 @@ if (mysqli_num_rows($result) == 0) {
     }
 }
 
+@media screen and (min-width: 1366px) and (max-width: 1500px) and (min-height: 617px){
+    .container{
+        margin-left: 12.5%;
+    }
+}
+
 
 
     </style>

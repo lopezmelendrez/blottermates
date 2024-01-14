@@ -792,5 +792,18 @@ var myBarChart = new Chart(ctx, {
             }
         }
 
+        @media screen and (min-width: 1366px) and (max-width: 1500px) and (min-height: 617px){
+            .incident-case-table-1{
+                margin-top: -33%;
+                margin-left: 63.2%;
+                height: 26.5rem;
+            }
+            .incident-case-table{
+                width: 720px;
+                height: 26.5rem;
+                margin-left: 4%;
+            }
+        }
+
 </style>
 </html>

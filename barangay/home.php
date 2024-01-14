@@ -279,7 +279,7 @@ header('location: ../index.php');
 
 
         <div class="table-container"  style="max-height: 310px; overflow-y: hidden; margin-top: -6%;">
-        <hr style="border: 1px solid #949494; margin: 5px 0; width: 95%; margin-top: 5%;">
+        <hr style="border: 1px solid #949494; margin: 5px 0; width: 100%; margin-top: 5%;">
         <table class="incident-table">
             <thead>
                 <tr>
@@ -306,23 +306,26 @@ header('location: ../index.php');
             WHERE pa.pb_id = '$pb_id'
             AND nr.generate_execution = 'form generated'
             AND en.incident_case_number IS NULL
+            LIMIT 3
             ") or die('query failed');
 
 
 
-            if (mysqli_num_rows($select) === 0) {
+            
+            $rowCount = mysqli_num_rows($select);
+
+            if ($rowCount === 0) {
                 echo '<tr><td colspan="3" style="font-size: 16px; font-weight: 600; text-transform: uppercase; text-align: center; padding-top: 8%;">No incident cases require motion filing at this time</td></tr>';
             } else {
                 while ($fetchCases = mysqli_fetch_assoc($select)) {
                     echo '<tr>';
                     echo '<td>' . substr($fetchCases['incident_case_number'], 0, 9) . '</td>';
                     echo '<td>' . $fetchCases['complainant_last_name'] . ' vs. ' . $fetchCases['respondent_last_name'] . '</td>';
-                    echo '<td><a href="execution_notice.php?incident_case_number=' . $fetchCases['incident_case_number'] . '" style="text-decoration: none;"><span class="summon-record">Validate</span><a/></td>';
+                    echo '<td><a href="execution_notice.php?incident_case_number=' . $fetchCases['incident_case_number'] . '" style="text-decoration: none;"><span class="summon-record">Validate</span></a></td>';
                     echo '</tr>';
                 }
             }
             ?>
-
 
 <tbody id="noResults" style="display: none;">
     <tr>
@@ -332,6 +335,11 @@ header('location: ../index.php');
             </tbody>
         </table>
         </div>
+        <?php
+if ($rowCount >= 3) {
+    echo '<a href="activity_history.php" style="text-decoration: none;"><span class="seeall-1">See All</span></a>';
+}
+?>
     </div>
 
     <div class="incident-case-table-1">
@@ -603,6 +611,23 @@ header('location: ../index.php');
         margin-top: 2%;
     }
 
+    .seeall-1{
+        font-size: 16px;
+        background: #fff;
+        padding: 4px 4px;
+        color: #363636;
+        border: 1px solid #363636;
+        text-transform: uppercase;
+        border-radius: 0.2rem;
+        cursor: pointer;
+        display: block;
+        width: 8rem;
+        margin-left: 76%;
+        text-align: center;
+        text-decoration: none;
+        margin-top: -3%;
+    }
+
     .seeall:hover{
         background: #363636;
         color: #fff;
@@ -719,17 +744,34 @@ header('location: ../index.php');
         margin-top: 0.5%;
     }
     .incident-case-table-1{
-        margin-left: 6%;
+        margin-left: 12%;
         width: 650px;
     }
     .incident-case-table{
         width: 630px;
     }
     .incident-case-table .table-container{
-        width: 610px;
+        width: 580px;
     }
     .seeall{
         margin-left: 79%;
+    }
+    .seeall-1{
+        margin-left: 79%;
+        margin-top: -2%;
+    }
+    .summon-record{
+        margin-left: -2%;
+        width: 80%;
+    }
+}
+
+@media screen and (min-width: 1366px) and (max-width: 1500px) and (min-height: 617px){
+    .incident-case-table-1, .incident-case-table{
+        height: 21rem;
+    }
+    .incident-case-table-1{
+        width: 670px;
     }
 }
 
