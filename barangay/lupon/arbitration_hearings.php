@@ -692,10 +692,11 @@ if (input.value.length > 0 && input.value[0] === ' ') {
     .pagination{
         margin-top: 1.5%;
         margin-bottom: 1%;
-        margin-left: 8%;
+        margin-left: 5.1%;
     }
     table{
         width: 85.5%;
+        margin-left: 8.8%;
     }
     .shownotices{
         margin-left: 1%;   

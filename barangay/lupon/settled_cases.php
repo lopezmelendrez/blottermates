@@ -500,10 +500,11 @@ if (mysqli_num_rows($select_hearing) > 0) {
     .pagination{
         margin-top: 1.5%;
         margin-bottom: 1%;
-        margin-left: 8%;
+        margin-left: 5.1%;
     }
     table{
         width: 85.5%;
+        margin-left: 9%;
     }
     .shownotices{
         margin-left: 1%;   

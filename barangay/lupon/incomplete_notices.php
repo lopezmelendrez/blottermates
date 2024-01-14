@@ -489,10 +489,11 @@ function showConfirmation() {
     .pagination{
         margin-top: 1.5%;
         margin-bottom: 1%;
-        margin-left: 8%;
+        margin-left: 5.1%;
     }
     table{
         width: 85.5%;
+        margin-left: 8.8%;
     }
     .schedule{
         margin-left: 6%;
