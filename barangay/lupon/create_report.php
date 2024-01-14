@@ -1076,6 +1076,13 @@ if (input.value.length > 0 && input.value[0] === ' ') {
         }
     }
 
+    @media screen and (min-width: 1366px) and (min-height: 617px){
+        .container{
+            margin-top: -0.1%;
+            margin-left: 15.3%;
+        }
+    }
+
 </style>
 </body>
 </html>

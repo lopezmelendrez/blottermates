@@ -51,66 +51,62 @@ header('location: ../../index.php');
         </div>
 
         <div class="pagination">
-            <?php
-            $selectLuponId = mysqli_query($conn, "SELECT pb_id FROM `lupon_accounts` WHERE email_address = '$email'");
-            if (!$selectLuponId) {
-                die('Failed to fetch lupon_id: ' . mysqli_error($conn));
-            }
-            $row = mysqli_fetch_assoc($selectLuponId);
-            $pb_id = $row['pb_id'];
+    <?php
+    $selectLuponId = mysqli_query($conn, "SELECT pb_id FROM `lupon_accounts` WHERE email_address = '$email'");
+    if (!$selectLuponId) {
+        die('Failed to fetch lupon_id: ' . mysqli_error($conn));
+    }
+    $row = mysqli_fetch_assoc($selectLuponId);
+    $pb_id = $row['pb_id'];
 
-            $rowsPerPage = 3;
+    $rowsPerPage = 3;
 
-            $selectCount = mysqli_query($conn, "SELECT COUNT(ir.incident_case_number) AS total_rows
-    FROM `incident_report` AS ir
-    INNER JOIN `hearing` AS h ON ir.incident_case_number = h.incident_case_number
-    LEFT JOIN `amicable_settlement` AS amicable_settlement ON h.hearing_id = amicable_settlement.hearing_id
-    LEFT JOIN `court_action` AS court_action ON h.hearing_id = court_action.hearing_id
-    LEFT JOIN `execution_notice` AS execution_notice ON ir.incident_case_number = execution_notice.incident_case_number -- Adjust join condition
-    WHERE h.date_of_hearing IS NOT NULL 
-        AND h.time_of_hearing IS NOT NULL 
-        AND (
-            amicable_settlement.agreement_description IS NOT NULL 
-            OR court_action.lupon_signature IS NOT NULL
-        ) 
-        AND ir.pb_id = $pb_id");
+    $selectCount = mysqli_query($conn, "SELECT COUNT(ir.incident_case_number) AS total_rows
+        FROM `incident_report` AS ir
+        INNER JOIN `hearing` AS h ON ir.incident_case_number = h.incident_case_number
+        LEFT JOIN `amicable_settlement` AS amicable_settlement ON h.hearing_id = amicable_settlement.hearing_id
+        LEFT JOIN `court_action` AS court_action ON h.hearing_id = court_action.hearing_id
+        LEFT JOIN `execution_notice` AS execution_notice ON ir.incident_case_number = execution_notice.incident_case_number
+        WHERE h.date_of_hearing IS NOT NULL 
+            AND h.time_of_hearing IS NOT NULL 
+            AND (
+                amicable_settlement.agreement_description IS NOT NULL 
+                OR court_action.lupon_signature IS NOT NULL
+            ) 
+            AND ir.pb_id = $pb_id");
 
-            $rowCount = mysqli_fetch_assoc($selectCount);
-            $num_rows = $rowCount['total_rows'];
+    $rowCount = mysqli_fetch_assoc($selectCount);
+    $num_rows = $rowCount['total_rows'];
 
-            $totalPages = ceil($num_rows / $rowsPerPage);
+    $totalPages = ceil($num_rows / $rowsPerPage);
 
-            $currentPage = isset($_GET['page']) ? $_GET['page'] : 1;
+    $currentPage = isset($_GET['page']) ? $_GET['page'] : 1;
 
-            echo '<div class="pages" style="display: flex; margin-left: 80%; margin-top: -4%;">';
+    echo '<div class="pages" style="display: flex; margin-left: 80%; margin-top: -4%;">';
 
-            if ($currentPage > 1) {
-                $prevButtonStyle = '';
-            
-                // Check if it's the last page
-                if ($currentPage == $totalPages) {
-                    $prevButtonStyle = 'margin-left: 50px;';
-                }
-            
-                echo '<i class="bx bxs-left-arrow-square previous" onclick="navigatePage(' . ($currentPage - 1) . ')" style="font-size: 50px; color: #f5be1d; cursor: pointer; margin-left: 50px;' . $prevButtonStyle . '"></i>';
-            }
+    // Previous button
+    if ($currentPage > 1) {
+        // Adjust the styling for all pages except the first and last
+        $prevButtonStyle = ($currentPage > 1 && $currentPage < $totalPages) ? 'margin-left: 5px;' : 'margin-left: 59px;';
+        echo '<i class="bx bxs-left-arrow-square previous" onclick="navigatePage(' . ($currentPage - 1) . ')" style="font-size: 50px; color: #f5be1d; cursor: pointer; ' . $prevButtonStyle . '"></i>';
+    }
 
-            // Next button
-            if ($currentPage == 1 && $num_rows > $rowsPerPage) {
-                echo '<i class="bx bxs-right-arrow-square previous" onclick="navigatePage(' . ($currentPage + 1) . ')" style="font-size: 50px; color: #f5be1d; cursor: pointer; margin-left: 50px;"></i>';
-            } elseif ($currentPage > $totalPages) {
-                echo '<i class="bx bxs-right-arrow-square previous" onclick="navigatePage(' . ($currentPage + 1) . ')" style="font-size: 50px; color: #f5be1d; cursor: pointer;"></i>';
-            }
+    // Next button
+    if ($currentPage < $totalPages) {
+        // Adjust the styling for all pages except the first and last
+        $nextButtonStyle = ($currentPage > 1 && $currentPage < $totalPages) ? 'margin-left: 4px;' : 'margin-left: 59px;';
+        echo '<i class="bx bxs-right-arrow-square previous" onclick="navigatePage(' . ($currentPage + 1) . ')" style="font-size: 50px; color: #f5be1d; cursor: pointer; ' . $nextButtonStyle . '"></i>';
+    }
 
-            echo '</div>';
-            ?>
+    echo '</div>';
+    ?>
 
-            <script>
-                function navigatePage(page) {
-                    window.location.href = '?page=' + page;
-                }
-            </script>
-        </div>
+    <script>
+        function navigatePage(page) {
+            window.location.href = '?page=' + page;
+        }
+    </script>
+</div>
 
         <table>
             <thead>
@@ -511,6 +507,26 @@ if (mysqli_num_rows($select_hearing) > 0) {
     }
     .shownotices{
         margin-left: 1%;   
+    }
+}
+
+@media screen and (min-width: 1360px) and (min-height: 645px){
+    table{
+        width: 84.3%;
+    }
+    .pagination{
+        margin-top: 1%;
+        margin-bottom: 1%;
+    }
+}
+
+@media screen and (min-width: 1366px) and (min-height: 617px){
+    table{
+        width: 84.3%;
+    }
+    .pagination{
+        margin-top: 1%;
+        margin-bottom: 1%;
     }
 }
 

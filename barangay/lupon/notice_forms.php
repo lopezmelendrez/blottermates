@@ -1116,6 +1116,13 @@ function showPopup() {
         }
     }
 
+    @media screen and (min-width: 1366px) and (min-height: 617px){
+        .container{
+            margin-top: 1.5%;
+            margin-left: 15%;
+        }
+    }
+
 
 </style>
 

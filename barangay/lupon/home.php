@@ -163,7 +163,7 @@ if ($isEndOfMonth) {
     
 <?php include 'navbar.php';?>
 
-<section class="home" style="margin-top: -10px;">
+<section class="home">
 
     <div class="datetime-container" style="display: flex;">
         <div class="datetime mb-3">
@@ -589,6 +589,7 @@ function closeMonthlyReportPopup() {
         width: calc(100% - 78px);
         background-color: var(--body-color);
         transition: var(--tran-05);
+        margin-top: -10px;
     }
 
     .sidebar.close ~ .home {
@@ -877,6 +878,18 @@ function closeMonthlyReportPopup() {
             left: 1190px;
         }
 
+    }
+
+    @media screen and (min-width: 1366px) and (min-height: 617px){
+        .incident-case-table{
+            height: 430px;
+        }
+        .calendar-container{
+            height: 430px;
+        }
+        #calendar{
+            height: 390px;
+        }
     }
 
 

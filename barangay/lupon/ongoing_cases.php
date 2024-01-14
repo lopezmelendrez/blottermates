@@ -529,6 +529,26 @@ header('location: ../../index.php');
     }
 }
 
+@media screen and (min-width: 1360px) and (min-height: 645px){
+    table{
+        width: 84.3%;
+    }
+    .pagination{
+        margin-top: 1%;
+        margin-bottom: 1%;
+    }
+}
+
+@media screen and (min-width: 1366px) and (min-height: 617px){
+    table{
+        width: 84.3%;
+    }
+    .pagination{
+        margin-top: 1%;
+        margin-bottom: 1%;
+    }
+}
+
 
 
 

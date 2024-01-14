@@ -93,24 +93,23 @@ if (isset($_POST['submit'])) {
 
             echo '<div class="pages" style="display: flex; margin-left: 80%; margin-top: -4%;">';
 
+            // Previous button
             if ($currentPage > 1) {
-                $prevButtonStyle = '';
-            
-                // Check if it's the last page
-                if ($currentPage == $totalPages) {
-                    $prevButtonStyle = 'margin-left: 50px;';
-                }
-            
-                echo '<i class="bx bxs-left-arrow-square previous" onclick="navigatePage(' . ($currentPage - 1) . ')" style="font-size: 50px; color: #C23B21; cursor: pointer;' . $prevButtonStyle . '"></i>';
+                // Adjust the styling for all pages except the first and last
+                $prevButtonStyle = ($currentPage > 1 && $currentPage < $totalPages) ? 'margin-left: 5px;' : 'margin-left: 59px;';
+                echo '<i class="bx bxs-left-arrow-square previous" onclick="navigatePage(' . ($currentPage - 1) . ')" style="font-size: 50px; color: #C23B21; cursor: pointer; ' . $prevButtonStyle . '"></i>';
             }
-
-            if ($currentPage == 1 && $num_rows > $rowsPerPage) {
-                echo '<i class="bx bxs-right-arrow-square previous" onclick="navigatePage(' . ($currentPage + 1) . ')" style="font-size: 50px; color: #C23B21; cursor: pointer; margin-left: 50px;"></i>';
-            } elseif ($currentPage > $totalPages) {
-                echo '<i class="bx bxs-right-arrow-square previous" onclick="navigatePage(' . ($currentPage + 1) . ')" style="font-size: 50px; color: #C23B21; cursor: pointer;"></i>';
+        
+            // Next button
+            if ($currentPage < $totalPages) {
+                // Adjust the styling for all pages except the first and last
+                $nextButtonStyle = ($currentPage > 1 && $currentPage < $totalPages) ? 'margin-left: 4px;' : 'margin-left: 59px;';
+                echo '<i class="bx bxs-right-arrow-square previous" onclick="navigatePage(' . ($currentPage + 1) . ')" style="font-size: 50px; color: #C23B21; cursor: pointer; ' . $nextButtonStyle . '"></i>';
             }
-
+        
             echo '</div>';
+
+
             ?>
 
             <script>
@@ -506,6 +505,26 @@ function showConfirmation() {
     }
     .modal{
         margin-top: 15%;
+    }
+}
+
+@media screen and (min-width: 1360px) and (min-height: 645px){
+    table{
+        width: 84.3%;
+    }
+    .pagination{
+        margin-top: 1%;
+        margin-bottom: 1%;
+    }
+}
+
+@media screen and (min-width: 1366px) and (min-height: 617px){
+    table{
+        width: 84.3%;
+    }
+    .pagination{
+        margin-top: 1%;
+        margin-bottom: 1%;
     }
 }
 

@@ -702,6 +702,26 @@ if (input.value.length > 0 && input.value[0] === ' ') {
     }
 }
 
+@media screen and (min-width: 1360px) and (min-height: 645px){
+    table{
+        width: 84.3%;
+    }
+    .pagination{
+        margin-top: 1%;
+        margin-bottom: 1%;
+    }
+}
+
+@media screen and (min-width: 1366px) and (min-height: 617px){
+    table{
+        width: 84.3%;
+    }
+    .pagination{
+        margin-top: 1%;
+        margin-bottom: 1%;
+    }
+}
+
 
     </style>
 
