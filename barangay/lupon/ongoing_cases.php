@@ -539,7 +539,7 @@ header('location: ../../index.php');
     }
 }
 
-@media screen and (min-width: 1366px) and (min-height: 617px){
+@media screen and (min-width: 1366px) and (max-width: 1500px) and (min-height: 617px){
     table{
         width: 84.3%;
     }

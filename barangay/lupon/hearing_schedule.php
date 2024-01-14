@@ -449,7 +449,7 @@ label{
         }
     }
 
-    @media screen and (min-width: 1366px) and (min-height: 617px){
+    @media screen and (min-width: 1366px) and (max-width: 1500px) and (min-height: 617px){
         .container{
             margin-top: 5.5%;
             margin-left: 14.5%;
