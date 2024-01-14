@@ -679,6 +679,12 @@ dateElement.textContent = formatDate(now);
             }
         }
 
+        @media screen and (min-width: 1366px) and (max-width:1500px) and (min-height: 617px){
+            .incident-case-table{
+                margin-top: -0.2%;
+            }
+        }
+
     
 
 </style>

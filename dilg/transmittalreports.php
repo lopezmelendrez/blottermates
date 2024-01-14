@@ -477,10 +477,16 @@ function loadContent() {
                 margin-left: 13%;
             }
             .sort-container{
-                margin-left: 60%;
+                margin-left: 56.3%;
             }
             .container{
                 margin-left: 15.5%;
+            }
+        }
+
+        @media screen and (min-width: 1366px) and (max-width: 1500px) and (min-height: 617px){
+            .sort-container{
+                margin-left: 55%;
             }
         }
 

@@ -475,13 +475,13 @@ dateElement.textContent = formatDate(now);
         @media screen and (min-width: 1536px) and (min-height: 730px){
             .cases-container{
                 margin-top: -1%;
-                margin-left: -22%;
+                margin-left: -25%;
             }
             .search-container{
-                margin-left: 17%;
+                margin-left: 14%;
             }
             .container{
-                margin-left: 19.5%;
+                margin-left: 16.5%;
             }
         }
 

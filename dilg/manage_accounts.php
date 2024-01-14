@@ -462,12 +462,18 @@ table {
 
 @media screen and (min-width: 1536px) and (min-height: 730px){
     table{
-        margin-left: 10%;
+        margin-left: 7.9%;
     }
     .modal{
         margin-left: 35%;
     }
 } 
+
+@media screen and (min-width: 1366px) and (max-width: 1500px) and (min-height: 617px){
+    .modal{
+        margin-top: 10%;
+    }
+}
 
 </style>
 </html>
