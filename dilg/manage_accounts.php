@@ -475,5 +475,14 @@ table {
     }
 }
 
+@media screen and (min-width: 1280px) and (max-width: 1290px) and (min-height: 569px){
+    table{
+        margin-top: -1%;
+    }
+    .modal{
+        margin-top: 6%;
+    }
+}
+
 </style>
 </html>

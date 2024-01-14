@@ -101,7 +101,7 @@ $currentMonth = date("F");
 
     </nav>
 
-    <section class="home" style="margin-top: -1%;">
+    <section class="home">
         
         <div class="datetime-container" style="display: flex;">
         <div class="datetime mb-3">
@@ -250,7 +250,7 @@ $resultMonthlyReports = mysqli_query($conn, $queryMonthlyReports);
 
         </div>
         <a href="transmittal_reports.php" style="text-decoration: none;">
-            <span class="seeall-1" style="margin-top: 10%;">See All</span></a>
+            <span class="seeall-1">See All</span></a>
     </div>
 </div>
 
@@ -365,6 +365,7 @@ dateElement.textContent = formatDate(now);
             width: calc(100% - 78px);
             background-color: var(--body-color);
             transition: var(--tran-05);
+            margin-top: -1%;
         }
 
         .sidebar.close ~ .home{
@@ -488,7 +489,7 @@ dateElement.textContent = formatDate(now);
         margin-left: 77%;
         text-align: center;
         text-decoration: none;
-        margin-top: 2%;
+        margin-top: 10%;
     }
 
     .seeall:hover, .seeall-1:hover{
@@ -683,6 +684,61 @@ dateElement.textContent = formatDate(now);
             .incident-case-table{
                 margin-top: -0.2%;
             }
+        }
+
+        @media screen and (min-width: 1280px) and (max-width: 1290px) and (min-height: 569px){
+            .home{
+                margin-top: -1.8%;
+            }
+            .home .datetime{
+            width: 23rem;
+            height: 100px;
+        }
+        .home .datetime .time{
+            margin-top: -5.5px;
+            font-size: 40px;
+            width: 29rem;
+        }
+        .home .datetime .date{
+            font-size: 20px;
+            margin-top: -8px;
+            width: 32rem;
+            padding-bottom: 15px
+        }
+        .incident-case-table{
+            height: 27rem;
+            margin-top: -0.5%;
+        }
+
+        .incident-case-table .incident-case{
+            font-size: 21px;
+        }
+        .incident-case-table .notice-records{
+            font-size: 14px;
+            margin-top: -18px;
+            margin-bottom: 15px;
+        }
+
+        .incident-case-table-1{
+            height: 27rem;
+            width: 570px;
+            margin-top: -35.95%;
+            margin-left: 46%;
+        }
+
+        .incident-case-table-1 .table-container{
+            width: 520px;
+            height: 700px;
+        }
+
+        .incident-case-table-1 .table-container table{
+            width: 520px;
+        }
+
+        .seeall-1{
+            margin-top: 9%;
+            margin-left: 74%;
+        }
         }
 
     
