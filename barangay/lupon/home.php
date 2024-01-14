@@ -892,6 +892,19 @@ function closeMonthlyReportPopup() {
         }
     }
 
+    @media screen and (min-width: 1280px) and (max-width: 1290px) and (min-height: 569px){
+    .incident-case-table,.calendar-container{
+        height: 380px;
+    }
+    .incident-case-table{
+        width: 570px;
+    }
+    .add-account{
+        width: 270px;
+    }
+
+}
+
 
 </style>
 

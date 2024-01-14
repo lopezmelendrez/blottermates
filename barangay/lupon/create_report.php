@@ -204,7 +204,7 @@ if (isset($_POST['submit'])) {
                 <div class="d-flex justify-content-between align-items-center mb-3">
                     <header class="card-title" style="font-size: 22px;">Create Incident Report Form</header>
                     <hr style="border: 1px solid #ccc; margin: 20px 0;">
-                    <div class="case-number-box" style="text-align: center; font-size: 28px;">
+                    <div class="case-number-box">
                     <span>INCIDENT CASE #<?php echo htmlspecialchars(substr($incident_case_number, 0, 9)); ?></span>
                     </div>
                 </div>
@@ -868,6 +868,9 @@ if (input.value.length > 0 && input.value[0] === ' ') {
 
     </script>
 <style>
+    .case-number-box{
+        text-align: center; font-size: 28px;
+    }
     .container{
         margin-left: 15%; 
         margin-top: 25px;
@@ -1082,6 +1085,22 @@ if (input.value.length > 0 && input.value[0] === ' ') {
             margin-left: 15.3%;
         }
     }
+
+    @media screen and (min-width: 1280px) and (max-width: 1290px) and (min-height: 569px){
+            .container{
+            margin-top: -1.5%;
+            margin-left: 13%;
+            }
+            .case-number-box{
+                font-size: 21px;
+                margin-top: -2%;
+                margin-bottom: -2.4%;
+            }
+        }
+        .close-icon{
+            left: 67%;
+        }
+       
 
 </style>
 </body>

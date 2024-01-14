@@ -629,6 +629,15 @@ while ($row = mysqli_fetch_assoc($result)) {
             }
         }
 
+        @media screen and (min-width: 1280px) and (max-width: 1290px) and (min-height: 569px){
+            .search-input{
+                width: 71%;
+            }
+            .container{
+                width: 81%;
+            }
+        }
+
         
 
     </style>

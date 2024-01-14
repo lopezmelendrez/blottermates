@@ -531,6 +531,12 @@ if (mysqli_num_rows($select_hearing) > 0) {
     }
 }
 
+@media screen and (min-width: 1280px) and (max-width: 1290px) and (min-height: 569px){
+            .pagination{
+                margin-left: -3%;
+            }
+        }
+
 
     </style>
 
