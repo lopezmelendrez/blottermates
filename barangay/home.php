@@ -719,7 +719,7 @@ header('location: ../index.php');
         margin-top: 0.5%;
     }
     .incident-case-table-1{
-        margin-left: 14%;
+        margin-left: 6%;
         width: 650px;
     }
     .incident-case-table{

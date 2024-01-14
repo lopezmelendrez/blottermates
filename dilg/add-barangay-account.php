@@ -510,6 +510,16 @@ function generatePassword(selectedBarangay) {
     width: calc(100% - 78px);
 }
 
+@media screen and (min-width: 1536px) and (min-height: 730px){
+    .add-account-container{
+        margin-top: 7%;
+    }
+
+    .modal-content{
+        margin-top: 11.5%;
+    }
+}
+
 
 </style>
 

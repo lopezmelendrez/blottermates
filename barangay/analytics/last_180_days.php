@@ -148,7 +148,7 @@ date_default_timezone_set('Asia/Manila');
 
            
                 <li class="">
-                    <a href="../logout.php">
+                    <a href="../../logout.php">
                         <i class='bx bx-log-out icon' ></i>
                         <span class="text nav-text">Logout</span>
                     </a>
@@ -782,7 +782,7 @@ var myBarChart = new Chart(ctx, {
             }
             #myPieChart{
                 margin-top: 1.5%;
-                margin-left: 10%;
+                margin-left: 7%;
             }
             .incident-case-table canvas{
                 margin-top: 6%;

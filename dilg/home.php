@@ -174,7 +174,7 @@ WHERE NOT EXISTS (
         ?>
             </table>
             <a href="analytics.php" style="text-decoration: none;">
-        <span class="seeall" style="margin-left: 66%;">See All</span></a>
+        <span class="seeall">See All</span></a>
         </div>
         </div>
     </div>
@@ -250,7 +250,7 @@ $resultMonthlyReports = mysqli_query($conn, $queryMonthlyReports);
 
         </div>
         <a href="transmittal_reports.php" style="text-decoration: none;">
-            <span class="seeall" style="margin-top: 10%;">See All</span></a>
+            <span class="seeall-1" style="margin-top: 10%;">See All</span></a>
     </div>
 </div>
 
@@ -468,13 +468,30 @@ dateElement.textContent = formatDate(now);
         cursor: pointer;
         display: block;
         width: 8rem;
+        margin-left: 66%;
+        text-align: center;
+        text-decoration: none;
+        margin-top: 2%;
+    }
+
+    .seeall-1{
+        font-size: 16px;
+        background: #fff;
+        padding: 4px 4px;
+        color: #363636;
+        border: 1px solid #363636;
+        text-transform: uppercase;
+        border-radius: 0.2rem;
+        cursor: pointer;
+        display: block;
+        width: 8rem;
         margin-left: 77%;
         text-align: center;
         text-decoration: none;
         margin-top: 2%;
     }
 
-    .seeall:hover{
+    .seeall:hover, .seeall-1:hover{
         background: #363636;
         color: #fff;
         border: 1px solid #fff;
@@ -625,6 +642,41 @@ dateElement.textContent = formatDate(now);
             width: 730px;
             margin-left: 2%;
         }
+        }
+
+        @media screen and (min-width: 1536px) and (min-height: 730px){
+            .home{
+                margin-left: 5%;
+            }
+            .incident-case-table-1{
+                margin-top: -33%;
+                height: 30rem;
+                margin-left: 50%;
+            }
+            .incident-case-table-1 table{
+                width: 570px;
+            }
+            .incident-case-table{
+                width: 680px;
+                height: 30rem;
+            }
+            .incident-case-table .table-container{
+                width: 690px;
+                height: 800px;
+            }
+            .incident-case-table table{
+                width: 690px;
+            }
+            .seeall{
+                margin-left: 72%;
+            }
+            .summon-record{
+                width: 100%;
+                margin-left: -30%;
+            }
+            .add-account{
+                margin-top: 27%;
+            }
         }
 
     

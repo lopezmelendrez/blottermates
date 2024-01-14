@@ -460,5 +460,14 @@ table {
             }
         }
 
+@media screen and (min-width: 1536px) and (min-height: 730px){
+    table{
+        margin-left: 10%;
+    }
+    .modal{
+        margin-left: 35%;
+    }
+} 
+
 </style>
 </html>

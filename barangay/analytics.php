@@ -783,7 +783,7 @@ var myBarChart = new Chart(ctx, {
             }
             #myPieChart{
                 margin-top: 1.5%;
-                margin-left: 10%;
+                margin-left: 7%;
             }
             .incident-case-table canvas{
                 margin-top: 6%;
