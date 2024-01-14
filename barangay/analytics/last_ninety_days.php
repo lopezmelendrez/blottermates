@@ -789,20 +789,24 @@ var myBarChart = new Chart(ctx, {
                 margin-top: 6%;
             }
             .container{
-                margin-left: 5%;
+                margin-left: -4.5%;
             }
         }
 
         @media screen and (min-width: 1366px) and (max-width: 1500px) and (min-height: 617px){
             .incident-case-table-1{
-                margin-top: -33%;
-                margin-left: 63.2%;
+                margin-top: -32.9%;
+                margin-left: 60.2%;
                 height: 26.5rem;
             }
             .incident-case-table{
                 width: 720px;
                 height: 26.5rem;
-                margin-left: 4%;
+                margin-left: 3%;
+                margin-top: 0%;
+            }
+            .container{
+                margin-left: 0%;
             }
         }
 
