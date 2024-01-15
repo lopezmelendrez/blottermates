@@ -1,7 +1,7 @@
 <?php
 
 include 'config.php';
-require __DIR__ . '/vendor/autoload.php';
+require __DIR__ .'/vendor/autoload.php';
 
 $incident_case_number = $_GET['incident_case_number'];
 
