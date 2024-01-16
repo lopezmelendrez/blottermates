@@ -1079,16 +1079,6 @@ form .fields .input-field-3{
         }
     }
 
-    @media screen and (min-width: 1536px) and (min-height: 730px){
-        .container{
-            margin-top: 4.5%;
-            margin-left: 21%;
-        }
-        .close-icon{
-            left: 980px;
-        }
-    }
-
     @media screen and (min-width: 1366px) and (min-height: 617px){
         .container{
             margin-top: -0.1%;
@@ -1105,8 +1095,9 @@ form .fields .input-field-3{
 
     @media screen and (min-width: 1280px) and (max-width: 1290px) and (min-height: 569px){
             .container{
-            margin-top: -1.5%;
+            margin-top: -1.3%;
             margin-left: 13%;
+            width: 75%;
             }
             .case-number-box{
                 font-size: 21px;
@@ -1133,8 +1124,21 @@ form .fields .input-field-3{
                 width: 53.6rem;
             }
         }
-
-       
+        
+        @media screen and (min-width: 1500px) and (max-width: 1536px) and (min-height: 730px){
+        .container{
+            width: 61%;
+            margin-top: 4.3%;
+            margin-left: 20%;
+        }
+        .modal-content{
+            margin-top: 14%;
+        }
+        .close-icon{
+            margin-top: 2.5%;
+            margin-left: -2%;
+        }
+    }
 
 </style>
 </body>

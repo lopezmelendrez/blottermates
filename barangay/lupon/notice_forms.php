@@ -1104,16 +1104,10 @@ function showPopup() {
         }
     }
 
-    @media screen and (min-width: 1536px) and (min-height: 730px){
-        .container{
-            width: 10%;
-        }
-    }
-
     @media screen and (min-width: 1366px) and (min-height: 617px){
         .container{
             width: 70%;
-            margin-left: 14%;
+            margin-left: 15%;
             margin-top: 1.3%;
         }
         .container header:before{
@@ -1124,7 +1118,7 @@ function showPopup() {
         }
     }
 
-    @media screen and (min-width: 1360px) and (max-height: 730px){
+    @media screen and (min-width: 1360px) and (min-height: 730px){
         .container{
             margin-left: 10%;
             width: 80%;
@@ -1144,6 +1138,31 @@ function showPopup() {
         }
         .modal{
             margin-left: 6%;
+        }
+    }
+
+    @media screen and (max-width: 1280px) and (max-height: 592px){
+        .container{
+            width: 75%;
+            margin-top: 0.2%;
+            margin-left: 13%;
+        }
+        .container header:before{
+            width: 295px;
+        }
+        .modal{
+            margin-top: 11%;
+        }
+    }
+
+    @media screen and (min-width: 1500px) and (max-width: 1536px) and (min-height: 730px){
+        .container{
+            width: 70%;
+            margin-top: 5%;
+            margin-left: 16%;
+        }
+        form .fields .input-field-1{
+        width: 61rem;
         }
     }
 

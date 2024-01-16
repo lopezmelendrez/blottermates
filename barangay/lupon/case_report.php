@@ -785,10 +785,11 @@ if (input.value.length > 0 && input.value[0] === ' ') {
         }
     }
 
-    @media screen and (min-width: 1366px) and (max-width: 1500px) and (min-height: 617px){
+    @media screen and (min-width: 1366px) and (min-height: 617px){
         .container{
             margin-top: 0.05%;
-            margin-left: 16%;
+            margin-left: 15%;
+            width: 70%;
         }
     }
 
@@ -796,9 +797,17 @@ if (input.value.length > 0 && input.value[0] === ' ') {
         .container{
             margin-top: -1.5%;
             margin-left: 13%;
+            width: 74.5%;
+        }
+        .container header:before{
+            width: 402px;
         }
         .close-icon{
-            margin-left: -4%;
+            margin-left: -3%;
+            margin-top: -1%;
+        }
+        .modal{
+            margin-top: 13%;
         }
     }
 
@@ -818,7 +827,19 @@ if (input.value.length > 0 && input.value[0] === ' ') {
         }
     }
 
-
+    @media screen and (min-width: 1500px) and (max-width: 1536px) and (min-height: 730px){
+        .container{
+            width: 62%;
+            margin-top: 4.3%;
+            margin-left: 20%;
+        }
+        .modal{
+            margin-top: 15%;
+        }
+        .close-icon{
+            margin-top: 3%;
+        }
+    }
 
 
 </style>
