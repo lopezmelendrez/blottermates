@@ -470,6 +470,12 @@ label{
             margin-left: 5%;
         }
     }
+
+    @media screen and (min-width: 1360px) and (min-height: 681px){
+        .modal-content{
+            margin-left: 3.5%;
+        }
+    }
     
     </style>
 

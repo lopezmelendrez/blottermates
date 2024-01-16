@@ -497,6 +497,17 @@ if (input.value.length > 0 && input.value[0] === ' ') {
         }
     }
 
+    @media screen and (min-width: 1360px) and (min-height: 681px){
+        .add-account-container{
+            margin-top: 2.5%;
+            margin-left: -5%;
+        }
+        .modal-content{
+            margin-top: 12%;
+            margin-left: 5%;
+        }
+    }
+
 
 </style>
 </body>

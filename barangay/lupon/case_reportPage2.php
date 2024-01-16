@@ -819,6 +819,22 @@ if (input.value.length > 0 && input.value[0] === ' ') {
         }
     }
 
+    @media screen and (min-width: 1360px) and (min-height: 681px){
+        .container{
+            width: 70%;
+            margin-top: 2.5%;
+        }
+        .container header:before{
+            width: 403px;
+        }
+        .modal{
+            margin-top: 15%;
+        }
+        .close-icon{
+            margin-top: 1.8%;
+        }
+    }
+
 
 
 

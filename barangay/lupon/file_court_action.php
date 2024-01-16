@@ -39,13 +39,11 @@ function displayPage($conn, $incident_case_number)
     return false;
 }
 
-
 $incident_case_number = $_GET['incident_case_number'];
 
 if (!displayPage($conn, $incident_case_number)) {
     header('location: incident_reports.php');
 }
-
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit'])) {
     $incident_case_number = $_POST['incident_case_number'];
@@ -451,6 +449,17 @@ window.addEventListener("click", (event) => {
             margin-top: -1.8%;
         }
     }
+
+@media screen and (min-width: 1360px) and (min-height: 681px){
+    .add-account-container{
+       margin-top: 2.5%;
+       margin-left: -5%; 
+    }
+    .modal-content{
+            margin-top: 12%;
+            margin-left: 5%;
+        }
+}
 
 
 </style>

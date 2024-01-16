@@ -817,69 +817,6 @@ function closeMonthlyReportPopup() {
         }
  }
 
-    @media screen and (min-width: 1400px) and (max-width: 1920px) and (min-height: 1080px){
-        .home{
-            margin-left: 1.5%;
-        }
-        .datetime-container{
-            margin-top: -20px;
-            height: 15rem;
-        }
-        .home .datetime{
-            width: 37rem;
-            height: 215px;
-        }
-        .home .datetime .time{
-            font-size: 85px;
-            width: 29rem;
-        }
-        .home .datetime .date{
-            font-size: 30px;
-            width: 32rem;
-            padding-bottom: 15px
-        }
-        .add-account{
-            margin-top: 7%;
-            height: 80px;
-            width: 26rem;
-        }
-        .add-account i{
-            font-size: 40px;
-            margin-top: 4px;
-        }
-        .add-account p{
-            font-size: 25px;
-            width: 20rem;
-            margin-top: 6px;
-        }
-        .calendar-container{
-            width: 920px;
-            height: 40rem;
-        }
-        .calendar{
-            width: 950px;
-        }
-        .incident-case-table{
-            width: 760px;
-            height: 40rem;
-        }
-        .incident-case-table .head-text .notice-records{
-            margin-top: -1.5%;
-        }
-        table thead tr th {
-            font-size: 20px;
-            padding-right: 190px;
-        }
-        .popup .modal{
-            margin-top: 20%;
-        }
-        .close-icon{
-            top: 33.4%;
-            left: 1190px;
-        }
-
-    }
-
     @media screen and (min-width: 1366px) and (max-width: 1500px) and (min-height: 617px){
         .incident-case-table{
             height: 430px;
@@ -904,6 +841,106 @@ function closeMonthlyReportPopup() {
     }
 
 }
+
+@media screen and (min-width: 1920px) and (min-height:953px){
+    .home{
+        margin-top: -3%;
+        margin-left: .5%;
+    }
+    .datetime-container{
+            margin-top: 4%;
+            margin-left: 3%;
+            height: 6rem;
+            width: 420px;
+        }
+        .home .datetime{
+            width: 37rem;
+            height: 215px;
+        }
+        .home .datetime .time{
+            padding-top: 10px;
+            font-size: 70px;
+            margin-left: 6%;
+            width: 29rem;
+        }
+        .home .datetime .date{
+            font-size: 30px;
+            width: 32rem;
+            margin-left: 6%;
+            padding-bottom: 15px
+        }
+        .calendar-container{
+            margin-top: 8.5%;
+            margin-left: 3.5%;
+            width: 45%;
+            height: 600px;
+        }
+        #calendar{
+            width: 100%;
+        }
+        .incident-case-table{
+            width: 45%;
+            height: 600px;
+            margin-top: 8.3%;
+        }
+        .incident-case-table .head-text .incident-case{
+            font-size: 40px;
+        }
+        .incident-case-table .head-text .notice-records{
+            font-size: 23px;
+            margin-top: -20px;
+        }
+        .incident-case-table .table-container .incident-table{
+            width: 900px;
+        }
+        .incident-case-table .table-container .incident-table thead tr th
+        {
+            padding-top: 1%;
+            font-size: 25px;
+            padding-right: 30px;
+        }
+        .incident-case-table .table-container .incident-table tbody tr td{
+            font-size: 17px;
+        }
+        .add-account{
+            width: 600px;
+            height: 4rem;
+            margin-left: 8%;
+            margin-top: 20%;
+        }
+        .add-account i{
+            font-size: 40px;
+            margin-top: -6px;
+        }
+        .add-account p{
+            font-size: 20.5px;
+            margin-top: 4px;
+        }
+        
+}
+
+@media screen and (min-width: 2133px) and (min-height: 1058px){
+    .home{
+        margin-left: .8%;
+    }
+    .add-account{
+        margin-top: 22%;
+    }
+    .incident-case-table{
+        width: 42%;
+    }
+    .modal{
+        width: 28%;
+        height: 15.4rem;
+        margin-top: 17%;
+    }
+    .close-icon{
+        top: 32%;
+        left: 57.5%;
+    }
+}
+
+
 
 
 </style>

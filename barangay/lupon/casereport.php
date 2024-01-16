@@ -697,6 +697,22 @@ if ($fetch['barangay'] == 'Ibaba') {
         }
     }
 
+    @media screen and (min-width: 1360px) and (min-height: 681px){
+        .container{
+            width: 70%;
+            margin-top: 2.5%;
+        }
+        .container header:before{
+            width: 403px;
+        }
+        .modal{
+            margin-top: 15%;
+        }
+        .close-icon{
+            margin-top: 1.8%;
+        }
+    }
+
 
 </style>
 </body>

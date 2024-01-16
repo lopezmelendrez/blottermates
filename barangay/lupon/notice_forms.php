@@ -493,10 +493,10 @@ if ($fetch['barangay'] == 'Ibaba') {
                 <div class="form first">
                     <div class="details personal">
                         <span class="title" style="font-style: italic; margin-top: -5px; text-align: center; font-size: 22px;"><?php echo $fetch_cases['complainant_last_name'] ?> vs. <?php echo $fetch_cases['respondent_last_name'] ?> </span>
-                        <hr style="border: 1px solid #ccc; margin: 20px 0; width: 860px;">
+                        <hr class="border">
                     </div>
                         <div class="fields">
-                            <div class="input-field-1" style="width: 53.5rem;">
+                            <div class="input-field-1">
                             <?php
              $select = mysqli_query($conn, "SELECT * FROM `hearing` WHERE incident_case_number = '$incident_case_number'") or die('query failed');
              if(mysqli_num_rows($select) > 0){
@@ -508,7 +508,7 @@ if ($fetch['barangay'] == 'Ibaba') {
                                 <label class="">Hearing Schedule</label>
                                 <input type="text" onkeypress="return validateName(event)" value="<?php echo $alphabet_month_form; ?> - <?php echo $time_in_12_hour_format; ?>" disabled>
                             </div>
-                            <div class="change-schedule" style="margin-left: 86%; font-size: 12px; text-decoration: none;">
+                            <div class="change-schedule">
                                 <a href="change_schedule.php?incident_case_number=<?php echo $incident_case_number; ?>" style="text-decoration: none; color: inherit;">Change Schedule?</a>
                             </div>
                             
@@ -937,6 +937,9 @@ function showPopup() {
 </script>
 <script src="../script.js"></script>
 <style>
+    .border{
+        border: 1px solid #ccc; margin: 20px 0; width: 860px;
+    }
     .container{
         margin-left: 15%; margin-top: 45px;
     }
@@ -950,6 +953,7 @@ function showPopup() {
     width: calc(100% / 1 - 15px);
     flex-direction: column;
     margin: 4px 0;
+    width: 53.5rem;
         }
 
     .notify{
@@ -970,6 +974,10 @@ function showPopup() {
         background: #2962ff;
         color: #fff;
         transition: .5s;
+    }
+
+    .change-schedule{
+        margin-left: 86%; font-size: 12px; text-decoration: none;
     }
 
     .change-schedule:hover{
@@ -1096,32 +1104,26 @@ function showPopup() {
         }
     }
 
-
-    @media screen and (min-width: 1536px) and (min-height: 730px){
+    @media screen and (min-width: 1360px) and (min-height: 681px){
         .container{
-            margin-top: 6%;
-            margin-left: 20%;
+            margin-left: 10%;
+            width: 80%;
+        }
+        .container header::before{
+            width: 295px;
+        }
+        
+        form .fields .input-field-1{
+            width: 61.5rem;
+        }
+        .border{
+            width: 980px;
+        }
+        .change-schedule{
+            margin-left: 88%;
         }
         .modal{
-            margin-top: 15%;
-        }
-    }
-
-    @media screen and (min-width: 1366px) and (max-width: 1500px) and (min-height: 617px){
-        .container{
-            margin-top: 1.5%;
-            margin-left: 15%;
-        }
-    }
-
-    @media screen and (min-width: 1280px) and (max-width: 1290px) and (min-height: 569px){
-        .container{
-            margin-top: .25%;
-            height: 560px;
-            margin-left: 13%;
-        }
-        .modal{
-            margin-top: 11.5%;
+            margin-left: 6%;
         }
     }
 

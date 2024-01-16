@@ -618,6 +618,13 @@ function validateName(event) {
         }
     }
 
+    @media screen and (min-width: 1360px) and (min-height: 681px){
+        .container{
+            width: 70%;
+        }
+    }
+
+
     </style>
 
 </body>

@@ -327,7 +327,7 @@ if (isset($_POST['submit'])) {
                             </div>
 
                             <div id="otherIncident" style="display: none;">
-                                <div class="input-field" style="width: 53.7rem;">
+                                <div class="input-field-3">
                                 <input type="text" id="otherIncidentType" placeholder="Other Incident Case Type" name="other_incident_case_type">
                                 </div>
                             </div>
@@ -515,25 +515,26 @@ function validateName(event) {
     }
   }
 
-  // Capitalize the first character
   if (inputValue.length === 0 || inputValue.slice(0, event.target.selectionStart).trim() === '') {
     event.target.value = inputValue.charAt(0).toUpperCase() + inputValue.slice(1);
+  }
+
+  if (keyCode === 46) {
+    event.preventDefault();
+    return false;
   }
 
   if ((keyCode >= 65 && keyCode <= 90) || (keyCode >= 97 && keyCode <= 122)) {
     return true;
   }
 
-  if (keyCode === 32 || keyCode === 46 || keyCode === 45 || keyCode === 9) {
+  if (keyCode === 32 || keyCode === 45 || keyCode === 9) {
     return true;
   }
 
   event.preventDefault();
   return false;
 }
-
-
-
 
 function validateAddress(event) {
   var allowedCharacters = /^[a-zA-Z0-9\s.,#-]*$/;
@@ -979,6 +980,29 @@ if (input.value.length > 0 && input.value[0] === ' ') {
     margin: 4px 0;
 }
 
+form .fields .input-field-3{
+    display: flex;
+    width: 53.7rem;
+    flex-direction: column;
+    margin: 4px 0;
+}
+
+.input-field-3 input, select{
+    outline: none;
+    font-size: 14px;
+    font-weight: 400;
+    color: #333;
+    border-radius: 5px;
+    border: 1px solid #aaa;
+    padding: 0 15px;
+    height: 42px;
+    margin: 8px 0;
+}
+.input-field-3 input :focus,
+.input-field-3 select:focus{
+    box-shadow: 0 3px 6px rgba(0,0,0,0.13);
+}
+
 .inputfield label, .inputfield2 label{
     font-size: 13px;
     font-weight: 500;
@@ -1100,6 +1124,23 @@ if (input.value.length > 0 && input.value[0] === ' ') {
         .close-icon{
             left: 67%;
         }
+    
+        @media screen and (min-width: 1360px) and (min-height: 681px){
+            .container{
+                width: 70%;
+                margin-top: 2.7%;
+            }
+            .container header:before{
+            width: 315px;
+        }
+            .close-icon{
+                left: 66%;
+            }
+            form .fields .input-field-3{
+                width: 53.6rem;
+            }
+        }
+
        
 
 </style>

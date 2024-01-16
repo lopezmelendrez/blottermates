@@ -638,6 +638,20 @@ while ($row = mysqli_fetch_assoc($result)) {
             }
         }
 
+        @media screen and (min-width: 1360px) and (min-height: 681px){
+            .search-input{
+                width: 72%;
+            }
+            .sort-container{
+                margin-left: 65%;
+            }
+            .container{
+                width: 80%;
+                margin-bottom: 3%;
+            }
+        }
+
+
 
         
 
