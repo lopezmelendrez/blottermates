@@ -535,6 +535,13 @@ function generatePassword(selectedBarangay) {
     }
 }
 
+@media screen and (min-width: 1360px) and (min-height: 681px){
+           .modal-content{
+            margin-top: 12%;
+            margin-left: 6%;
+           }
+        }
+
 </style>
 
 

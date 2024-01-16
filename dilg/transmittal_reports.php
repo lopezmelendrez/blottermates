@@ -496,6 +496,22 @@ function loadContent() {
             }
         }
 
+        @media screen and (min-width: 1360px) and (min-height: 681px){
+            .search-container{
+                margin-left: 8.5%;
+            }
+            .sort-container{
+                margin-left: 62.3%;
+            }
+            .container{
+                margin-left: 8.5%;
+                width: 78%;
+            }
+            .generate{
+                margin-left: 25%;
+            }
+        }
+
 
 </style>
 </html>

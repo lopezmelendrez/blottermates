@@ -485,6 +485,19 @@ dateElement.textContent = formatDate(now);
             }
         }
 
+        @media screen and (min-width: 1360px) and (min-height: 681px){
+            .cases-container{
+                margin-left: -27.5%;
+            }
+            .search-container{
+                margin-left: 10%;
+            }
+            .container{
+                margin-left: 10%;
+                width: 75.5%;
+            }
+        }
+
 
 </style>
 </html>
