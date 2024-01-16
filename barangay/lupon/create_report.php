@@ -1089,24 +1089,17 @@ form .fields .input-field-3{
         }
     }
 
-    @media screen and (min-width: 1400px) and (max-width: 1920px) and (min-height: 1080px){
-        .container{
-            margin-top: 12%;
-            margin-left: 25%;
-        }
-        .modal-overlay .modal-content{
-            margin-top: 18%;
-        }
-        .close-icon{
-            top: 30%;
-            left: 61%;
-        }
-    }
-
-    @media screen and (min-width: 1366px) and (max-width: 1500px) and (min-height: 617px){
+    @media screen and (min-width: 1366px) and (min-height: 617px){
         .container{
             margin-top: -0.1%;
             margin-left: 15.3%;
+            width: 70%;
+        }
+        .close-icon{
+            margin-left: -1.5%;
+        }
+        .container header:before{
+            width: 315px;
         }
     }
 

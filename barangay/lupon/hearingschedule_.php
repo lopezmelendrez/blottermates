@@ -464,25 +464,27 @@ label{
         }
     }
 
-    @media screen and (min-width: 1366px) and (max-width: 1500px) and (min-height: 617px){
+    @media screen and (min-width: 1536px) and (min-height: 730px){
         .container{
-            margin-top: 5.5%;
-            margin-left: 14.5%;
+            margin-left: 17.5%;
+            margin-top: 9%;
         }
         .modal-content{
-            margin-left: 8%;
-            margin-top: -2.5%;
+            margin-left: 5%;
         }
     }
 
-    @media screen and (min-width: 1280px) and (max-width: 1290px) and (min-height: 569px){
+    @media screen and (min-width: 1366px) and (max-width: 1500px) and (min-height: 617px){
         .container{
-            margin-top: 3.5%;
-            margin-left: 12%;
+            margin-top: 5.5%;
+            margin-left: 13%;
+        }
+        .container header:before{
+            width: 369px;
         }
         .modal-content{
+            margin-left: 1%;
             margin-top: -2%;
-            margin-left: 5%;
         }
     }
 

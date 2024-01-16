@@ -1104,7 +1104,27 @@ function showPopup() {
         }
     }
 
-    @media screen and (min-width: 1360px) and (min-height: 681px){
+    @media screen and (min-width: 1536px) and (min-height: 730px){
+        .container{
+            width: 10%;
+        }
+    }
+
+    @media screen and (min-width: 1366px) and (min-height: 617px){
+        .container{
+            width: 70%;
+            margin-left: 14%;
+            margin-top: 1.3%;
+        }
+        .container header:before{
+            width: 296px;
+        }
+        .modal{
+            margin-top: 12.5%;
+        }
+    }
+
+    @media screen and (min-width: 1360px) and (max-height: 730px){
         .container{
             margin-left: 10%;
             width: 80%;
