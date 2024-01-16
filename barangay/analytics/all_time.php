@@ -853,5 +853,15 @@ var myBarChart = new Chart(ctx, {
                 margin-left: 26%;
             }
     }
+
+    @media screen and (min-width: 1360px) and (min-height: 681px){
+        .incident-case-table-1{
+            margin-top: -34%;
+        }
+        #myPieChart{
+            margin-top: -1%;
+        }
+    }
+    
 </style>
 </html>

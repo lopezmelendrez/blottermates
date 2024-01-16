@@ -493,6 +493,19 @@ if (mysqli_num_rows($result) == 0) {
     }
 }
 
+@media screen and (min-width: 1360px) and (min-height: 681px){
+    .cases-container{
+        margin-left: -30.5%;
+    }
+    .search-container{
+        margin-left: 11.5%;
+    }
+    .container{
+        width: 76.5%;
+        margin-left: 11.5%;
+    }
+}
+
 
 
     </style>

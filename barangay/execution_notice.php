@@ -481,6 +481,12 @@ function checkForm() {
         }
     }
 
+    @media screen and (min-width: 1360px) and (min-height: 681px){
+        .add-account-container{
+            margin-top: 4.5%;
+        }
+    }
+
     </style>
 
 </body>
