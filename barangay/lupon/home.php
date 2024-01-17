@@ -946,8 +946,8 @@ function closeMonthlyReportPopup() {
         margin-top: 17%;
     }
     .close-icon{
-        top: 32%;
-        left: 57.5%;
+        top: 32.5%;
+        left: 58.5%;
     }
 }
 

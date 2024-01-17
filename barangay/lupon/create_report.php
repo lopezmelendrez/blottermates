@@ -768,7 +768,8 @@ document.addEventListener("DOMContentLoaded", function() {
             document.getElementById("respondentLastName").textContent = capitalizeText(document.querySelector('input[name="respondent_last_name"]').value);
             document.getElementById("respondentFirstName").textContent = capitalizeText(document.querySelector('input[name="respondent_first_name"]').value);
             document.getElementById("respondentMiddleName").textContent = capitalizeText(document.querySelector('input[name="respondent_middle_name"]').value);
-            document.getElementById("respondentCellphone").textContent = capitalizeText(document.querySelector('input[name="respondent_cellphone_number"]').value);
+            const respondentCellphoneValue = document.querySelector('input[name="respondent_cellphone_number"]').value;
+document.getElementById("respondentCellphone").textContent = capitalizeText(respondentCellphoneValue || "N/A");
             document.getElementById("respondentAddress").textContent = capitalizeText(document.querySelector('input[name="respondent_house_address"]').value);
 
             // Add more fields for respondent
