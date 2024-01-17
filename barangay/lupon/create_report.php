@@ -1138,6 +1138,9 @@ form .fields .input-field-3{
             margin-top: 2.5%;
             margin-left: -2%;
         }
+        form .fields .input-field-3{
+                width: 53rem;
+            }
     }
 
 </style>

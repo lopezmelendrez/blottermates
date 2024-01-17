@@ -151,7 +151,7 @@ if (!$result) {
 
     <div class="cases-container">
             <a href="incomplete_notices.php" style="text-decoration: none;">
-            <div class="validate-cases" style="height:40px; width: 965px; margin-left: 33.5%;" >
+            <div class="validate-cases" style="height:40px;" >
                 <p style="text-transform: uppercase;">BRGY. <?php echo $barangayName ?></p>
             </div></a>
         </div>
@@ -423,14 +423,14 @@ dateElement.textContent = formatDate(now);
     flex: 1; /* Distribute available space evenly among child elements */
     text-align: center; /* Center align the text */
     padding: 5px 5px;
-    width: 10px; /* Add padding for better spacing */
+    width: 965px;
     border: 1px solid #C23B21; /* Add a border for separation */
     border-radius: 5px; /* Add rounded corners to the divs */
     background-color: #F2F3F5; /* Background color for the divs */
     color: #C23B21;
     font-size: 18px;
     font-weight: 600;
-    margin-left: 3%;
+    margin-left: 33.5%;
     cursor: default;
 }
 
@@ -485,6 +485,23 @@ dateElement.textContent = formatDate(now);
             }
         }
 
+        @media screen and (min-width: 1366px) and (max-width: 1500px) and (min-height: 617px){
+            .cases-container{
+                margin-left: -28%;
+            }
+            .search-container{
+                margin-left: 9.6%;
+            }
+            .search-input{
+                width: 68.9%;
+            }
+            .container{
+                width: 76%;
+                margin-left: 9.6%;
+                margin-bottom: 3%;
+            }
+        }
+
         @media screen and (min-width: 1360px) and (min-height: 681px){
             .cases-container{
                 margin-left: -27.5%;
@@ -497,6 +514,43 @@ dateElement.textContent = formatDate(now);
                 width: 75.5%;
             }
         }
+
+        @media screen and (min-width: 1280px) and (max-width: 1290px) and (min-height: 569px){
+            .validate-cases{
+                width: 750px;
+            }
+            .cases-container{
+                margin-left: -23%;
+            }
+            .search-container{
+                margin-left: 16.6%;
+            }
+            .search-input{
+                width: 58.2%;
+            }
+        .container{
+            width: 63%;
+            margin-left: 16.6%;
+            margin-bottom: 3%;
+        }
+    }
+
+    @media screen and (min-width: 1500px) and (max-width: 1536px) and (min-height: 730px){
+        .search-container{
+            margin-left: 14.1%;
+        }
+        .search-input{
+            width: 63.9%;
+        }
+        .cases-container{
+            margin-left: -25%;
+        }
+        .container{
+            margin-left: 14.1%;
+            width: 66.9%;
+            margin-bottom: 3%;
+        }
+    }
 
 
 </style>

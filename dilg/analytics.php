@@ -722,5 +722,18 @@ var myBarChart = new Chart(ctx, {
         }
     }
 
+    @media screen and (min-width: 1500px) and (max-width: 1536px) and (min-height: 730px){
+        .incident-case-table-1{
+            margin-top: -32%;
+            height: 29rem;
+        }
+        #myPieChart{
+            margin-top: -4%;
+        }
+        .incident-case-table {
+            margin-left: 5%;
+        }
+    }
+
 </style>
 </html>
