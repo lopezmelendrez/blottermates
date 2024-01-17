@@ -798,7 +798,7 @@ function closeMonthlyReportPopup() {
 
     @media screen and (min-width: 1536px) and (min-height: 730px){
         .home{
-            margin-left: 2%;
+            margin-left: 1%;
         }
         .datetime-container{
             margin-bottom: 1.5%;
@@ -813,7 +813,7 @@ function closeMonthlyReportPopup() {
             width: 690px;
         }
         .close-icon{
-            margin-left: 100px;
+            margin-left: 80px;
         }
  }
 
@@ -827,6 +827,12 @@ function closeMonthlyReportPopup() {
         #calendar{
             height: 390px;
         }
+        .home{
+            margin-left: 1%;
+        }
+        .close-icon{
+            margin-left: -.5%;
+        }
     }
 
     @media screen and (min-width: 1280px) and (max-width: 1290px) and (min-height: 569px){
@@ -838,6 +844,9 @@ function closeMonthlyReportPopup() {
     }
     .add-account{
         width: 270px;
+    }
+    .close-icon{
+        margin-left: -1.2%;
     }
 
 }

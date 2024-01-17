@@ -528,6 +528,9 @@ header('location: ../../index.php');
         margin-left: 13%;
         margin-top: -0.5%;
     }
+    .hearing{
+        margin-left: 13%;
+    }
 }
 
 @media screen and (min-width: 1360px) and (min-height: 645px){
@@ -547,6 +550,9 @@ header('location: ../../index.php');
     .pagination{
         margin-top: 1%;
         margin-bottom: 1%;
+    }
+    .hearing{
+        margin-left: 5%;
     }
 }
 

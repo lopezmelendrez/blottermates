@@ -468,26 +468,26 @@ if (input.value.length > 0 && input.value[0] === ' ') {
     }
   }
 
-  @media screen and (min-width: 1400px) and (max-width: 1920px) and (min-height: 1080px){
-            .add-account-container{
-                margin-top: 10%;
-            }
-
-            .modal-content{
-                margin-top: 18%;
-            }
-        }
-
 
     @media screen and (min-width: 1536px) and (min-height: 730px){
         .add-account-container{
-            margin-top: 5%;
+            margin-top: 10%;
             margin-left: -2%;
         }
 
         .modal-content{
             margin-top: 13%;
             margin-left: 5%;
+        }
+    }
+
+    @media screen and (min-width: 1366px) and (min-height: 617px){
+        .add-account-container{
+            margin-top: .5%;
+            margin-left: -6%;
+        }
+        .modal-content{
+            margin-top: 10%;
         }
     }
 
@@ -505,6 +505,12 @@ if (input.value.length > 0 && input.value[0] === ' ') {
         .modal-content{
             margin-top: 12%;
             margin-left: 5%;
+        }
+    }
+
+    @media screen and (min-width: 1500px) and (max-width: 1536px) and (min-height: 730px){
+        .add-account-container{
+            margin-top: 3.7%;
         }
     }
 

@@ -803,7 +803,7 @@ if (input.value.length > 0 && input.value[0] === ' ') {
             width: 402px;
         }
         .close-icon{
-            margin-left: -3%;
+            margin-left: -3.8%;
             margin-top: -1%;
         }
         .modal{

@@ -444,9 +444,18 @@ window.addEventListener("click", (event) => {
     }
 }
 
+@media screen and (min-width: 1366px) and (max-width: 1500px) and (min-height: 617px){
+        .add-account-container{
+            margin-left: -5%;
+            margin-top: 0%;
+        }       
+    }
+
+
 @media screen and (min-width: 1280px) and (max-width: 1290px) and (min-height: 569px){
         .add-account-container{
             margin-top: -1.8%;
+            margin-left: -5.5%;
         }
     }
 
@@ -460,6 +469,14 @@ window.addEventListener("click", (event) => {
             margin-left: 5%;
         }
 }
+
+@media screen and (min-width: 1500px) and (max-width: 1536px) and (min-height: 730px){
+        .add-account-container{
+            margin-top: 3.5%;
+            margin-left: -5%;
+        }
+    }
+
 
 
 </style>
