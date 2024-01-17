@@ -747,12 +747,16 @@ if ($rowCount >= 3) {
         margin-bottom: 2%;
         margin-top: 0.5%;
     }
+    .datetime-container{
+        margin-left: 1%;
+    }
     .incident-case-table-1{
-        margin-left: 12%;
+        margin-left: 14%;
         width: 650px;
     }
     .incident-case-table{
         width: 630px;
+        margin-left: 4%;
     }
     .incident-case-table .table-container{
         width: 580px;
@@ -768,6 +772,17 @@ if ($rowCount >= 3) {
         margin-left: -2%;
         width: 80%;
     }
+    .ongoing-cases-box, .settled-cases-box, .incomplete-cases-box{
+            height: 120px;
+            margin-top: 3%;
+        }
+        .ongoing-cases-box p,.settled-cases-box p,.incomplete-cases-box p{
+            font-size: 18px;
+            margin-top: 5px;
+        }
+        .ongoing-cases-box .count, .settled-cases-box .count, .incomplete-cases-box .count{
+            font-size: 45px;
+        }
 }
 
 @media screen and (min-width: 1366px) and (max-width: 1500px) and (min-height: 617px){
