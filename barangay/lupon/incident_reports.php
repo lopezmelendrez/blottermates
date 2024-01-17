@@ -88,7 +88,7 @@ if (!$result) {
         <p style="margin-left: 10px;">Create Incident Report</p>
         </div></a>
 
-        <div class="cases-container" style="display: flex; margin-left: 5%; width: 80%;">
+        <div class="cases-container" style="display: flex;">
             <a href="ongoing_cases.php" class="ongoing-cases" style="height: 40px; text-decoration: none;">
                 <p>Ongoing Cases</p>
             </a>
@@ -96,7 +96,7 @@ if (!$result) {
                 <p>Settled Cases</p>
             </a>
             <a href="incomplete_notices.php" style="text-decoration: none;">
-            <div class="incomplete-cases" style="height:40px; width: 120%;" >
+            <div class="incomplete-cases" style="height:40px;">
                 <p>Cases with Incomplete Notices</p>
             </div></a>
         </div>
@@ -343,6 +343,10 @@ if (mysqli_num_rows($result) == 0) {
             padding: 20px;
         }
 
+        .cases-container{
+            margin-left: 5%; width: 80%;
+        }
+
         .home{
             position: absolute;
             top: 0;
@@ -393,6 +397,10 @@ if (mysqli_num_rows($result) == 0) {
     .notified{
         font-weight: 900;
         color: #0b6623;
+    }
+
+    .incomplete-cases{
+        width: 120%;
     }
 
     .notify{
@@ -481,7 +489,7 @@ if (mysqli_num_rows($result) == 0) {
 
         @media screen and (min-width: 1536px) and (min-height: 730px){
             .add-account{
-                margin-top: -4.2%;
+                margin-top: -4%;
             }
             .search-input{
                 width: 72.6%;
@@ -503,9 +511,53 @@ if (mysqli_num_rows($result) == 0) {
             }
         }
 
+        @media screen and (min-width: 1366px) and (min-height: 617px){
+            .add-account{
+                margin-top: -5%;
+            }
+            .search-container{
+                margin-left: 11%;
+            }
+            .search-input{
+                width: 72%;
+            }
+            .sort-container{
+                margin-left: 65.6%;
+            }
+            .container{
+                width: 79%;
+                margin-bottom: 3%;
+                margin-left: 11%;
+            }
+            .cases-container{
+                width: 80%;
+                margin-left: 7%;
+            }
+            .incomplete-cases{
+                width: 118%;
+            }
+        }
+
         @media screen and (min-width: 1280px) and (max-width: 1290px) and (min-height: 569px){
             .sort-container{
-                margin-left: 63%;
+                margin-left: 65%;
+            }
+            .cases-container{
+                width: 84%;
+                margin-left: 6%;
+            }
+            .search-container{
+                margin-left: 10.2%;
+            }
+            .search-input{
+                width: 72.7%;
+            }
+            .incomplete-cases{
+                width: 110%;
+            }
+            .container{
+                margin-left: 10.2%;
+                width: 81%;
             }
         }
 
@@ -541,6 +593,27 @@ if (mysqli_num_rows($result) == 0) {
             .container{
                 width: 79.4%;
                 margin-bottom: 2%;
+            }
+        }
+
+        @media screen and (min-width: 1500px) and (max-width: 1536px) and (min-height: 730px){
+            .add-account{
+                margin-top: -4.42%;
+            }
+            .search-input{
+                width: 73.7%;
+            }
+            .search-container{
+                margin-left: 10.8%;
+            }
+            .sort-container{
+                margin-left: 68%;
+            }
+            .container{
+                width: 78.5%;
+            }
+            .notify{
+                margin-left: 7%;
             }
         }
 

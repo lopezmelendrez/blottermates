@@ -1128,7 +1128,7 @@ form .fields .input-field-3{
         @media screen and (min-width: 1500px) and (max-width: 1536px) and (min-height: 730px){
         .container{
             width: 61%;
-            margin-top: 4.3%;
+            margin-top: 4%;
             margin-left: 20%;
         }
         .modal-content{

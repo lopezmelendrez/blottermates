@@ -89,7 +89,7 @@ if (!$result) {
         <p style="margin-left: 10px;">Create Incident Report</p>
         </div></a>
 
-        <div class="cases-container" style="display: flex; margin-left: 5%; width: 80%;">
+        <div class="cases-container" style="display: flex;">
             <a href="mediation_hearings.php" class="ongoing-cases" style="height: 40px; text-decoration: none;">
                 <p>Mediation Hearings</p>
             </a>
@@ -97,7 +97,7 @@ if (!$result) {
                 <p>Conciliation Hearings</p>
             </a>
             <a href="arbitration_hearings.php" style="text-decoration: none;">
-            <div class="incomplete-cases" style="height:40px; width: 135%;" >
+            <div class="incomplete-cases" style="height:40px;" >
                 <p>Arbitration Hearings</p>
             </div></a>
         </div>
@@ -460,6 +460,7 @@ while ($row = mysqli_fetch_assoc($result)) {
         border: 1px solid #379711; 
         background-color: #F2F3F5; 
         color: #379711;
+        width: 135%;
         }
 
         .incomplete-cases:hover{
@@ -470,6 +471,11 @@ while ($row = mysqli_fetch_assoc($result)) {
         .to-notify{
         font-weight: 900;
         color: #bc1823;
+        }
+
+        .cases-container{
+            margin-left: 5%;
+            width: 80%;
         }
 
         .forms{
@@ -613,28 +619,53 @@ while ($row = mysqli_fetch_assoc($result)) {
             }
         }
 
-        @media screen and (min-width: 1366px) and (max-width: 1500px) and (min-height: 617px){
+        @media screen and (min-width: 1366px) and (min-height: 617px){
             .add-account{
-                margin-top: -5%;
+                margin-top: -4.8%;
+            }
+            .search-container{
+                margin-left: 10.5%;
             }
             .search-input{
-                width: 72%;
+                width: 73.1%;
             }
             .sort-container{
-                margin-left: 65%;
+                margin-left: 66.1%;
             }
             .container{
                 width: 80%;
                 margin-bottom: 3%;
+                margin-left: 10.5%;
+            }
+            .cases-container{
+                width: 77%;
+                margin-left: 6.5%;
+            }
+            .incomplete-cases{
+                width: 155%;
             }
         }
 
         @media screen and (min-width: 1280px) and (max-width: 1290px) and (min-height: 569px){
+            .sort-container{
+                margin-left: 63%;
+            }
+            .cases-container{
+                width: 75%;
+                margin-left: 8%;
+            }
+            .search-container{
+                margin-left: 11.9%;
+            }
             .search-input{
-                width: 71%;
+                width: 69.8%;
+            }
+            .incomplete-cases{
+                width: 145%;
             }
             .container{
-                width: 81%;
+                margin-left: 11.9%;
+                width: 77.3%;
             }
         }
 
@@ -650,6 +681,34 @@ while ($row = mysqli_fetch_assoc($result)) {
                 margin-bottom: 3%;
             }
         }
+
+        @media screen and (min-width: 1500px) and (max-width: 1536px) and (min-height: 730px){
+        .incomplete-cases{
+            width: 195%;
+        }
+        .cases-container{
+            margin-left: 7.5%;
+            width: 70%;
+        }
+        .search-container{
+            margin-left: 11%;
+        }
+        .search-input{
+            width: 73.5%;
+        }
+        .sort-container{
+            margin-left: 67.7%;
+        }
+        .container{
+            width: 78.5%;
+            margin-left: 11%;
+        }
+        .add-account{
+            margin-top: -4.4%;
+        }
+    }
+
+
 
         
 

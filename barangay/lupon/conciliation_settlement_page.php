@@ -592,19 +592,43 @@ function validateName(event) {
         }
     }
 
-    @media screen and (min-width: 1280px) and (max-width: 1290px) and (min-height: 569px){
+    @media screen and (min-width: 1366px) and (min-height: 617px){
         .container{
-            margin-top: 4%;
-            margin-left: 12%;
+            width: 60%;
+            margin-top: 5.8%;
+            margin-left: 20%;
         }
         .modal{
-            margin-top: 12%;
+            margin-left: 5%;
+            margin-top: 12.5%;
+        }
+    }
+
+    @media screen and (min-width: 1280px) and (max-width: 1290px) and (min-height: 569px){
+        .container{
+            margin-top: 4.5%;
+            margin-left: 18%;
+            width: 65%;
+        }
+        .modal{
+            margin-top: 11.5%;
+            margin-left: 4.5%;
         }
     }
 
     @media screen and (min-width: 1360px) and (min-height: 681px){
         .container{
             width: 70%;
+        }
+    }
+
+    @media screen and (min-width: 1500px) and (max-width: 1536px) and (min-height: 730px){
+        .container{
+            width: 60%;
+            margin-top: 9%;
+        }
+        .modal{
+            margin-top: 14%;
         }
     }
 
