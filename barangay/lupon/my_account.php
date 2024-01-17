@@ -611,7 +611,7 @@ document.querySelector(".pw-meter .pw-display-toggle-btn").addEventListener("cli
     @media screen and (min-width: 1366px) and (max-width: 1500px) and (min-height: 617px){
         .add-account-container{
             margin-left: -8%;
-            margin-top: -2.5%;
+            margin-top: -2.6%;
         }       
     }
 
@@ -637,8 +637,8 @@ document.querySelector(".pw-meter .pw-display-toggle-btn").addEventListener("cli
     
         @media screen and (min-width: 1500px) and (max-width: 1536px) and (min-height: 730px){
         .add-account-container{
-            margin-top: 1.5%;
-            margin-left: -4%;
+            margin-top: 1.3%;
+            margin-left: -6%;
         }
     }
 
