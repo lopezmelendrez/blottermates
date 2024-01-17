@@ -99,7 +99,7 @@ echo '<script>document.getElementById("loadingOverlay").style.display = "none";<
                             header("Location: $redirect_url");
                             exit();
                         } else {
-                            $msg_error = "These credentials do not match our records.";
+                            $msg_error = "Credentials do not match our records.";
                         }
                     } else {
                         echo "<p>No records found for the incident_case_number: $incident_case_number</p>";
@@ -158,7 +158,7 @@ echo '<script>document.getElementById("loadingOverlay").style.display = "none";<
 
                                
     <p class="verify">VERIFY YOUR IDENTITY</p>
-    <p style="font-size: 15px; margin-top: -2%; text-align: justify; font-weight: 400; padding: 0px 23px;">Prior to accessing the status of your incident case, kindly upload a valid identification to confirm your identity.</p>
+    <p class="verify-text">Prior to accessing the status of your incident case, kindly upload a valid identification to confirm your identity.</p>
    
     <form id="uploadForm" action="" method="POST" enctype="multipart/form-data">
     <input type="file" name="image" id="imageInput" style="border: 1px solid #ccc;" accept="image/*" required>
@@ -168,7 +168,7 @@ echo '<script>document.getElementById("loadingOverlay").style.display = "none";<
 
     <?php if (isset($msg_error) && !empty($msg_error)) { ?>
         <div class="message d-flex">
-            <i class="fa-solid fa-circle-exclamation" style="margin-left: 3%; margin-top: 0.6%; font-size: 20px; color: #D52826;"></i>
+            <i class="fa-solid fa-circle-exclamation exclamation"></i>
             <span class="error"><?php echo $msg_error; ?></span>
             <i class="close fas fa-times" onclick="this.parentElement.remove();"></i>
         </div>
@@ -367,6 +367,10 @@ form{
         margin-top: 6%;
     }
 
+    .verify-text{
+        font-size: 15px; margin-top: -2%; text-align: justify; font-weight: 400; padding: 0px 23px;
+    }
+
     input[type="file"]::file-selector-button {
   width: 110px;
   font-size: 14px;
@@ -387,6 +391,10 @@ form{
 .message{
     width: 100%; 
     margin-top: 3%;
+}
+
+.exclamation{
+    margin-left: 3%; margin-top: 0.6%; font-size: 20px; color: #D52826;
 }
 
 .error{
@@ -415,6 +423,36 @@ form{
     .header-text-1::after{
         width: 80%;
         margin-left: -15%;
+    }
+}
+
+@media screen and (max-width: 390px) and (max-height: 664px){
+    .header-text-1{
+        font-size: 21px;
+    }
+    form{
+        margin-left: 11%;
+        margin-bottom: 4%;
+    }
+    .verify{
+        font-size: 28px;
+    }
+    .verify-text{
+        padding-left: 35px;
+        padding-right: 35px;
+    }
+    footer{
+        margin-top: 15%;
+    }
+    .exclamation{
+        margin-top: 5px;
+    }
+    .close{
+        margin-top: 3px;
+        margin-left: 2.5%;
+    }
+    .error{
+        margin-top: 5.5px;
     }
 }
 

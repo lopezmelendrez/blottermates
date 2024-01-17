@@ -80,7 +80,7 @@ $barangay = $fetch_cases['barangay'];
 
                 echo '<div class="hearing-notice" style="color: white;">
                         <div class="hearing-text">
-                            <i class="fa-solid fa-circle-check" style="color: #1db954;"></i>
+                            <i class="fa-solid fa-circle-check icon" style="color: #1db954;"></i>
                             <p>Hearing Notified</p>
                         </div>
                         <p class="text">The Complainant and the Respondent have now been notified of their Hearing.</p>
@@ -89,7 +89,7 @@ $barangay = $fetch_cases['barangay'];
             elseif ($fetch_cases['notify_summon'] == 'not notified' && $fetch_cases['notify_hearing'] == 'not notified') {
                 echo '<div class="hearing-notice" style="color: white;">
                         <div class="hearing-text">
-                            <i class="fa-solid fa-circle-notch" style="color: #eed202;"></i>
+                            <i class="fa-solid fa-circle-notch icon" style="color: #eed202;"></i>
                             <p>In Progress</p>
                         </div>
                         <p class="text">The Hearing Notice forms for the Complainant and the Respondent are still being processed.</p>
@@ -105,7 +105,7 @@ $barangay = $fetch_cases['barangay'];
             } elseif ($fetch_cases['notify_hearing'] == 'not notified') {
                 echo '<div class="hearing-notice" style="color: white;">
                         <div class="hearing-text">
-                            <i class="fa-solid fa-circle-notch" style="color: #eed202;"></i>
+                            <i class="fa-solid fa-circle-notch icon" style="color: #eed202;"></i>
                             <p>Summon Notified</p>
                         </div>
                         <p class="text">The Hearing Notice for the Complainant is now in progress.</p>
@@ -116,7 +116,7 @@ $barangay = $fetch_cases['barangay'];
 
                 echo '<div class="hearing-notice" style="color: white;">
                         <div class="hearing-text">
-                            <i class="fa-solid fa-circle-check" style="color: #1db954;"></i>
+                            <i class="fa-solid fa-circle-check icon" style="color: #1db954;"></i>
                             <p>Hearing Notified</p>
                         </div>
                         <p class="text">The Complainant and the Respondent have now been notified of their Hearing.</p>
@@ -124,7 +124,7 @@ $barangay = $fetch_cases['barangay'];
             } else {
                 echo '<div class="hearing-notice" style="color: white;">
                         <div class="hearing-text">
-                            <i class="fa-solid fa-circle-check" style="color: #1db954;"></i>
+                            <i class="fa-solid fa-circle-check icon" style="color: #1db954;"></i>
                             <p>Hearing Notified</p>
                         </div>
                         <p class="text">The Complainant and the Respondent have now been notified of their Hearing on 02 Dec</p> 
@@ -142,7 +142,7 @@ $barangay = $fetch_cases['barangay'];
 
                 echo '<div class="hearing-notice" style="color: white;">
                         <div class="hearing-text">
-                            <i class="fa-solid fa-circle-check" style="color: #1db954;"></i>
+                            <i class="fa-solid fa-circle-check icon" style="color: #1db954;"></i>
                             <p>Hearing</p>
                         </div>';
                 echo '<p class="text">Your Incident Case was held on ' . $date . ' - ' . $time . ' </p>';
@@ -150,7 +150,7 @@ $barangay = $fetch_cases['barangay'];
             } elseif (empty($fetch_cases['date_agreed']) && $date_of_hearing && ($date_of_hearing == strtotime(date('Y-m-d')) || $date_of_hearing < strtotime(date('Y-m-d')))) {
                 echo '<div class="hearing-notice" style="color: white;">
                         <div class="hearing-text">
-                            <i class="fa-solid fa-circle-notch" style="color: #eed202;"></i>
+                            <i class="fa-solid fa-circle-notch icon" style="color: #eed202;"></i>
                             <p>Hearing In Progress</p>
                         </div>';
                 echo '<p class="text">' . strtoupper($hearing_type_status) . ' Hearing for this Case is currently Ongoing. Please wait for the decision.</p>';
@@ -160,7 +160,7 @@ $barangay = $fetch_cases['barangay'];
                 $time = isset($fetch_cases['time_of_hearing']) ? date('h:i A', strtotime($fetch_cases['time_of_hearing'])) : '11:00 AM';
                 echo '<div class="hearing-notice" style="color: white;">
                         <div class="hearing-text">
-                            <i class="fa-solid fa-circle-notch" style="color: #eed202;"></i>
+                            <i class="fa-solid fa-circle-notch icon" style="color: #eed202;"></i>
                             <p>Upcoming Hearing</p>
                         </div>';
                 echo '<p class="text">Your Incident Case will be held on ' . $date . ' - ' . $time . ' </p>';
@@ -169,7 +169,7 @@ $barangay = $fetch_cases['barangay'];
                 $formatted_date_of_hearing = isset($fetch_cases['date_of_hearing']) ? date('j M Y - h:i A', $date_of_hearing) : '11 Dec 2023 - 11:00 AM';
                 echo '<div class="hearing-notice">
                         <div class="hearing-text">
-                            <i class="fa-solid fa-circle-check"></i>
+                            <i class="fa-solid fa-circle-check icon"></i>
                             <p>Upcoming Hearing</p>
                         </div>';
                 echo '<p class="text">Your Incident Case will be held on ' . $formatted_date_of_hearing . '</p>';
@@ -182,7 +182,7 @@ $barangay = $fetch_cases['barangay'];
                 $formatted_date = date('jS \of F Y \— h:i A', strtotime($fetch_cases['date_agreed']));
                 echo '<div class="hearing-notice" style="color: white;">
                         <div class="hearing-text">
-                            <i class="fa-solid fa-circle-check" style="color: #1db954;"></i>
+                            <i class="fa-solid fa-circle-check icon" style="color: #1db954;"></i>
                             <p>Decision Made</p>
                         </div>
                         <p class="text">Settled through MEDIATION on ' . $formatted_date . '. Please wait for the Filing of Motion for Execution.</p>
@@ -243,6 +243,22 @@ $barangay = $fetch_cases['barangay'];
     }
     .track-case-container{
         width: 27rem;
+    }
+}
+
+@media screen and (max-width: 390px) and (max-height: 664px){
+    .track-case-container{
+        width: 23rem;
+    } 
+    .container{
+        margin-top: 23%;
+    }
+    .button{
+        font-size: 14px;
+        width: 20%;
+    }
+    .icon{
+        margin-top: 12px;
     }
 }
 </style>
