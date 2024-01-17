@@ -44,6 +44,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['image'])) {
 
         $ocr_results = json_decode($response->getBody(), true);
 
+// Hide the loading overlay
+echo '<script>document.getElementById("loadingOverlay").style.display = "none";</script>';
+
         if (isset($ocr_results['ParsedResults'])) {
             foreach ($ocr_results['ParsedResults'] as $parsedResult) {
                 $parsedText = str_replace('-', '', $parsedResult['ParsedText']);
@@ -130,6 +133,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['image'])) {
     <title>Track Your Case</title>
     </head>
     <body>
+    <div id="loadingOverlay" style="display:none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(255, 255, 255, 0.8); z-index: 9999;">
+    <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+        <img src="images/loader-unscreen.gif" alt="Loading..." width="350" height="350">
+        <p class="validate-text">Validating, please wait...</p>
+    </div>
+</div>
 
         <center>
         <div class="container d-flex justify-content-center align-items-center min-vh-100">
@@ -183,14 +192,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['image'])) {
     <script>
 
 document.getElementById("uploadForm").addEventListener("submit", function (event) {
-        var fileInput = document.getElementById("imageInput");
+    var fileInput = document.getElementById("imageInput");
 
-        // Check if a file is chosen
-        if (fileInput.files.length === 0) {
-            alert("Please choose a file before submitting.");
-            event.preventDefault(); // Prevent form submission
-        }
-    });
+    // Check if a file is chosen
+    if (fileInput.files.length === 0) {
+        alert("Please choose a file before submitting.");
+        event.preventDefault(); // Prevent form submission
+    } else {
+        // Show loading overlay while waiting for OCR results
+        document.getElementById("loadingOverlay").style.display = "block";
+    }
+});
+
 
     </script>
 
@@ -384,6 +397,15 @@ form{
 .close{
     margin-left: 2%;
 }
+}
+
+.validate-text{
+    font-size: 25px;
+    color: #171717;
+    font-weight: bolder;
+    letter-spacing: 1; 
+    text-transform: uppercase;
+    margin-top: 10px;
 }
 
 @media screen and (min-width: 1536px) and (min-height: 730px){
