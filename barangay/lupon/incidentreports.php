@@ -560,28 +560,6 @@ if (mysqli_num_rows($result) == 0) {
             }
         }
 
-        @media screen and (min-width: 2133px) and (min-height: 1058px){
-            .home{
-                margin-left: 2.3%;
-            }
-            .add-account{
-                margin-top: -3%;
-                margin-left: 26.5%;
-            }
-            .search-input{
-                width: 76%;
-            }
-            .sort-container{
-                margin-left: 72%;
-                margin-bottom: 1%;
-            }
-            .container{
-                margin-bottom: 2%;
-                margin-left: 16%;
-
-            }
-        }
-
         @media screen and (min-width: 1360px) and (min-height: 681px){
             .search-input{
                 width: 71.3%;
@@ -615,6 +593,46 @@ if (mysqli_num_rows($result) == 0) {
                 margin-top: -4.42%;
             }
         }
+
+        @media screen and (max-width: 2133px) and (min-height: 1055px) and (max-height: 1058px){
+            .home{
+                margin-left: 0%;
+            }
+            .add-account{
+                margin-top: -3%;
+                margin-left: 26.5%;
+            }
+            .cases-container{
+                width: 59.5%;
+                margin-left: 13%;
+            }
+            .incomplete-cases{
+                width: 157.5%;
+            }
+            .search-input{
+                width: 65.3%;
+            }
+            .search-container{
+                margin-left: 16%;
+            }
+            .sort-container{
+                margin-left: 65%;
+                margin-bottom: 1%;
+            }
+            .container{
+                margin-bottom: 2%;
+                margin-left: 16%;
+                width: 95%;
+
+            }
+            .generate{
+                margin-left: 15%;
+            }
+            .notify{
+                margin-left: 18%;
+            }
+        }
+
 
 
 
