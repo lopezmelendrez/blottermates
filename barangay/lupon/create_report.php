@@ -252,7 +252,7 @@ if (isset($_POST['submit'])) {
                                 <input type="text" name="respondent_middle_name" onkeypress="return validateName(event)" placeholder="">
                             </div>
                             <div class="input-field">
-                                <label class="required-label">Cellphone Number</label>
+                                <label>Cellphone Number</label>
                                 <input type="text" name="respondent_cellphone_number" id="respondent_cellphone_number" placeholder="">
                             </div>
                             <div class="input-field-1" style="width: 35rem;">
@@ -279,7 +279,7 @@ if (isset($_POST['submit'])) {
                                     <option value="Article No. 178">Using Fictitious Names and Concealing True Names</option>
                                     <option value="Article No. 179">Illegal Use of Uniforms and Insignias</option>
                                     <option value="Article No. 252">Physical Injuries inflicted in a tumultuous affray</option>
-                                    <option value="Article No. 253">Giving Assistance to consummated Suicide.</option>
+                                    <option value="Article No. 253">Giving Assistance to consummated Suicide</option>
                                     <option value="Article No. 260">Responsibility of participants in a duel if only physical injuries are infliced or no physical injuries have been inflicted</option>
                                     <option value="Article No. 265">Less serious physical injuries</option>
                                     <option value="Article No. 266">Slight physical injuries and maltreatment</option>
@@ -444,7 +444,7 @@ if (isset($_POST['submit'])) {
                 </div>
                 <div class="details-container" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; margin-top: 6%;">
                 <div class="inputfield">
-                                <label class="label">Description of VIolation</label>
+                                <label class="label">Description of Violation</label>
                                 <div class="text-box" style="width: 762px; height: 60px;">
                                     <p id="descriptionOfViolation" style="padding: 10px 0;"></p></div>
                 </div>
@@ -473,7 +473,7 @@ if (isset($_POST['submit'])) {
 
     <div id="customAlertModal" class="modal-overlay">
     <div class="close-icon" id="customAlertClose">
-                <i class='bx bxs-x-circle' ></i> <!-- Replace with the desired close icon -->
+                <i class='bx bxs-x-circle' ></i> 
     </div>
     <center>
             <div class="modal-content">
@@ -617,26 +617,29 @@ nextBtn.addEventListener("click", (event) => {
         storedValues[input.name] = input.value;
     });
 
-    // Store value for "Description of Violation" textarea
     textareaValue = descriptionInput.value;
 
-    // Validate complainant and respondent cellphone numbers
     const complainantPhoneNumber = document.querySelector('input[name="complainant_cellphone_number"]').value;
     const respondentPhoneNumber = document.querySelector('input[name="respondent_cellphone_number"]').value;
 
-    if (!validatePhoneNumber(complainantPhoneNumber) || !validatePhoneNumber(respondentPhoneNumber)) {
-        // Display custom alert messages based on validation results
-        if (!validatePhoneNumber(complainantPhoneNumber) && !validatePhoneNumber(respondentPhoneNumber)) {
-            openCustomAlert("COMPLAINANT and RESPONDENT");
-        } else if (!validatePhoneNumber(complainantPhoneNumber)) {
-            openCustomAlert("COMPLAINANT");
-        } else {
-            openCustomAlert("RESPONDENT");
-        }
-        event.preventDefault(); // Prevent form submission if validation fails
+    if (complainantPhoneNumber.trim() === '') {
+        // Complainant's cellphone number is empty
+        openCustomAlert("COMPLAINANT");
+        event.preventDefault(); // Prevent form submission
     } else {
-        // Activate the next section if phone numbers are valid
-        form.classList.add('secActive');
+        // Complainant's cellphone number is not empty, always validate it
+        if (!validatePhoneNumber(complainantPhoneNumber)) {
+            // Complainant's cellphone number is invalid
+            openCustomAlert("COMPLAINANT");
+            event.preventDefault(); // Prevent form submission
+        } else if (respondentPhoneNumber.trim() !== '' && !validatePhoneNumber(respondentPhoneNumber)) {
+            // Respondent's cellphone number is not empty but invalid
+            openCustomAlert("RESPONDENT");
+            event.preventDefault(); // Prevent form submission
+        } else {
+            // Both numbers are either valid or respondent's field is empty
+            form.classList.add('secActive');
+        }
     }
 });
 
@@ -672,19 +675,18 @@ inputElement.addEventListener('input', function() {
 
     if (inputText.length > maxLength) {
         inputText = inputText.substring(0, maxLength);
-        inputElement.value = inputText; // Update the input value
+        inputElement.value = inputText; 
     }
     
     const remainingCharacters = maxLength - inputText.length;
     characterCountElement.textContent = `${remainingCharacters} character${remainingCharacters !== 1 ? 's' : ''} left`;
 
-    // Check remaining characters and change text color accordingly
     if (remainingCharacters <= 20) {
         characterCountElement.style.color = '#F5BE1D';
     } else if (remainingCharacters <= 0) {
         characterCountElement.style.color = 'red';
     } else {
-        characterCountElement.style.color = ''; // Reset color to default
+        characterCountElement.style.color = ''; 
     }
 });
 
@@ -858,12 +860,10 @@ function handleSearch(searchTerm) {
 
 function restrictInput(input) {
 
-// Remove special characters and numbers
 input.value = input.value.replace(/[^a-zA-Z\s]/g, '');
 
-// Restrict spacebar only if it's the first character
 if (input.value.length > 0 && input.value[0] === ' ') {
-  input.value = input.value.substring(1); // Remove the leading space
+  input.value = input.value.substring(1); 
 }
 }
 
@@ -1091,23 +1091,33 @@ form .fields .input-field-3{
         .container header:before{
             width: 315px;
         }
+        form .fields .input-field-3{
+                width: 53.1rem;
+            }
+        .close-icon{
+            left: 67%;
+        }
     }
 
     @media screen and (min-width: 1280px) and (max-width: 1290px) and (min-height: 569px){
             .container{
             margin-top: -1.3%;
             margin-left: 13%;
-            width: 75%;
+            width: 75.5%;
             }
             .case-number-box{
                 font-size: 21px;
                 margin-top: -2%;
                 margin-bottom: -2.4%;
             }
-        }
         .close-icon{
             left: 67%;
         }
+        form .fields .input-field-3{
+                width: 53.35rem;
+            }
+        }
+        
     
         @media screen and (min-width: 1360px) and (min-height: 681px){
             .container{
