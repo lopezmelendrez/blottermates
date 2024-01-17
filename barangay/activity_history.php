@@ -588,11 +588,29 @@ $result = mysqli_query($conn, $activityLogQuery);
         .activity-history{
             margin-left: 20.5%;
         }
+        .sort-container{
+            margin-left: 61.4%;
+        }
     }
 
     @media screen and (min-width: 1280px) and (max-width: 1290px) and (min-height: 569px){
         .activity-history{
             margin-left: 14%;
+        }
+        .sort-container{
+            margin-left: 61.2%;
+        }
+    }
+
+    @media screen and (min-width: 1500px) and (max-width: 1536px) and (min-height: 730px){
+        .sort-container{
+            margin-left: 59.4%;
+        }
+    }
+
+    @media screen and (min-width: 1500px) and (max-width: 1536px) and (min-height: 730px){
+        .sort-container{
+            margin-left: 59.5%;
         }
     }
 

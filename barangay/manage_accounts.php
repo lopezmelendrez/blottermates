@@ -650,7 +650,7 @@ function showDisablePopup(luponId) {
     
     @media screen and (min-width: 1536px) and (min-height: 730px){
         table{
-            margin-left: 13%;
+            margin-left: 12.5%;
         }
         .modal{
             margin-left: 35%;

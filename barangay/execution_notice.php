@@ -277,25 +277,16 @@ function checkForm() {
     $("#datepicker").datepicker({
         dateFormat: 'yy-mm-dd',
         minDate: 0,
+        maxDate: 0,
+        defaultDate: new Date(),
         beforeShowDay: function (date) {
             var day = date.getDay();
             return [day != 0 && day != 6, ''];
-        },
-        beforeShow: function (input, inst) {
-            var currentDate = new Date();
-            var weekdaysToAdd = 5;
-            var endDate = new Date(currentDate);
-
-            while (weekdaysToAdd > 0) {
-                endDate.setDate(endDate.getDate() + 1);
-                if (endDate.getDay() !== 0 && endDate.getDay() !== 6) {
-                    weekdaysToAdd--;
-                }
-            }
-
-            $("#datepicker").datepicker("option", "maxDate", endDate);
         }
     });
+
+    // Set the input field value to the current date
+    $("#datepicker").val($.datepicker.formatDate('yy-mm-dd', new Date()));
 });
 
 
@@ -465,13 +456,13 @@ function checkForm() {
 
     @media screen and (min-width: 1366px) and (max-width: 1500px) and (min-height: 617px){
         .add-account-container{
-            margin-top: 2.4%;
+            margin-top: 1.8%;
         }
     }
 
     @media screen and (min-width: 1536px) and (min-height: 730px){
         .add-account-container{
-            margin-top: 5.2%;
+            margin-top: 5.8%;
         }
     }
 
@@ -485,6 +476,13 @@ function checkForm() {
         .add-account-container{
             margin-top: 4.5%;
         }
+    }
+
+    @media screen and (min-width: 1500px) and (max-width: 1536px) and (min-height: 730px){
+        .add-account-container{
+            margin-top: 5.4%;
+        }
+    
     }
 
     </style>

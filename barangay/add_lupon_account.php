@@ -650,9 +650,9 @@ document.querySelector(".pw-meter .pw-display-toggle-btn").addEventListener("cli
 
     @media screen and (min-width: 1366px) and (max-width: 1500px) and (min-height: 617px){
         .add-account-container{
-            margin-top: -2.5%;
-            margin-left: -7%;
-        }
+            margin-left: -8%;
+            margin-top: -2.6%;
+        }       
     }
 
     @media screen and (min-width: 1280px) and (max-width: 1290px) and (min-height: 569px){
@@ -675,6 +675,13 @@ document.querySelector(".pw-meter .pw-display-toggle-btn").addEventListener("cli
             margin-left: 6%;
            }
         }
+    
+        @media screen and (min-width: 1500px) and (max-width: 1536px) and (min-height: 730px){
+        .add-account-container{
+            margin-top: 1.3%;
+            margin-left: -6%;
+        }
+    }
 
 </style>
 </body>

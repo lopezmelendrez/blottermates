@@ -777,6 +777,17 @@ if ($rowCount >= 3) {
     .incident-case-table-1{
         width: 670px;
     }
+     .ongoing-cases-box, .settled-cases-box, .incomplete-cases-box{
+            height: 70px;
+            margin-top: -.5%;
+        }
+        .ongoing-cases-box p,.settled-cases-box p,.incomplete-cases-box p{
+            font-size: 16px;
+            margin-top: -8px;
+        }
+        .ongoing-cases-box .count, .settled-cases-box .count, .incomplete-cases-box .count{
+            font-size: 30px;
+        }
 }
 
 @media screen and (min-width: 1280px) and (max-width: 1290px) and (min-height: 569px){

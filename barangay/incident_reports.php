@@ -23,6 +23,7 @@ if (isset($_POST['submit_search'])) {
                      incident_report.respondent_first_name as respondent_first_name,
                      incident_report.respondent_last_name AS respondent_last_name,
                      incident_report.created_at AS created_at,
+                     en.timestamp AS execution_date, -- Include the execution_date from execution_notice
                      amicable_settlement.date_agreed AS date_agreed
               FROM `incident_report`
               INNER JOIN `lupon_accounts` AS la ON incident_report.lupon_id = la.lupon_id
@@ -42,6 +43,7 @@ if (isset($_POST['submit_search'])) {
                      incident_report.respondent_first_name as respondent_first_name,
                      incident_report.respondent_last_name AS respondent_last_name,
                      incident_report.created_at AS created_at,
+                     en.timestamp AS execution_date, -- Include the execution_date from execution_notice
                      amicable_settlement.date_agreed AS date_agreed
               FROM `incident_report`
               INNER JOIN `lupon_accounts` AS la ON incident_report.lupon_id = la.lupon_id
@@ -53,6 +55,7 @@ if (isset($_POST['submit_search'])) {
                     AND nr.generate_execution = 'form generated'
               ORDER BY incident_report.created_at DESC";
 }
+
 
 $result = mysqli_query($conn, $query);
 
@@ -212,7 +215,8 @@ if (mysqli_num_rows($result) == 0) {
         $respondent_last_name = $row['respondent_last_name'];
         $complainant_first_name = $row['complainant_first_name'];
         $respondent_first_name = $row['respondent_first_name'];
-        $date_agreed = $row['date_agreed'];
+        $date_agreed = $row['execution_date'];
+
 
         $notifyQuery = "SELECT * FROM `notify_residents` WHERE incident_case_number = '$incident_case_number'";
         $notifyResult = mysqli_query($conn, $notifyQuery);
@@ -231,7 +235,7 @@ if (mysqli_num_rows($result) == 0) {
         echo '<h3 class="case-no-text" style="font-size: 15px; font-weight: 500; font-style: italic; width: 20%;">';
         echo $complainant_last_name . ' vs. ' . $respondent_last_name;
         echo '</h3>';
-        echo '<h3 class="hearing-text" style="font-size: 15px; font-weight: 500; margin-left: 40%;"><b>Settled Agreement Date</b>: ' . date('D, d M Y', strtotime($date_agreed)) . '</h3>';
+        echo '<h3 class="hearing-text" style="font-size: 15px; font-weight: 500; margin-left: 52%;"><b>Execution Date</b>: ' . date('D, d M Y', strtotime($date_agreed)) . '</h3>';
         echo '</h3>';
         echo '</div>';
 
@@ -261,9 +265,9 @@ if (mysqli_num_rows($result) == 0) {
         echo '</td>';
         echo '<td>';
         if ($notifyRow && $executionRow === null) {
-            echo '<a href="execution_notice.php?incident_case_number=' . $incident_case_number . '" class="generate" style="margin-left: 12%">VALIDATE</a>';
+            echo '<a href="execution_notice.php?incident_case_number=' . $incident_case_number . '" class="generate">VALIDATE</a>';
         } elseif ($notifyRow && $executionRow !== null) {
-            echo '<a href="../tcpdf/notice_of_execution.php?incident_case_number=' . $incident_case_number . '" target="_blank" class="generate" style="margin-left: 12%">GENERATE KP FORM #27</a>';
+            echo '<a href="../tcpdf/notice_of_execution.php?incident_case_number=' . $incident_case_number . '" target="_blank" class="generate">GENERATE KP FORM #27</a>';
         } else {
             echo '-';
         }
@@ -303,8 +307,7 @@ if (mysqli_num_rows($result) == 0) {
 
     </script>
 
-    <style>
-    
+    <style>    
         .search-container{
             margin-left: 9%;
         }
@@ -381,7 +384,7 @@ if (mysqli_num_rows($result) == 0) {
         display: block;
         margin-bottom: 5px;
         width: 10rem;
-        margin-left: 0;
+        margin-left: 12%;
         text-decoration: none;
         cursor: pointer;
     }
@@ -483,13 +486,33 @@ if (mysqli_num_rows($result) == 0) {
 
 @media screen and (min-width: 1366px) and (max-width: 1500px) and (min-height: 617px){
     .container{
-        margin-left: 12.5%;
+        margin-left: 11.5%;
+        width: 77%;
+    }
+    .cases-container{
+        margin-left: -31%;
+    }
+    .search-container{
+        margin-left: 11.5%;
+    }
+    .search-input{
+        width: 70%;
     }
 }
 
 @media screen and (min-width: 1280px) and (max-width: 1290px) and (min-height: 569px){
     .container{
-        margin-left: 12.1%;
+        margin-left: 9.6%;
+        width: 82.5%;
+    }
+    .cases-container{
+        margin-left: -32%;
+    }
+    .search-container{
+        margin-left: 9.6%;
+    }
+    .search-input{
+        width: 73.8%;
     }
 }
 
@@ -505,6 +528,23 @@ if (mysqli_num_rows($result) == 0) {
         margin-left: 11.5%;
     }
 }
+
+@media screen and (min-width: 1500px) and (max-width: 1536px) and (min-height: 730px){
+        .cases-container{
+            margin-left: -28%;
+        }
+        .search-container{
+            margin-left: 15.2%;
+        }
+        .search-input{
+            width: 64.5%;
+        }
+        .container{
+            margin-left: 15.2%;
+            width: 68%;
+        }
+    }
+
 
 
 
