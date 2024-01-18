@@ -14,6 +14,8 @@ if(!isset($pb_id)){
 header('location: ../index.php');
 }
 
+date_default_timezone_set('Asia/Manila');
+
 function displayPage($conn, $incident_case_number)
 {
     // Check if the incident case number exists in the notify_residents table
@@ -72,9 +74,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit'])) {
     $remarks = $_POST['remarks'];
     $incident_case_number = $_POST['incident_case_number'];
     
+    $manilaTime = new DateTime('now', new DateTimeZone('Asia/Manila'));
+$timestamp = $manilaTime->format('Y-m-d H:i:s');
 
-    $insert_query = "INSERT INTO `execution_notice` (`pb_id`, `execution_date`, `compliance_status`, `remarks`, `incident_case_number`)
-                 VALUES ('$pb_id', '$execution_date', '$compliance_status', '$remarks', '$incident_case_number')";
+$insert_query = "INSERT INTO `execution_notice` (`pb_id`, `execution_date`, `compliance_status`, `remarks`, `incident_case_number`, `timestamp`)
+                 VALUES ('$pb_id', '$execution_date', '$compliance_status', '$remarks', '$incident_case_number', '$timestamp')";
 
 
     $result = mysqli_query($conn, $insert_query);
