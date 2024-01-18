@@ -462,6 +462,12 @@ if (input.value.length > 0 && input.value[0] === ' ') {
     }
   }
 
+  @media screen and (min-width: 1340px) and (max-width: 1360px){
+    .modal-content{
+        margin-top: 10%;
+    }
+    }
+
   @media screen and (min-width: 1360px) and (min-height: 768px){
     .add-account-container{
         margin-top: 6%;
@@ -511,6 +517,16 @@ if (input.value.length > 0 && input.value[0] === ' ') {
     @media screen and (min-width: 1500px) and (max-width: 1536px) and (min-height: 730px){
         .add-account-container{
             margin-top: 3.7%;
+        }
+    }
+
+    @media screen and (max-width: 2133px) and (min-height: 1055px) and (max-height: 1058px){
+        .add-account-container{
+            margin-top: 9%;
+        }
+        .modal-content{
+            margin-top: 15%;
+            margin-left: 2.5%;
         }
     }
 

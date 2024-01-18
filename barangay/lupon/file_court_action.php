@@ -65,7 +65,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit'])) {
         if ($insert_result) {
             $incident_case_number = $_POST['incident_case_number'];
             echo '<script>';
-            echo 'window.open("http://localhost/barangay%20justice%20management%20system%2001/tcpdf/certification_to_file_action.php?incident_case_number=' . $incident_case_number . '", "_blank");';
+            echo 'window.open("http://localhost/barangay%20justice%20management%20system%2001/tcpdf/certification_to_file_action_form.php?incident_case_number=' . $incident_case_number . '", "_blank");';
             echo 'window.location.href = "settled_cases.php";';
             echo '</script>';
             exit;
@@ -414,6 +414,13 @@ window.addEventListener("click", (event) => {
     }
 }
 
+@media screen and (min-width: 1340px) and (max-width: 1360px){
+    .modal-content{
+        margin-top: 10%;
+    }
+    }
+
+
 @media screen and (min-width: 1360px) and (min-height: 768px){
     .add-account-container{
         margin-top: 6%;
@@ -474,6 +481,16 @@ window.addEventListener("click", (event) => {
         .add-account-container{
             margin-top: 3.5%;
             margin-left: -5%;
+        }
+    }
+
+    @media screen and (max-width: 2133px) and (min-height: 1055px) and (max-height: 1058px){
+        .add-account-container{
+            margin-top: 9%;
+        }
+        .modal-content{
+            margin-top: 15%;
+            margin-left: 2.5%;
         }
     }
 
