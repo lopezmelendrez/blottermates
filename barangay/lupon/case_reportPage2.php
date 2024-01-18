@@ -886,6 +886,20 @@ if (input.value.length > 0 && input.value[0] === ' ') {
     }
     }
 
+    @media screen and (min-width: 1520px) and (max-width: 1528px) and (min-height: 740px) and (max-height: 742px){
+        .modal{
+            position: absolute;
+        top: 20%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        }
+        .close-icon{
+            top: 24.5%;
+            left: 63.5%;
+            z-index: 1001;
+        }
+    }
+
 </style>
 </body>
 </html>

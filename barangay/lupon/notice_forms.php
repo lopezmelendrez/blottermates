@@ -1152,7 +1152,7 @@ function showPopup() {
     @media screen and (max-width: 1280px) and (max-height: 592px){
         .container{
             width: 76%;
-            margin-top: 0.2%;
+            margin-top: 0%;
             margin-left: 13%;
         }
         .container header:before{
@@ -1172,6 +1172,12 @@ function showPopup() {
         form .fields .input-field-1{
         width: 61rem;
         }
+        .modal{
+            position: absolute;
+        top: 25%;
+        left: 45%;
+        transform: translate(-50%, -50%);
+        }
     }
 
     @media screen and (max-width: 2133px) and (min-height: 1055px) and (max-height: 1058px){
@@ -1183,6 +1189,19 @@ function showPopup() {
         .modal{
             margin-top: 16.5%;
             margin-left: 4%;
+        }
+    }
+
+    @media screen and (min-width: 1520px) and (max-width: 1528px) and (min-height: 740px) and (max-height: 742px){
+        .modal{
+            position: absolute;
+        top: 25%;
+        left: 46%;
+        transform: translate(-50%, -50%);
+        }
+        .container{
+            width: 70.1%;
+            margin-top: 6%;
         }
     }
 

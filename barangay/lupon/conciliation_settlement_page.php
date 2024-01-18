@@ -124,10 +124,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $insert_result = mysqli_query($conn, $insert_query);
 
         if ($insert_result) {
-            header("Location: settled_cases.php");
+            $incident_case_number = $_POST['incident_case_number'];
+            echo '<script>';
+            echo 'window.open("https://brgyblotter-src.online/tcpdf/ammicable_settlement_form.php?incident_case_number=' . $incident_case_number . '", "_blank");';
+            echo 'window.open("https://brgyblotter-src.online/barangay/lupon/settled_cases.php", "_self");';
+            echo '</script>';
             exit;
         } else {
             echo "Error: " . mysqli_error($conn);
+            exit;
         }
     } else {
         echo "Error: Hearing record not found for the incident case number.";
@@ -650,6 +655,19 @@ function validateName(event) {
             margin-top: 15.3%;
         }
     }
+
+    @media screen and (min-width: 1520px) and (max-width: 1528px) and (min-height: 740px) and (max-height: 742px){
+        .modal{
+            position: absolute;
+        top: 20%;
+        left: 48%;
+        transform: translate(-50%, -50%);
+        }
+        .container{
+            margin-top: 10%;
+        }
+    }
+
 
 
     </style>
