@@ -1071,7 +1071,12 @@ form .fields .input-field-3{
 
         .container{
             margin-top: 19px;
+            width: 70%;
+            margin-left: 15.5%;
         }
+        form .fields .input-field-3{
+                width: 53.5rem;
+            }
     }
 
      @media screen and (min-width: 1360px) and (min-height: 768px) {
@@ -1151,6 +1156,17 @@ form .fields .input-field-3{
         }
         form .fields .input-field-3{
                 width: 53rem;
+            }
+    }
+
+    @media screen and (max-width: 2133px) and (min-height: 1055px) and (max-height: 1058px){
+        .container{
+            width: 43.5%;
+            margin: 11.5%;
+            margin-left: 27%;
+        }
+        form .fields .input-field-3{
+                width: 53.3rem;
             }
     }
 

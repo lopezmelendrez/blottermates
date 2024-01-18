@@ -469,12 +469,18 @@ if (mysqli_num_rows($result) == 0) {
             margin-top: -5%; margin-left: 518px; width: 250px;
         }
 
-        @media screen and (min-width: 1331px){
+        @media screen and (min-width: 1331px) and (max-width: 1400px){
             .search-input{
-                width: 825px;
+                width: 75%;
             }
             .container{
                 width: 1015px;
+            }
+        }
+
+        @media screen and (min-width: 1360px) and (max-width: 1365px){
+            .search-input{
+                width: 60%;
             }
         }
 

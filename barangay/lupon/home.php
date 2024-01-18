@@ -759,13 +759,18 @@ function closeMonthlyReportPopup() {
         }
     }
 
-    @media screen and (min-width: 1331px) {
+    @media screen and (min-width: 1331px) and (max-width: 1400px) {
         .close-icon {
             left: 895px;
         }
 
         .incident-case-table {
             margin-top: 0.5%;
+            height: 28rem;
+        }
+
+        .calendar-container{
+            height: 28rem;
         }
 
         .add-account{
@@ -820,20 +825,17 @@ function closeMonthlyReportPopup() {
  }
 
     @media screen and (min-width: 1366px) and (max-width: 1500px) and (min-height: 617px){
-        .incident-case-table{
-            height: 430px;
-        }
-        .calendar-container{
-            height: 430px;
+        .incident-case-table, .calendar-container{
+            height: 26rem;
         }
         #calendar{
-            height: 390px;
+            height: 385px;
         }
         .home{
-            margin-left: 1%;
+            margin-left: 2%;
         }
         .close-icon{
-            margin-left: -.5%;
+            margin-left: -.2%;
         }
     }
 

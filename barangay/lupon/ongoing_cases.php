@@ -562,7 +562,23 @@ header('location: ../../index.php');
             }
         }
 
-
+        @media screen and (max-width: 2133px) and (min-height: 1055px) and (max-height: 1058px){
+        .add-account{
+            margin-top: -3.1%;
+            margin-left: 26%;
+        }
+        table{
+            margin-left: 7.6%;
+            width: 86.5%;
+        }
+        .upcoming-hearing, .hearing, .shownotices{
+            margin-left: 23%;
+        }
+        .pagination{
+            margin-left: 18.2%;
+            margin-top: 1.5%;
+        }
+    }
 
 
 

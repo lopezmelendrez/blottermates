@@ -570,6 +570,24 @@ $date_of_hearing = $row['date_of_hearing'];
                 margin-left: -3%;
             }
         }
+    
+        @media screen and (max-width: 2133px) and (min-height: 1055px) and (max-height: 1058px){
+        .add-account{
+            margin-top: -3.1%;
+            margin-left: 26%;
+        }
+        table{
+            margin-left: 7.6%;
+            width: 86.5%;
+        }
+        .upcoming-hearing, .hearing-1{
+            margin-left: 25%;
+        }
+        .pagination{
+            margin-left: 18.2%;
+            margin-top: 1.5%;
+        }
+    }
 
     </style>
 

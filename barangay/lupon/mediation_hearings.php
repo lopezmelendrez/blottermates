@@ -178,7 +178,7 @@ header('location: ../../index.php');
         $current_time = time();
 
         if ($current_time >= $date_of_hearing && $hearing_type_status == "mediation") {
-            echo '<a href="settlement_page.php?incident_case_number=' . $incident_case_number . '" class="hearing-1" style="text-decoration: none; margin-left: 0%;">Hearing</a>';
+            echo '<a href="settlement_page.php?incident_case_number=' . $incident_case_number . '" class="hearing-1" style="text-decoration: none;">Hearing</a>';
         } else {
             // Display an appropriate text for upcoming mediation hearings
             echo '<div class="upcoming-hearing">Upcoming Hearing</div>';
@@ -385,7 +385,7 @@ header('location: ../../index.php');
         display: block;
         margin-bottom: 5px;
         width: 10rem;
-        margin-left: 8%;
+        margin-left: 0%;
     }
 
     .hearing-1:hover{
@@ -544,6 +544,24 @@ header('location: ../../index.php');
                 margin-left: -3%;
             }
         }
+
+        @media screen and (max-width: 2133px) and (min-height: 1055px) and (max-height: 1058px){
+        .add-account{
+            margin-top: -3.1%;
+            margin-left: 26%;
+        }
+        table{
+            margin-left: 7.6%;
+            width: 86.5%;
+        }
+        .upcoming-hearing, .hearing-1{
+            margin-left: 25%;
+        }
+        .pagination{
+            margin-left: 18.2%;
+            margin-top: 1.5%;
+        }
+    }
 
     </style>
 
