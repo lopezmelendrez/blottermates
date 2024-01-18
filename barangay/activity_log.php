@@ -307,7 +307,7 @@ $result = mysqli_query($conn, $activityLogQuery);
 if ($result && mysqli_num_rows($result) > 0) {
     while ($row = mysqli_fetch_assoc($result)) {
         echo '<div style="display: flex; justify-content: space-between; margin-bottom: 5px;">';
-        echo '<div style="font-size: 13.5px; positiion: fixed; width: 17rem;">' . $row['activity'] . '</div>';       
+        echo '<div style="font-size: 13.5px; positiion: fixed; width: 16.5rem;">' . $row['activity'] . '</div>';       
         $formattedTimestamp = date('d M Y - h:i A', strtotime($row['formatted_timestamp']));
         echo '<div style="color: gray; font-style: italic; font-size: 11px;">• ' . $formattedTimestamp . '</div>';
         echo '</div>';

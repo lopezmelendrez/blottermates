@@ -174,12 +174,15 @@ date_default_timezone_set('Asia/Manila');
 $query = "SELECT pa.barangay, COUNT(*) as total_ongoing_cases
 FROM `incident_report` AS ir
 INNER JOIN `hearing` AS h ON ir.incident_case_number = h.incident_case_number
+LEFT JOIN `court_action` AS ca ON ir.incident_case_number = ca.incident_case_number
 INNER JOIN `lupon_accounts` AS la ON ir.lupon_id = la.lupon_id
 INNER JOIN `pb_accounts` AS pa ON la.pb_id = pa.pb_id
 WHERE h.date_of_hearing IS NOT NULL
     AND h.time_of_hearing IS NOT NULL
     AND NOT EXISTS (SELECT 1 FROM `amicable_settlement` AS amicable WHERE h.hearing_id = amicable.hearing_id)
+    AND ca.incident_case_number IS NULL
     AND pa.pb_id = '$pb_id'";
+
 
 
         $result = mysqli_query($conn, $query);
@@ -207,8 +210,9 @@ WHERE h.date_of_hearing IS NOT NULL
         INNER JOIN `lupon_accounts` AS la ON ir.lupon_id = la.lupon_id
         INNER JOIN `pb_accounts` AS pa ON la.pb_id = pa.pb_id
         LEFT JOIN `amicable_settlement` AS amicable_settlement ON h.hearing_id = amicable_settlement.hearing_id
-        WHERE h.date_of_hearing IS NOT NULL AND h.time_of_hearing IS NOT NULL AND amicable_settlement.agreement_description IS NOT NULL
-        AND pa.pb_id = '$pb_id'";
+        WHERE (h.date_of_hearing IS NOT NULL AND h.time_of_hearing IS NOT NULL AND amicable_settlement.agreement_description IS NOT NULL)
+        OR (h.hearing_type_status = 'filed to court action' AND pa.pb_id = '$pb_id')";
+        $resultMonthlyReports = mysqli_query($conn, $queryMonthlyReports);
 
         $resultMonthlyReports = mysqli_query($conn, $queryMonthlyReports);
 
@@ -239,7 +243,21 @@ WHERE h.date_of_hearing IS NOT NULL
             INNER JOIN `amicable_settlement` AS amicable_settlement ON h.hearing_id = amicable_settlement.hearing_id
             WHERE ir.incident_case_number = h.incident_case_number
         )
+        AND (
+            NOT EXISTS (
+                SELECT 1
+                FROM `notify_residents` AS nr
+                WHERE ir.incident_case_number = nr.incident_case_number
+            )
+            OR (
+                SELECT 1
+                FROM `notify_residents` AS nr
+                WHERE ir.incident_case_number = nr.incident_case_number
+                AND (nr.generate_hearing IS NULL OR nr.generate_summon IS NULL)
+            )
+        )
         GROUP BY pa.barangay;";
+
         $resultRegisteredBarangays = mysqli_query($conn, $queryRegisteredBarangays);
 
         if ($resultRegisteredBarangays) {
@@ -859,6 +877,45 @@ var myBarChart = new Chart(ctx, {
         }
         .incident-case-table {
             margin-left: 5%;
+        }
+    }
+
+    @media screen and (min-width: 1520px) and (max-width: 1528px) and (min-height: 740px) and (max-height: 742px){
+        .notice-records{
+            margin-left: 22.5%;
+            margin-top: -43px;
+        }
+        .ongoing-cases-box, .settled-cases-box, .incomplete-cases-box{
+            height: 7rem;
+            width: 355px;
+        }
+        .ongoing-cases-box p,.settled-cases-box p,.incomplete-cases-box p{
+            font-size: 20px;
+        }
+        .ongoing-cases-box .count, .settled-cases-box .count, .incomplete-cases-box .count{
+            font-size: 50px;
+        }
+        .incident-case-table-1{
+            width: 30%;
+            margin-left: 58%;
+            margin-top: -32.7%;
+            height: 29.5rem;
+        }
+        .incident-case-table .table-container canvas{
+            margin-top: 6.5%;
+        }
+        .incident-case-table-1 .table-container{
+            height: 700px;
+        }
+        .incident-case-table{
+            margin-left: 9%;
+        }
+        .piechart{
+            height: 340px;
+        }
+        #myPieChart{
+            margin-left: 5%;
+            margin-top: 8%;
         }
     }
 

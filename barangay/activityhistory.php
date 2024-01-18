@@ -592,6 +592,12 @@ $result = mysqli_query($conn, $activityLogQuery);
         .activity-history{
             margin-left: 20.5%;
         }
+        .activity-date{
+            font-size: 21px;
+        }
+        .activity{
+            font-size: 18px;
+        }
         .sort-container{
             margin-left: 61.4%;
         }
@@ -601,6 +607,9 @@ $result = mysqli_query($conn, $activityLogQuery);
         .activity-history{
             margin-left: 14%;
         }
+        .activity-date{
+            font-size: 20px;
+        }
         .sort-container{
             margin-left: 61.2%;
         }
@@ -609,6 +618,39 @@ $result = mysqli_query($conn, $activityLogQuery);
     @media screen and (min-width: 1500px) and (max-width: 1536px) and (min-height: 730px){
         .sort-container{
             margin-left: 59.5%;
+        }
+        .activity-date{
+            font-size: 21px;
+        }
+        .activity{
+            font-size: 18px;
+        }
+    }
+    @media screen and (max-width: 2133px) and (min-height: 1055px) and (max-height: 1058px){
+       .activity-history{
+        width: 155%;
+        margin-left: 45%;
+       }
+       .activity-date{
+        font-size: 27px;
+       }
+       .activity{
+        font-size: 20px;
+       }
+       .sort-container{
+        margin-left: 63.7%;
+       }
+    }
+
+    @media screen and (min-width: 1520px) and (max-width: 1528px) and (min-height: 740px) and (max-height: 742px){
+        .activity-history{
+            margin-left: 30.5%;
+        }
+        .activity-date{
+            font-size: 21px;
+        }
+        .activity{
+            font-size: 18px;
         }
     }
 

@@ -312,9 +312,9 @@ if ($result && mysqli_num_rows($result) > 0) {
         
         .activity-history{
             margin-top: 3%;
-            width: 1190px;
             font-size: 14px;
             margin-left: 16%;
+            width: 880px;
         }
 
         .activity-date {
@@ -379,7 +379,7 @@ if ($result && mysqli_num_rows($result) > 0) {
 </div>
     <div class="container" style="margin-top: -1%;">
 
-    <div class="activity-history" style="width: 880px;">';
+    <div class="activity-history">';
 
     while ($row = mysqli_fetch_assoc($result)) {
         $formattedTimestamp = date('d M Y', strtotime($row['formatted_timestamp']));

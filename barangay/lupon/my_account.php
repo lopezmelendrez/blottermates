@@ -661,7 +661,7 @@ document.querySelector(".pw-meter .pw-display-toggle-btn").addEventListener("cli
         transform: translate(-50%, -50%);
         }
         .add-account-container{
-            margin-top: 2.5%;
+            margin-top: 2%;
             margin-left: -2%;
         }
     }

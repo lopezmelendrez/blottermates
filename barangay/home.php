@@ -180,11 +180,13 @@ header('location: ../index.php');
               $countQuery = "SELECT pa.barangay, COUNT(*) as caseCount
               FROM `incident_report` AS ir
               INNER JOIN `hearing` AS h ON ir.incident_case_number = h.incident_case_number
+              LEFT JOIN `court_action` AS ca ON ir.incident_case_number = ca.incident_case_number
               INNER JOIN `lupon_accounts` AS la ON ir.lupon_id = la.lupon_id
               INNER JOIN `pb_accounts` AS pa ON la.pb_id = pa.pb_id
               WHERE h.date_of_hearing IS NOT NULL
                   AND h.time_of_hearing IS NOT NULL
                   AND NOT EXISTS (SELECT 1 FROM `amicable_settlement` AS amicable WHERE h.hearing_id = amicable.hearing_id)
+                  AND ca.incident_case_number IS NULL
                   AND pa.pb_id = '$pb_id'";
 
 
@@ -208,14 +210,16 @@ header('location: ../index.php');
             <div class="col-md-4">
             
             <?php
-              $settledCountQuery = "SELECT pa.barangay, COUNT(*) as settledCaseCount
-              FROM `incident_report` AS ir
-              INNER JOIN `hearing` AS h ON ir.incident_case_number = h.incident_case_number
-              INNER JOIN `lupon_accounts` AS la ON ir.lupon_id = la.lupon_id
-              INNER JOIN `pb_accounts` AS pa ON la.pb_id = pa.pb_id
-              LEFT JOIN `amicable_settlement` AS amicable_settlement ON h.hearing_id = amicable_settlement.hearing_id
-              WHERE h.date_of_hearing IS NOT NULL AND h.time_of_hearing IS NOT NULL AND amicable_settlement.agreement_description IS NOT NULL
-              AND pa.pb_id = '$pb_id'";
+             $settledCountQuery = "SELECT pa.barangay, COUNT(*) as settledCaseCount
+             FROM `incident_report` AS ir
+             INNER JOIN `hearing` AS h ON ir.incident_case_number = h.incident_case_number
+             INNER JOIN `lupon_accounts` AS la ON ir.lupon_id = la.lupon_id
+             INNER JOIN `pb_accounts` AS pa ON la.pb_id = pa.pb_id
+             LEFT JOIN `amicable_settlement` AS amicable_settlement ON h.hearing_id = amicable_settlement.hearing_id
+             WHERE (h.date_of_hearing IS NOT NULL AND h.time_of_hearing IS NOT NULL AND amicable_settlement.agreement_description IS NOT NULL)
+             OR (h.hearing_type_status = 'filed to court action' AND pa.pb_id = '$pb_id')";
+
+
 
                 $result = mysqli_query($conn, $settledCountQuery);
 
@@ -236,7 +240,8 @@ header('location: ../index.php');
 
             <div class="col-md-3">
                             <?php
-                $incompleteCountQuery = "SELECT pa.barangay, COUNT(*) as incompleteCaseCount
+                $incompleteCountQuery = "
+                SELECT pa.barangay, COUNT(*) as incompleteCaseCount
                 FROM `incident_report` AS ir
                 INNER JOIN `lupon_accounts` AS la ON ir.lupon_id = la.lupon_id
                 INNER JOIN `pb_accounts` AS pa ON la.pb_id = pa.pb_id
@@ -247,7 +252,22 @@ header('location: ../index.php');
                     INNER JOIN `amicable_settlement` AS amicable_settlement ON h.hearing_id = amicable_settlement.hearing_id
                     WHERE ir.incident_case_number = h.incident_case_number
                 )
+                AND (
+                    NOT EXISTS (
+                        SELECT 1
+                        FROM `notify_residents` AS nr
+                        WHERE ir.incident_case_number = nr.incident_case_number
+                    )
+                    OR (
+                        SELECT 1
+                        FROM `notify_residents` AS nr
+                        WHERE ir.incident_case_number = nr.incident_case_number
+                        AND (nr.generate_hearing IS NULL OR nr.generate_summon IS NULL)
+                    )
+                )
                 GROUP BY pa.barangay;";
+            
+            
 
                 $result = mysqli_query($conn, $incompleteCountQuery);
 
@@ -337,7 +357,7 @@ header('location: ../index.php');
         </div>
         <?php
 if ($rowCount >= 3) {
-    echo '<a href="activity_history.php" style="text-decoration: none;"><span class="seeall-1">See All</span></a>';
+    echo '<a href="incident_reports.php" style="text-decoration: none;"><span class="seeall-1">See All</span></a>';
 }
 ?>
     </div>
@@ -748,40 +768,43 @@ if ($rowCount >= 3) {
         margin-top: 0.5%;
     }
     .datetime-container{
-        margin-left: 1%;
+        margin-left: 0%;
     }
     .incident-case-table-1{
-        margin-left: 14%;
+        margin-left: 5.5%;
         width: 650px;
     }
     .incident-case-table{
-        width: 630px;
-        margin-left: 4%;
+        width: 620px;
+        margin-left: 6.3%;
     }
     .incident-case-table .table-container{
         width: 580px;
     }
     .seeall{
-        margin-left: 79%;
+        margin-left: 77%;
     }
     .seeall-1{
-        margin-left: 79%;
-        margin-top: -2%;
+        margin-left: 77%;
     }
     .summon-record{
         margin-left: -2%;
         width: 80%;
     }
+    .container{
+        margin-left: 1%;
+    }
     .ongoing-cases-box, .settled-cases-box, .incomplete-cases-box{
-            height: 120px;
-            margin-top: 3%;
+            height: 110px;
+            width: 390px;
         }
         .ongoing-cases-box p,.settled-cases-box p,.incomplete-cases-box p{
-            font-size: 18px;
-            margin-top: 5px;
+            font-size: 21px;
+            margin-top: -5px;
         }
         .ongoing-cases-box .count, .settled-cases-box .count, .incomplete-cases-box .count{
-            font-size: 45px;
+            font-size: 50px;
+            margin-top: -20px;
         }
 }
 
@@ -855,8 +878,34 @@ if ($rowCount >= 3) {
 
 }
 
-@media screen and (min-width: 1350px) and (max-width: 1360px) and (min-height: 645px) and (max-height: 650px){
-    
+
+
+@media screen and (min-width: 1520px) and (max-width: 1528px) and (min-height: 740px) and (max-height: 742px){
+    .ongoing-cases-box, .settled-cases-box, .incomplete-cases-box{
+            height: 110px;
+            width: 380px;
+        }
+        .ongoing-cases-box p,.settled-cases-box p,.incomplete-cases-box p{
+            font-size: 21px;
+            margin-top: -5px;
+        }
+        .ongoing-cases-box .count, .settled-cases-box .count, .incomplete-cases-box .count{
+            font-size: 50px;
+            margin-top: -20px;
+        }
+        .container{
+            margin-left: 1.5%;
+            margin-top: 2%;
+        }
+        .incident-case-table-1{
+            margin-left: 14%;
+        }
+        .incident-case-table{
+            width: 40%;
+            margin-top: 3%;
+            margin-left: 7.6%;
+        }
+        
 }
     </style>
 

@@ -628,6 +628,30 @@ document.querySelector(".pw-meter .pw-display-toggle-btn").addEventListener("cli
         }
     }
 
+    @media screen and (max-width: 2133px) and (min-height: 1055px) and (max-height: 1058px){
+        .add-account-container{
+            margin-top: 7.3%;
+            margin-left: -5%;
+        }
+        .modal-content{
+            margin-top: 15%;
+            margin-left: 2%;
+        }
+    }
+
+    @media screen and (min-width: 1520px) and (max-width: 1528px) and (min-height: 740px) and (max-height: 742px){
+        .modal-content{
+            position: absolute;
+        top: 25%;
+        left: 45%;
+        transform: translate(-50%, -50%);
+        }
+        .add-account-container{
+            margin-top: 2%;
+            margin-left: -2%;
+        }
+    }
+
 </style>
 </body>
 </html>

@@ -650,16 +650,22 @@ function showDisablePopup(luponId) {
     
     @media screen and (min-width: 1536px) and (min-height: 730px){
         table{
-            margin-left: 12.5%;
+            width: 93%;
         }
         .modal{
-            margin-left: 35%;
-        }
+        position: absolute;
+        top: 25%;
+        left: 21%;
+        transform: translate(-50%, -50%);
+    }
     }
 
     @media screen and (min-width: 1366px) and (max-width: 1500px) and (min-height: 617px){
         .modal{
             margin-top: 10.5%;
+        }
+        table{
+            width: 93%;
         }
     }
 
@@ -667,6 +673,18 @@ function showDisablePopup(luponId) {
         .modal{
             margin-top: 8%;
         }
+    }
+
+    @media screen and (min-width: 1520px) and (max-width: 1528px) and (min-height: 740px) and (max-height: 742px){
+        table{
+            width: 93%;
+        }
+        .modal{
+        position: absolute;
+        top: 25%;
+        left: 21%;
+        transform: translate(-50%, -50%);
+    }
     }
 
 
