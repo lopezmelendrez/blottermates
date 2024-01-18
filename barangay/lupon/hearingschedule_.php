@@ -520,6 +520,21 @@ label{
         }
     }
 
+    @media screen and (min-width: 1520px) and (max-width: 1528px) and (min-height: 740px) and (max-height: 742px){
+        .container{
+            margin-left: 18%;
+        }
+        .container header:before{
+            width: 40.2%;
+        }
+        .modal-content{
+            position: absolute;
+        top: 50%;
+        left: 48%;
+        transform: translate(-50%, -50%);
+        }
+    }
+
 
     </style>
 

@@ -1147,8 +1147,9 @@ form .fields .input-field-3{
             margin-top: 4%;
             margin-left: 20%;
         }
-        .modal-content{
-            margin-top: 14%;
+        .modal{
+            margin-left: 5%;
+            margin-top: -1%;
         }
         .close-icon{
             margin-top: 2.5%;
@@ -1169,6 +1170,18 @@ form .fields .input-field-3{
                 width: 53.3rem;
             }
     }
+
+    @media screen and (min-width: 1520px) and (max-width: 1528px) and (min-height: 740px) and (max-height: 742px){
+            .container{
+                margin-top:4.3%;
+            }
+            form .fields .input-field-3{
+                width: 52.6rem;
+            }
+            .modal{
+                margin-top: -1%;
+            }
+            }
 
 </style>
 </body>

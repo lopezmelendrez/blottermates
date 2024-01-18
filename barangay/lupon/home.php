@@ -814,14 +814,39 @@ function closeMonthlyReportPopup() {
         width: 18.5%;
     }
     .calendar-container{
-            width: 700px;
+            width: 600px;
         }
-        .calendar{
-            width: 690px;
+        #calendar{
+            width: 590px;
+        }
+        .modal{
+            position: absolute;
+        top: 25%;
+        left: 50%;
+        transform: translate(-50%, -50%);
         }
         .close-icon{
-            margin-left: 80px;
+        top: 27.5%;
+        margin-left: 6.5%;
+    }
+        .incident-case-table{
+            width: 50%;
+            margin-left: 1.5%;
         }
+        .incident-case-table .table-container table{
+        width: 115%;
+    }
+
+    .incident-case-table .table-container .incident-table thead tr th
+        {
+            padding-top: 1%;
+            font-size: 20px;
+            padding-right: 25px;
+        }
+        .incident-case-table .table-container .incident-table tbody tr td{
+            font-size: 17px;
+        }
+        
  }
 
     @media screen and (min-width: 1366px) and (max-width: 1500px) and (min-height: 617px){
@@ -832,10 +857,30 @@ function closeMonthlyReportPopup() {
             height: 385px;
         }
         .home{
-            margin-left: 2%;
+            margin-left: 1.5%;
         }
         .close-icon{
             margin-left: -.2%;
+            margin-top: -1.5%;
+        }
+        .modal{
+        position: absolute;
+        top: 20%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+    .incident-case-table .table-container table{
+        width: 115%;
+    }
+
+    .incident-case-table .table-container .incident-table thead tr th
+        {
+            padding-top: 1%;
+            font-size: 15px;
+            padding-right: 25px;
+        }
+        .incident-case-table .table-container .incident-table tbody tr td{
+            font-size: 14px;
         }
     }
 
@@ -851,6 +896,13 @@ function closeMonthlyReportPopup() {
     }
     .close-icon{
         margin-left: -1.2%;
+        margin-top: -2%;
+    }
+    .modal{
+        position: absolute;
+        top: 20%;
+        left: 50%;
+        transform: translate(-50%, -50%);
     }
 
 }
@@ -940,16 +992,75 @@ function closeMonthlyReportPopup() {
         margin-top: 22%;
     }
     .incident-case-table{
-        width: 42%;
+        width: 46%;
     }
     .modal{
-        width: 28%;
-        height: 15.4rem;
-        margin-top: 17%;
+        position: absolute;
+        top: 30%;
+        left: 50%;
+        transform: translate(-50%, -50%);
     }
     .close-icon{
-        top: 32.5%;
-        left: 58.5%;
+        top: 31.5%;
+        margin-left: -2.3%;
+    }
+    .incident-case-table .table-container table{
+        width: 115%;
+    }
+
+    .incident-case-table .table-container .incident-table thead tr th
+        {
+            padding-top: 1%;
+            font-size: 29px;
+            padding-right: 25px;
+        }
+        .incident-case-table .table-container .incident-table tbody tr td{
+            font-size: 25px;
+        }
+}
+
+@media screen and (min-width: 1520px) and (max-width: 1528px) and (min-height: 740px) and (max-height: 742px){
+    .add-account{
+        width: 18.8%;
+        margin-top: 5.5%;
+    }
+    .calendar-container{
+        width: 45%;
+        margin-top: 2%;
+    }
+
+    .incident-case-table{
+        margin-top: 2%;
+        margin-left: 1%;
+        width: 48%;
+    }
+
+    .incident-case-table .table-container table{
+        width: 120%;
+    }
+
+    .incident-case-table .table-container .incident-table thead tr th
+        {
+            padding-top: 1%;
+            font-size: 18px;
+            padding-right: 30px;
+        }
+        .incident-case-table .table-container .incident-table tbody tr td{
+            font-size: 15px;
+        }
+
+    #calendar{
+        width: 100%;
+    }
+    .modal{
+        position: absolute;
+        top: 25%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+    .close-icon{
+        top: 27.5%;
+        margin-left: 6.5%;
     }
 }
 

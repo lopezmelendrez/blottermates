@@ -647,6 +647,12 @@ if (mysqli_num_rows($result) == 0) {
             }
         }
 
+        @media screen and (min-width: 1520px) and (max-width: 1528px) and (min-height: 740px) and (max-height: 742px){
+            .generate, .notify{
+                margin-left: 5%;
+            }
+            }
+
 
 
     </style>
