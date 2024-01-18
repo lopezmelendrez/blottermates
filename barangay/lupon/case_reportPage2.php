@@ -754,13 +754,18 @@ if (input.value.length > 0 && input.value[0] === ' ') {
                 margin-top: 3%;
             }
         }
-       
+
         @media screen and (min-width: 1331px){
             .close-icon{
                 left: 895px;
+                top: 161px;
             }
             .container{
                 margin-top: 1.7%;
+            }
+            
+            .close-icon-1{
+                left: 940px;
             }
         
         }
@@ -784,13 +789,13 @@ if (input.value.length > 0 && input.value[0] === ' ') {
 
         .close-icon{
             margin-left: 17%;
-            margin-top: 10.8%;
+            margin-top: 10.3%;
         }
     }
 
     @media screen and (min-width: 1536px) and (min-height: 730px){
         .container{
-            margin-top: 5%;
+            margin-top: 4.5%;
             margin-left: 20%;
         }
         .modal{
@@ -798,7 +803,7 @@ if (input.value.length > 0 && input.value[0] === ' ') {
         }
         .close-icon{
             margin-left: 5.5%;
-            margin-top: 3.5%;
+            margin-top: 3%;
         }
     }
 
@@ -810,11 +815,18 @@ if (input.value.length > 0 && input.value[0] === ' ') {
         }
     }
 
+    @media screen and (min-width: 1340px) and (max-width: 1360px){
+            .container{
+                width: 71%;
+                margin-top: 1%;
+            }
+}
+
     @media screen and (min-width: 1280px) and (max-width: 1290px) and (min-height: 569px){
         .container{
             margin-top: -1.5%;
             margin-left: 13%;
-            width: 74.5%;
+            width: 75.5%;
         }
         .container header:before{
             width: 402px;
@@ -854,10 +866,25 @@ if (input.value.length > 0 && input.value[0] === ' ') {
             margin-top: 15%;
         }
         .close-icon{
-            margin-top: 3.5%;
+            margin-top: 3%;
         }
     }
 
+    @media screen and (max-width: 2133px) and (min-height: 1055px) and (max-height: 1058px){
+    .container{
+        width: 43.8%;
+        margin-top: 10%;
+        margin-left: 28%;
+    }
+    .modal{
+        margin-top: 16.5%;
+        margin-left: 0%;
+    }
+    .close-icon{
+        top: 27.5%;
+        left: 54.5%;
+    }
+    }
 
 </style>
 </body>

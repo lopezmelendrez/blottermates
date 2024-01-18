@@ -468,14 +468,26 @@ if (mysqli_num_rows($result) == 0) {
             margin-top: -5%; margin-left: 518px; width: 250px;
         }
 
-        @media screen and (min-width: 1331px){
+        @media screen and (min-width: 1331px) and (max-width: 1400px){
             .search-input{
-                width: 825px;
+                width: 75%;
             }
             .container{
-                width: 1015px;
+                width: 1000px;
             }
         }
+
+        @media screen and (min-width: 1340px) and (max-width: 1360px){
+            .cases-container{
+                width: 81.5%;
+            }
+            .sort-container{
+                margin-left: 65%;
+            }
+            .container{
+                width: 71%;
+            }
+}
 
         @media screen and (min-width: 1352px){
             .search-input{
@@ -488,7 +500,7 @@ if (mysqli_num_rows($result) == 0) {
 
         @media screen and (min-width: 1536px) and (min-height: 730px){
             .add-account{
-                margin-top: -4.2%;
+                margin-top: -4%;
             }
             .search-input{
                 width: 72.6%;
@@ -560,6 +572,8 @@ if (mysqli_num_rows($result) == 0) {
             }
         }
 
+        
+    
         @media screen and (min-width: 1360px) and (min-height: 681px){
             .search-input{
                 width: 71.3%;
@@ -574,6 +588,9 @@ if (mysqli_num_rows($result) == 0) {
         }
 
         @media screen and (min-width: 1500px) and (max-width: 1536px) and (min-height: 730px){
+            .add-account{
+                margin-top: -4.42%;
+            }
             .search-input{
                 width: 73.7%;
             }
@@ -588,9 +605,6 @@ if (mysqli_num_rows($result) == 0) {
             }
             .notify{
                 margin-left: 7%;
-            }
-            .add-account{
-                margin-top: -4.42%;
             }
         }
 
@@ -632,7 +646,6 @@ if (mysqli_num_rows($result) == 0) {
                 margin-left: 18%;
             }
         }
-
 
 
 

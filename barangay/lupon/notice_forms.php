@@ -1093,8 +1093,16 @@ function showPopup() {
 
 @media screen and (min-width: 1331px){
     .container{
-        margin-left: 14.5%;
         margin-top: 3.2%;
+        margin-left: 40%;
+    }
+}
+
+@media screen and (min-width: 1340px) and (max-width: 1360px){
+    .container{
+        width: 70%;
+        margin-left: 15.5%;
+        margin-top: 2.5%;
     }
 }
 
@@ -1108,7 +1116,7 @@ function showPopup() {
         .container{
             width: 70%;
             margin-left: 15%;
-            margin-top: 1.3%;
+            margin-top: 1.5%;
         }
         .container header:before{
             width: 296px;
@@ -1143,7 +1151,7 @@ function showPopup() {
 
     @media screen and (max-width: 1280px) and (max-height: 592px){
         .container{
-            width: 75%;
+            width: 76%;
             margin-top: 0.2%;
             margin-left: 13%;
         }
@@ -1163,6 +1171,18 @@ function showPopup() {
         }
         form .fields .input-field-1{
         width: 61rem;
+        }
+    }
+
+    @media screen and (max-width: 2133px) and (min-height: 1055px) and (max-height: 1058px){
+        .container{
+            width: 50%;
+            margin-left: 24.5%;
+            margin-top: 11.5%;
+        }
+        .modal{
+            margin-top: 16.5%;
+            margin-left: 4%;
         }
     }
 

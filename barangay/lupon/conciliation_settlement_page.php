@@ -580,6 +580,14 @@ function validateName(event) {
         }
     }
 
+    @media screen and (min-width: 1340px) and (max-width: 1360px){
+            .container{
+                width: 60%;
+                margin-left: 20%;
+                margin-top: 6.5%;
+            }
+}
+
     @media screen and (min-width: 1536px) and (min-height: 730px){
         .container{
             margin-left: 20%;
@@ -629,6 +637,17 @@ function validateName(event) {
         }
         .modal{
             margin-top: 14%;
+        }
+    }
+
+    @media screen and (max-width: 2133px) and (min-height: 1055px) and (max-height: 1058px){
+        .container{
+            width: 40%;
+            margin-left: 30.5%;
+            margin-top: 12%;
+        }
+        .modal{
+            margin-top: 15.3%;
         }
     }
 

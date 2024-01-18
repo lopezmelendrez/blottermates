@@ -474,15 +474,21 @@ if (mysqli_num_rows($result) == 0) {
                 width: 75%;
             }
             .container{
-                width: 1015px;
+                width: 1000px;
             }
         }
 
-        @media screen and (min-width: 1360px) and (max-width: 1365px){
-            .search-input{
-                width: 60%;
+        @media screen and (min-width: 1340px) and (max-width: 1360px){
+            .cases-container{
+                width: 81.5%;
             }
-        }
+            .sort-container{
+                margin-left: 65%;
+            }
+            .container{
+                width: 71%;
+            }
+}
 
         @media screen and (min-width: 1352px){
             .search-input{

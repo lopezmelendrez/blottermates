@@ -468,7 +468,7 @@ header('location: ../../index.php');
             margin-top: -3%;
             margin-left: 5%;
             }
-            .shownotices{
+            .shownotices, .hearing{
                 margin-left: 5%;
             }
         }
