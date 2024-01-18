@@ -432,7 +432,11 @@ label{
 @media screen and (min-width: 1331px){
     .container{
         margin-left: 13%;
-        margin-top: 7%;
+        margin-top: 6.3%;
+    }
+    .modal-content{
+        margin-left: 2%;
+        margin-top: -1%;
     }
 }
 
@@ -504,6 +508,16 @@ label{
         }
         .modal-content{
             margin-top: -1.5%;
+        }
+    }
+
+    @media screen and (max-width: 2133px) and (min-height: 1055px) and (max-height: 1058px){
+        .container{
+            margin-left: 27.5%;
+            margin-top: 13%;
+        }
+        .modal-content{
+            margin-top: -4%;
         }
     }
 
