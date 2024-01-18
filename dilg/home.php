@@ -118,12 +118,20 @@ $currentMonth = date("F");
 
 $query = "SELECT COUNT(*) AS total_ongoing_cases
 FROM `incident_report` AS ir
-WHERE NOT EXISTS (
+WHERE EXISTS (
+    SELECT 1
+    FROM `hearing` AS h
+    WHERE ir.incident_case_number = h.incident_case_number
+) AND NOT EXISTS (
+    SELECT 1
+    FROM `court_action` AS ca
+    WHERE ir.incident_case_number = ca.incident_case_number
+) AND NOT EXISTS (
     SELECT 1
     FROM `amicable_settlement` AS amicable
     WHERE ir.incident_case_number = amicable.incident_case_number
-)";
 
+)";
 
         $result = mysqli_query($conn, $query);
 
@@ -156,13 +164,17 @@ WHERE NOT EXISTS (
             <?php
        $select = mysqli_query($conn, "
        SELECT pb.barangay AS barangay, COUNT(ir.incident_case_number) AS total_cases
-       FROM `incident_report` AS ir
-       INNER JOIN `lupon_accounts` AS la ON ir.lupon_id = la.lupon_id
-       INNER JOIN `pb_accounts` AS pb ON la.pb_id = pb.pb_id
-       LEFT JOIN `amicable_settlement` AS amicable ON ir.incident_case_number = amicable.incident_case_number
-       WHERE amicable.hearing_id IS NULL
-       GROUP BY pb.barangay
-       ORDER BY total_cases DESC
+FROM `incident_report` AS ir
+INNER JOIN `lupon_accounts` AS la ON ir.lupon_id = la.lupon_id
+INNER JOIN `pb_accounts` AS pb ON la.pb_id = pb.pb_id
+LEFT JOIN `amicable_settlement` AS amicable ON ir.incident_case_number = amicable.incident_case_number
+LEFT JOIN `hearing` AS h ON ir.incident_case_number = h.incident_case_number
+LEFT JOIN `court_action` AS ca ON ir.incident_case_number = ca.incident_case_number
+WHERE amicable.hearing_id IS NULL
+AND h.incident_case_number IS NOT NULL
+AND ca.incident_case_number IS NULL
+GROUP BY pb.barangay
+ORDER BY total_cases DESC
    ") or die('query failed');
         
         while ($row = mysqli_fetch_assoc($select)) {
