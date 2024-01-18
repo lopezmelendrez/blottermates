@@ -85,7 +85,7 @@ if(isset($_REQUEST['reset']))
         <p style="font-size: 35px; text-align: center;"><b>PASSWORD RESET<b><p>
         <p style="font-size: 16px; margin-left: 10px; text-align: justify;">We have received a request to reset your password for your account. To proceed with the password reset, please click on the button below:<p>
          <div class="button-container">
-         <button class="btn btn-primary"><a href="http://localhost/barangay%20justice%20management%20system%2001/login/reset_password.php?secret='.base64_encode($email_address).'" style="text-decoration: none; color: #fff; font-weight: 600; text-transform: uppercase;">reset password</a></button>
+         <button class="btn btn-primary"><a href="http://brgyblotter-src.online/login/reset_password.php?secret='.base64_encode($email_address).'" style="text-decoration: none; color: #fff; font-weight: 600; text-transform: uppercase;">reset password</a></button>
          </div>
          <p style="font-size: 14px;">The password reset link expires in 15 minutes. If the link expires, request a new password reset email on our website.<p>
         <br>
@@ -138,6 +138,13 @@ else
     <title>Reset Password | Barangay Blotter Management System</title>
     </head>
     <body>
+        <div id="loadingOverlay" style="display:none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(255, 255, 255, 0.8); z-index: 9999;">
+    <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+        <img src="../images/loader-unscreen.gif" alt="Loading..." width="350" height="350">
+        <p class="validate-text">Processing, please wait...</p>
+    </div>
+</div>
+
 
         <center>
         <div class="container d-flex justify-content-center align-items-center min-vh-100">
@@ -162,23 +169,24 @@ else
             <i class="fas fa-times close-error" onclick="this.parentElement.remove();"></i>
         </div>
     <?php } ?>
-                    
 
-    <p style="font-size: 15px; margin-top: 3%; text-align: justify;">Enter the email address associated with your account to change your password.</p>
-            
     <?php
                             if(isset($success_msg)){
                                 foreach($success_msg as $success_msg){
                                     echo '   
                                     <div class="message d-flex" style="background: #e0f19c; border: none; border-radius: 5px; width: 100%; margin-top: 3%;">
-                                    <i class="error error-icon fas fa-circle-check" style="margin-left: 3%; margin-top: 0.6%; font-size: 20px; color: #2a4c09;"></i>
-                                    <div class="error error-txt" style="margin-left: 2%; font-size: 16px; margin-top: 0.5%; color: #2a4c09; font-weight: 600;">'.$success_msg.'</div>
+                                    <i class="fas fa-circle-check check" ></i>
+                                    <div class="success-msg" >'.$success_msg.'</div>
                                     <i class="fas fa-times success_error"  onclick="this.parentElement.remove();"></i>
                                     </div>
                                     ';
                                 }
                             }
                         ?>
+                    
+
+    <p style="font-size: 15px; margin-top: 3%; text-align: justify;">Enter the email address associated with your account to change your password.</p>
+            
 
     <form action="#" method="post">
                             <div class="custom-search" style="margin-top: 3%;">
@@ -226,9 +234,36 @@ else
                 }) 
             })
         })
+        
+         document.getElementById("loadingOverlay").style.display = "none"; // Initially hide the loading overlay
+
+    // Function to show the loading overlay
+    function showLoadingOverlay() {
+        document.getElementById("loadingOverlay").style.display = "block";
+    }
+
+    // Function to hide the loading overlay
+    function hideLoadingOverlay() {
+        document.getElementById("loadingOverlay").style.display = "none";
+    }
+
+    // Attach an event listener to the form to show the loading overlay on form submission
+    document.querySelector("form").addEventListener("submit", function() {
+        showLoadingOverlay();
+    });
     </script>
 
     <style>
+    
+        .check{
+            margin-left: 3%; margin-top: 0.6%; font-size: 20px; color: #2a4c09;
+        }
+
+        .success-msg{
+            margin-left: 1%; font-size: 14px; margin-top: 0.5%; color: #2a4c09; font-weight: 600;
+        }
+
+
     
     .header-text-1::after{
     content: "";
@@ -254,6 +289,15 @@ else
     line-height: 1;
     box-sizing: border-box;
     outline: none;
+}
+
+.validate-text{
+    font-size: 25px;
+    color: #171717;
+    font-weight: bolder;
+    letter-spacing: 1; 
+    text-transform: uppercase;
+    margin-top: 10px;
 }
 
 .custom-search-button {
@@ -297,7 +341,7 @@ else
 }
 
 .success_error{
-    margin-left: 15%; margin-top: 0.4%; font-size: 24px; color: #2a4c09;
+    margin-left: 1%; margin-top: 0.4%; font-size: 24px; color: #2a4c09;
 }
 
 .back{
