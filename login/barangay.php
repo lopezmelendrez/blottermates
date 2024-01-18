@@ -316,15 +316,50 @@ if (isset($_POST['submit'])) {
     }
 }
 
-@media screen and (min-width: 1536px) and (min-height: 730px){
-    .header-text-1{
-        margin-left: -180px;
-    }        
-    .header-text-1::after{
+@media screen and (min-width: 1500px) and (max-width: 1536px) and (min-height: 730px){
+            .header-text-1::after{
                 width: 67.5%;
-                margin-left: -180px;
+                margin-left: -25%;
+            }
+            .header-text-1{
+                margin-left: -25%;
+            }
+            .input-group1{
+                margin-left: 15%;
             }
         }
+
+        @media screen and (min-width: 1280px) and (max-width: 1290px) and (min-height: 569px){
+            .header-text, .header-text::after{
+                margin-left: 4%;
+            }
+            .barangay-btn{
+                margin-left: 7.5%;
+            }
+        }
+
+        
+@media screen and (min-width: 1331px) and (max-width: 1400px){
+    .header-text-1, .header-text-1::after{
+        margin-left: -15%;
+    }
+}
+
+@media screen and (min-width: 2133px) and (min-height: 1058px){
+    .header-text-1, .header-text-1::after{
+        margin-left: -25%;
+    }
+    .header-text-1::after{
+        width: 66.9%;
+    }
+    .input-group1{
+        margin-left: 18%;
+    }
+    footer{
+        margin-top: -2%;
+    }
+}
+    
 </style>
 
 </html>

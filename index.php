@@ -38,7 +38,7 @@
                         </div>
                         <div class="col-md-6">
                             <a href="login/dilg.php" style="text-decoration: none;">
-                            <button class="btn btn-danger d-flex flex-column align-items-center" style="height: 150px; width: 240px; font-size: 22px;">
+                            <button class="btn btn-danger d-flex flex-column align-items-center dilg-btn" style="height: 150px; width: 240px; font-size: 22px;">
                                 <i class="fa-solid fa-circle-user fa-3x mb-2" style="margin-top: 8%;"></i>
                                 <hr style="border: 1px solid white; width: 100%; margin: 5px 0;">DILG
                             </button></a>
@@ -73,11 +73,68 @@
             }
         }
 
-        @media screen and (min-width: 1536px) and (min-height: 730px){
+        @media screen and (min-width: 1500px) and (max-width: 1536px) and (min-height: 730px){
             .header-text::after{
                 width: 67.5%;
+                margin-left: 4%;
+            }
+            .header-text{
+                margin-left: 4%;
+            }
+            .barangay-btn{
+                margin-left: 10%;
+                margin-top: -5.5%;
+            }
+            .dilg-btn{
+                margin-top: -5.5%;
+                margin-left: -18%;
             }
         }
+
+        @media screen and (min-width: 1280px) and (max-width: 1290px) and (min-height: 569px){
+            .header-text, .header-text::after{
+                margin-left: 4%;
+            }
+            .barangay-btn{
+                margin-left: 7.5%;
+            }
+        }
+
+        
+@media screen and (min-width: 1331px) and (max-width: 1400px){
+    .header-text{
+        margin-left: 3%;
+    }
+    .header-text::after{
+        margin-left: 3%;
+        width: 79%;
+    }
+    .barangay-btn{
+        margin-left: 6.9%;
+    }
+}
+
+@media screen and (min-width: 2133px) and (min-height: 1058px){
+    .header-text, .header-text::after{
+        margin-left: 5%;
+    }
+    .header-text::after{
+        width: 67.9%;
+    }
+    .barangay-btn{
+        margin-left: 19%;
+        margin-top: -3%;
+    }
+    .dilg-btn{
+        margin-left: -15%;
+        margin-top: -3%;
+    }
+    footer{
+        margin-top: -2%;
+    }
+}
+    </style>
+
     </style>
     
 </html>

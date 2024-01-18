@@ -854,6 +854,10 @@ if ($rowCount >= 3) {
         }
 
 }
+
+@media screen and (min-width: 1350px) and (max-width: 1360px) and (min-height: 645px) and (max-height: 650px){
+    
+}
     </style>
 
 </body>

@@ -254,6 +254,12 @@ if($_GET['secret'])
             }
         }
 
+        @media screen and (min-width: 2133px) and (min-height: 1058px){
+    footer{
+        margin-top: -2%;
+    }
+}
+
     </style>
 
 </html>
