@@ -50,6 +50,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit'])) {
     $incident_case_number = $_POST['incident_case_number'];
     $signatureData = mysqli_real_escape_string($conn, $_POST["lupon_signature"]);
 
+    $manilaTime = new DateTime('now', new DateTimeZone('Asia/Manila'));
+    $created_at = $manilaTime->format('Y-m-d H:i:s');
+
     $select_hearing_id_query = "SELECT hearing_id FROM hearing WHERE incident_case_number = '$incident_case_number'";
     $select_hearing_id_result = mysqli_query($conn, $select_hearing_id_query);
 
@@ -59,14 +62,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit'])) {
 
         // Update your INSERT query to include the `timestamp` column and set it to the current timestamp
         $insert_query = "INSERT INTO `arbitration_agreement` (`lupon_signature`, `hearing_id`, `incident_case_number`, `timestamp`)
-        VALUES ('$signatureData', '$hearing_id', '$incident_case_number', NOW())";
+        VALUES ('$signatureData', '$hearing_id', '$incident_case_number', $created_at')";
 
         $insert_result = mysqli_query($conn, $insert_query);
 
         if ($insert_result) {
             $incident_case_number = $_POST['incident_case_number'];
             echo '<script>';
-            echo 'window.open("http://localhost/barangay%20justice%20management%20system%2001/tcpdf/agreement_for_arbitration.php?incident_case_number=' . $incident_case_number . '", "_blank");';
+            echo 'window.open("http://localhost/brgyblotter-src.online/tcpdf/agreement_for_arbitration.php?incident_case_number=' . $incident_case_number . '", "_blank");';
             echo 'window.location.href = "arbitration_hearings.php";';
             echo '</script>';
             exit;

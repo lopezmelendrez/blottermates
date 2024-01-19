@@ -10,12 +10,11 @@ session_start();
 $pb_id = $_SESSION['pb_id'];
 $barangay_captain = $_SESSION['barangay_captain'];
 
-if(!isset($pb_id)){
-header('location: ../index.php');
+if (!isset($pb_id)) {
+    header('location: ../index.php');
 }
 
 if (isset($_POST['submit'])) {
-    // Sanitize and validate user input
     $first_name = mysqli_real_escape_string($conn, $_POST["first_name"]);
     $last_name = mysqli_real_escape_string($conn, $_POST["last_name"]);
     $email_address = mysqli_real_escape_string($conn, $_POST["email_address"]);
@@ -23,40 +22,44 @@ if (isset($_POST['submit'])) {
     $confirmPassword = mysqli_real_escape_string($conn, $_POST["confirmPassword"]);
     $signatureData = mysqli_real_escape_string($conn, $_POST["signatureData"]);
 
-    // Check if passwords match
+    $manilaTime = new DateTime('now', new DateTimeZone('Asia/Manila'));
+    $timestamp = $manilaTime->format('Y-m-d H:i:s');
+
     if ($password != $confirmPassword) {
         $error = "Passwords do not Match";
     } else {
-        // Validate email address format
         if (!filter_var($email_address, FILTER_VALIDATE_EMAIL)) {
             $error = "Invalid Email Address";
         } else {
-            // Check if the email address already exists in the lupon_accounts table
-            $email_check_query = "SELECT * FROM lupon_accounts WHERE email_address='$email_address' LIMIT 1";
-            $result = $conn->query($email_check_query);
+            $email_check_query = "SELECT * FROM lupon_accounts WHERE email_address=? LIMIT 1";
+            $stmt = $conn->prepare($email_check_query);
+            $stmt->bind_param("s", $email_address);
+            $stmt->execute();
+            $result = $stmt->get_result();
 
             if ($result->num_rows > 0) {
                 $msg_error = "Email Address already exists";
             } else {
-                // Hash the password for security
                 $hashed_password = password_hash($password, PASSWORD_DEFAULT);
+                $sql = "INSERT INTO lupon_accounts (first_name, last_name, email_address, password, pb_id, signature_image, timestamp) VALUES (?, ?, ?, ?, ?, ?, ?)";
+                $stmt = $conn->prepare($sql);
+                $stmt->bind_param("ssssiss", $first_name, $last_name, $email_address, $hashed_password, $pb_id, $signatureData, $timestamp);
 
-                // Insert data into the 'lupon_accounts' table
-                $sql = "INSERT INTO lupon_accounts (first_name, last_name, email_address, password, pb_id, signature_image) VALUES ('$first_name', '$last_name', '$email_address', '$hashed_password', '$pb_id', '$signatureData')";
-
-                if ($conn->query($sql) === TRUE) {
-                    // Redirect to manage_accounts.php after successful account creation
+                if ($stmt->execute()) {
                     header("Location: manage_accounts.php");
                     exit();
                 } else {
-                    echo "Error: " . $sql . "<br>" . $conn->error;
+                    echo "Error: " . $stmt->error;
                 }
             }
+
+            $stmt->close();
         }
     }
 }
 
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">

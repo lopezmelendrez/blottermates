@@ -64,7 +64,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['conciliation_submit']
     $incident_case_number = $_POST['incident_case_number'];
     $hearing_type_status = 'conciliation';
 
-    $update_query = "UPDATE `hearing` SET `hearing_type_status` = '$hearing_type_status', `date_of_hearing` = NULL, `time_of_hearing` = NULL, `conciliation_timestamp` = NOW() WHERE incident_case_number = '$incident_case_number'";
+    $manilaTime = new DateTime('now', new DateTimeZone('Asia/Manila'));
+    $created_at = $manilaTime->format('Y-m-d H:i:s');
+
+    $update_query = "UPDATE `hearing` SET `hearing_type_status` = '$hearing_type_status', `date_of_hearing` = NULL, `time_of_hearing` = NULL, `conciliation_timestamp` = '$created_at' WHERE incident_case_number = '$incident_case_number'";
     $result = mysqli_query($conn, $update_query);
 
     if ($result) {
@@ -87,7 +90,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['arbitration_submit'])
     $incident_case_number = $_POST['incident_case_number'];
     $hearing_type_status = 'arbitration';
 
-    $update_query = "UPDATE `hearing` SET `hearing_type_status` = '$hearing_type_status', `date_of_hearing` = NULL, `time_of_hearing` = NULL, `arbitration_timestamp` = NOW() WHERE incident_case_number = '$incident_case_number'";
+    $manilaTime = new DateTime('now', new DateTimeZone('Asia/Manila'));
+    $created_at = $manilaTime->format('Y-m-d H:i:s');
+
+    $update_query = "UPDATE `hearing` SET `hearing_type_status` = '$hearing_type_status', `date_of_hearing` = NULL, `time_of_hearing` = NULL, `arbitration_timestamp` = '$created_at' WHERE incident_case_number = '$incident_case_number'";
     $result = mysqli_query($conn, $update_query);
 
     if ($result) {
@@ -132,6 +138,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $agreement_description = $_POST['agreement_description'];
     $incident_case_number = $_POST['incident_case_number'];
 
+    $manilaTime = new DateTime('now', new DateTimeZone('Asia/Manila'));
+    $created_at = $manilaTime->format('Y-m-d H:i:s');
+
     $select_hearing_id_query = "SELECT hearing_id FROM hearing WHERE incident_case_number = '$incident_case_number'";
     $select_hearing_id_result = mysqli_query($conn, $select_hearing_id_query);
 
@@ -141,7 +150,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         // Update your INSERT query to include the `timestamp` column and set it to the current timestamp
         $insert_query = "INSERT INTO `amicable_settlement` (`agreement_description`, `hearing_id`, `incident_case_number`, `timestamp`)
-        VALUES ('$agreement_description', '$hearing_id', '$incident_case_number', NOW())";
+        VALUES ('$agreement_description', '$hearing_id', '$incident_case_number', '$created_at')";
 
         $insert_result = mysqli_query($conn, $insert_query);
 

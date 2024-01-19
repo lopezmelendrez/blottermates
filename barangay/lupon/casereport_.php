@@ -11,35 +11,6 @@ if(!isset($email)){
 header('location: ../../index.php');
 }
 
-$generate_execution = '';
-
-
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['execution_submit'])) {
-    $incident_case_number = $_POST['incident_case_number'];
-    $generate_execution = 'form generated';
-
-    $check_query = "SELECT * FROM `notify_residents` WHERE incident_case_number = '$incident_case_number'";
-    $check_result = mysqli_query($conn, $check_query);
-
-    if ($check_result && mysqli_num_rows($check_result) > 0) {
-        $update_query = "UPDATE `notify_residents` SET `generate_execution` = '$generate_execution' WHERE incident_case_number = '$incident_case_number'";
-        $result = mysqli_query($conn, $update_query);
-    } else {
-        $insert_query = "INSERT INTO `notify_residents` (`incident_case_number`, `generate_execution`)
-                         VALUES ('$incident_case_number', '$generate_execution')";
-        $result = mysqli_query($conn, $insert_query);
-    }
-
-    if ($result) {
-        header("Location: incident_reports.php");
-        exit;
-    } else {
-        echo "Error: " . mysqli_error($conn);
-        exit;
-    }
-}
-
-
 ?>
 
 <!DOCTYPE html>
@@ -561,6 +532,10 @@ if ($fetch['barangay'] == 'Ibaba') {
             margin-top: 0.05%;
             margin-left: 15%;
             width: 70%;
+        }
+
+        .container header::before{
+            width: 403px;
         }
     }
 

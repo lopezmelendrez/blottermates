@@ -46,7 +46,7 @@ function updateLoginAttempts($conn, $email, $attempts)
     mysqli_stmt_close($stmt);
 }
 
-function getLastFailedAttemptTimestamp($conn, $email)
+function getLastFailedAttemptTimestampManilaTime($conn, $email)
 {
     $query = "SELECT last_failed_attempt FROM lupon_accounts WHERE email_address = ?";
     $stmt = mysqli_prepare($conn, $query);
@@ -57,7 +57,11 @@ function getLastFailedAttemptTimestamp($conn, $email)
     mysqli_stmt_close($stmt);
 
     if ($timestamp) {
-        return strtotime($timestamp);
+        $manilaTimezone = new DateTimeZone('Asia/Manila');
+        $dateTime = new DateTime($timestamp);
+        $dateTime->setTimezone($manilaTimezone);
+
+        return $dateTime->format('Y-m-d H:i:s');
     }
 
     $query = "SELECT last_failed_attempt FROM pb_accounts WHERE email_address = ?";
@@ -68,11 +72,21 @@ function getLastFailedAttemptTimestamp($conn, $email)
     mysqli_stmt_fetch($stmt);
     mysqli_stmt_close($stmt);
 
-    return $timestamp ? strtotime($timestamp) : 0;
+    if ($timestamp) {
+        $manilaTimezone = new DateTimeZone('Asia/Manila');
+        $dateTime = new DateTime($timestamp);
+        $dateTime->setTimezone($manilaTimezone);
+
+        return $dateTime->format('Y-m-d H:i:s');
+    }
+
+    return 0;
 }
+
 
 function updateLastFailedAttemptTimestamp($conn, $email, $timestamp)
 {
+
     $formattedTimestamp = date('Y-m-d H:i:s', $timestamp);
     $query = "UPDATE lupon_accounts SET last_failed_attempt = ? WHERE email_address = ?";
     $stmt = mysqli_prepare($conn, $query);
@@ -177,8 +191,6 @@ if (isset($_POST['submit'])) {
     }
 }
 ?>
-
-
 
 <!DOCTYPE html>
 <html lang="en">

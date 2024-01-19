@@ -37,6 +37,9 @@ if (isset($_POST['submit'])) {
     $confirmPassword = mysqli_real_escape_string($conn, $_POST["confirmPassword"]);
     $signatureData = mysqli_real_escape_string($conn, $_POST["signatureData"]);
 
+    $manilaTime = new DateTime('now', new DateTimeZone('Asia/Manila'));
+    $created_at = $manilaTime->format('Y-m-d H:i:s');
+
     // Check if passwords match
     if ($password != $confirmPassword) {
         // Handle password mismatch error
@@ -46,7 +49,7 @@ if (isset($_POST['submit'])) {
         $hashed_password = password_hash($password, PASSWORD_DEFAULT);
 
         // Insert data into the 'pb_accounts' table
-        $sql = "INSERT INTO pb_accounts (account_id, barangay, barangay_captain, email_address, password, signature_image) VALUES ('$account_id', '$barangay', '$barangay_captain', '$email_address', '$hashed_password', '$signatureData')";
+        $sql = "INSERT INTO pb_accounts (account_id, barangay, barangay_captain, email_address, password, signature_image, created_at) VALUES ('$account_id', '$barangay', '$barangay_captain', '$email_address', '$hashed_password', '$signatureData', '$created_at')";
 
 
         if ($conn->query($sql) === TRUE) {

@@ -42,6 +42,10 @@ if (isset($_POST['submit'])) {
     $image_tmp_name = $_FILES['attachment']['tmp_name'];
     $image_folder = 'uploads/'.$image;
 
+    $manilaTime = new DateTime('now', new DateTimeZone('Asia/Manila'));
+    $created_at = $manilaTime->format('Y-m-d H:i:s');
+
+
     $select_query = "SELECT incident_case_number FROM incident_report WHERE incident_case_number = ?";
     $stmt_select = mysqli_prepare($conn, $select_query);
     mysqli_stmt_bind_param($stmt_select, "s", $incident_case_number);
@@ -61,13 +65,13 @@ if (isset($_POST['submit'])) {
 
             move_uploaded_file($image_tmp_name, $image_folder);
 
-            $insert_query = "INSERT INTO `incident_report` (complainant_last_name, complainant_first_name, complainant_middle_name, complainant_cellphone_number, complainant_house_address, respondent_last_name, respondent_first_name, respondent_middle_name, respondent_cellphone_number, respondent_house_address, incident_case_number, incident_case_type, other_incident_case_type, incident_date, description_of_violation, created_at, pb_id, submitter_first_name, submitter_last_name, lupon_id, attachment) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), ?, ?, ?, ?, ?)";
-        $stmt_insert = mysqli_prepare($conn, $insert_query);
+            $insert_query = "INSERT INTO `incident_report` (complainant_last_name, complainant_first_name, complainant_middle_name, complainant_cellphone_number, complainant_house_address, respondent_last_name, respondent_first_name, respondent_middle_name, respondent_cellphone_number, respondent_house_address, incident_case_number, incident_case_type, other_incident_case_type, incident_date, description_of_violation, created_at, pb_id, submitter_first_name, submitter_last_name, lupon_id, attachment) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            $stmt_insert = mysqli_prepare($conn, $insert_query);
         
-        mysqli_stmt_bind_param($stmt_insert, "ssssssssssssssssssss", 
+        mysqli_stmt_bind_param($stmt_insert, "sssssssssssssssssssss", 
             $complainant_last_name, $complainant_first_name, $complainant_middle_name, $complainant_cellphone_number, $complainant_house_address, 
             $respondent_last_name, $respondent_first_name, $respondent_middle_name, $respondent_cellphone_number, $respondent_house_address, 
-            $incident_case_number, $incident_case_type, $other_incident_case_type, $incident_date, $description_of_violation, 
+            $incident_case_number, $incident_case_type, $other_incident_case_type, $incident_date, $description_of_violation, $created_at,
             $pb_id, $submitter_first_name, $submitter_last_name, $lupon_id, $image
         );
 

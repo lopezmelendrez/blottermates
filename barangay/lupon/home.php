@@ -10,6 +10,10 @@ if (!isset($email)) {
     header('location: ../../index.php');
 }
 
+$manilaTime = new DateTime('now', new DateTimeZone('Asia/Manila'));
+$created_at = $manilaTime->format('Y-m-d H:i:s');
+
+
 // Get pb_id using prepared statement
 $selectLuponId = mysqli_prepare($conn, "SELECT pb_id FROM `lupon_accounts` WHERE email_address = ?");
 mysqli_stmt_bind_param($selectLuponId, "s", $email);
@@ -74,14 +78,14 @@ if (isset($_POST['submit'])) {
         mysqli_stmt_fetch($selectSubmitter);
 
         // Insert into monthly_reports using prepared statement
-        $insertMonthlyReport = mysqli_prepare($conn, "INSERT INTO `monthly_reports` (generate_report, timestamp, lupon_id, submitter_first_name, submitter_last_name, pb_id) VALUES (?, NULL, ?, ?, ?, ?)");
-        mysqli_stmt_bind_param($insertMonthlyReport, "sissi", $generate_report, $lupon_id, $submitter_first_name, $submitter_last_name, $pb_id);
+        $insertMonthlyReport = mysqli_prepare($conn, "INSERT INTO `monthly_reports` (generate_report, timestamp, lupon_id, submitter_first_name, submitter_last_name, pb_id) VALUES (?, ?, ?, ?, ?, ?)");
+        mysqli_stmt_bind_param($insertMonthlyReport, "ssissi", $generate_report, $created_at, $lupon_id, $submitter_first_name, $submitter_last_name, $pb_id);
         mysqli_stmt_execute($insertMonthlyReport);
 
         mysqli_stmt_close($insertMonthlyReport);
 
         echo '<script>';
-        echo 'window.open("http://localhost/barangay%20justice%20management%20system%2001/tcpdf/monthly_transmittal_report.php?luponId=' . $lupon_id . '", "_blank");';
+        echo 'window.open("http://brgyblotter-src.online/tcpdf/monthly_transmittal_report.php?luponId=' . $lupon_id . '", "_blank");';
         echo 'window.location.href = window.location.href;';
         echo '</script>';
     }

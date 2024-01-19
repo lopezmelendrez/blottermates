@@ -13,18 +13,14 @@ header('location: ../../index.php');
 
 function displayPage($conn, $incident_case_number)
 {
-    // Check if the incident case number exists in the amicable_settlement table
     $check_query = "SELECT * FROM amicable_settlement WHERE incident_case_number = '$incident_case_number'";
     $check_result = mysqli_query($conn, $check_query);
 
     if ($check_result && mysqli_num_rows($check_result) > 0) {
-        // If the incident case number is found in the amicable_settlement table, redirect to settled_cases.php
         header('location: settled_cases.php');
-        exit(); // Ensure that the script stops executing after the redirection
+        exit(); 
     }
 
-    // Continue with the rest of your existing code for the hearing table
-    // Construct a SELECT query to fetch information from the 'hearing' table
     $select_query = "SELECT hearing_type_status, date_of_hearing FROM hearing WHERE incident_case_number = '$incident_case_number'";
 
     // Execute the SELECT query using the provided database connection ($conn)
@@ -85,6 +81,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $agreement_description = $_POST['agreement_description'];
     $incident_case_number = $_POST['incident_case_number'];
 
+    $manilaTime = new DateTime('now', new DateTimeZone('Asia/Manila'));
+    $created_at = $manilaTime->format('Y-m-d H:i:s');
+
     $select_hearing_id_query = "SELECT hearing_id FROM hearing WHERE incident_case_number = '$incident_case_number'";
     $select_hearing_id_result = mysqli_query($conn, $select_hearing_id_query);
 
@@ -92,9 +91,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $fetch_hearing = mysqli_fetch_assoc($select_hearing_id_result);
         $hearing_id = $fetch_hearing['hearing_id'];
 
-        // Update your INSERT query to include the `timestamp` column and set it to the current timestamp
         $insert_query = "INSERT INTO `amicable_settlement` (`agreement_description`, `hearing_id`, `incident_case_number`, `timestamp`)
-        VALUES ('$agreement_description', '$hearing_id', '$incident_case_number', NOW())";
+        VALUES ('$agreement_description', '$hearing_id', '$incident_case_number', $created_at')";
 
         $insert_result = mysqli_query($conn, $insert_query);
 

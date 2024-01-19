@@ -16,22 +16,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['execution_submit'])) 
     $incident_case_number = $_POST['incident_case_number'];
     $generate_execution = 'form generated';
 
+    $manilaTime = new DateTime('now', new DateTimeZone('Asia/Manila'));
+    $created_at = $manilaTime->format('Y-m-d H:i:s');
+
     $check_query = "SELECT * FROM `notify_residents` WHERE incident_case_number = '$incident_case_number'";
     $check_result = mysqli_query($conn, $check_query);
 
     if ($check_result && mysqli_num_rows($check_result) > 0) {
-        $update_query = "UPDATE `notify_residents` SET `generate_execution` = '$generate_execution' WHERE incident_case_number = '$incident_case_number'";
+        $update_query = "UPDATE `notify_residents` SET `generate_execution` = '$generate_execution', `generated_execution_timestamp` = '$created_at'  WHERE incident_case_number = '$incident_case_number'";
         $result = mysqli_query($conn, $update_query);
     } else {
-        $insert_query = "INSERT INTO `notify_residents` (`incident_case_number`, `generate_execution`)
-                         VALUES ('$incident_case_number', '$generate_execution')";
+        $insert_query = "INSERT INTO `notify_residents` (`incident_case_number`, `generate_execution`, `generated_execution_timestamp`)
+                         VALUES ('$incident_case_number', '$generate_execution', '$created_at')";
         $result = mysqli_query($conn, $insert_query);
     }
 
     if ($result) {
         $incident_case_number = $_POST['incident_case_number'];
         echo '<script>';
-        echo 'window.open("http://localhost/barangay%20justice%20management%20system%2001/tcpdf/motion_for_execution.php?incident_case_number=' . $incident_case_number . '", "_blank");';
+        echo 'window.open("http://brgyblotter-src.online/tcpdf/motion_for_execution.php?incident_case_number=' . $incident_case_number . '", "_blank");';
         echo 'window.location.href = window.location.href;';
         echo '</script>';
         exit;
@@ -812,6 +815,10 @@ if (input.value.length > 0 && input.value[0] === ' ') {
             margin-top: 0.05%;
             margin-left: 15%;
             width: 70%;
+        }
+
+        .container header::before{
+            width: 403px;
         }
     }
 

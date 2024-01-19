@@ -11,27 +11,21 @@ if (!isset($email)) {
 
 function displayPage($conn, $incident_case_number)
 {
-    // Check if the incident case number is found in the hearing table
     $check_hearing_query = "SELECT * FROM hearing WHERE incident_case_number = '$incident_case_number'";
     $check_hearing_result = mysqli_query($conn, $check_hearing_query);
 
     if ($check_hearing_result && mysqli_num_rows($check_hearing_result) > 0) {
-        // If incident_case_number is found in the hearing table, check additional conditions
-
+    
         $hearing_row = mysqli_fetch_assoc($check_hearing_result);
 
-        // Check if incident_case_number is not found in the amicable_settlement table
         $check_amicable_query = "SELECT * FROM amicable_settlement WHERE incident_case_number = '$incident_case_number'";
         $check_amicable_result = mysqli_query($conn, $check_amicable_query);
 
-        // Check if the hearing_type_status is not "filed to court action"
         if ($check_amicable_result && mysqli_num_rows($check_amicable_result) == 0 && $hearing_row['hearing_type_status'] != 'filed to court action') {
-            // If all conditions are met, return true
             return true;
         }
     }
 
-    // If the conditions are not met or there was an issue with the queries, return false
     return false;
 }
 
@@ -52,22 +46,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit'])) {
     $incident_case_number = $_POST['incident_case_number'];
     $generate_summon = 'form generated';
 
+    $manilaTime = new DateTime('now', new DateTimeZone('Asia/Manila'));
+    $created_at = $manilaTime->format('Y-m-d H:i:s');
+
     $check_query = "SELECT * FROM `notify_residents` WHERE incident_case_number = '$incident_case_number'";
     $check_result = mysqli_query($conn, $check_query);
 
     if ($check_result && mysqli_num_rows($check_result) > 0) {
-        $update_query = "UPDATE `notify_residents` SET `generate_summon` = '$generate_summon', `generated_summon_timestamp` = NOW() WHERE incident_case_number = '$incident_case_number'";
+        $update_query = "UPDATE `notify_residents` SET `generate_summon` = '$generate_summon', `generated_summon_timestamp` = '$created_at' WHERE incident_case_number = '$incident_case_number'";
         $result = mysqli_query($conn, $update_query);
     } else {
         $insert_query = "INSERT INTO `notify_residents` (`incident_case_number`, `generate_summon`, `generated_summon_timestamp`)
-                         VALUES ('$incident_case_number', '$generate_summon', NOW())";
+                         VALUES ('$incident_case_number', '$generate_summon', '$created_at')";
         $result = mysqli_query($conn, $insert_query);
     }
 
     if ($result) {
         $incident_case_number = $_POST['incident_case_number'];
         echo '<script>';
-        echo 'window.open("http://localhost/barangay%20justice%20management%20system%2001/tcpdf/summon_for_the_respondent_form.php?incident_case_number=' . $incident_case_number . '", "_blank");';
+        echo 'window.open("http://brgyblotter-src.online/tcpdf/summon_for_the_respondent_form.php?incident_case_number=' . $incident_case_number . '", "_blank");';
         echo 'window.location.href = window.location.href;';
         echo '</script>';
         exit;
@@ -81,11 +78,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['hearing_submit'])) {
     $incident_case_number = $_POST['incident_case_number'];
     $generate_hearing = 'form generated';
 
+    $manilaTime = new DateTime('now', new DateTimeZone('Asia/Manila'));
+    $created_at = $manilaTime->format('Y-m-d H:i:s');
+
     $check_query = "SELECT * FROM `notify_residents` WHERE incident_case_number = '$incident_case_number'";
     $check_result = mysqli_query($conn, $check_query);
 
     if ($check_result && mysqli_num_rows($check_result) > 0) {
-        $update_query = "UPDATE `notify_residents` SET `generate_hearing` = '$generate_hearing', `generated_hearing_timestamp` = NOW() WHERE incident_case_number = '$incident_case_number'";
+        $update_query = "UPDATE `notify_residents` SET `generate_hearing` = '$generate_hearing', `generated_hearing_timestamp` = '$created_at' WHERE incident_case_number = '$incident_case_number'";
         $result = mysqli_query($conn, $update_query);
     } else {
         $insert_query = "INSERT INTO `notify_residents` (`incident_case_number`, `generate_hearing`, `generated_hearing_timestamp`)
@@ -96,7 +96,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['hearing_submit'])) {
     if ($result) {
         $incident_case_number = $_POST['incident_case_number'];
         echo '<script>';
-        echo 'window.open("http://localhost/barangay%20justice%20management%20system%2001/tcpdf/notice_of_hearing_form.php?incident_case_number=' . $incident_case_number . '", "_blank");';
+        echo 'window.open("http://brgyblotter-src.online/tcpdf/notice_of_hearing_form.php?incident_case_number=' . $incident_case_number . '", "_blank");';
         echo 'window.location.href = window.location.href;';
         echo '</script>';
         exit;
@@ -111,22 +111,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['pangkat_submit'])) {
     $incident_case_number = $_POST['incident_case_number'];
     $generate_pangkat = 'form generated';
 
+    $manilaTime = new DateTime('now', new DateTimeZone('Asia/Manila'));
+    $created_at = $manilaTime->format('Y-m-d H:i:s');
+
     $check_query = "SELECT * FROM `notify_residents` WHERE incident_case_number = '$incident_case_number'";
     $check_result = mysqli_query($conn, $check_query);
 
     if ($check_result && mysqli_num_rows($check_result) > 0) {
-        $update_query = "UPDATE `notify_residents` SET `generate_pangkat` = '$generate_pangkat', `generated_pangkat_timestamp` = NOW() WHERE incident_case_number = '$incident_case_number'";
+        $update_query = "UPDATE `notify_residents` SET `generate_pangkat` = '$generate_pangkat', `generated_pangkat_timestamp` = '$created_at' WHERE incident_case_number = '$incident_case_number'";
         $result = mysqli_query($conn, $update_query);
     } else {
         $insert_query = "INSERT INTO `notify_residents` (`incident_case_number`, `generate_pangkat`, `generated_pangkat_timestamp`)
-                         VALUES ('$incident_case_number', '$generate_pangkat', NOW())";
+                         VALUES ('$incident_case_number', '$generate_pangkat', '$created_at')";
         $result = mysqli_query($conn, $insert_query);
     }
 
     if ($result) {
         $incident_case_number = $_POST['incident_case_number'];
         echo '<script>';
-        echo 'window.open("http://localhost/barangay%20justice%20management%20system%2001/tcpdf/generate_kp10.php?incident_case_number=' . $incident_case_number . '", "_blank");';
+        echo 'window.open("http://brgyblotter-src.online/tcpdf/generate_kp10.php?incident_case_number=' . $incident_case_number . '", "_blank");';
         echo 'window.location.href = window.location.href;';
         echo '</script>';
         exit;
@@ -142,22 +145,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['notify_complainant_su
     $incident_case_number = $_POST['incident_case_number'];
     $notify_hearing = 'notified';
 
+    $manilaTime = new DateTime('now', new DateTimeZone('Asia/Manila'));
+    $created_at = $manilaTime->format('Y-m-d H:i:s');
+
     $check_query = "SELECT * FROM `notify_residents` WHERE incident_case_number = '$incident_case_number'";
     $check_result = mysqli_query($conn, $check_query);
 
     if ($check_result && mysqli_num_rows($check_result) > 0) {
         $update_query =  "UPDATE `notify_residents` 
-        SET `notify_hearing` = '$notify_hearing', `hearing_notified` = NOW() 
+        SET `notify_hearing` = '$notify_hearing', `hearing_notified` = '$created_at' 
         WHERE incident_case_number = '$incident_case_number'";
         $result = mysqli_query($conn, $update_query);
     } else {
         $insert_query = "INSERT INTO `notify_residents` (`incident_case_number`, `notify_hearing`, `hearing_notified`)
-        VALUES ('$incident_case_number', '$notify_hearing', NOW())";
+        VALUES ('$incident_case_number', '$notify_hearing', '$created_at')";
         $result = mysqli_query($conn, $insert_query);
     }
 
     if ($result) {
-        // Fetch complainant_cellphone_number from incident_report table
+    
         $complainant_query = "SELECT complainant_cellphone_number FROM `incident_report` WHERE incident_case_number = '$incident_case_number'";
         $complainant_result = mysqli_query($conn, $complainant_query);
 
@@ -174,7 +180,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['notify_complainant_su
             $send_data = [
                 'sender_id' => 'PhilSMS',
                 'recipient' => $complainant_cellphone_number, // Use complainant's cellphone number
-                'message' => "Hello, this is to inform you that the Notice of Hearing for your Incident Case is now in progress. To track updates easily, use our online platform: http://localhost/barangay%20justice%20management%20system%2001/resident/track_case.php?incident_case_number=$incident_case_number 
+                'message' => "Hello, this is to inform you that the Notice of Hearing for your Incident Case is now in progress. To track updates easily, use our online platform: http://brgyblotter-src.online/resident/track_case.php?incident_case_number=$incident_case_number 
 For any questions, contact Barangay Ibaba, Santa Rosa Laguna. Thank you for your cooperation.",
             ];
 
@@ -217,17 +223,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['notify_respondent_sub
     $incident_case_number = $_POST['incident_case_number'];
     $notify_summon = 'notified';
 
+    $manilaTime = new DateTime('now', new DateTimeZone('Asia/Manila'));
+    $created_at = $manilaTime->format('Y-m-d H:i:s');
+
     $check_query = "SELECT * FROM `notify_residents` WHERE incident_case_number = '$incident_case_number'";
     $check_result = mysqli_query($conn, $check_query);
 
     if ($check_result && mysqli_num_rows($check_result) > 0) {
         $update_query = "UPDATE `notify_residents` 
-        SET `notify_summon` = '$notify_summon', `summon_notified` = NOW() 
+        SET `notify_summon` = '$notify_summon', `summon_notified` = '$created_at' 
         WHERE incident_case_number = '$incident_case_number'";
         $result = mysqli_query($conn, $update_query);
     } else {
         $insert_query = "INSERT INTO `notify_residents` (`incident_case_number`, `notify_summon`, `summon_notified`)
-        VALUES ('$incident_case_number', '$notify_summon', NOW())";
+        VALUES ('$incident_case_number', '$notify_summon', '$created_at')";
         $result = mysqli_query($conn, $insert_query);
     }
 
@@ -249,7 +258,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['notify_respondent_sub
             $send_data = [
                 'sender_id' => 'PhilSMS',
                 'recipient' => $respondent_cellphone_number, // Use complainant's cellphone number
-                'message' => "Hello, this is to inform you that the Notice of Hearing for your Incident Case is now in progress. To track updates easily, use our online platform: http://localhost/barangay%20justice%20management%20system%2001/resident/track_case.php?incident_case_number=$incident_case_number 
+                'message' => "Hello, this is to inform you that the Notice of Hearing for your Incident Case is now in progress. To track updates easily, use our online platform: http://brgyblotter-src.online/resident/track_case.php?incident_case_number=$incident_case_number 
 For any questions, contact Barangay Ibaba, Santa Rosa Laguna. Thank you for your cooperation.",
             ];
 
@@ -288,17 +297,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['notify_pangkat_submit
     $incident_case_number = $_POST['incident_case_number'];
     $notify_pangkat = 'notified';
 
+    $manilaTime = new DateTime('now', new DateTimeZone('Asia/Manila'));
+    $created_at = $manilaTime->format('Y-m-d H:i:s');
+
     $check_query = "SELECT * FROM `notify_residents` WHERE incident_case_number = '$incident_case_number'";
     $check_result = mysqli_query($conn, $check_query);
 
     if ($check_result && mysqli_num_rows($check_result) > 0) {
         $update_query = "UPDATE `notify_residents` 
-        SET `notify_pangkat` = '$notify_pangkat', `pangkat_notified` = NOW() 
+        SET `notify_pangkat` = '$notify_pangkat', `pangkat_notified` = '$created_at' 
         WHERE incident_case_number = '$incident_case_number'";
         $result = mysqli_query($conn, $update_query);
     } else {
         $insert_query = "INSERT INTO `notify_residents` (`incident_case_number`, `notify_pangkat`, `pangkat_notified`)
-        VALUES ('$incident_case_number', '$notify_pangkat', NOW())";
+        VALUES ('$incident_case_number', '$notify_pangkat', '$created_at')";
         $result = mysqli_query($conn, $insert_query);
     }
 
@@ -320,7 +332,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['notify_pangkat_submit
             $send_data = [
                 'sender_id' => 'PhilSMS',
                 'recipient' => $respondent_cellphone_number, // Use complainant's cellphone number
-                'message' => "Hello, this is to inform you that the Notice of Hearing for your Incident Case is now in progress. To track updates easily, use our online platform: http://localhost/barangay%20justice%20management%20system%2001/resident/track_case.php?incident_case_number=$incident_case_number 
+                'message' => "Hello, this is to inform you that the Notice of Hearing for your Incident Case is now in progress. To track updates easily, use our online platform: http://brgyblotter-src.online/resident/track_case.php?incident_case_number=$incident_case_number 
 For any questions, contact Barangay Ibaba, Santa Rosa Laguna. Thank you for your cooperation.",
             ];
 

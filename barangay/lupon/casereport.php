@@ -686,6 +686,10 @@ if ($fetch['barangay'] == 'Ibaba') {
             margin-left: 15%;
             width: 70%;
         }
+
+        .container header::before{
+            width: 403px;
+        }
     }
 
     @media screen and (min-width: 1340px) and (max-width: 1360px){

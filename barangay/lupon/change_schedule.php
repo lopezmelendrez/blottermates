@@ -8,24 +8,33 @@ $email = $_SESSION['email_address'];
 
 if (!isset($email)) {
     header('location: ../../index.php');
+    exit;
 }
 
 function displayPage($conn, $incident_case_number)
 {
-    // Check if the incident case number is found in the incident_report table
-    $check_incident_report_query = "SELECT * FROM incident_report WHERE incident_case_number = '$incident_case_number'";
-    $check_incident_report_result = mysqli_query($conn, $check_incident_report_query);
+    $check_incident_report_query = "SELECT * FROM incident_report WHERE incident_case_number = ?";
+    $stmt = $conn->prepare($check_incident_report_query);
+    $stmt->bind_param("s", $incident_case_number);
+    $stmt->execute();
+    $check_incident_report_result = $stmt->get_result();
 
     if ($check_incident_report_result && mysqli_num_rows($check_incident_report_result) > 0) {
         // If incident_case_number is found in the incident_report table, check if it's not found in amicable_settlement and court_action
 
         // Check if incident_case_number is not found in the amicable_settlement table
-        $check_amicable_query = "SELECT * FROM amicable_settlement WHERE incident_case_number = '$incident_case_number'";
-        $check_amicable_result = mysqli_query($conn, $check_amicable_query);
+        $check_amicable_query = "SELECT * FROM amicable_settlement WHERE incident_case_number = ?";
+        $stmt = $conn->prepare($check_amicable_query);
+        $stmt->bind_param("s", $incident_case_number);
+        $stmt->execute();
+        $check_amicable_result = $stmt->get_result();
 
         // Check if incident_case_number is not found in the court_action table
-        $check_court_action_query = "SELECT * FROM court_action WHERE incident_case_number = '$incident_case_number'";
-        $check_court_action_result = mysqli_query($conn, $check_court_action_query);
+        $check_court_action_query = "SELECT * FROM court_action WHERE incident_case_number = ?";
+        $stmt = $conn->prepare($check_court_action_query);
+        $stmt->bind_param("s", $incident_case_number);
+        $stmt->execute();
+        $check_court_action_result = $stmt->get_result();
 
         // Check if incident_case_number is not found in amicable_settlement and court_action
         if ($check_amicable_result && mysqli_num_rows($check_amicable_result) == 0 &&
@@ -45,13 +54,16 @@ if (!displayPage($conn, $incident_case_number)) {
     header('location: incident_reports.php');
 }
 
-
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit'])) {
 
-    $select_submitter = mysqli_query($conn, "SELECT * FROM lupon_accounts WHERE email_address = '$email'");
-    
-    if (mysqli_num_rows($select_submitter) > 0) {
-        $submitter_data = mysqli_fetch_assoc($select_submitter);
+    $select_submitter_query = "SELECT * FROM lupon_accounts WHERE email_address = ?";
+    $stmt = $conn->prepare($select_submitter_query);
+    $stmt->bind_param("s", $email);
+    $stmt->execute();
+    $select_submitter_result = $stmt->get_result();
+
+    if ($select_submitter_result && mysqli_num_rows($select_submitter_result) > 0) {
+        $submitter_data = mysqli_fetch_assoc($select_submitter_result);
         $pb_id = $submitter_data['pb_id'];
         // Add the user information you need for the hearing here
 
@@ -60,42 +72,53 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit'])) {
         $incident_case_number = $_POST['incident_case_number'];
         $hearing_type_status = 'mediation';
 
-        $check_query = "SELECT * FROM `hearing` WHERE incident_case_number = '$incident_case_number'";
-        $check_result = mysqli_query($conn, $check_query);
+        $manilaTime = new DateTime('now', new DateTimeZone('Asia/Manila'));
+        $created_at = $manilaTime->format('Y-m-d H:i:s');
+
+        $check_query = "SELECT * FROM `hearing` WHERE incident_case_number = ?";
+        $stmt = $conn->prepare($check_query);
+        $stmt->bind_param("s", $incident_case_number);
+        $stmt->execute();
+        $check_result = $stmt->get_result();
 
         if ($check_result) {
             if (mysqli_num_rows($check_result) > 0) {
-                $update_query = "UPDATE `hearing` SET `date_of_hearing` = '$date_of_hearing', `time_of_hearing` = '$time_of_hearing', `timestamp` = NOW(), `pb_id` = '$pb_id' WHERE incident_case_number = '$incident_case_number'";
-                $result = mysqli_query($conn, $update_query);
+                $update_query = "UPDATE `hearing` SET `date_of_hearing` = ?, `time_of_hearing` = ?, `timestamp` = ?, `pb_id` = ? WHERE incident_case_number = ?";
+                $stmt = $conn->prepare($update_query);
+                $stmt->bind_param("ssssi", $date_of_hearing, $time_of_hearing, $created_at, $pb_id, $incident_case_number);
+                $result = $stmt->execute();
 
                 if ($result) {
                     header("Location: incident_reports.php");
                     exit;
                 } else {
-                    echo "Error: " . mysqli_error($conn);
+                    echo "Error: " . $stmt->error;
                     exit;
                 }
             } else {
                 $insert_query = "INSERT INTO `hearing` (`date_of_hearing`, `time_of_hearing`, `incident_case_number`, `hearing_type_status`, `timestamp`, `pb_id`) 
-                                VALUES ('$date_of_hearing', '$time_of_hearing', '$incident_case_number', '$hearing_type_status', NOW(), '$pb_id')";
-                $result = mysqli_query($conn, $insert_query);
+                                VALUES (?, ?, ?, ?, ?, ?)";
+                $stmt = $conn->prepare($insert_query);
+                $stmt->bind_param("ssssis", $date_of_hearing, $time_of_hearing, $incident_case_number, $hearing_type_status, $created_at, $pb_id);
+                $result = $stmt->execute();
 
                 if ($result) {
                     header("Location: notice_forms.php?incident_case_number=" . $incident_case_number);
                     exit;
                 } else {
-                    echo "Error: " . mysqli_error($conn);
+                    echo "Error: " . $stmt->error;
                     exit;
                 }
             }
         } else {
-            echo "Error: " . mysqli_error($conn);
+            echo "Error: " . $stmt->error;
             exit;
         }
     }
 }
 
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
