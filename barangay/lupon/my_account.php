@@ -217,6 +217,11 @@ if ($fetch['barangay'] == 'Ibaba') {
                             <label class="required-label">Old Password</label>
                             <input type="password" name="old_password" onkeydown="return preventSpace(event)" placeholder="" required>
                         </div>
+                        <div class="pw-display-toggle-btn" style="margin-top: -9.4%; margin-left: 95%;">
+                                <i class='uil uil-eye-slash showHidePw' style="font-size: 22px; cursor: pointer;"></i>
+                            </div>
+
+                            
 
                         <?php if (isset($msg_error) && !empty($msg_error)) { ?>
                             <div class="message d-flex" style="background: #F5E2D1; border: none; border-radius: 5px; width: 50%; margin-top: -1%; padding: 2px 2px; margin-left: 380px;">
@@ -233,6 +238,7 @@ if ($fetch['barangay'] == 'Ibaba') {
                                 <div class="pw-meter" style="margin-top: 3px;">
                                 <input type="password" name="password" onkeydown="return preventSpace(event)" id="password" placeholder="">
                                 <div class="pw-display-toggle-btn" style="margin-top: 178px;">
+                                <i class='uil uil-eye-slash showHidePw2' style="font-size: 22px; cursor: pointer; position: fixed;"></i>
                                 </div>
 
                             <div class="pw-strength" id="strength-meter">
@@ -242,8 +248,9 @@ if ($fetch['barangay'] == 'Ibaba') {
 
                         </div>
                         
-                                
                         </div>
+
+
                     
                         <div class="input-field-1" style="width: 100%;">
                             <label>Confirm Password</label>

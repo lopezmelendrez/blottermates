@@ -172,7 +172,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['incident_case_number'])
 $select_incident = mysqli_query($conn, "SELECT * FROM `incident_report` WHERE `incident_case_number` = '$incident_case_number'") or die('query failed');
 $incident_data = mysqli_fetch_assoc($select_incident);
 
-// Check if data was fetched successfully
 if ($incident_data) {
     $complainant_last_name = $incident_data['complainant_last_name'];
     $complainant_first_name = $incident_data['complainant_first_name'];
@@ -182,17 +181,13 @@ if ($incident_data) {
     $respondent_middle_name = $incident_data['respondent_middle_name'];
     $caseNo = $incident_data['incident_case_number'];
     $caseType = $incident_data['incident_case_type'];
-    // Add other fields as needed
 } else {
-    // Handle the case when incident data is not found, e.g., redirect back to the dashboard or show an error message.
-    // Replace the following line with your preferred error handling code.
     die("Incident data not found");
 }
 
 $select_hearing = mysqli_query($conn, "SELECT * FROM `hearing` WHERE `incident_case_number` = '$incident_case_number'") or die('query failed');
 $hearing_data = mysqli_fetch_assoc($select_hearing);
 
-// Check if data was fetched successfully
 if ($hearing_data) {
     $date_of_hearing = $hearing_data['date_of_hearing'];
 
@@ -204,22 +199,15 @@ if ($hearing_data) {
     $month_name = $dateTime->format('F');
     $month_name_tagalog = getTagalogMonthName($month_name);
     
-    
-    // Split the date using date_parse function
     $parsed_date = date_parse($date_of_hearing);
     
-    // Extract day, month, and year
     $day = $parsed_date['day'];
     $month = $parsed_date['month'];
     $year = $parsed_date['year'];
     
-    // Convert month number to month name
     $month_name = date('F', mktime(0, 0, 0, $month, 1));
     
-    // Add other fields as needed
 } else {
-    // Handle the case when hearing data is not found, e.g., redirect back to the dashboard or show an error message.
-    // Replace the following line with your preferred error handling code.
     die("Hearing data not found");
 }
 
@@ -241,6 +229,18 @@ function getTagalogMonthName($month_name) {
   
   return $tagalog_months[$month_name];
 }
+
+$pb_id = $incident_data ['pb_id'];
+$barangay_query = "SELECT * FROM `pb_accounts` WHERE `pb_id` = '$pb_id'";
+$select_barangay = mysqli_query($conn, $barangay_query) or die('Barangay query failed');
+$barangay_data = mysqli_fetch_assoc($select_barangay);
+
+if (!$barangay_data) {
+  die("Barangay data not found for pb_id: $pb_id");
+}
+
+$barangay = $barangay_data['barangay'];
+$barangay_captain = $barangay_data['barangay_captain'];
 
 
 // Set some content to print
@@ -369,7 +369,7 @@ text-shadow: none;
     Republika ng Pilipinas
     <br>LUNGSOD NG SANTA ROSA
     <br>Lalawigan ng laguna
-    <br>BARANGAY IBABA
+    <br>BARANGAY $barangay
     <br><br><br>TANGGAPAN NG PUNONG BARANGGAY
   </div>
   </div>

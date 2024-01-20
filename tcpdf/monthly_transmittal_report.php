@@ -161,6 +161,18 @@ while ($row = mysqli_fetch_assoc($select)) {
 
 $date = date('F j, Y');
 
+$pb_id = $incident_data ['pb_id'];
+$barangay_query = "SELECT * FROM `pb_accounts` WHERE `pb_id` = '$pb_id'";
+$select_barangay = mysqli_query($conn, $barangay_query) or die('Barangay query failed');
+$barangay_data = mysqli_fetch_assoc($select_barangay);
+
+if (!$barangay_data) {
+  die("Barangay data not found for pb_id: $pb_id");
+}
+
+$barangay = $barangay_data['barangay'];
+$barangay_captain = $barangay_data['barangay_captain'];
+
 $html = <<<EOD
 <style>
  
@@ -205,7 +217,7 @@ th {
     Republic of the Philippines
     <br>Province of 
     <br>CITY/MUNICIPALITY OF
-    <br>Barangay 
+    <br>Barangay $barangay
     <br>OFFICE OF LUPONG TAGAPAMAYAPA
     <br><br>OFFICE OF THE BARANGAY CAPTAIN
 </div>

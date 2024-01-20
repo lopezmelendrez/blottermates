@@ -240,10 +240,6 @@ if (isset($_POST['submit'])) {
 
                                 
                         </div>
-
-                        <div class="pw-display-toggle-btn" style="margin-top: -9.3%; margin-left: 95%;">
-                                <i class='uil uil-eye-slash showHidePw2' style="font-size: 22px; cursor: pointer;"></i>
-                            </div>
                         
                     
                         <div class="input-field-1" style="width: 100%;">

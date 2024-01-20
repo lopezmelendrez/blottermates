@@ -39,7 +39,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['incident_case_number'])
 $select_incident = mysqli_query($conn, "SELECT * FROM `incident_report` WHERE `incident_case_number` = '$incident_case_number'") or die('query failed');
 $incident_data = mysqli_fetch_assoc($select_incident);
 
-// Check if data was fetched successfully
 if ($incident_data) {
     $complainant_last_name = $incident_data['complainant_last_name'];
     $complainant_first_name = $incident_data['complainant_first_name'];
@@ -52,7 +51,6 @@ if ($incident_data) {
     $description_of_violation = $incident_data['description_of_violation'];
     $incident_date = $incident_data['incident_date'];
 
-    // Create a DateTime object from the incident date
     $dateObj = new DateTime($incident_date);
     
     // Extract day, month, and year
@@ -62,20 +60,16 @@ if ($incident_data) {
     
     $formattedDate = "Made this $day day of $month, $year";
 
-   
-    // Add other fields as needed
+  
 } else {
-    // Handle the case when incident data is not found, e.g., redirect back to the dashboard or show an error message.
-    // Replace the following line with your preferred error handling code.
     die("Incident data not found");
 }
   
-  //New
 if ($incident_data['incident_case_type'] === "Other") {
   $caseType = $incident_data['other_incident_case_type'];
 }
+
 $pb_id = $incident_data ['pb_id'];
-// New code to fetch barangay from pb_account table
 $barangay_query = "SELECT * FROM `pb_accounts` WHERE `pb_id` = '$pb_id'";
 $select_barangay = mysqli_query($conn, $barangay_query) or die('Barangay query failed');
 $barangay_data = mysqli_fetch_assoc($select_barangay);

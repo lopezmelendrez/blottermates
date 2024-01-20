@@ -243,6 +243,19 @@ function getTagalogMonthName($month_name) {
 }
 
 
+$pb_id = $incident_data ['pb_id'];
+$barangay_query = "SELECT * FROM `pb_accounts` WHERE `pb_id` = '$pb_id'";
+$select_barangay = mysqli_query($conn, $barangay_query) or die('Barangay query failed');
+$barangay_data = mysqli_fetch_assoc($select_barangay);
+
+if (!$barangay_data) {
+  die("Barangay data not found for pb_id: $pb_id");
+}
+
+$barangay = $barangay_data['barangay'];
+$barangay_captain = $barangay_data['barangay_captain'];
+
+
 // Set some content to print
 $html = <<<EOD
 <style>
@@ -355,7 +368,7 @@ $html = <<<EOD
     Republika ng Pilipinas
     <br>Lalawigan ng Laguna
     <br>Lungsod ng Santa Rosa
-    <br>Barangay Ibaba
+    <br>Barangay $barangay
     <br><br><br>TANGGAPAN NG PUNONG BARANGGAY
   </div>
   </div>
