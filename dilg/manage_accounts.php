@@ -484,5 +484,17 @@ table {
     }
 }
 
+@media screen and (min-width: 1520px) and (max-width: 1528px) and (min-height: 740px) and (max-height: 742px){
+        table{
+            width: 93%;
+        }
+        .modal{
+        position: absolute;
+        top: 25%;
+        left: 21%;
+        transform: translate(-50%, -50%);
+    }
+}
+
 </style>
 </html>

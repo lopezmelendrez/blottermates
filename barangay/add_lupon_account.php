@@ -205,9 +205,9 @@ if (isset($_POST['submit'])) {
                                 <i class="uil uil-question-circle" data-bs-toggle="tooltip" data-bs-placement="top" title="Password must contain: At least one lowercase letter (a-z), at least one uppercase letter (A-Z), at least one number, and at least one special character." style="right: 0; display: flex; margin-top: -2.3%; margin-left: 10%;"></i>
                                 <div class="pw-meter" style="margin-top: 3px;">
                                 <input type="password" name="password" id="password" placeholder="" required>
-                                <div class="pw-display-toggle-btn" style="margin-top: 178px;">
-                                    <i class='showHidePw' style="font-size: 22px; cursor: pointer; margin-left: -25px;"></i>
-                                </div>
+                                <div class="pw-display-toggle-btn" style="margin-top: 23.8%; margin-right: 1.7%;">
+                                <i class='uil uil-eye-slash showHidePw' style="font-size: 22px; cursor: pointer;"></i>
+                            </div>
 
                             <div class="pw-strength" id="strength-meter">
                                 <span></span>
@@ -222,6 +222,9 @@ if (isset($_POST['submit'])) {
                         <div class="input-field-1" style="width: 100%;">
                             <label class="required-label">Confirm Password</label>
                             <input type="password" name="confirmPassword" placeholder="" required>
+                            <div class="pw-display-toggle-btn" style="margin-top: -6.4%; margin-right: -93.9%;">
+                                <i class='uil uil-eye-slash showHidePw2' style="font-size: 22px; cursor: pointer;"></i>
+                            </div>
                         </div>
 
                         <?php if (isset($error) && !empty($error)) { ?>
@@ -241,10 +244,7 @@ if (isset($_POST['submit'])) {
     <?php } ?>
 
                     </div>
-                
-                    <!--<div class="signature-container" id="openModalBtn">
-                        Place Signature Here
-                    </div>-->
+            
                     <div class="input-field" style="margin-top: -23px;">
                     <div id="copyMessage" class="clipboard" style="display: none; margin-top: 5px;">Copied to Clipboard!</div>
                     </div>
@@ -408,22 +408,6 @@ window.addEventListener("click", (event) => {
 });
 
 
-
-    const confirmPasswordInput = document.querySelector('input[name="confirmPassword"]');
-const showHidePwIcon = document.querySelector('.showHidePw');
-
-showHidePwIcon.addEventListener('click', () => {
-    if (confirmPasswordInput.type === 'password') {
-        confirmPasswordInput.type = 'text';
-        showHidePwIcon.classList.remove('uil-eye-slash');
-        showHidePwIcon.classList.add('uil-eye');
-    } else {
-        confirmPasswordInput.type = 'password';
-        showHidePwIcon.classList.remove('uil-eye');
-        showHidePwIcon.classList.add('uil-eye-slash');
-    }
-});
-
 function getPasswordStrength(password){
     let s = 0;
         if(password.length > 6){
@@ -453,7 +437,6 @@ const passwordInput = document.querySelector(".pw-meter #password");
 const passwordStrengthMeter = document.querySelector(".pw-meter .pw-strength");
 
 passwordInput.addEventListener("input", function () {
-    // Check if there is input in the password field
     if (this.value.trim().length > 0) {
         passwordStrengthMeter.style.display = "block";
     } else {
@@ -462,7 +445,6 @@ passwordInput.addEventListener("input", function () {
 });
 
 passwordInput.addEventListener("blur", function () {
-    // Hide the meter when the field loses focus
     passwordStrengthMeter.style.display = "none";
 });
 
@@ -502,6 +484,35 @@ document.querySelector(".pw-meter .pw-display-toggle-btn").addEventListener("cli
         }
     });
 
+    const confirmPasswordInput = document.querySelector('input[name="password"]');
+    const showHidePwIcon = document.querySelector('.showHidePw');
+
+    showHidePwIcon.addEventListener('click', () => {
+        if (confirmPasswordInput.type === 'password') {
+            confirmPasswordInput.type = 'text';
+            showHidePwIcon.classList.remove('uil-eye-slash');
+            showHidePwIcon.classList.add('uil-eye');
+        } else {
+            confirmPasswordInput.type = 'password';
+            showHidePwIcon.classList.remove('uil-eye');
+            showHidePwIcon.classList.add('uil-eye-slash');
+        }
+    });
+
+    const confirmPasswordInput2 = document.querySelector('input[name="confirmPassword"]');
+    const showHidePwIcon2 = document.querySelector('.showHidePw2');
+
+    showHidePwIcon2.addEventListener('click', () => {
+        if (confirmPasswordInput2.type === 'password') {
+            confirmPasswordInput2.type = 'text';
+            showHidePwIcon2.classList.remove('uil-eye-slash');
+            showHidePwIcon2.classList.add('uil-eye');
+        } else {
+            confirmPasswordInput2.type = 'password';
+            showHidePwIcon2.classList.remove('uil-eye');
+            showHidePwIcon2.classList.add('uil-eye-slash');
+        }
+    });
 
 
 </script>

@@ -210,6 +210,9 @@ if (isset($_POST['submit'])) {
                             <label class="required-label">Old Password</label>
                             <input type="password" name="old_password" onkeydown="return preventSpace(event)" placeholder="" required>
                         </div>
+                        <div class="pw-display-toggle-btn" style="margin-top: -9.4%; margin-left: 95%;">
+                                <i class='uil uil-eye-slash showHidePw' style="font-size: 22px; cursor: pointer;"></i>
+                            </div>
 
                         <?php if (isset($msg_error) && !empty($msg_error)) { ?>
                             <div class="message d-flex" style="background: #F5E2D1; border: none; border-radius: 5px; width: 50%; margin-top: -1%; padding: 2px 2px; margin-left: 380px;">
@@ -234,9 +237,14 @@ if (isset($_POST['submit'])) {
                             </div>
 
                         </div>
-                        
+
                                 
                         </div>
+
+                        <div class="pw-display-toggle-btn" style="margin-top: -9.3%; margin-left: 95%;">
+                                <i class='uil uil-eye-slash showHidePw2' style="font-size: 22px; cursor: pointer;"></i>
+                            </div>
+                        
                     
                         <div class="input-field-1" style="width: 100%;">
                             <label>Confirm Password</label>
@@ -510,6 +518,35 @@ document.querySelector(".pw-meter .pw-display-toggle-btn").addEventListener("cli
         }
     });
 
+    const confirmPasswordInput = document.querySelector('input[name="old_password"]');
+    const showHidePwIcon = document.querySelector('.showHidePw');
+
+    showHidePwIcon.addEventListener('click', () => {
+        if (confirmPasswordInput.type === 'password') {
+            confirmPasswordInput.type = 'text';
+            showHidePwIcon.classList.remove('uil-eye-slash');
+            showHidePwIcon.classList.add('uil-eye');
+        } else {
+            confirmPasswordInput.type = 'password';
+            showHidePwIcon.classList.remove('uil-eye');
+            showHidePwIcon.classList.add('uil-eye-slash');
+        }
+    });
+
+    const confirmPasswordInput2 = document.querySelector('input[name="password"]');
+    const showHidePwIcon2 = document.querySelector('.showHidePw2');
+
+    showHidePwIcon2.addEventListener('click', () => {
+        if (confirmPasswordInput2.type === 'password') {
+            confirmPasswordInput2.type = 'text';
+            showHidePwIcon2.classList.remove('uil-eye-slash');
+            showHidePwIcon2.classList.add('uil-eye');
+        } else {
+            confirmPasswordInput2.type = 'password';
+            showHidePwIcon2.classList.remove('uil-eye');
+            showHidePwIcon2.classList.add('uil-eye-slash');
+        }
+    });
 
 
 </script>

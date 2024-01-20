@@ -543,6 +543,15 @@ function loadContent() {
             margin-bottom: 3%;
         }
     }
+
+    @media screen and (min-width: 1520px) and (max-width: 1528px) and (min-height: 740px) and (max-height: 742px){
+    .search-input{
+        width: 64.1%;
+    }
+    .sort-container{
+        margin-left: 61%;
+    }
+    }
     
 
 

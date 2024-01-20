@@ -11,6 +11,13 @@
     <title>Barangay Blotter Management System</title>
     </head>
     <body>
+    <script>
+  window.onload = function() {
+    if (/Mobi|Android/i.test(navigator.userAgent)) {
+      window.location.href = 'error_page.php';
+    }
+  };
+</script>
 
 
         <div class="container d-flex justify-content-center align-items-center min-vh-100">

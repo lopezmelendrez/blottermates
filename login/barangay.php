@@ -46,7 +46,7 @@ function updateLoginAttempts($conn, $email, $attempts)
     mysqli_stmt_close($stmt);
 }
 
-function getLastFailedAttemptTimestampManilaTime($conn, $email)
+function getLastFailedAttemptTimestamp($conn, $email)
 {
     $query = "SELECT last_failed_attempt FROM lupon_accounts WHERE email_address = ?";
     $stmt = mysqli_prepare($conn, $query);

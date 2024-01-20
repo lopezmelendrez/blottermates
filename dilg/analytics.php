@@ -747,5 +747,44 @@ var myBarChart = new Chart(ctx, {
         }
     }
 
+    @media screen and (min-width: 1520px) and (max-width: 1528px) and (min-height: 740px) and (max-height: 742px){
+        .notice-records{
+            margin-left: 22.5%;
+            margin-top: -43px;
+        }
+        .ongoing-cases-box, .settled-cases-box, .incomplete-cases-box{
+            height: 7rem;
+            width: 355px;
+        }
+        .ongoing-cases-box p,.settled-cases-box p,.incomplete-cases-box p{
+            font-size: 20px;
+        }
+        .ongoing-cases-box .count, .settled-cases-box .count, .incomplete-cases-box .count{
+            font-size: 50px;
+        }
+        .incident-case-table-1{
+            width: 30%;
+            margin-left: 58%;
+            margin-top: -32.7%;
+            height: 29.5rem;
+        }
+        .incident-case-table .table-container canvas{
+            margin-top: 6.5%;
+        }
+        .incident-case-table-1 .table-container{
+            height: 700px;
+        }
+        .incident-case-table{
+            margin-left: 9%;
+        }
+        .piechart{
+            height: 340px;
+        }
+        #myPieChart{
+            margin-left: 5%;
+            margin-top: 8%;
+        }
+    }
+
 </style>
 </html>

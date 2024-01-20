@@ -89,7 +89,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['hearing_submit'])) {
         $result = mysqli_query($conn, $update_query);
     } else {
         $insert_query = "INSERT INTO `notify_residents` (`incident_case_number`, `generate_hearing`, `generated_hearing_timestamp`)
-                         VALUES ('$incident_case_number', '$generate_hearing', NOW())";
+                         VALUES ('$incident_case_number', '$generate_hearing', '$created_at')";
         $result = mysqli_query($conn, $insert_query);
     }
 
