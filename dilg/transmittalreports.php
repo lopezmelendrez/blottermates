@@ -138,7 +138,7 @@ if (!$result) {
 
     <div class="search-container">
             <form action="" method="post">
-                <button class="case-button" style="padding: 0px 12px;">BARANGAY</button>
+                <span class="case-button-1" style="padding: 0px 12px;">BARANGAY</span>
                 <input type="text" class="search-input" name="search_case" placeholder="Search...">
                 <button type="submit" name="submit_search" class="search-button" style="padding: 0px 12px;">Search</button>
             </form>
@@ -324,7 +324,7 @@ function loadContent() {
             padding: 0 12px;
         }
 
-        .case-button{
+        .case-button-1{
             background: #E83422;
             border: none;
             color: #fff;
@@ -544,13 +544,27 @@ function loadContent() {
         }
     }
 
-    @media screen and (min-width: 1520px) and (max-width: 1528px) and (min-height: 740px) and (max-height: 742px){
+@media screen and (min-width: 1500px) and (max-width: 1670px) and (min-height: 700px) and (max-height: 760px){
     .search-input{
         width: 64.1%;
     }
     .sort-container{
         margin-left: 61%;
     }
+    }
+    
+    @media screen and (min-width: 1460px) and (max-width: 1500px) and (min-height: 691px) and (max-height: 730px){
+        .search-container{
+            margin-left: 13%;
+        }
+        .sort-container{
+            margin-left: 62.4%;
+        }
+        .container{
+            margin-left: 13%;
+            width: 71.8%;
+            margin-bottom: 3%;
+        }
     }
     
 

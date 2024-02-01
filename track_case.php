@@ -456,6 +456,17 @@ form{
     }
 }
 
+
+@media screen and (min-width: 1460px) and (max-width: 1500px) and (min-height: 691px) and (max-height: 730px){
+ .header-text-1{
+        margin-left: -15%;
+    }
+    .header-text-1::after{
+        width: 80%;
+        margin-left: -15%;
+    }
+}
+
     </style>
 
 </html>

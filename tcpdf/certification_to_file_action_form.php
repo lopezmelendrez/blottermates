@@ -137,8 +137,8 @@ $html = <<<EOD
 
 <div class="header">
     Republic of the Philippines
-    <br>Province of 
-    <br>CITY/MUNICIPALITY OF
+    <br>Province of Laguna
+    <br>CITY/MUNICIPALITY OF SANTA ROSA
     <br>Barangay $barangay
     <br>OFFICE OF LUPONG TAGAPAMAYAPA
 </div>

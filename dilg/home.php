@@ -753,7 +753,7 @@ dateElement.textContent = formatDate(now);
         }
         }
 
-        @media screen and (min-width: 1520px) and (max-width: 1528px) and (min-height: 740px) and (max-height: 742px){
+        @media screen and (min-width: 1500px) and (max-width: 1670px) and (min-height: 700px) and (max-height: 760px){
             .incident-case-table{
             height: 30rem;
             margin-top: 1.5%;
@@ -790,6 +790,42 @@ dateElement.textContent = formatDate(now);
         }
         }
 
+        @media screen and (min-width: 1460px) and (max-width: 1500px) and (min-height: 691px) and (max-height: 730px){
+            .incident-case-table{
+            height: 30rem;
+            margin-top: 1.5%;
+            width: 43rem;
+        }
+        
+        .incident-case-table-1{
+            margin-left: 51%;
+            margin-top: -34.7%;
+            height: 30rem;
+        }
+
+        .incident-case-table .incident-case, .incident-case-table-1 .incident-case{
+            font-size: 33px;
+        }
+
+        .incident-case-table .table-container{
+            width: 43.5rem;
+        }
+
+        .incident-case-table .table-container table{
+            width: 43rem;
+        }
+        .incident-case-table .notice-records, .incident-case-table-1 .notice-records{
+            font-size: 20px;
+            margin-top: -18px;
+            margin-bottom: 15px;
+        }
+        .seeall{
+            margin-left: 72%;
+        }
+        .seeall-1{
+            margin-top: 12%;
+        }
+    }
     
 
 </style>

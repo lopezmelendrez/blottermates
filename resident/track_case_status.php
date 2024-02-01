@@ -98,17 +98,17 @@ $barangay = $fetch_cases['barangay'];
                 echo '<div class="hearing-notice" style="color: white;">
                         <div class="hearing-text">
                             <i class="fa-solid fa-circle-notch" style="color: #eed202;"></i>
-                            <p>Summon Notified</p>
+                            <p>In Progress</p>
                         </div>
-                        <p class="text">The Summon Notice for the Respondent is now in progress</p>
+                        <p class="text">The Summon Notice Form for the Respondent is still being processed.</p>
                     </div>';
             } elseif ($fetch_cases['notify_hearing'] == 'not notified') {
                 echo '<div class="hearing-notice" style="color: white;">
                         <div class="hearing-text">
                             <i class="fa-solid fa-circle-notch icon" style="color: #eed202;"></i>
-                            <p>Summon Notified</p>
+                            <p>In Progress</p>
                         </div>
-                        <p class="text">The Hearing Notice for the Complainant is now in progress.</p>
+                        <p class="text">The Hearing Notice Form for the Complainant is still being processed</p>
                     </div>';
             } elseif ($fetch_cases['notify_summon'] == 'notified' && $fetch_cases['notify_hearing'] == 'notified') {
                 $date_of_hearing = isset($fetch_cases['date_of_hearing']) ? date('jS \of F Y', strtotime($fetch_cases['date_of_hearing'])) : '2nd of December 2023';
@@ -127,7 +127,7 @@ $barangay = $fetch_cases['barangay'];
                             <i class="fa-solid fa-circle-check icon" style="color: #1db954;"></i>
                             <p>Hearing Notified</p>
                         </div>
-                        <p class="text">The Complainant and the Respondent have now been notified of their Hearing on 02 Dec</p> 
+                        <p class="text">The Complainant and the Respondent have now been notified of their Hearing.</p> 
                     </div>';
             }
             ?>
@@ -145,7 +145,7 @@ $barangay = $fetch_cases['barangay'];
                             <i class="fa-solid fa-circle-check icon" style="color: #1db954;"></i>
                             <p>Hearing</p>
                         </div>';
-                echo '<p class="text">Your Incident Case was held on ' . $date . ' - ' . $time . ' </p>';
+                echo '<p class="text">Your Incident Case was held on the ' . $date . ' - ' . $time . ' </p>';
                 echo '</div>';
             } elseif (empty($fetch_cases['date_agreed']) && $date_of_hearing && ($date_of_hearing == strtotime(date('Y-m-d')) || $date_of_hearing < strtotime(date('Y-m-d')))) {
                 echo '<div class="hearing-notice" style="color: white;">
@@ -163,16 +163,18 @@ $barangay = $fetch_cases['barangay'];
                             <i class="fa-solid fa-circle-notch icon" style="color: #eed202;"></i>
                             <p>Upcoming Hearing</p>
                         </div>';
-                echo '<p class="text">Your Incident Case will be held on ' . $date . ' - ' . $time . ' </p>';
+                echo '<p class="text">Your Incident Case will be held on the ' . $date . ' - ' . $time . ' </p>';
                 echo '</div>';
             } else {
-                $formatted_date_of_hearing = isset($fetch_cases['date_of_hearing']) ? date('j M Y - h:i A', $date_of_hearing) : '11 Dec 2023 - 11:00 AM';
+                $formatted_date_of_hearing = isset($fetch_cases['date_of_hearing']) ? date('j M Y', $date_of_hearing) : '11 Dec 2023 - 11:00 AM';
+                $date = isset($fetch_cases['date_of_hearing']) ? date('jS \of F Y', strtotime($fetch_cases['date_of_hearing'])) : '2nd of December 2023';
+                $time = isset($fetch_cases['time_of_hearing']) ? date('h:i A', strtotime($fetch_cases['time_of_hearing'])) : '11:00 AM';
                 echo '<div class="hearing-notice">
                         <div class="hearing-text">
                             <i class="fa-solid fa-circle-check icon"></i>
                             <p>Upcoming Hearing</p>
                         </div>';
-                echo '<p class="text">Your Incident Case will be held on ' . $formatted_date_of_hearing . '</p>';
+                echo '<p class="text">Your Incident Case will be held on the ' . $date . ' - ' . $time . ' </p>';
                 echo '</div>';
             }
             ?>
@@ -213,12 +215,14 @@ $barangay = $fetch_cases['barangay'];
 
 .button{
     background: #1db954;
-    padding: 8px 25px;
-    color: white;
-    text-transform: uppercase;
-    font-weight: 500;
-    letter-spacing: 1;
-    font-size: 14px;
+        padding: 4px 4px;
+        color: #fff;
+        text-transform: uppercase;
+        border-radius: 0.2rem;
+        cursor: pointer;
+        display: block;
+        margin-bottom: 5px;
+        width: 18rem;
 }
 
 .container{
@@ -255,7 +259,7 @@ $barangay = $fetch_cases['barangay'];
     }
     .button{
         font-size: 14px;
-        width: 20%;
+        width: 17rem;
     }
     .icon{
         margin-top: 12px;

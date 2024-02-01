@@ -6,9 +6,8 @@ session_start();
 
 $email = $_SESSION['email_address'];
 
-
-if(!isset($email)){
-header('location: ../../index.php');
+if (!isset($email)) {
+    header('location: ../../index.php');
 }
 
 function displayPage($conn, $incident_case_number)
@@ -18,36 +17,28 @@ function displayPage($conn, $incident_case_number)
 
     if ($check_result && mysqli_num_rows($check_result) > 0) {
         header('location: settled_cases.php');
-        exit(); 
+        exit();
     }
 
     $select_query = "SELECT hearing_type_status, date_of_hearing FROM hearing WHERE incident_case_number = '$incident_case_number'";
 
-    // Execute the SELECT query using the provided database connection ($conn)
     $result = mysqli_query($conn, $select_query);
 
-    // Check if the query was successful and if there is at least one row in the result set
     if ($result && mysqli_num_rows($result) > 0) {
-        // Fetch the first row from the result set as an associative array
         $row = mysqli_fetch_assoc($result);
 
-        // Extract values from the associative array
         $hearing_type_status = $row['hearing_type_status'];
         $date_of_hearing = $row['date_of_hearing'];
 
-        // Get the current date in 'Y-m-d' format
         $current_date = date('Y-m-d');
 
         if ($hearing_type_status === 'arbitration' && strtotime($date_of_hearing) <= strtotime($current_date)) {
-            // If the conditions are met, return true
             return true;
         }
     }
 
-    // If the conditions are not met or there was an issue with the query, return false
     return false;
 }
-
 
 $incident_case_number = $_GET['incident_case_number'];
 
@@ -76,7 +67,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['court_action_submit']
     }
 }
 
-
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $agreement_description = $_POST['agreement_description'];
     $incident_case_number = $_POST['incident_case_number'];
@@ -92,14 +82,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $hearing_id = $fetch_hearing['hearing_id'];
 
         $insert_query = "INSERT INTO `amicable_settlement` (`agreement_description`, `hearing_id`, `incident_case_number`, `timestamp`)
-        VALUES ('$agreement_description', '$hearing_id', '$incident_case_number', $created_at')";
+        VALUES ('$agreement_description', '$hearing_id', '$incident_case_number', '$created_at')";
 
         $insert_result = mysqli_query($conn, $insert_query);
 
         if ($insert_result) {
             $incident_case_number = $_POST['incident_case_number'];
             echo '<script>';
-            echo 'window.open("https://brgyblotter-src.online/tcpdf/ammicable_settlement_form.php?incident_case_number=' . $incident_case_number . '", "_blank");';
+            echo 'window.open("https://brgyblotter-src.online/tcpdf/amicable_settlement_form.php?incident_case_number=' . $incident_case_number . '", "_blank");';
             echo 'window.open("https://brgyblotter-src.online/barangay/lupon/settled_cases.php", "_self");';
             echo '</script>';
             exit;
@@ -114,6 +104,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 
 ?>
+
 
 
 <!DOCTYPE html>
@@ -670,7 +661,7 @@ function validateName(event) {
         }
     }
 
-    @media screen and (min-width: 1520px) and (max-width: 1528px) and (min-height: 740px) and (max-height: 742px){
+@media screen and (min-width: 1500px) and (max-width: 1670px) and (min-height: 700px) and (max-height: 760px){
         .modal{
             position: absolute;
         top: 20%;
@@ -680,6 +671,14 @@ function validateName(event) {
         .container{
             margin-top: 10%;
         }
+    }
+    
+     @media screen and (min-width: 1460px) and (max-width: 1500px) and (min-height: 691px) and (max-height: 730px){
+        .container{
+            width: 60%;
+            margin-top: 8%;
+        }
+        
     }
 
 

@@ -23,7 +23,7 @@ if (isset($_POST['submit_search'])) {
                      incident_report.respondent_first_name as respondent_first_name,
                      incident_report.respondent_last_name AS respondent_last_name,
                      incident_report.created_at AS created_at,
-                     en.timestamp AS execution_date, -- Include the execution_date from execution_notice
+                     en.timestamp AS execution_date,
                      amicable_settlement.date_agreed AS date_agreed
               FROM `incident_report`
               INNER JOIN `lupon_accounts` AS la ON incident_report.lupon_id = la.lupon_id
@@ -34,7 +34,7 @@ if (isset($_POST['submit_search'])) {
               WHERE pa.pb_id = '$pb_id'
                     AND nr.generate_execution = 'form generated'
                     AND incident_report.incident_case_number LIKE '%$search_case%'
-              ORDER BY incident_report.created_at DESC";
+              ORDER BY en.timestamp ASC";
 } else {
     $query = "SELECT pa.barangay,
                      incident_report.incident_case_number AS incident_case_number,
@@ -53,7 +53,7 @@ if (isset($_POST['submit_search'])) {
               LEFT JOIN `amicable_settlement` AS amicable_settlement ON incident_report.incident_case_number = amicable_settlement.incident_case_number
               WHERE pa.pb_id = '$pb_id'
                     AND nr.generate_execution = 'form generated'
-              ORDER BY incident_report.created_at DESC";
+              ORDER BY en.timestamp ASC";
 }
 
 
@@ -215,8 +215,7 @@ if (mysqli_num_rows($result) == 0) {
         $respondent_last_name = $row['respondent_last_name'];
         $complainant_first_name = $row['complainant_first_name'];
         $respondent_first_name = $row['respondent_first_name'];
-        $date_agreed = $row['execution_date'];
-
+        $date_agreed = !empty($row['execution_date']) ? date('D, d M Y', strtotime($row['execution_date'])) : '';
 
         $notifyQuery = "SELECT * FROM `notify_residents` WHERE incident_case_number = '$incident_case_number'";
         $notifyResult = mysqli_query($conn, $notifyQuery);
@@ -232,11 +231,21 @@ if (mysqli_num_rows($result) == 0) {
         echo '</div>';
 
         echo '<div class="top-text" style="display: flex;">';
-        echo '<h3 class="case-no-text" style="font-size: 15px; font-weight: 500; font-style: italic; width: 20%;">';
+        echo '<h3 class="case-no-text" style="font-size: 15px; font-weight: 500; font-style: italic; width: 24%;">';
         echo $complainant_last_name . ' vs. ' . $respondent_last_name;
-        echo '</h3>';
-        echo '<h3 class="hearing-text" style="font-size: 15px; font-weight: 500; margin-left: 52%;"><b>Execution Date</b>: ' . date('D, d M Y', strtotime($date_agreed)) . '</h3>';
-        echo '</h3>';
+        
+
+        if (!empty($executionRow['execution_date'])) {
+            echo '<h3 class="hearing-text" style="font-size: 15px; font-weight: 500; margin-left: 48%;"><b>Execution Date</b>: ';
+            echo date('D, d M Y', strtotime($executionRow['execution_date']));
+            echo '</h3>';
+        } else {
+            echo '<h3 class="hearing-text" style="font-size: 15px; font-weight: 500; margin-left: 43%;"><b>Execution Date</b>: ';
+            echo 'NO EXECUTION DATE YET';
+            echo '</h3>';
+        }
+
+        
         echo '</div>';
 
         echo '<table>';
@@ -544,6 +553,22 @@ if (mysqli_num_rows($result) == 0) {
             width: 68%;
         }
     }
+
+@media screen and (min-width: 1460px) and (max-width: 1500px) and (min-height: 691px) and (max-height: 730px){
+    .cases-container{
+            margin-left: -28%;
+        }
+        .search-container{
+            margin-left: 14.9%;
+        }
+        .search-input{
+            width: 67%;
+        }
+        .container{
+            margin-left: 14.9%;
+            width: 70.9%;
+        }
+}
 
 
 

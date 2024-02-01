@@ -227,7 +227,7 @@ if(mysqli_num_rows($select) > 0){
 </div>
 <div class="input-field" style="width: 100%; position: relative;">
 <label class="label">Final Agreement</label>
-<div class="text-box">
+<div class="text-box" style="height: 5.5rem;">
 <p style="padding: 10px 0"><?php echo ucfirst($agreement_description); ?></p></div>
 </div>
 
@@ -293,17 +293,7 @@ if ($generate_execution_result && mysqli_num_rows($generate_execution_result) > 
 
 
                         </div>
-                        <div class="buttons" style="margin-top: -2%;">
-                            <a href="case_report.php?incident_case_number=<?php echo $incident_case_number ?>" style="text-decoration: none;">
-                            <div class="backBtn-1" style="padding: 12px 12px; width: 100px; border: 1px solid #bc1823; background: #fff; color: #bc1823; margin-left: 550%;">
-                                <span class="btnText" style="text-align: center;">Back</span>
-                            </div></a>
-                            <a href="incident_reports.php" style="text-decoration: none;">
-                            <div class="backBtn-1" style="width: 600px; margin-left: 280%; padding: 12px 12px; ">
-                                <span class="btnText">See All Cases</span>
-                            </div>
-                            </a>
-                        </div>
+                       
                         
                     </div> 
                 </div>
@@ -893,7 +883,7 @@ if (input.value.length > 0 && input.value[0] === ' ') {
     }
     }
 
-    @media screen and (min-width: 1520px) and (max-width: 1528px) and (min-height: 740px) and (max-height: 742px){
+@media screen and (min-width: 1500px) and (max-width: 1670px) and (min-height: 700px) and (max-height: 760px){
         .modal{
             position: absolute;
         top: 20%;
@@ -903,6 +893,25 @@ if (input.value.length > 0 && input.value[0] === ' ') {
         .close-icon{
             top: 24.5%;
             left: 63.5%;
+            z-index: 1001;
+        }
+    }
+    
+        @media screen and (min-width: 1460px) and (max-width: 1500px) and (min-height: 691px) and (max-height: 730px){
+    .container{
+    width: 64.8%;
+    margin-left: 19%;
+    margin-top: 2.8%;
+    }
+    .modal{
+            position: absolute;
+        top: 18%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        }
+        .close-icon{
+            top: 24.5%;
+            left: 64.3%;
             z-index: 1001;
         }
     }

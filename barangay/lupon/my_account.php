@@ -221,8 +221,6 @@ if ($fetch['barangay'] == 'Ibaba') {
                                 <i class='uil uil-eye-slash showHidePw' style="font-size: 22px; cursor: pointer;"></i>
                             </div>
 
-                            
-
                         <?php if (isset($msg_error) && !empty($msg_error)) { ?>
                             <div class="message d-flex" style="background: #F5E2D1; border: none; border-radius: 5px; width: 50%; margin-top: -1%; padding: 2px 2px; margin-left: 380px;">
                                 <i class="fa-solid fa-circle-exclamation" style="margin-left: 3%; margin-top: 1%; font-size: 20px; color: #D52826;"></i>
@@ -237,9 +235,9 @@ if ($fetch['barangay'] == 'Ibaba') {
                                 <i class="uil uil-question-circle" data-bs-toggle="tooltip" data-bs-placement="top" title="Password must contain: At least one lowercase letter (a-z), at least one uppercase letter (A-Z), at least one number, and at least one special character." style="right: 0; display: flex; margin-top: -2.3%; margin-left: 13%;"></i>
                                 <div class="pw-meter" style="margin-top: 3px;">
                                 <input type="password" name="password" onkeydown="return preventSpace(event)" id="password" placeholder="">
-                                <div class="pw-display-toggle-btn" style="margin-top: 178px;">
-                                <i class='uil uil-eye-slash showHidePw2' style="font-size: 22px; cursor: pointer; position: fixed;"></i>
-                                </div>
+                                <div class="pw-display-toggle-btn" style="margin-top: 23.8%; margin-right: 1.7%;">
+                                <i class='uil uil-eye-slash showHidePw2' style="font-size: 22px; cursor: pointer;"></i>
+                            </div>
 
                             <div class="pw-strength" id="strength-meter">
                                 <span></span>
@@ -248,9 +246,9 @@ if ($fetch['barangay'] == 'Ibaba') {
 
                         </div>
                         
+                                
                         </div>
-
-
+                        
                     
                         <div class="input-field-1" style="width: 100%;">
                             <label>Confirm Password</label>
@@ -529,6 +527,36 @@ document.querySelector(".pw-meter .pw-display-toggle-btn").addEventListener("cli
           passwordStrengthSpans[1].style.background = "#20a820";
         }
     });
+    
+    const confirmPasswordInput = document.querySelector('input[name="old_password"]');
+    const showHidePwIcon = document.querySelector('.showHidePw');
+
+    showHidePwIcon.addEventListener('click', () => {
+        if (confirmPasswordInput.type === 'password') {
+            confirmPasswordInput.type = 'text';
+            showHidePwIcon.classList.remove('uil-eye-slash');
+            showHidePwIcon.classList.add('uil-eye');
+        } else {
+            confirmPasswordInput.type = 'password';
+            showHidePwIcon.classList.remove('uil-eye');
+            showHidePwIcon.classList.add('uil-eye-slash');
+        }
+    });
+
+    const confirmPasswordInput2 = document.querySelector('input[name="password"]');
+    const showHidePwIcon2 = document.querySelector('.showHidePw2');
+
+    showHidePwIcon2.addEventListener('click', () => {
+        if (confirmPasswordInput2.type === 'password') {
+            confirmPasswordInput2.type = 'text';
+            showHidePwIcon2.classList.remove('uil-eye-slash');
+            showHidePwIcon2.classList.add('uil-eye');
+        } else {
+            confirmPasswordInput2.type = 'password';
+            showHidePwIcon2.classList.remove('uil-eye');
+            showHidePwIcon2.classList.add('uil-eye-slash');
+        }
+    });
 
 
 
@@ -660,7 +688,7 @@ document.querySelector(".pw-meter .pw-display-toggle-btn").addEventListener("cli
         }
     }
 
-    @media screen and (min-width: 1520px) and (max-width: 1528px) and (min-height: 740px) and (max-height: 742px){
+@media screen and (min-width: 1500px) and (max-width: 1670px) and (min-height: 700px) and (max-height: 760px){
         .modal-content{
             position: absolute;
         top: 25%;
@@ -669,6 +697,19 @@ document.querySelector(".pw-meter .pw-display-toggle-btn").addEventListener("cli
         }
         .add-account-container{
             margin-top: 2%;
+            margin-left: -2%;
+        }
+    }
+    
+    @media screen and (min-width: 1460px) and (max-width: 1500px) and (min-height: 691px) and (max-height: 730px){
+     .modal-content{
+            position: absolute;
+        top: 25%;
+        left: 45%;
+        transform: translate(-50%, -50%);
+        }
+        .add-account-container{
+            margin-top: 0.5%;
             margin-left: -2%;
         }
     }

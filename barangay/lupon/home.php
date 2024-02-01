@@ -1023,7 +1023,7 @@ function closeMonthlyReportPopup() {
         }
 }
 
-@media screen and (min-width: 1520px) and (max-width: 1528px) and (min-height: 740px) and (max-height: 742px){
+@media screen and (min-width: 1500px) and (max-width: 1670px) and (min-height: 700px) and (max-height: 760px){
     .add-account{
         width: 18.8%;
         margin-top: 5.5%;
@@ -1068,7 +1068,54 @@ function closeMonthlyReportPopup() {
     }
 }
 
+@media screen and (min-width: 1460px) and (max-width: 1500px) and (min-height: 691px) and (max-height: 730px){
+.add-account{
+        width: 19.3%;
+        margin-top: 5.5%;
+    }
+    .calendar-container{
+        width: 45%;
+        margin-top: 2%;
+        height: 30rem;
+    }
 
+    .incident-case-table{
+        margin-top: 2%;
+        margin-left: 1%;
+        width: 48%;
+        height: 30rem;
+    }
+
+    .incident-case-table .table-container table{
+        width: 120%;
+    }
+
+    .incident-case-table .table-container .incident-table thead tr th
+        {
+            padding-top: 1%;
+            font-size: 18px;
+            padding-right: 30px;
+        }
+        .incident-case-table .table-container .incident-table tbody tr td{
+            font-size: 15px;
+        }
+
+    #calendar{
+        width: 100%;
+        height: 28.5rem;
+    }
+    .modal{
+        position: absolute;
+        top: 25%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+    .close-icon{
+        top: 30.5%;
+        margin-left: 5.5%;
+    }
+    
+}
 
 
 </style>

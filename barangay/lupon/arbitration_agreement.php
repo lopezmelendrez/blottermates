@@ -60,16 +60,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit'])) {
         $fetch_hearing = mysqli_fetch_assoc($select_hearing_id_result);
         $hearing_id = $fetch_hearing['hearing_id'];
 
-        // Update your INSERT query to include the `timestamp` column and set it to the current timestamp
         $insert_query = "INSERT INTO `arbitration_agreement` (`lupon_signature`, `hearing_id`, `incident_case_number`, `timestamp`)
-        VALUES ('$signatureData', '$hearing_id', '$incident_case_number', $created_at')";
+        VALUES ('$signatureData', '$hearing_id', '$incident_case_number', '$created_at')";
 
         $insert_result = mysqli_query($conn, $insert_query);
 
         if ($insert_result) {
             $incident_case_number = $_POST['incident_case_number'];
             echo '<script>';
-            echo 'window.open("http://localhost/brgyblotter-src.online/tcpdf/agreement_for_arbitration.php?incident_case_number=' . $incident_case_number . '", "_blank");';
+            echo 'window.open("http://brgyblotter-src.online/tcpdf/agreement_for_arbitration.php?incident_case_number=' . $incident_case_number . '", "_blank");';
             echo 'window.location.href = "arbitration_hearings.php";';
             echo '</script>';
             exit;
@@ -79,7 +78,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit'])) {
         }
         
     } else {
-        // Handle the case where the agreement is not found, you can redirect back or show an error message.
         echo "Error: Hearing record not found for the incident case number.";
         exit;
     }
@@ -533,7 +531,7 @@ if (input.value.length > 0 && input.value[0] === ' ') {
         }
     }
 
-    @media screen and (min-width: 1520px) and (max-width: 1528px) and (min-height: 740px) and (max-height: 742px){
+@media screen and (min-width: 1500px) and (max-width: 1670px) and (min-height: 700px) and (max-height: 760px){
         .modal-content{
             position: absolute;
         top: 25%;
@@ -544,6 +542,14 @@ if (input.value.length > 0 && input.value[0] === ' ') {
             margin-top: 4.8%;
             margin-left: -2%;
         }
+    }
+    
+    @media screen and (min-width: 1460px) and (max-width: 1500px) and (min-height: 691px) and (max-height: 730px){
+        .add-account-container{
+            margin-left: 1%;
+            margin-top: 3.5%;
+        }
+        
     }
 
 

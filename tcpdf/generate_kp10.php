@@ -368,7 +368,7 @@ text-shadow: none;
   <div class="content-header">
     Republika ng Pilipinas
     <br>LUNGSOD NG SANTA ROSA
-    <br>Lalawigan ng laguna
+    <br>Lalawigan ng Laguna
     <br>BARANGAY $barangay
     <br><br><br>TANGGAPAN NG PUNONG BARANGGAY
   </div>

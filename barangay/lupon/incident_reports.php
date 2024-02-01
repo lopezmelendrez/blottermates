@@ -648,11 +648,32 @@ if (mysqli_num_rows($result) == 0) {
             }
         }
 
-        @media screen and (min-width: 1520px) and (max-width: 1528px) and (min-height: 740px) and (max-height: 742px){
+        @media screen and (min-width: 1500px) and (max-width: 1670px) and (min-height: 700px) and (max-height: 760px){
             .generate, .notify{
                 margin-left: 5%;
             }
             }
+    
+        @media screen and (min-width: 1460px) and (max-width: 1500px) and (min-height: 691px) and (max-height: 730px){
+        .add-account{
+                margin-top: -4.5%;
+            }
+            .search-input{
+                width: 73.3%;
+            }
+            .search-container{
+                margin-left: 10.8%;
+            }
+            .sort-container{
+                margin-left: 67%;
+            }
+            .container{
+                width: 78.5%;
+            }
+            .notify{
+                margin-left: 7%;
+            }
+        }
 
 
     </style>

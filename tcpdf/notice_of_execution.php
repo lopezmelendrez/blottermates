@@ -40,7 +40,7 @@ $year = date('Y');
 $pangkat_secretary = "Jaimie Lopez";
 $attested  = "Mary Anne Matos";
 $pangkat_chairman = "Anna Michaella Mangahis";
-$signature_image_path = "../images/sign1.jpg";
+$signature_image_path = "../dilg/signature/5_signature.jpg";
 $logo_image_path1 = "../images/ibaba.jpg";
 $logo_image_path2 = "../images/ibaba.jpg";
 $petsa = date('m-d-Y');
@@ -60,16 +60,30 @@ $select_incident = mysqli_query($conn, $select_query) or die('Incident query fai
 $incident_data = mysqli_fetch_assoc($select_incident);
 
 if (!$incident_data) {
-  die("Incident data not found");
+    die("Incident data not found");
 }
 
+// Fetch data from the amicable_settlement table
 $amicable_query = "SELECT * FROM `amicable_settlement` WHERE `incident_case_number` = '$incident_case_number'";
 $select_amicable = mysqli_query($conn, $amicable_query) or die('Amicable settlement query failed');
 $amicable_data = mysqli_fetch_assoc($select_amicable);
 
 if (!$amicable_data) {
-  die("Amicable settlement data not found");
+    die("Amicable settlement data not found");
 }
+
+// Fetch data from the pb_accounts table based on pb_id
+$pb_id = $incident_data['pb_id']; // Assuming pb_id is a column in incident_report table
+$pb_accounts_query = "SELECT * FROM `pb_accounts` WHERE `pb_id` = '$pb_id'";
+$select_pb_accounts = mysqli_query($conn, $pb_accounts_query) or die('PB accounts query failed');
+$pb_accounts_data = mysqli_fetch_assoc($select_pb_accounts);
+
+if (!$pb_accounts_data) {
+    die("PB accounts data not found");
+}
+
+// Retrieve additional data from the fetched tables
+$barangay = $pb_accounts_data['barangay'];
 
 $complainant_last_name = $incident_data['complainant_last_name'];
 $complainant_first_name = $incident_data['complainant_first_name'];
@@ -120,8 +134,12 @@ if (!$execution_data) {
     die("Execution notice data not found");
 }
 
-// Additional data from the execution_notice table
+
 $remarks = $execution_data['remarks'];
+$timestamp = $execution_data['timestamp'];
+
+$petsa = date('l, F j, Y', strtotime($timestamp));
+
 $html = <<<EOD
 <style>
  
@@ -152,9 +170,9 @@ $html = <<<EOD
 
 <div class="header">
     Republic of the Philippines
-    <br>Province of 
-    <br>CITY/MUNICIPALITY OF
-    <br>Barangay 
+    <br>Province of Laguna
+    <br>CITY/MUNICIPALITY OF SANTA ROSA
+    <br>Barangay $barangay
     <br>OFFICE OF LUPONG TAGAPAMAYAPA
 </div>
 
@@ -190,36 +208,21 @@ ________________________________________________________________________________
 
 <br>The said settlement/award is now final and executory;
 
-<br>WHEREAS, the party obliged ________________ (name) has not complied
+<br>WHEREAS, the party obliged has not complied
 voluntarily with the aforestated amicable settlement/arbitration award, within
 the period of five (5) days from the date of hearing on the motion for
 execution;
 <br>NOW, THEREFORE, in behalf of the Lupong Tagapamayapa and by virtue of
 the powers vested in me and the Lupon by the Katarungang Pambarangay Law
 and Rules, I shall cause to be realized from the goods and personal property of
-__________________ (name of party obliged) the sum of
-_________________ (state amount of settlement or award) upon in the said
-amicable settlement [or adjudged in the said arbitration award], unless
+upon in the said
+amicable settlemen, unless
 voluntary compliance of said settlement or award shall have been made upon
 receipt hereof.
-<br><br>Signed this _________ day of ___________, 19____.
-<br><br>___________________
-<br>Punong Barangay
+<br><br>Signed this $petsa.
+<br><br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img class="signature-img" src="$signature_image_path" style="width: 100px; height: 30px;"><br><u>Kgg. RELLY M. MEDINA</u>
+<br>Punong Barangay/Lupon Chairman
 
-<br><br>Copy furnished:
-
-<br>______________________&nbsp;&nbsp;&nbsp;
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-______________________
-<br>______________________&nbsp;&nbsp;&nbsp;
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-______________________
-<br>Complainant/s &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-
-Respondent/s
-</div>
 
  
 </body>

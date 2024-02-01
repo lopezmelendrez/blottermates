@@ -580,19 +580,32 @@ header('location: ../../index.php');
         }
     }
 
-    @media screen and (min-width: 1520px) and (max-width: 1528px) and (min-height: 740px) and (max-height: 742px){
+@media screen and (min-width: 1500px) and (max-width: 1670px) and (min-height: 700px) and (max-height: 760px){
         table{
             margin-left: 8.85%;
+            width: 84.5%;
         }
         .pagination{
-            margin-left: 5.2%;
+            margin-left: 5.1%;
             margin-top: 1.5%;
         }
         .add-account{
-            margin-top: -4.4%;
+            margin-top: -4.2%;
         }
         .upcoming-hearing, .hearing, .shownotices{
-            margin-left: 15%;
+            margin-left: 12%;
+        }
+    }
+
+@media screen and (min-width: 1460px) and (max-width: 1500px) and (min-height: 691px) and (max-height: 730px){
+    
+        .pagination{
+            margin-left: 3.5%;
+        }
+        
+        table{
+        margin-left: 9%;
+            
         }
     }
 

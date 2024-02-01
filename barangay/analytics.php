@@ -202,74 +202,98 @@ WHERE h.date_of_hearing IS NOT NULL
             </div>
             
             <div class="col-md-4">
-            <?php
-        $queryMonthlyReports = "SELECT pa.barangay, COUNT(*) as settled_cases
-        FROM `incident_report` AS ir
-        INNER JOIN `hearing` AS h ON ir.incident_case_number = h.incident_case_number
-        INNER JOIN `lupon_accounts` AS la ON ir.lupon_id = la.lupon_id
-        INNER JOIN `pb_accounts` AS pa ON la.pb_id = pa.pb_id
-        LEFT JOIN `amicable_settlement` AS amicable_settlement ON h.hearing_id = amicable_settlement.hearing_id
-        WHERE (h.date_of_hearing IS NOT NULL AND h.time_of_hearing IS NOT NULL AND amicable_settlement.agreement_description IS NOT NULL)
-        OR (h.hearing_type_status = 'filed to court action' AND pa.pb_id = '$pb_id')";
-        $resultMonthlyReports = mysqli_query($conn, $queryMonthlyReports);
+           <?php
+             $settledCountQuery = "
+                SELECT pa.barangay, COUNT(*) as settledCaseCount
+                    FROM `incident_report` AS ir
+    INNER JOIN `lupon_accounts` AS la ON ir.lupon_id = la.lupon_id
+    INNER JOIN `pb_accounts` AS pa ON la.pb_id = pa.pb_id
+    WHERE pa.pb_id = '$pb_id'
+    AND (
+        EXISTS (
+            SELECT 1
+            FROM `hearing` AS h
+            INNER JOIN `amicable_settlement` AS amicable_settlement ON h.hearing_id = amicable_settlement.hearing_id
+            WHERE ir.incident_case_number = h.incident_case_number
+        )
+        OR EXISTS (
+            SELECT 1
+            FROM `court_action` AS ca
+            WHERE ir.incident_case_number = ca.incident_case_number
+        )
+    )
+    GROUP BY pa.barangay;";
 
 
-        $resultMonthlyReports = mysqli_query($conn, $queryMonthlyReports);
+                $result = mysqli_query($conn, $settledCountQuery);
 
-        if ($resultMonthlyReports) {
-            $rowMonthlyReports = mysqli_fetch_assoc($resultMonthlyReports);
-            $totalMonthlyReports = $rowMonthlyReports['settled_cases'];
-        } else {
-            $totalMonthlyReports = 0; // Handle the case where the query fails.
-        }
-    ?>
+                if ($result) {
+                    // Check if there are rows returned
+                    if (mysqli_num_rows($result) > 0) {
+                        $row = mysqli_fetch_assoc($result);
+                        $settledCasesCount = $row['settledCaseCount'];
+                    } else {
+                        $settledCasesCount = 0; // No results found
+                    }
+                } else {
+                    $settledCasesCount = "N/A";
+                }
+            ?>
     <div class="settled-cases-box">
         <p>Settled Cases</p>
-        <p class="count"><?php echo $totalMonthlyReports; ?></p>
+        <p class="count"><?php echo $settledCasesCount; ?></p>
     </div>
 </div>
 
 
 <div class="col-md-3">
 <?php
-        $queryRegisteredBarangays = "SELECT pa.barangay, COUNT(*) as incomplete_cases
-        FROM `incident_report` AS ir
-        INNER JOIN `lupon_accounts` AS la ON ir.lupon_id = la.lupon_id
-        INNER JOIN `pb_accounts` AS pa ON la.pb_id = pa.pb_id
-        WHERE pa.pb_id = '$pb_id'
-        AND NOT EXISTS (
-            SELECT 1
-            FROM `hearing` AS h
-            INNER JOIN `amicable_settlement` AS amicable_settlement ON h.hearing_id = amicable_settlement.hearing_id
-            WHERE ir.incident_case_number = h.incident_case_number
-        )
-        AND (
-            NOT EXISTS (
-                SELECT 1
-                FROM `notify_residents` AS nr
-                WHERE ir.incident_case_number = nr.incident_case_number
-            )
-            OR (
-                SELECT 1
-                FROM `notify_residents` AS nr
-                WHERE ir.incident_case_number = nr.incident_case_number
-                AND (nr.generate_hearing IS NULL OR nr.generate_summon IS NULL)
-            )
-        )
-        GROUP BY pa.barangay;";
+                $incompleteCountQuery = "
+                SELECT pa.barangay, COUNT(*) as incompleteCaseCount
+                FROM `incident_report` AS ir
+                INNER JOIN `lupon_accounts` AS la ON ir.lupon_id = la.lupon_id
+                INNER JOIN `pb_accounts` AS pa ON la.pb_id = pa.pb_id
+                WHERE pa.pb_id = '$pb_id'
+                AND NOT EXISTS (
+                    SELECT 1
+                    FROM `hearing` AS h
+                    INNER JOIN `amicable_settlement` AS amicable_settlement ON h.hearing_id = amicable_settlement.hearing_id
+                    WHERE ir.incident_case_number = h.incident_case_number
+                )
+                AND (
+                    NOT EXISTS (
+                        SELECT 1
+                        FROM `notify_residents` AS nr
+                        WHERE ir.incident_case_number = nr.incident_case_number
+                    )
+                    OR (
+                        SELECT 1
+                        FROM `notify_residents` AS nr
+                        WHERE ir.incident_case_number = nr.incident_case_number
+                        AND (nr.generated_hearing_timestamp IS NULL OR nr.generated_summon_timestamp IS NULL)
+                    )
+                )
+                GROUP BY pa.barangay;";
+            
+            
 
-        $resultRegisteredBarangays = mysqli_query($conn, $queryRegisteredBarangays);
+                $result = mysqli_query($conn, $incompleteCountQuery);
 
-        if ($resultRegisteredBarangays) {
-            $rowRegisteredBarangays = mysqli_fetch_assoc($resultRegisteredBarangays);
-            $totalRegisteredBarangays = $rowRegisteredBarangays['incomplete_cases'];
-        } else {
-            $totalRegisteredBarangays = 0; // Handle the case where the query fails.
-        }
-    ?>
+                if ($result) {
+                    // Check if there are rows returned
+                    if (mysqli_num_rows($result) > 0) {
+                        $row = mysqli_fetch_assoc($result);
+                        $incompleteCasesCount = $row['incompleteCaseCount'];
+                    } else {
+                        $incompleteCasesCount = 0; // No results found
+                    }
+                } else {
+                    $incompleteCasesCount = "N/A";
+                }
+                ?>
     <div class="incomplete-cases-box">
         <p>Cases with Incomplete Notice</p>
-        <p class="count"><?php echo $totalRegisteredBarangays; ?></p>
+        <p class="count"><?php echo $incompleteCasesCount; ?></p>
     </div>
 </div>
 
@@ -880,7 +904,7 @@ var myBarChart = new Chart(ctx, {
         }
     }
 
-    @media screen and (min-width: 1520px) and (max-width: 1528px) and (min-height: 740px) and (max-height: 742px){
+@media screen and (min-width: 1500px) and (max-width: 1670px) and (min-height: 700px) and (max-height: 760px){
         .notice-records{
             margin-left: 22.5%;
             margin-top: -43px;
@@ -918,6 +942,50 @@ var myBarChart = new Chart(ctx, {
             margin-top: 8%;
         }
     }
+    
+    @media screen and (min-width: 1460px) and (max-width: 1500px) and (min-height: 691px) and (max-height: 730px){
+    .notice-records{
+        margin-left: 23.5%;
+        margin-top: -43px;
+    }
+     .ongoing-cases-box, .settled-cases-box, .incomplete-cases-box{
+            height: 7rem;
+            width: 355px;
+        }
+        .ongoing-cases-box p,.settled-cases-box p,.incomplete-cases-box p{
+            font-size: 20px;
+        }
+        .ongoing-cases-box .count, .settled-cases-box .count, .incomplete-cases-box .count{
+            font-size: 50px;
+        }
+        .incident-case-table-1{
+            width: 30.7%;
+            margin-left: 60%;
+            margin-top: -34%;
+            height: 29.5rem;
+        }
+        .incident-case-table .table-container canvas{
+            margin-top: 6.5%;
+        }
+        .incident-case-table-1 .table-container{
+            height: 700px;
+        }
+        .incident-case-table-1 .table-container .border1{
+            width: 70%;
+        }
+        .incident-case-table{
+            margin-left: 7.6%;
+            height: 29.5rem;
+            width: 50%;
+        }
+        .piechart{
+            height: 355px;
+        }
+        #myPieChart{
+            margin-left: 5%;
+            margin-top: 5%;
+        }
+}
 
 </style>
 </html>

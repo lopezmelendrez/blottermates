@@ -154,8 +154,8 @@ $html = <<<EOD
 
 <div class="header">
     Republic of the Philippines
-    <br>Province of 
-    <br>CITY/MUNICIPALITY OF
+    <br>Province of Laguna
+    <br>CITY/MUNICIPALITY OF SANTA ROSA
     <br>Barangay $barangay
     <br>OFFICE OF LUPONG TAGAPAMAYAPA
 </div>
@@ -192,10 +192,7 @@ in court; and
 <br>3. The amicable settlement/arbitration award is now final and executory.
 WHEREFORE, Complainant/s/Respondent/s request that the corresponding
 writ of execution be issued by the Lupon Chairman in this case.
-<br><br>_______________
-<br>(Date)
-<br><br>_______________________
-<br>Complainant/s/Respondent/s
+
 </div>  
 </body>
 

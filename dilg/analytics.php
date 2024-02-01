@@ -747,7 +747,7 @@ var myBarChart = new Chart(ctx, {
         }
     }
 
-    @media screen and (min-width: 1520px) and (max-width: 1528px) and (min-height: 740px) and (max-height: 742px){
+@media screen and (min-width: 1500px) and (max-width: 1670px) and (min-height: 700px) and (max-height: 760px){
         .notice-records{
             margin-left: 22.5%;
             margin-top: -43px;
@@ -785,6 +785,53 @@ var myBarChart = new Chart(ctx, {
             margin-top: 8%;
         }
     }
+    
+     @media screen and (min-width: 1460px) and (max-width: 1500px) and (min-height: 691px) and (max-height: 730px){
+    .notice-records{
+        margin-left: 23.5%;
+        margin-top: -43px;
+    }
+    .container{
+        margin-left: 0%;
+    }
+     .ongoing-cases-box, .settled-cases-box, .incomplete-cases-box{
+            height: 7rem;
+            width: 355px;
+        }
+        .ongoing-cases-box p,.settled-cases-box p,.incomplete-cases-box p{
+            font-size: 20px;
+        }
+        .ongoing-cases-box .count, .settled-cases-box .count, .incomplete-cases-box .count{
+            font-size: 50px;
+        }
+        .incident-case-table-1{
+            width: 30.7%;
+            margin-left: 60%;
+            margin-top: -34%;
+            height: 29.5rem;
+        }
+        .incident-case-table .table-container canvas{
+            margin-top: 6.5%;
+        }
+        .incident-case-table-1 .table-container{
+            height: 700px;
+        }
+        .incident-case-table-1 .table-container .border1{
+            width: 70%;
+        }
+        .incident-case-table{
+            margin-left: 7.6%;
+            height: 29.5rem;
+            width: 50%;
+        }
+        .piechart{
+            height: 355px;
+        }
+        #myPieChart{
+            margin-left: 5%;
+            margin-top: 5%;
+        }
+}
 
 </style>
 </html>

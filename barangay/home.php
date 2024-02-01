@@ -193,8 +193,13 @@ header('location: ../index.php');
                 $result = mysqli_query($conn, $countQuery);
 
                 if ($result) {
-                    $row = mysqli_fetch_assoc($result);
-                    $ongoingCasesCount = $row['caseCount'];
+                    // Check if there are rows returned
+                    if (mysqli_num_rows($result) > 0) {
+                        $row = mysqli_fetch_assoc($result);
+                        $ongoingCasesCount = $row['caseCount'];
+                    } else {
+                        $ongoingCasesCount = 0; // No results found
+                    }
                 } else {
                     $ongoingCasesCount = "N/A";
                 }
@@ -210,26 +215,41 @@ header('location: ../index.php');
             <div class="col-md-4">
             
             <?php
-             $settledCountQuery = "SELECT pa.barangay, COUNT(*) as settledCaseCount
-             FROM `incident_report` AS ir
-             INNER JOIN `hearing` AS h ON ir.incident_case_number = h.incident_case_number
-             INNER JOIN `lupon_accounts` AS la ON ir.lupon_id = la.lupon_id
-             INNER JOIN `pb_accounts` AS pa ON la.pb_id = pa.pb_id
-             LEFT JOIN `amicable_settlement` AS amicable_settlement ON h.hearing_id = amicable_settlement.hearing_id
-             WHERE (h.date_of_hearing IS NOT NULL AND h.time_of_hearing IS NOT NULL AND amicable_settlement.agreement_description IS NOT NULL)
-             OR (h.hearing_type_status = 'filed to court action' AND pa.pb_id = '$pb_id')";
-
+             $settledCountQuery = "
+                SELECT pa.barangay, COUNT(*) as settledCaseCount
+                    FROM `incident_report` AS ir
+    INNER JOIN `lupon_accounts` AS la ON ir.lupon_id = la.lupon_id
+    INNER JOIN `pb_accounts` AS pa ON la.pb_id = pa.pb_id
+    WHERE pa.pb_id = '$pb_id'
+    AND (
+        EXISTS (
+            SELECT 1
+            FROM `hearing` AS h
+            INNER JOIN `amicable_settlement` AS amicable_settlement ON h.hearing_id = amicable_settlement.hearing_id
+            WHERE ir.incident_case_number = h.incident_case_number
+        )
+        OR EXISTS (
+            SELECT 1
+            FROM `court_action` AS ca
+            WHERE ir.incident_case_number = ca.incident_case_number
+        )
+    )
+    GROUP BY pa.barangay;";
 
 
                 $result = mysqli_query($conn, $settledCountQuery);
 
                 if ($result) {
-                    $row = mysqli_fetch_assoc($result);
-                    $settledCasesCount = $row['settledCaseCount'];
+                    // Check if there are rows returned
+                    if (mysqli_num_rows($result) > 0) {
+                        $row = mysqli_fetch_assoc($result);
+                        $settledCasesCount = $row['settledCaseCount'];
+                    } else {
+                        $settledCasesCount = 0; // No results found
+                    }
                 } else {
                     $settledCasesCount = "N/A";
                 }
-
             ?>
         
                 <div class="settled-cases-box">
@@ -262,10 +282,11 @@ header('location: ../index.php');
                         SELECT 1
                         FROM `notify_residents` AS nr
                         WHERE ir.incident_case_number = nr.incident_case_number
-                        AND (nr.generate_hearing IS NULL OR nr.generate_summon IS NULL)
+                        AND (nr.generated_hearing_timestamp IS NULL OR nr.generated_summon_timestamp IS NULL)
                     )
                 )
                 GROUP BY pa.barangay;";
+            
             
             
 
@@ -875,12 +896,15 @@ if ($rowCount >= 3) {
         .container{
             margin-left: 4%;
         }
+        .add-account{
+            margin-top: 65px;
+        }
 
 }
 
 
 
-@media screen and (min-width: 1520px) and (max-width: 1528px) and (min-height: 740px) and (max-height: 742px){
+@media screen and (min-width: 1500px) and (max-width: 1670px) and (min-height: 700px) and (max-height: 760px){
     .ongoing-cases-box, .settled-cases-box, .incomplete-cases-box{
             height: 110px;
             width: 380px;
@@ -904,9 +928,35 @@ if ($rowCount >= 3) {
             width: 40%;
             margin-top: 3%;
             margin-left: 7.6%;
-        }
-        
+        }  
 }
+
+@media screen and (min-width: 1460px) and (max-width: 1500px) and (min-height: 691px) and (max-height: 730px){
+    .ongoing-cases-box, .settled-cases-box, .incomplete-cases-box{
+            height: 110px;
+            width: 380px;
+        }
+        .ongoing-cases-box p,.settled-cases-box p,.incomplete-cases-box p{
+            font-size: 21px;
+            margin-top: -5px;
+        }
+        .ongoing-cases-box .count, .settled-cases-box .count, .incomplete-cases-box .count{
+            font-size: 50px;
+            margin-top: -20px;
+        }
+        .container{
+            margin-left: 1.5%;
+            margin-top: 2%;
+        }
+        .incident-case-table-1{
+            margin-left: 12%;
+        }
+        .incident-case-table{
+            width: 41.5%;
+            margin-top: 2.5%;
+            margin-left: 5.5%;
+        }
+    }
     </style>
 
 </body>

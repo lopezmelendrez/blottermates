@@ -13,8 +13,9 @@ if(!isset($account_id)){
 header('location: ../index.php');
 }
 
-$query = "SELECT * FROM pb_accounts ORDER BY created_at DESC";
+$query = "SELECT pb_id, barangay_captain, email_address, account_status, created_at, signature_image FROM pb_accounts ORDER BY created_at DESC";
 $result = mysqli_query($conn, $query);
+
 
 ?>
 
@@ -138,6 +139,7 @@ $result = mysqli_query($conn, $query);
                     echo '<th style="padding: 13px;">Status</th>';
                     echo '<th style="padding: 14px;">Created At</th>';
                     echo '<th style="padding: 14px;">Actions</th>';
+                     echo '<th style="padding: 14px;">Signature</th>';
                     echo '</tr>';
                     echo '</thead>';
                     echo '<tbody>';
@@ -157,9 +159,35 @@ $result = mysqli_query($conn, $query);
                 if ($status == 'disabled') {
                     echo '<button class="btn activate" onclick="showActivatePopup(' . $row['pb_id'] . ')">Activate</button>';
                 } else {
-                    echo '<button class="btn disable" onclick="showDisablePopup(' . $row['pb_id'] . ')">Disable</button>';
+                     // Check if last_disable_date has the same year and month as the current month
+    $currentYearMonth = date('Y-m');
+    $lastDisableYearMonth = date('Y-m', strtotime($row['last_disable_date']));
+
+    if ($lastDisableYearMonth == $currentYearMonth) {
+        echo '<button class="btn">-</button>'; // Display "-"
+    } else {
+        echo '<button class="btn disable" onclick="showDisablePopup(' . $row['pb_id'] . ')">Disable</button>';
+    }
                 }
                         echo '</td>';
+                      echo '<td>';
+if (!empty($row['signature_image'])) {
+    $signatureFileName = $row['signature_image'];
+    $signatureFilePath = 'signature/' . $signatureFileName; // Path to the signature image
+
+    // Check if the file exists
+    if (file_exists($signatureFilePath)) {
+        echo '<img src="' . $signatureFilePath . '" alt="Signature" style="max-width: 100px; height: 40px;">';
+    } else {
+        // Display nothing if the file is not found
+        echo '<img src="signature/2_signature.png" style="max-width: 100px; height: 40px">';
+    }
+} else {
+    // Display nothing if the signature_image is empty
+    echo '-';
+}
+echo '</td>';
+
                         echo '</tr>';
                     }
 
@@ -182,11 +210,6 @@ $result = mysqli_query($conn, $query);
                 <label style="font-size: 20px; margin-top: 6%; margin-bottom: 6%; letter-spacing: 1; text-transform: uppercase;">Are you sure you want to disable this user account?</label>
                 <hr style="border: 1px solid #828282; margin: 10px 0; margin-bottom: 3%;">
                 <div class="disable-buttons" style="display: flex;">
-                    <input type="hidden" id="disable_pbId" name="pbId">
-                    <button type="button" class="backBtn" onclick="closeDisablePopup()" style="margin-top: 8%; width: 120px; padding: 6px 6px; font-weight: 600; background: #fff; border: 1px solid #bc1823; border-radius: 5px; color: #bc1823; margin-left: 210px;">CANCEL</button>
-                    <button type="submit" class="backBtn" style="margin-top: 8%; width: 180px; padding: 6px 6px; font-weight: 600; background: #bc1823; border: none; border-radius: 5px; color: #fff; margin-left: 5px;">CONFIRM</button>
-                </div>
-            </form>
         </div>
     </center>
 </div>
@@ -484,7 +507,7 @@ table {
     }
 }
 
-@media screen and (min-width: 1520px) and (max-width: 1528px) and (min-height: 740px) and (max-height: 742px){
+@media screen and (min-width: 1500px) and (max-width: 1670px) and (min-height: 700px) and (max-height: 760px){
         table{
             width: 93%;
         }
@@ -495,6 +518,20 @@ table {
         transform: translate(-50%, -50%);
     }
 }
+
+@media screen and (min-width: 1460px) and (max-width: 1500px) and (min-height: 691px) and (max-height: 730px){
+ table{
+            width: 93%;
+        }
+        .modal{
+        position: absolute;
+        top: 25%;
+        left: 21%;
+        transform: translate(-50%, -50%);
+    }
+}
+
+
 
 </style>
 </html>

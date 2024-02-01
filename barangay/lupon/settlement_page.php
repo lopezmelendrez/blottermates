@@ -6,9 +6,8 @@ session_start();
 
 $email = $_SESSION['email_address'];
 
-
-if(!isset($email)){
-header('location: ../../index.php');
+if (!isset($email)) {
+    header('location: ../../index.php');
 }
 
 function displayPage($conn, $incident_case_number)
@@ -52,16 +51,14 @@ function displayPage($conn, $incident_case_number)
     return false;
 }
 
-
 $incident_case_number = $_GET['incident_case_number'];
 
 if (!displayPage($conn, $incident_case_number)) {
     header('location: ongoing_cases.php');
 }
 
-
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['conciliation_submit'])) {
-    $incident_case_number = $_POST['incident_case_number'];
+    $incident_case_number = mysqli_real_escape_string($conn, $_POST['incident_case_number']);
     $hearing_type_status = 'conciliation';
 
     $manilaTime = new DateTime('now', new DateTimeZone('Asia/Manila'));
@@ -84,10 +81,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['conciliation_submit']
     }
 }
 
-
-
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['arbitration_submit'])) {
-    $incident_case_number = $_POST['incident_case_number'];
+    $incident_case_number = mysqli_real_escape_string($conn, $_POST['incident_case_number']);
     $hearing_type_status = 'arbitration';
 
     $manilaTime = new DateTime('now', new DateTimeZone('Asia/Manila'));
@@ -109,7 +104,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['arbitration_submit'])
         exit;
     }
 }
-
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['court_action_submit'])) {
     $incident_case_number = $_POST['incident_case_number'];
@@ -133,10 +127,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['court_action_submit']
 }
 
 
-
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $agreement_description = $_POST['agreement_description'];
-    $incident_case_number = $_POST['incident_case_number'];
+    $agreement_description = mysqli_real_escape_string($conn, $_POST['agreement_description']);
+    $incident_case_number = mysqli_real_escape_string($conn, $_POST['incident_case_number']);
 
     $manilaTime = new DateTime('now', new DateTimeZone('Asia/Manila'));
     $created_at = $manilaTime->format('Y-m-d H:i:s');
@@ -148,16 +141,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $fetch_hearing = mysqli_fetch_assoc($select_hearing_id_result);
         $hearing_id = $fetch_hearing['hearing_id'];
 
-        // Update your INSERT query to include the `timestamp` column and set it to the current timestamp
         $insert_query = "INSERT INTO `amicable_settlement` (`agreement_description`, `hearing_id`, `incident_case_number`, `timestamp`)
         VALUES ('$agreement_description', '$hearing_id', '$incident_case_number', '$created_at')";
 
         $insert_result = mysqli_query($conn, $insert_query);
 
         if ($insert_result) {
-            $incident_case_number = $_POST['incident_case_number'];
+            $incident_case_number = mysqli_real_escape_string($conn, $_POST['incident_case_number']);
             echo '<script>';
-            echo 'window.open("https://brgyblotter-src.online/tcpdf/ammicable_settlement_form.php?incident_case_number=' . $incident_case_number . '", "_blank");';
+            echo 'window.open("https://brgyblotter-src.online/tcpdf/amicable_settlement_form.php?incident_case_number=' . $incident_case_number . '", "_blank");';
             echo 'window.open("https://brgyblotter-src.online/barangay/lupon/settled_cases.php", "_self");';
             echo '</script>';
             exit;
@@ -172,6 +164,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 
 ?>
+
 
 
 <!DOCTYPE html>
@@ -711,7 +704,7 @@ function validateName(event) {
         }
     }
 
-    @media screen and (min-width: 1520px) and (max-width: 1528px) and (min-height: 740px) and (max-height: 742px){
+@media screen and (min-width: 1500px) and (max-width: 1670px) and (min-height: 700px) and (max-height: 760px){
         .modal{
             position: absolute;
         top: 20%;
@@ -721,6 +714,14 @@ function validateName(event) {
         .container{
             margin-top: 10%;
         }
+    }
+    
+    @media screen and (min-width: 1460px) and (max-width: 1500px) and (min-height: 691px) and (max-height: 730px){
+        .container{
+            width: 60%;
+            margin-top: 8%;
+        }
+        
     }
 
     </style>

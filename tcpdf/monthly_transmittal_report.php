@@ -112,6 +112,21 @@ $month = date('m');  // Get the current month
 
 $month = date('m');  // Get the current month
 
+$sql = "SELECT pb.barangay
+        FROM lupon_accounts la
+        JOIN pb_accounts pb ON la.pb_id = pb.pb_id
+        WHERE la.email_address = '$email'";
+
+$result = mysqli_query($conn, $sql);
+
+if ($result) {
+    $row = mysqli_fetch_assoc($result);
+    $barangay = $row['barangay'];
+
+} else {
+    echo "Error executing query: " . mysqli_error($conn);
+}
+
 $select = mysqli_query($conn, "
 SELECT 
     ir.incident_case_number, 
@@ -150,6 +165,8 @@ while ($row = mysqli_fetch_assoc($select)) {
     $incidentCaseNumber = $row['incident_case_number'];
     $complainant_last_name = $row['complainant_last_name'];
     $respondent_last_name = $row['respondent_last_name'];
+     $dateAgreed = $row['date_agreed'];
+    $month = date('F', strtotime($dateAgreed));
 
     $tbodyContent .= <<<EOD
         <tr>
@@ -158,20 +175,6 @@ while ($row = mysqli_fetch_assoc($select)) {
         </tr>
     EOD;
 }
-
-$date = date('F j, Y');
-
-$pb_id = $incident_data ['pb_id'];
-$barangay_query = "SELECT * FROM `pb_accounts` WHERE `pb_id` = '$pb_id'";
-$select_barangay = mysqli_query($conn, $barangay_query) or die('Barangay query failed');
-$barangay_data = mysqli_fetch_assoc($select_barangay);
-
-if (!$barangay_data) {
-  die("Barangay data not found for pb_id: $pb_id");
-}
-
-$barangay = $barangay_data['barangay'];
-$barangay_captain = $barangay_data['barangay_captain'];
 
 $html = <<<EOD
 <style>
@@ -215,16 +218,16 @@ th {
 
 <div class="header">
     Republic of the Philippines
-    <br>Province of 
-    <br>CITY/MUNICIPALITY OF
+    <br>Province of Laguna
+    <br>CITY/MUNICIPALITY OF SANTA ROSA
     <br>Barangay $barangay
     <br>OFFICE OF LUPONG TAGAPAMAYAPA
     <br><br>OFFICE OF THE BARANGAY CAPTAIN
 </div>
 
   <div class="content-one">
-    <p><u>$date</u>       </p>
-    <p style="margin-left: 10px;">Date&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
+    <p>In the Month of <u>$month</u>       </p>
+    <p style="margin-left: 10px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
   </div>
 
   <div class="content" style="text-align: center; font-weight: bold;">

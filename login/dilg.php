@@ -123,6 +123,13 @@ if (isset($_POST['submit'])) {
     <title>Login | Barangay Blotter Management System</title>
     </head>
     <body>
+    <script>
+  window.onload = function() {
+    if (/Mobi|Android/i.test(navigator.userAgent)) {
+      window.location.href = 'error_page.php';
+    }
+  };
+</script>
 
         <center>
         <div class="container d-flex justify-content-center align-items-center min-vh-100">
@@ -287,6 +294,19 @@ if (isset($_POST['submit'])) {
     footer{
         margin-top: -2%;
     }
+}
+
+@media screen and (min-width: 1460px) and (max-width: 1500px) and (min-height: 691px) and (max-height: 730px){
+.header-text-1::after{
+                width: 67.5%;
+                margin-left: -25%;
+            }
+            .header-text-1{
+                margin-left: -25%;
+            }
+            .input-group1{
+                margin-left: 15%;
+            }
 }
 </style>
 

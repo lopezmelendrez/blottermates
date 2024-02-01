@@ -692,7 +692,7 @@ while ($row = mysqli_fetch_assoc($result)) {
             }
         }
 
-        @media screen and (min-width: 1500px) and (max-width: 1536px) and (min-height: 730px){
+@media screen and (min-width: 1500px) and (max-width: 1670px) and (min-height: 700px) and (max-height: 760px){
         .incomplete-cases{
             width: 195%;
         }
@@ -756,9 +756,44 @@ while ($row = mysqli_fetch_assoc($result)) {
                 margin-left: 18%;
             }
         }
+        
+        @media screen and (min-width: 1460px) and (max-width: 1500px) and (min-height: 691px) and (max-height: 730px){
+        .home{
+                margin-left: 0%;
+            }
+            .add-account{
+                margin-top: -4.5%;
+            }
+            .cases-container{
+                margin-left: 5%;
+            }
+            .incomplete-cases{
+                width: 175%;
+            }
+            .search-input{
+                width: 75.7%;
+            }
+            .search-container{
+                margin-left: 8.9%;
+            }
+            .sort-container{
+                margin-left: 69%;
+                margin-bottom: 1%;
+            }
+            .container{
+                margin-bottom: 2%;
+                margin-left: 8.9%;
+                width: 82.5%;
 
-
-
+            }
+            .generate{
+                margin-left: 15%;
+            }
+            .notify{
+                margin-left: 18%;
+            }
+            
+        }
 
         
 

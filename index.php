@@ -140,6 +140,25 @@
         margin-top: -2%;
     }
 }
+
+@media screen and (min-width: 1460px) and (max-width: 1500px) and (min-height: 691px) and (max-height: 730px){
+.header-text::after{
+                width: 67.5%;
+                margin-left: 4%;
+            }
+            .header-text{
+                margin-left: 4%;
+            }
+            .barangay-btn{
+                margin-left: 10%;
+                margin-top: -5.5%;
+            }
+            .dilg-btn{
+                margin-top: -5.5%;
+                margin-left: -18%;
+            }
+    
+}
     </style>
 
     </style>

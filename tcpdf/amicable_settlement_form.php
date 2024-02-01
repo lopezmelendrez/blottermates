@@ -39,7 +39,7 @@ $pdf->AddPage();
     $pangkat_secretary = "Jaimie Lopez";
     $attested  = "Mary Anne Matos";
     $pangkat_chairman = "Anna Michaella Mangahis";
-    $signature_image_path = "../images/sign1.jpg";
+    $signature_image_path = "../dilg/signature/5_signature.jpg";
     $logo_image_path1 = "../images/ibaba.jpg";
     $logo_image_path2 = "../images/ibaba.jpg";
     $petsa = date('m-d-Y');
@@ -156,8 +156,8 @@ $html = <<<EOD
 
 <div class="header">
     Republic of the Philippines
-    <br>Province of 
-    <br>CITY/MUNICIPALITY OF
+    <br>Province of Laguna
+    <br>CITY/MUNICIPALITY OF SANTA ROSA
     <br>Barangay $barangay
     <br>OFFICE OF LUPONG TAGAPAMAYAPA
 </div>
@@ -182,7 +182,7 @@ $html = <<<EOD
 
 <br><br><br>
 <div class="content" style="text-align: justify;">
-  <br> We, complainant/s and respondent/s in the above-captioned case, do hereby
+  <br> We, complainant and respondent in the above-captioned case, do hereby
   agree to settle our dispute as follows:
   <u>$agreement_description</u>
   <br>and bind ourselves to comply honestly and faithfully with the above terms of
@@ -192,11 +192,11 @@ $html = <<<EOD
 </div>
 
 <div class="content" style="text-align: center; margin : 50px">
-<br>Complainant/s &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<br>Complainant &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-Respondent/s
+Respondent
 <br><u>$complainant_last_name, $complainant_first_name $complainant_middle_name</u>&nbsp;&nbsp;&nbsp;
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 <u>$respondent_last_name, $respondent_first_name $respondent_middle_name</u>
@@ -211,8 +211,7 @@ Respondent/s
 parties freely and voluntarily, after I had explained to them the nature and
 consequence of such settlement.
 
-<br><img class="signature-img" src="$signature_image_path">
-<br><br><br><u>Kgg. RELLY M. MEDINA</u>
+<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img class="signature-img" src="$signature_image_path" style="width: 100px; height: 30px;"><br><u>Kgg. RELLY M. MEDINA</u>
 <br>Punong Barangay/Lupon Chairman
 </div>
 

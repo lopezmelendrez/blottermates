@@ -14,28 +14,19 @@ if (!isset($email)) {
 function displayPage($conn, $incident_case_number)
 {
     // Check if the incident case number is found in the incident_report table
-    $check_incident_report_query = "SELECT * FROM incident_report WHERE incident_case_number = ?";
-    $stmt = $conn->prepare($check_incident_report_query);
-    $stmt->bind_param("s", $incident_case_number);
-    $stmt->execute();
-    $check_incident_report_result = $stmt->get_result();
+    $check_incident_report_query = "SELECT * FROM incident_report WHERE incident_case_number = '$incident_case_number'";
+    $check_incident_report_result = $conn->query($check_incident_report_query);
 
     if ($check_incident_report_result && mysqli_num_rows($check_incident_report_result) > 0) {
         // Remove the check for hearing data
 
         // Check if incident_case_number is not found in the amicable_settlement table
-        $check_amicable_query = "SELECT * FROM amicable_settlement WHERE incident_case_number = ?";
-        $stmt = $conn->prepare($check_amicable_query);
-        $stmt->bind_param("s", $incident_case_number);
-        $stmt->execute();
-        $check_amicable_result = $stmt->get_result();
+        $check_amicable_query = "SELECT * FROM amicable_settlement WHERE incident_case_number = '$incident_case_number'";
+        $check_amicable_result = $conn->query($check_amicable_query);
 
         // Check if incident_case_number is not found in the court_action table
-        $check_court_action_query = "SELECT * FROM court_action WHERE incident_case_number = ?";
-        $stmt = $conn->prepare($check_court_action_query);
-        $stmt->bind_param("s", $incident_case_number);
-        $stmt->execute();
-        $check_court_action_result = $stmt->get_result();
+        $check_court_action_query = "SELECT * FROM court_action WHERE incident_case_number = '$incident_case_number'";
+        $check_court_action_result = $conn->query($check_court_action_query);
 
         // Check if there's no data in amicable_settlement and court_action
         if ($check_amicable_result && mysqli_num_rows($check_amicable_result) == 0 &&
@@ -57,11 +48,8 @@ if (!displayPage($conn, $incident_case_number)) {
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit'])) {
 
-    $select_submitter_query = "SELECT * FROM lupon_accounts WHERE email_address = ?";
-    $stmt = $conn->prepare($select_submitter_query);
-    $stmt->bind_param("s", $email);
-    $stmt->execute();
-    $select_submitter_result = $stmt->get_result();
+    $select_submitter_query = "SELECT * FROM lupon_accounts WHERE email_address = '$email'";
+    $select_submitter_result = $conn->query($select_submitter_query);
 
     if ($select_submitter_result && mysqli_num_rows($select_submitter_result) > 0) {
         $submitter_data = mysqli_fetch_assoc($select_submitter_result);
@@ -76,50 +64,42 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit'])) {
         $manilaTime = new DateTime('now', new DateTimeZone('Asia/Manila'));
         $created_at = $manilaTime->format('Y-m-d H:i:s');
 
-        $check_query = "SELECT * FROM `hearing` WHERE incident_case_number = ?";
-        $stmt = $conn->prepare($check_query);
-        $stmt->bind_param("s", $incident_case_number);
-        $stmt->execute();
-        $check_result = $stmt->get_result();
+        $check_query = "SELECT * FROM `hearing` WHERE incident_case_number = '$incident_case_number'";
+        $check_result = $conn->query($check_query);
 
         if ($check_result) {
             if (mysqli_num_rows($check_result) > 0) {
-                $update_query = "UPDATE `hearing` SET `date_of_hearing` = ?, `time_of_hearing` = ?, `timestamp` = ?, `pb_id` = ? WHERE incident_case_number = ?";
-                $stmt = $conn->prepare($update_query);
-                $stmt->bind_param("ssssi", $date_of_hearing, $time_of_hearing, $created_at, $pb_id, $incident_case_number);
-                $result = $stmt->execute();
+                $update_query = "UPDATE `hearing` SET `date_of_hearing` = '$date_of_hearing', `time_of_hearing` = '$time_of_hearing', `timestamp` = '$created_at', `pb_id` = $pb_id WHERE incident_case_number = '$incident_case_number'";
+                $result = $conn->query($update_query);
 
                 if ($result) {
                     header("Location: arbitration_hearings.php");
                     exit;
                 } else {
-                    echo "Error: " . $stmt->error;
+                    echo "Error: " . $conn->error;
                     exit;
                 }
             } else {
                 $insert_query = "INSERT INTO `hearing` (`date_of_hearing`, `time_of_hearing`, `incident_case_number`, `hearing_type_status`, `timestamp`, `pb_id`) 
-                                VALUES (?, ?, ?, ?, ?, ?)";
-                $stmt = $conn->prepare($insert_query);
-                $stmt->bind_param("ssssis", $date_of_hearing, $time_of_hearing, $incident_case_number, $hearing_type_status, $created_at, $pb_id);
-                $result = $stmt->execute();
+                                VALUES ('$date_of_hearing', '$time_of_hearing', '$incident_case_number', '$hearing_type_status', '$created_at', $pb_id)";
+                $result = $conn->query($insert_query);
 
                 if ($result) {
-                    header("Location: notice_forms.php?incident_case_number=" . $incident_case_number);
+                    header("Location: notice_forms.php?incident_case_number=$incident_case_number");
                     exit;
                 } else {
-                    echo "Error: " . $stmt->error;
+                    echo "Error: " . $conn->error;
                     exit;
                 }
             }
         } else {
-            echo "Error: " . $stmt->error;
+            echo "Error: " . $conn->error;
             exit;
         }
     }
 }
 
 ?>
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -558,6 +538,19 @@ label{
         transform: translate(-50%, -50%);
         }
     }
+    
+    @media screen and (min-width: 1460px) and (max-width: 1500px) and (min-height: 691px) and (max-height: 730px){
+    .container{
+             margin-top: 7.5%;
+            margin-left: 18%;
+        }
+      .modal-content{
+            position: absolute;
+        top: 55%;
+        left: 48%;
+        transform: translate(-50%, -50%);
+    }
+
 
 
     </style>

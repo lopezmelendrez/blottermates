@@ -286,8 +286,8 @@ if ($fetch['barangay'] == 'Ibaba') {
   </p>
   <hr style="border: 1px solid #ccc; margin: 10px 0;">
   <p style="font-size: 14px; text-align: left;">
-    Hearing Notice for Complainant (KP #18)
-    <a href="../../tcpdf/Kp18.php?incident_case_number=<?php echo $incident_case_number; ?>" class="button" style="margin-left: 10%;">
+    Hearing Notice for Complainant (KP #8)
+    <a href="../../tcpdf/notice_of_hearing_form.php?incident_case_number=<?php echo $incident_case_number; ?>" target="_blank" class="button" style="margin-left: 11%;">
       Generate
     </a>
     <span class="printer-icon">
@@ -296,8 +296,8 @@ if ($fetch['barangay'] == 'Ibaba') {
   </p>
   <hr style="border: 1px solid #ccc; margin: 10px 0;">
   <p style="font-size: 14px; text-align: left;">
-    Hearing Notice for Respondent (KP #19)
-    <a href="../../tcpdf/Kp19.php?incident_case_number=<?php echo $incident_case_number; ?>" class="button" style="margin-left: 12%;">
+    Hearing Notice for Respondent (KP #9)
+    <a href="../../tcpdf/summon_for_the_respondent_form.php?incident_case_number=<?php echo $incident_case_number; ?>" class="button" style="margin-left: 13%;">
       Generate
     </a>
     <span class="printer-icon">
@@ -763,7 +763,7 @@ if ($fetch['barangay'] == 'Ibaba') {
     }
     }
 
-    @media screen and (min-width: 1520px) and (max-width: 1528px) and (min-height: 740px) and (max-height: 742px){
+@media screen and (min-width: 1500px) and (max-width: 1670px) and (min-height: 700px) and (max-height: 760px){
         .modal{
             position: absolute;
         top: 20%;
@@ -773,6 +773,25 @@ if ($fetch['barangay'] == 'Ibaba') {
         .close-icon{
             top: 24.5%;
             left: 63.5%;
+            z-index: 1001;
+        }
+    }
+    
+    @media screen and (min-width: 1460px) and (max-width: 1500px) and (min-height: 691px) and (max-height: 730px){
+    .container{
+    width: 64.8%;
+    margin-left: 19%;
+    margin-top: 2.8%;
+    }
+    .modal{
+            position: absolute;
+        top: 18%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        }
+        .close-icon{
+            top: 24.5%;
+            left: 64.3%;
             z-index: 1001;
         }
     }

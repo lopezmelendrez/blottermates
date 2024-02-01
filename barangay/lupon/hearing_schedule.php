@@ -521,7 +521,7 @@ label{
         }
     }
 
-    @media screen and (min-width: 1520px) and (max-width: 1528px) and (min-height: 740px) and (max-height: 742px){
+@media screen and (min-width: 1500px) and (max-width: 1670px) and (min-height: 700px) and (max-height: 760px){
         .container{
             margin-left: 18%;
         }
@@ -535,6 +535,19 @@ label{
         transform: translate(-50%, -50%);
         }
     }
+    
+    @media screen and (min-width: 1460px) and (max-width: 1500px) and (min-height: 691px) and (max-height: 730px){
+    .container{
+             margin-top: 7.5%;
+            margin-left: 18%;
+        }
+      .modal-content{
+            position: absolute;
+        top: 55%;
+        left: 48%;
+        transform: translate(-50%, -50%);
+    }
+
     
     </style>
 

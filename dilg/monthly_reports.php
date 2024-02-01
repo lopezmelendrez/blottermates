@@ -158,7 +158,7 @@ if (!$result) {
 
     <div class="search-container" style="margin-top: -0.5%;">
             <form action="" method="post">
-                <button class="case-button" style="padding: 0px 12px;">MONTH</button>
+                <span class="case-button-1" style="padding: 0px 12px;">MONTH</span>
                 <input type="text" class="search-input" name="search_case" placeholder="Search...">
                 <button type="submit" name="submit_search" class="search-button" style="padding: 0px 12px;">Search</button>
             </form>
@@ -319,7 +319,7 @@ dateElement.textContent = formatDate(now);
             padding: 0 12px;
         }
 
-        .case-button{
+        .case-button-1{
             background: #E83422;
             border: none;
             color: #fff;
@@ -548,6 +548,23 @@ dateElement.textContent = formatDate(now);
         .container{
             margin-left: 14.1%;
             width: 66.9%;
+            margin-bottom: 3%;
+        }
+    }
+    
+    @media screen and (min-width: 1460px) and (max-width: 1500px) and (min-height: 691px) and (max-height: 730px){
+        .search-container{
+            margin-left: 14.1%;
+        }
+        .search-input{
+            width: 65.7%;
+        }
+        .cases-container{
+            margin-left: -25%;
+        }
+        .container{
+            margin-left: 14.1%;
+            width: 68.9%;
             margin-bottom: 3%;
         }
     }

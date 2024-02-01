@@ -26,56 +26,41 @@ function barangayExists($barangayName, $conn)
     return false;
 }
 
-if (isset($_POST['submit'])) {
+// Define the pb_id you want to update
+$pb_id = 28;
 
+if (isset($_POST['submit'])) {
     // Sanitize and validate user input
-    $barangay = mysqli_real_escape_string($conn, $_POST["barangay"]);
-    $barangay_captain = mysqli_real_escape_string($conn, $_POST["barangay_captain"]);
-    $email_address = mysqli_real_escape_string($conn, $_POST["email_address"]);
-    $password = mysqli_real_escape_string($conn, $_POST["password"]);
-    $confirmPassword = mysqli_real_escape_string($conn, $_POST["confirmPassword"]);
     $signatureData = mysqli_real_escape_string($conn, $_POST["signatureData"]);
 
-    $manilaTime = new DateTime('now', new DateTimeZone('Asia/Manila'));
-    $created_at = $manilaTime->format('Y-m-d H:i:s');
+    // Use pb_id for the update query
+    $signatureFolder = 'signature'; 
+    $signatureFileName = $pb_id . '_signature.png';
 
-    // Check if passwords match
-    if ($password != $confirmPassword) {
-        $error = "Passwords do not Match";
+    // Decode the base64 signature data
+    $signatureData = str_replace('data:image/png;base64,', '', $signatureData);
+    $signatureData = str_replace(' ', '+', $signatureData);
+    $signatureBinaryData = base64_decode($signatureData);
+
+    // Save the signature image to the folder
+    $signatureFilePath = $signatureFolder . '/' . $signatureFileName;
+    file_put_contents($signatureFilePath, $signatureBinaryData);
+
+    // Update data in the database
+    $sql = "UPDATE pb_accounts SET signature_image = '$signatureFileName' WHERE pb_id = $pb_id";
+
+    if ($conn->query($sql) === TRUE) {
+        header("Location: manage_accounts.php");
+        exit();
     } else {
-        // Hash the password for security
-        $hashed_password = password_hash($password, PASSWORD_DEFAULT);
-        
-         $last_inserted_id = $conn->insert_id;
-
-        // Use pb_id in the filenam
-
-        $signatureFolder = 'signature'; 
-        $signatureFileName = $last_inserted_id . '_signature.png';
-
-        // Decode the base64 signature data
-        $signatureData = str_replace('data:image/png;base64,', '', $signatureData);
-        $signatureData = str_replace(' ', '+', $signatureData);
-        $signatureBinaryData = base64_decode($signatureData);
-        
-        
-
-        // Save the signature image to the folder
-        $signatureFilePath = $signatureFolder . '/' . $signatureFileName;
-        file_put_contents($signatureFilePath, $signatureBinaryData);
-
-        // Insert data into the database
-        $sql = "INSERT INTO pb_accounts (account_id, barangay, barangay_captain, email_address, password, signature_image, created_at) VALUES ('$account_id', '$barangay', '$barangay_captain', '$email_address', '$hashed_password', '$signatureFileName', '$created_at')";
-
-        if ($conn->query($sql) === TRUE) {
-            header("Location: manage_accounts.php");
-            exit();
-        } else {
-            echo "Error: " . $sql . "<br>" . $conn->error;
-        }
+        echo "Error: " . $sql . "<br>" . $conn->error;
     }
 }
 ?>
+
+<!-- The rest of your HTML code remains the same -->
+
+
 
 <!DOCTYPE html>
 <html lang="en">

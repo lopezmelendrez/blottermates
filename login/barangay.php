@@ -57,11 +57,7 @@ function getLastFailedAttemptTimestamp($conn, $email)
     mysqli_stmt_close($stmt);
 
     if ($timestamp) {
-        $manilaTimezone = new DateTimeZone('Asia/Manila');
-        $dateTime = new DateTime($timestamp);
-        $dateTime->setTimezone($manilaTimezone);
-
-        return $dateTime->format('Y-m-d H:i:s');
+        return strtotime($timestamp);
     }
 
     $query = "SELECT last_failed_attempt FROM pb_accounts WHERE email_address = ?";
@@ -72,21 +68,11 @@ function getLastFailedAttemptTimestamp($conn, $email)
     mysqli_stmt_fetch($stmt);
     mysqli_stmt_close($stmt);
 
-    if ($timestamp) {
-        $manilaTimezone = new DateTimeZone('Asia/Manila');
-        $dateTime = new DateTime($timestamp);
-        $dateTime->setTimezone($manilaTimezone);
-
-        return $dateTime->format('Y-m-d H:i:s');
-    }
-
-    return 0;
+    return $timestamp ? strtotime($timestamp) : 0;
 }
-
 
 function updateLastFailedAttemptTimestamp($conn, $email, $timestamp)
 {
-
     $formattedTimestamp = date('Y-m-d H:i:s', $timestamp);
     $query = "UPDATE lupon_accounts SET last_failed_attempt = ? WHERE email_address = ?";
     $stmt = mysqli_prepare($conn, $query);
@@ -192,6 +178,8 @@ if (isset($_POST['submit'])) {
 }
 ?>
 
+
+
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -206,6 +194,13 @@ if (isset($_POST['submit'])) {
     <title>Login | Barangay Blotter Management System</title>
     </head>
     <body>
+    <script>
+  window.onload = function() {
+    if (/Mobi|Android/i.test(navigator.userAgent)) {
+      window.location.href = 'error_page.php';
+    }
+  };
+</script>
 
         <center>
         <div class="container d-flex justify-content-center align-items-center min-vh-100">
@@ -370,6 +365,20 @@ if (isset($_POST['submit'])) {
     footer{
         margin-top: -2%;
     }
+}
+
+@media screen and (min-width: 1460px) and (max-width: 1500px) and (min-height: 691px) and (max-height: 730px){
+.header-text-1::after{
+                width: 67.5%;
+                margin-left: -25%;
+            }
+            .header-text-1{
+                margin-left: -25%;
+            }
+            .input-group1{
+                margin-left: 15%;
+            }
+    
 }
     
 </style>

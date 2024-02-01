@@ -675,13 +675,22 @@ function showDisablePopup(luponId) {
         }
     }
 
-    @media screen and (min-width: 1520px) and (max-width: 1528px) and (min-height: 740px) and (max-height: 742px){
+@media screen and (min-width: 1500px) and (max-width: 1670px) and (min-height: 700px) and (max-height: 760px){
         table{
             width: 93%;
         }
         .modal{
         position: absolute;
         top: 25%;
+        left: 21%;
+        transform: translate(-50%, -50%);
+    }
+    }
+    
+    @media screen and (min-width: 1460px) and (max-width: 1500px) and (min-height: 691px) and (max-height: 730px){
+    .modal{
+        position: absolute;
+        top: 30%;
         left: 21%;
         transform: translate(-50%, -50%);
     }

@@ -589,7 +589,7 @@ $date_of_hearing = $row['date_of_hearing'];
         }
     }
 
-    @media screen and (min-width: 1520px) and (max-width: 1528px) and (min-height: 740px) and (max-height: 742px){
+@media screen and (min-width: 1500px) and (max-width: 1670px) and (min-height: 700px) and (max-height: 760px){
         table{
             margin-left: 8.85%;
         }
@@ -599,6 +599,18 @@ $date_of_hearing = $row['date_of_hearing'];
         }
         .add-account{
             margin-top: -4.4%;
+        }
+    }
+
+@media screen and (min-width: 1460px) and (max-width: 1500px) and (min-height: 691px) and (max-height: 730px){
+    
+        .pagination{
+            margin-left: 3.5%;
+        }
+        
+        table{
+        margin-left: 9%;
+            
         }
     }
 

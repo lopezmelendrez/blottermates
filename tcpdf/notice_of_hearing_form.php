@@ -88,7 +88,7 @@ $pdf->setTextShadow(array('enabled'=>true, 'depth_w'=>0.2, 'depth_h'=>0.2, 'colo
     $pangkat_secretary = "Jaimie Lopez";
     $attested  = "Mary Anne Matos";
     $pangkat_chairman = "Anna Michaella Mangahis";
-    $signature_image_path = "../images/sign1.jpg";
+    $signature_image_path = "../dilg/signature/5_signature.jpg";
     $logo_image_path1 = "../images/ibaba.jpg";
     $logo_image_path2 = "../images/ibaba.jpg";
     $petsa = date('m-d-Y');
@@ -129,6 +129,11 @@ $pdf->setTextShadow(array('enabled'=>true, 'depth_w'=>0.2, 'depth_h'=>0.2, 'colo
       // Check if data was fetched successfully
       if ($hearing_data) {
           $date_of_hearing = $hearing_data['date_of_hearing'];
+          $time_of_hearing = $hearing_data['time_of_hearing'];
+          
+          // Assuming $time_of_hearing is in a military format (24-hour)
+$formatted_time_of_hearing = date('h:i A', strtotime($time_of_hearing));
+
       
           $dateTime = new DateTime($date_of_hearing);
       
@@ -167,6 +172,40 @@ $pdf->setTextShadow(array('enabled'=>true, 'depth_w'=>0.2, 'depth_h'=>0.2, 'colo
       
       $barangay = $barangay_data['barangay'];
       $barangay_captain = $barangay_data['barangay_captain'];
+      
+      $signature_query = "SELECT signature_image FROM pb_accounts WHERE `pb_id` = '$pb_id'";
+$signature_result = mysqli_query($conn, $signature_query);
+
+// Check if the query was successful
+if ($signature_result) {
+    // Fetch the result row
+    $row = mysqli_fetch_assoc($signature_result);
+
+    if ($row) {
+        // Retrieve the signature file name from the result
+        $signatureFileName = $row['signature_image'];
+
+        $signatureFilePath = '../dilg/signature/' . $signatureFileName;
+
+        // Set $signature_image to the img src attribute
+        $signature_image = '<img src="' . $signatureFilePath . '" alt="Signature Image">';
+
+        // Now you can use $signature_image as needed
+    } else {
+        // No matching row found for the given pb_id
+        echo "No signature found for pb_id: $pb_id";
+    }
+
+    // Free the result set
+    mysqli_free_result($signature_result);
+} else {
+    // Query execution failed
+    echo "Error executing query: " . mysqli_error($conn);
+}
+
+
+      $petsa = date('l, F j, Y');
+
 
 // Set some content to print
 $html = <<<EOD
@@ -191,13 +230,13 @@ $html = <<<EOD
 
   <div class="header">
     Republic of the Philippines
-    <br>Province of 
-    <br>CITY/MUNICIPALITY OF
+    <br>Province of Laguna
+    <br>CITY/MUNICIPALITY OF SANTA ROSA
     <br>Barangay $barangay
     <br>OFFICE OF LUPONG TAGAPAMAYAPA
   </div>
   </div>
-}
+
 
 <div class="header" style="font-weight: bold;">  
   <br>NOTICE OF HEARING
@@ -216,22 +255,23 @@ $html = <<<EOD
 <div class="content">
 You are required to appear before me on
   <u>{$month_name} {$day}, {$year}</u> 
-  at <u>{$time}</u> for the hearing of your complaint.
+  at <u>{$formatted_time_of_hearing}</u> for the hearing of your complaint.
 
 
-This _________ day of __________, 19___.
 
 
-<br><img class="signature-img" src="$signature_image_path">
-<br><br><br><u>Kgg. RELLY M. MEDINA</u>
+
+<br>
+<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img class="signature-img" src="$signature_image_path" style="width: 100px; height: 30px;"><br><u>Kgg. RELLY M. MEDINA</u>
 <br>Punong Barangay/Lupon Chairman
 
 
-<br><br>Notified this _________ day of ________, 19____.
+<br><br>Notified this $petsa
 
-<br><br><br>Complainant/s
-<br>_________________
-<br>_________________
+<br><br><br>Complainant
+<br>
+<br><u>{$complainant_last_name}, {$complainant_first_name} {$complainant_middle_name}.</u>
+<br>_
 
 </div>
 

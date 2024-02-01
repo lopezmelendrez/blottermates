@@ -180,11 +180,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['notify_complainant_su
             $send_data = [
                 'sender_id' => 'PhilSMS',
                 'recipient' => $complainant_cellphone_number, // Use complainant's cellphone number
-                'message' => "Hello, this is to inform you that the Notice of Hearing for your Incident Case is now in progress. To track updates easily, use our online platform: http://brgyblotter-src.online/resident/track_case.php?incident_case_number=$incident_case_number 
+                'message' => "Hello, this is to inform you that the Notice of Hearing for your Incident Case is now in progress. To track updates easily, use our online platform: http://brgyblotter-src.online/track_case.php?incident_case_number=$incident_case_number 
 For any questions, contact Barangay Ibaba, Santa Rosa Laguna. Thank you for your cooperation.",
             ];
 
-            $token = "187|4Ix57qaMwfknN0suokLhfdNiM88e1LDdAxDoqOqI ";
+             $token = "414|KmYUoou0jBtPaWIL6Z5jHupUmaTrsGKIExuGZ2qY ";
 
             $parameters = json_encode($send_data);
             $ch = curl_init();
@@ -258,12 +258,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['notify_respondent_sub
             $send_data = [
                 'sender_id' => 'PhilSMS',
                 'recipient' => $respondent_cellphone_number, // Use complainant's cellphone number
-                'message' => "Hello, this is to inform you that the Notice of Hearing for your Incident Case is now in progress. To track updates easily, use our online platform: http://brgyblotter-src.online/resident/track_case.php?incident_case_number=$incident_case_number 
+                'message' => "Hello, this is to inform you that the Notice of Hearing for your Incident Case is now in progress. To track updates easily, use our online platform: http://brgyblotter-src.online/track_case.php?incident_case_number=$incident_case_number 
 For any questions, contact Barangay Ibaba, Santa Rosa Laguna. Thank you for your cooperation.",
             ];
 
-            $token = "187|4Ix57qaMwfknN0suokLhfdNiM88e1LDdAxDoqOqI ";
-
+            $token = "414|KmYUoou0jBtPaWIL6Z5jHupUmaTrsGKIExuGZ2qY ";
+            
             $parameters = json_encode($send_data);
             $ch = curl_init();
             curl_setopt($ch, CURLOPT_URL, "https://app.philsms.com/api/v3/sms/send");
@@ -332,11 +332,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['notify_pangkat_submit
             $send_data = [
                 'sender_id' => 'PhilSMS',
                 'recipient' => $respondent_cellphone_number, // Use complainant's cellphone number
-                'message' => "Hello, this is to inform you that the Notice of Hearing for your Incident Case is now in progress. To track updates easily, use our online platform: http://brgyblotter-src.online/resident/track_case.php?incident_case_number=$incident_case_number 
+                'message' => "Hello, this is to inform you that the Notice of Hearing for your Incident Case is now in progress. To track updates easily, use our online platform: http://brgyblotter-src.online/track_case.php?incident_case_number=$incident_case_number 
 For any questions, contact Barangay Ibaba, Santa Rosa Laguna. Thank you for your cooperation.",
             ];
 
-            $token = "187|4Ix57qaMwfknN0suokLhfdNiM88e1LDdAxDoqOqI ";
+            $token = "414|KmYUoou0jBtPaWIL6Z5jHupUmaTrsGKIExuGZ2qY ";
 
             $parameters = json_encode($send_data);
             $ch = curl_init();
@@ -584,30 +584,40 @@ if ($fetch['barangay'] == 'Ibaba') {
                                             <td><?php echo $fetch_cases['respondent_last_name'] ?>, <?php echo $fetch_cases['respondent_first_name'] ?> <?php echo substr($fetch_cases['respondent_middle_name'], 0, 1) ?>.</td>
                                             <td>
                                             <?php
-                                        $check_query = "SELECT generate_summon, notify_summon FROM notify_residents WHERE incident_case_number = '$incident_case_number'";
-                                        $check_result = mysqli_query($conn, $check_query);
+$check_query = "SELECT n.generate_summon, n.notify_summon, i.respondent_cellphone_number 
+FROM notify_residents n
+LEFT JOIN incident_report i ON n.incident_case_number = i.incident_case_number
+WHERE n.incident_case_number = '$incident_case_number'";
+$check_result = mysqli_query($conn, $check_query);
 
-                                        if ($check_result && mysqli_num_rows($check_result) > 0) {
-                                            $row = mysqli_fetch_assoc($check_result);
-                                            $generate_summon_value = $row['generate_summon'];
-                                            $notify_summon_value = $row['notify_summon'];
+if ($check_result && mysqli_num_rows($check_result) > 0) {
+    $row = mysqli_fetch_assoc($check_result);
+    $generate_summon_value = $row['generate_summon'];
+    $notify_summon_value = $row['notify_summon'];
+    $respondent_cellphone_number = $row['respondent_cellphone_number'];
 
-                                            if (empty($generate_summon_value) || $generate_summon_value === 'not generated') { // Check for the specific value
-                                                echo '-';
-                                            } elseif ($notify_summon_value === 'notified') {
-                                                echo '<span class="notified">NOTIFIED</span>';
-                                            } else {
-                                                echo '<span class="to-notify">TO NOTIFY</span>';
-                                            }
-                                            
-                                        } 
-                                        ?>
+    if (empty($generate_summon_value) || $generate_summon_value === 'not generated') {
+        echo '-';
+    }
+    elseif (empty($respondent_cellphone_number) || is_null($respondent_cellphone_number)) {
+        echo '<span class="to-notify">NO CELLPHONE NUMBER</span>';
+    } elseif ($notify_summon_value === 'notified') {
+        echo '<span class="notified">NOTIFIED</span>';
+    } else {
+        echo '<span class="to-notify">TO NOTIFY</span>';
+    }
+    
+}
+?>
+
                                         </td>
 <td>
 <?php
 if (empty($generate_summon_value) || $generate_summon_value === 'not generated') {
     echo '<span class="summon-record" onclick="showSummonPopup()">Generate KP Form #9</span>';
 } elseif ($notify_summon_value === 'notified') {
+    echo '-';
+} elseif (empty($respondent_cellphone_number) || is_null($respondent_cellphone_number)) {
     echo '-';
 }
 else {
@@ -666,16 +676,7 @@ if ($check_result && mysqli_num_rows($check_result) > 0) {
 
 </td>
 
-
                                     </tr>
-                                    <!--<tr>
-                                        <td>Subpoena Notice</td>
-                                        <td>-</td>
-                                        <td>-</td>
-                                        <td>
-                                        <div class="summon-record" onclick="showWitnessPopup()" style="text-decoration:none;">Add Witness</div>
-                                        </td>
-                                    </tr>-->
                                 </tbody>
                             </table>
                         </div>
@@ -797,26 +798,6 @@ if ($check_result && mysqli_num_rows($check_result) > 0) {
             </div>
             </center>
         </div>
-
-
-        <!--<div id="popup" class="popup">
-            <center>
-            <div class="modal">
-            <h3 class="modal-title" style="font-size: 18px; text-align:center;">NOTIFY COMPLAINANT</h3>
-            <hr style="border: 1px solid #ccc; margin: 10px 0;">
-            <p style="font-size: 14px; text-align: justify;">The complainant's contact number will promptly receive their hearing notice details via message.</p>
-            <p style="font-size: 12px; margin-left: -28%; margin-top: 5%; font-weight: 600;">Complainant's Contact Number: </p>
-            <div class="box" id="phoneNumberBox">
-                <span id="phoneNumberText"></span>
-            </div>
-            <div class="button-container" style="display: flex;">
-                <button class="backBtn" onclick="closeNotifyPopup()" style="width: 300px; padding: 12px 12px; font-weight: 600;">BACK</button>
-                <button class="backBtn" onclick="submitForm()" style="width: 300px; margin-left: 290px; padding: 12px 12px; font-weight: 600;"">NOTIFY</button>
-            </div>
-            </div>
-            </center>
-        </div>-->
-
 
     </section>
     
@@ -949,6 +930,16 @@ function showPopup() {
 </script>
 <script src="../script.js"></script>
 <style>
+.home {
+        width: calc(100% - 78px);
+    }
+
+    .sidebar.close ~ .home {
+        left: 78px;
+        height: 100vh;
+        width: calc(100% - 78px);
+    }
+    
     .border{
         border: 1px solid #ccc; margin: 20px 0; width: 860px;
     }
@@ -1204,7 +1195,7 @@ function showPopup() {
         }
     }
 
-    @media screen and (min-width: 1520px) and (max-width: 1528px) and (min-height: 740px) and (max-height: 742px){
+@media screen and (min-width: 1500px) and (max-width: 1670px) and (min-height: 700px) and (max-height: 760px){
         .modal{
             position: absolute;
         top: 25%;
@@ -1214,6 +1205,20 @@ function showPopup() {
         .container{
             width: 70.1%;
             margin-top: 6%;
+        }
+    }
+    
+    @media screen and (min-width: 1460px) and (max-width: 1500px) and (min-height: 691px) and (max-height: 730px){
+    .container{
+            width: 64.8%;
+             margin-top: 5%;
+            margin-left: 20%;
+        }
+     .modal{
+            position: absolute;
+        top: 25%;
+        left: 53%;
+        transform: translate(-50%, -50%);
         }
     }
 

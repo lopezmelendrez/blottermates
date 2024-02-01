@@ -260,6 +260,17 @@ if($_GET['secret'])
     }
 }
 
+@media screen and (min-width: 1460px) and (max-width: 1500px) and (min-height: 691px) and (max-height: 730px){
+ .header-text-1{
+        margin-left: -180px;
+    }        
+    .header-text-1::after{
+                width: 66%;
+                margin-left: -180px;
+            }
+        }
+}
+
     </style>
 
 </html>

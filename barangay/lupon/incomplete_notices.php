@@ -9,19 +9,6 @@ if (!isset($email)) {
     header('location: ../../index.php');
 }
 
-if (isset($_POST['submit'])) {
-    $incident_case_number_to_delete = mysqli_real_escape_string($conn, $_POST['incident_case_number']);
-
-    $delete_query = mysqli_query($conn, "DELETE FROM incident_report WHERE incident_case_number = '$incident_case_number_to_delete'");
-    
-    if ($delete_query) {
-        header('Location: ' . $_SERVER['PHP_SELF']);
-        exit();
-    } else {
-        echo 'Failed to delete incident case.';
-    }
-}
-
 ?>
 
 <!DOCTYPE html>
@@ -225,49 +212,16 @@ if (isset($_POST['submit'])) {
         echo '</div>';
                                         echo '<a href="../../barangay/lupon/hearing_schedule.php?incident_case_number=' . $incident_case_number . '" class="schedule">Set Hearing Schedule</a>';
                                         echo '<a href="../../tcpdf/generate_kp7.php?incident_case_number=' . $incident_case_number . '" class="shownotices" target="_blank"><i class="bx bx-printer" style="margin-right: 5px;"></i>Generate KP Form #7</a>';
-                                        echo '<span class="close-icon" onclick="showConfirmation()">DELETE INCIDENT CASE</span>';
                                     } else {
                                         $hearing_date = date("F j, Y", strtotime($hearing_date));
                                         echo '<a href="../../barangay/lupon/notice_forms.php?incident_case_number=' . $incident_case_number . '" class="shownotices">Create Notice Form(s)</a>';
                                     }
                                 } else {
-                                    echo '<div id="popup" class="popup">';
-        echo '<center>';
-        echo '<div class="modal">';
-        echo '<h3 class="modal-title" style="font-size: 18px; text-align:center;">CONFIRMATION</h3>';
-        echo '<hr style="border: 1px solid #ccc; margin: 10px 0;">';
-        echo '<p style="font-size: 16px; letter-spacing: 1px; text-align: center; margin-top: 10%; margin-bottom: 10%;">Are you sure you want to delete Incident Case #' . htmlspecialchars(substr($incident_case_number, 0, 9)) . '?</p>';
-        echo '<hr style="border: 1px solid #ccc; margin: 10px 0;">';
-        echo '<div class="button-container" style="display: flex; margin-top: -4%; margin-left: 6%;">';
-        echo '<button class="backBtn" onclick="closeConfirmation()" style="width: 100px; padding: 12px 12px; font-weight: 600; background: #fff; border: 1px solid #bc1823; color: #bc1823; margin-left: 190px;">CANCEL</button>';
-        echo '<form action="" method="post">';
-        echo '<input type="hidden" name="incident_case_number" value="' . $incident_case_number . '">';
-        echo '<input type="submit" name="submit" value="YES" class="backBtn" style="width: 150px; padding: 8px 8px; font-size: 20px; font-weight: 600; margin-left: 10px;"></button>';
-        echo '</form>';
-        echo '</div>';
-        echo '</div>';
-        echo '</center>';
-        echo '</div>';
                                     echo '<a href="../../barangay/lupon/hearing_schedule.php?incident_case_number=' . $incident_case_number . '" class="schedule">Set Hearing Schedule</a>';
                                     echo '<a href="../../tcpdf/complainants_form.php?incident_case_number=' . $incident_case_number . '" class="shownotices" target="_blank"><i class="bx bx-printer" style="margin-right: 5px;"></i>Generate KP Form #7</a>';
-                                     echo '<span class="close-icon" onclick="showConfirmation()">DELETE INCIDENT CASE</span>';
                                 }
 
                                 ?>
-                                <script>
-function showConfirmation() {
-        var popup = document.getElementById("popup");
-        popup.style.display = "block";
-
-
-    }
-
-    function closeConfirmation() {
-        var popup = document.getElementById("popup");
-        popup.style.display = "none";
-    }
-
-</script>
                             </td>
                         </tr>
                 <?php
@@ -553,21 +507,35 @@ function showConfirmation() {
         }
     }
 
-    @media screen and (min-width: 1520px) and (max-width: 1528px) and (min-height: 740px) and (max-height: 742px){
+@media screen and (min-width: 1500px) and (max-width: 1670px) and (min-height: 700px) and (max-height: 760px){
         table{
             margin-left: 8.85%;
+            width: 84.5%;
         }
         .pagination{
-            margin-left: 5.2%;
+            margin-left: 5.1%;
             margin-top: 1.5%;
         }
         .add-account{
-            margin-top: -4.4%;
+            margin-top: -4.2%;
         }
         .schedule,.shownotices, .close-icon{
-            margin-left: 5%;
+            margin-left: 10%;
         }
     }
+
+@media screen and (min-width: 1460px) and (max-width: 1500px) and (min-height: 691px) and (max-height: 730px){
+    
+        .pagination{
+            margin-left: 3.5%;
+        }
+        
+        table{
+        margin-left: 9%;
+            
+        }
+    }
+
 
     </style>
 

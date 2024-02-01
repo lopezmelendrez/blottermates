@@ -5,8 +5,6 @@ include '../config.php';
 $pbId = isset($_GET['pb_id']) ? urldecode($_GET['pb_id']) : null;
 $dateSubmitted = isset($_GET['date_submitted']) ? urldecode($_GET['date_submitted']) : null;
 
-// Use $dateSubmitted in your script as needed
-
 
 require_once('tcpdf.php');
 require_once('tcpdf_autoconfig.php');
@@ -39,36 +37,23 @@ $pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
 $pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
 
 
-// set image scale factor
 $pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
 
 
-// set some language-dependent strings (optional)
 if (@file_exists(dirname(__FILE__).'/lang/eng.php')) {
     require_once(dirname(__FILE__).'/lang/eng.php');
     $pdf->setLanguageArray($l);
 }
 
 
-// ---------------------------------------------------------
 
-
-// set default font subsetting mode
 $pdf->setFontSubsetting(true);
 
 
-// Set font
-// dejavusans is a UTF-8 Unicode font, if you only need to
-// print standard ASCII chars, you can use core fonts like
-// helvetica or times to reduce file size.
 $pdf->SetFont('times', '', 4, '', true);
 
 
-// Add a page
-// This method has several options, check the source code documentation for more information.
 $pdf->AddPage();
-
-    // Set default values or handle the case when the form is not submitted
 
     $formattedDate = date('F j, Y', strtotime($dateSubmitted));
     
@@ -200,8 +185,8 @@ th {
 
 <div class="header">
     Republic of the Philippines
-    <br>Province of 
-    <br>CITY/MUNICIPALITY OF
+    <br>Province of Laguna
+    <br>CITY/MUNICIPALITY OF SANTA ROSA
     <br>Barangay $barangay
     <br>OFFICE OF LUPONG TAGAPAMAYAPA
     <br><br>OFFICE OF THE BARANGAY CAPTAIN

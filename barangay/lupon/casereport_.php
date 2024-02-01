@@ -610,7 +610,7 @@ if ($fetch['barangay'] == 'Ibaba') {
     }
     }
 
-    @media screen and (min-width: 1520px) and (max-width: 1528px) and (min-height: 740px) and (max-height: 742px){
+@media screen and (min-width: 1500px) and (max-width: 1670px) and (min-height: 700px) and (max-height: 760px){
         .modal{
             position: absolute;
         top: 20%;
@@ -620,6 +620,25 @@ if ($fetch['barangay'] == 'Ibaba') {
         .close-icon{
             top: 24.5%;
             left: 63.5%;
+            z-index: 1001;
+        }
+    }
+    
+        @media screen and (min-width: 1460px) and (max-width: 1500px) and (min-height: 691px) and (max-height: 730px){
+    .container{
+    width: 64.8%;
+    margin-left: 19%;
+    margin-top: 2.8%;
+    }
+    .modal{
+            position: absolute;
+        top: 18%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        }
+        .close-icon{
+            top: 24.5%;
+            left: 64.3%;
             z-index: 1001;
         }
     }

@@ -138,6 +138,14 @@ else
     <title>Reset Password | Barangay Blotter Management System</title>
     </head>
     <body>
+        <script>
+  window.onload = function() {
+    if (/Mobi|Android/i.test(navigator.userAgent)) {
+      window.location.href = 'error_page.php';
+    }
+  };
+</script>
+
         <div id="loadingOverlay" style="display:none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(255, 255, 255, 0.8); z-index: 9999;">
     <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
         <img src="../images/loader-unscreen.gif" alt="Loading..." width="350" height="350">
@@ -388,6 +396,31 @@ else
     footer{
         margin-top: -2%;
     }
+}
+
+@media screen and (min-width: 1460px) and (max-width: 1500px) and (min-height: 691px) and (max-height: 730px){
+.header-text-1{
+        margin-left: -180px;
+    }        
+    .header-text-1::after{
+                width: 66%;
+                margin-left: -180px;
+            }
+        }
+    .text-error{
+        margin-top: 3px;
+        font-size: 16px;
+    }
+    .close-error{
+        margin-left: 35%;
+    }
+
+    .success_error{
+        margin-left: 27%;
+    }
+
+    .back{
+        margin-left: 70%;
 }
 
     </style>

@@ -645,7 +645,7 @@ $result = mysqli_query($conn, $activityLogQuery);
        }
     }
 
-    @media screen and (min-width: 1520px) and (max-width: 1528px) and (min-height: 740px) and (max-height: 742px){
+@media screen and (min-width: 1500px) and (max-width: 1670px) and (min-height: 700px) and (max-height: 760px){
         .activity-history{
             margin-left: 30.5%;
         }
@@ -654,6 +654,12 @@ $result = mysqli_query($conn, $activityLogQuery);
         }
         .activity{
             font-size: 18px;
+        }
+    }
+    
+        @media screen and (min-width: 1460px) and (max-width: 1500px) and (min-height: 691px) and (max-height: 730px){
+        .activity-history{
+            width: 122.5%;
         }
     }
 

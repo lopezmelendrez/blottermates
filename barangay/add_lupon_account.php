@@ -222,9 +222,6 @@ if (isset($_POST['submit'])) {
                         <div class="input-field-1" style="width: 100%;">
                             <label class="required-label">Confirm Password</label>
                             <input type="password" name="confirmPassword" placeholder="" required>
-                            <div class="pw-display-toggle-btn" style="margin-top: -6.4%; margin-right: -93.9%;">
-                                <i class='uil uil-eye-slash showHidePw2' style="font-size: 22px; cursor: pointer;"></i>
-                            </div>
                         </div>
 
                         <?php if (isset($error) && !empty($error)) { ?>
@@ -708,7 +705,7 @@ document.querySelector(".pw-meter .pw-display-toggle-btn").addEventListener("cli
         }
     }
 
-    @media screen and (min-width: 1520px) and (max-width: 1528px) and (min-height: 740px) and (max-height: 742px){
+@media screen and (min-width: 1500px) and (max-width: 1670px) and (min-height: 700px) and (max-height: 760px){
         .modal-content{
             position: absolute;
         top: 25%;
@@ -720,6 +717,33 @@ document.querySelector(".pw-meter .pw-display-toggle-btn").addEventListener("cli
             margin-left: -2%;
         }
     }
+    
+    @media screen and (min-width: 1460px) and (max-width: 1500px) and (min-height: 691px) and (max-height: 730px){
+     .modal-content{
+            position: absolute;
+        top: 25%;
+        left: 45%;
+        transform: translate(-50%, -50%);
+        }
+        .add-account-container{
+            margin-top: 0.2%;
+            margin-left: -2%;
+        }
+    }
+    
+    @media screen and (min-width: 1460px) and (max-width: 1500px) and (min-height: 691px) and (max-height: 730px){
+     .modal-content{
+            position: absolute;
+        top: 25%;
+        left: 45%;
+        transform: translate(-50%, -50%);
+        }
+        .add-account-container{
+            margin-top: 0.5%;
+            margin-left: -2%;
+        }
+    }
+
 
 </style>
 </body>

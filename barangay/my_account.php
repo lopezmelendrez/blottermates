@@ -228,8 +228,9 @@ if (isset($_POST['submit'])) {
                                 <i class="uil uil-question-circle" data-bs-toggle="tooltip" data-bs-placement="top" title="Password must contain: At least one lowercase letter (a-z), at least one uppercase letter (A-Z), at least one number, and at least one special character." style="right: 0; display: flex; margin-top: -2.3%; margin-left: 13%;"></i>
                                 <div class="pw-meter" style="margin-top: 3px;">
                                 <input type="password" name="password" onkeydown="return preventSpace(event)" id="password" placeholder="">
-                                <div class="pw-display-toggle-btn" style="margin-top: 178px;">
-                                </div>
+                    <div class="pw-display-toggle-btn" style="margin-top: 23.8%; margin-right: 1.7%;">
+                                <i class='uil uil-eye-slash showHidePw2' style="font-size: 22px; cursor: pointer;"></i>
+                            </div>
 
                             <div class="pw-strength" id="strength-meter">
                                 <span></span>
@@ -240,6 +241,8 @@ if (isset($_POST['submit'])) {
 
                                 
                         </div>
+
+                       
                         
                     
                         <div class="input-field-1" style="width: 100%;">
@@ -684,6 +687,20 @@ document.querySelector(".pw-meter .pw-display-toggle-btn").addEventListener("cli
             margin-left: -2%;
         }
     }
+    
+    @media screen and (min-width: 1460px) and (max-width: 1500px) and (min-height: 691px) and (max-height: 730px){
+     .modal-content{
+            position: absolute;
+        top: 25%;
+        left: 45%;
+        transform: translate(-50%, -50%);
+        }
+        .add-account-container{
+            margin-top: 0.5%;
+            margin-left: -2%;
+        }
+    }
+
 
 </style>
 </body>

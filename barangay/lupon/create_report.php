@@ -311,7 +311,7 @@ if (isset($_POST['submit'])) {
                                     <option value="Article No. 317">Swindling a minor.</option>
                                     <option value="Article No. 318">Other deceits.</option>
                                     <option value="Article No. 319">Removal, sale, or pledge of mortgaged property.</option>
-                                    <option value="Article No. 328">Special cases of malicious mischief(If the value of the damaged property does not exceed P1, 000.00).</option>
+                                    <option value="Article No. 328">Special cases of malicious mischief</option>
                                     <option value="Article No. 329">Other mischiefs(If the value of the damaged property does not exceed P1,000.00).</option>
                                     <option value="Article No. 338">Simple seduction.</option>
                                     <option value="Article No. 339">Acts of lasciviousness with the consent of the offended party.</option>
@@ -1175,17 +1175,37 @@ form .fields .input-field-3{
             }
     }
 
-    @media screen and (min-width: 1520px) and (max-width: 1528px) and (min-height: 740px) and (max-height: 742px){
+@media screen and (min-width: 1500px) and (max-width: 1670px) and (min-height: 700px) and (max-height: 760px){
             .container{
                 margin-top:4.3%;
+                width: 61.5%;
             }
             form .fields .input-field-3{
-                width: 52.6rem;
+                width: 53.2rem;
             }
             .modal{
-                margin-top: -1%;
+                margin-top: 5%;
+            }
+            .close-icon{
+                margin-left: -2%;
+                margin-top: 0%;
             }
             }
+    @media screen and (min-width: 1460px) and (max-width: 1500px) and (min-height: 691px) and (max-height: 730px){
+    .container{
+        width: 64.5%;
+        margin-left:20%;
+        margin-top: 2.8%;
+    }
+    form .fields .input-field-3{
+                width: 53.2rem;
+            }
+    .modal{
+                margin-left: 10%;
+                margin-top: 0%;
+            }
+    }
+    
 
 </style>
 </body>

@@ -494,7 +494,7 @@ window.addEventListener("click", (event) => {
         }
     }
 
-    @media screen and (min-width: 1520px) and (max-width: 1528px) and (min-height: 740px) and (max-height: 742px){
+@media screen and (min-width: 1500px) and (max-width: 1670px) and (min-height: 700px) and (max-height: 760px){
         .modal-content{
             position: absolute;
         top: 25%;
@@ -507,7 +507,12 @@ window.addEventListener("click", (event) => {
         }
     }
 
-
+@media screen and (min-width: 1460px) and (max-width: 1500px) and (min-height: 691px) and (max-height: 730px){
+        .add-account-container{
+            margin-top: 3.5%;
+            margin-left: -1%;
+        }
+}
 
 </style>
 </body>
